@@ -6,6 +6,7 @@ import {
   readChromeWindowBounds,
 } from "./browser/launch.js";
 import { loadConfig } from "./config.js";
+import { buildPublicCatalogue } from "./catalogue/build.js";
 import { readMousePosition } from "./mouse.js";
 import { checkRemote } from "./remote.js";
 import { loadState, saveState } from "./state.js";
@@ -22,6 +23,10 @@ async function main(): Promise<void> {
   if (command === "remote-check") {
     const config = await loadConfig();
     process.stdout.write(`${JSON.stringify(await checkRemote(config))}\n`);
+    return;
+  }
+  if (command === "catalogue-public") {
+    process.stdout.write(`${JSON.stringify(await buildPublicCatalogue())}\n`);
     return;
   }
   if (command === "browser-prepare") {
@@ -58,7 +63,7 @@ async function main(): Promise<void> {
   }
 
   process.stdout.write(
-    "Usage: npm run cli -- <preflight|remote-check|browser-prepare|browser-smoke>\n",
+    "Usage: npm run cli -- <preflight|remote-check|browser-prepare|browser-smoke|catalogue-public>\n",
   );
 }
 

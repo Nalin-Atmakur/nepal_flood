@@ -55,13 +55,15 @@ Status:
 | Requirement | Status |
 |---|---|
 | Candidate acquisitions exist | Pass |
-| Syabrubesi overlap | Needs exact AOI/footprint verification |
+| Syabrubesi overlap | Exact public footprints overlap 35.1% of `syabrubesi-pilot-v1` |
 | Different viewing directions | Likely; must recompute from RPCs |
 | Basic/RPC products exist as Planet product types | Yes in principle |
 | Public disaster copies have useful RPCs | No |
 | Exact camera-bearing products exist | Unknown |
 | Account entitlement | Unknown |
 | Authenticated API test | Blocked until `PL_API_KEY` is available |
+
+The reproducible public catalogue now computes approximately 30.25 degrees of separation from the published look metadata. This is a ranking estimate, not RPC ray geometry. The exact SkySat-Pelican common footprint covers only 35.1% of the explicit 1 km Syabrubesi pilot square; the earlier “fully cover” statement did not use this versioned AOI polygon.
 
 ## Pre-flood baseline
 

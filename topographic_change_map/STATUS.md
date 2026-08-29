@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 19:55 BST
+Last updated: 2026-08-29 20:00 BST
 
 ## Goal
 
@@ -8,7 +8,7 @@ Active: complete the Nepal flood topographic change map end to end. Do not mark 
 
 ## Current milestone
 
-**M2 — Public imagery catalogue**
+**M3 — DSM-readiness and public parallax pilot**
 
 Completed:
 
@@ -18,12 +18,20 @@ Completed:
 - Headed Google Chrome smoke test passed on display 1 at CDP bounds `(2590, 542, 1380 x 860)`.
 - The browser smoke test confirmed the system mouse position was unchanged.
 - Six unit tests pass and TypeScript compilation is clean.
+- M1 automation harness committed and pushed as `6fe8ec4`.
+- M2 live STAC catalogue generated from 13 Vantor and 24 Planet public scenes.
+- Four explicit 1 km AOIs created for Syabrubesi, Timure, Rasuwagadhi, and preliminary Bidur screening.
+- 244 same-epoch/AOI pair records generated with exact polygon overlap.
+- Named Vantor pair covers 100% of the Syabrubesi pilot with approximately 35.64 degrees separation.
+- Named SkySat-Pelican pair covers 35.1% of the explicit Syabrubesi pilot with approximately 30.25 degrees separation.
+- None of the 37 public STAC items exposes a rigorous camera-model asset.
+- Nine tests pass and TypeScript compilation is clean.
 
 In progress:
 
-- Normalize the existing Vantor, Planet, Sentinel-2, and Google Earth inventory.
-- Implement source adapters for public STAC/JSON catalogues.
-- Build affected-area and pair records with transparent provenance.
+- Implement local AOI crop and usability-mask acquisition for public COGs.
+- Run reproducible sparse correspondence/parallax experiments on the named public pairs.
+- Add matching-support and residual-displacement reports without claiming absolute height.
 
 ## Verified environment
 
@@ -46,10 +54,10 @@ The `research/` directory contains the goal, source inventory, acquisition plan,
 
 ## Immediate next actions
 
-1. Commit and push milestone M1.
-2. Implement normalized scene/pair schemas and public catalogue ingestion.
-3. Validate exact candidate footprints against explicit AOIs.
-4. Generate the first reproducible catalogue report.
+1. Commit and push milestone M2.
+2. Fetch small Syabrubesi crops from the public COGs.
+3. Implement sparse feature matching and spatial-support metrics.
+4. Evaluate Vantor and SkySat-Pelican public parallax reproducibly.
 
 ## Active blockers
 
@@ -57,6 +65,7 @@ The `research/` directory contains the goal, source inventory, acquisition plan,
 - Gmail may require a one-time reauthentication in the cloned profile.
 - CAPTCHA remains an explicit user handoff.
 - Institutional or paid camera-bearing imagery may remain inaccessible; free alternatives must be exhausted first.
+- All current public Vantor/Planet products lack rigorous camera models; absolute-height reconstruction remains blocked until a camera-bearing product is obtained.
 
 ## Worktree safety
 

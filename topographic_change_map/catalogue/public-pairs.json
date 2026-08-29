@@ -1,0 +1,4796 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T18:59:04.925Z",
+  "pairs": [
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881710__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 11116.463,
+      "approximateRaySeparationDeg": 55.35574928669215,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881710__B030001100CF1110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86474.191,
+      "approximateRaySeparationDeg": 50.560323471724686,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__B040001100881710",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100881710",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 81.799,
+      "approximateRaySeparationDeg": 48.251477202106656,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__B040001100881710",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100881710",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 81.799,
+      "approximateRaySeparationDeg": 48.251477202106656,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__B030001100CF1310",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86483.74,
+      "approximateRaySeparationDeg": 46.63038693211778,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881710__B030001100CF1310",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86483.74,
+      "approximateRaySeparationDeg": 46.63038693211778,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B110001101165110__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 98510.625,
+      "approximateRaySeparationDeg": 44.26127942953427,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B110001101165110__20260827_020055_ssc1_u0001",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 98510.625,
+      "approximateRaySeparationDeg": 44.26127942953427,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 11078.563,
+      "approximateRaySeparationDeg": 41.239671721631794,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100882F10__20260827_020055_ssc1_u0001",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 11078.563,
+      "approximateRaySeparationDeg": 41.239671721631794,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__B110001101165110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87475.961,
+      "approximateRaySeparationDeg": 39.006834673751094,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__B110001101165110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87475.961,
+      "approximateRaySeparationDeg": 39.006834673751094,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__B110001101165110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87475.961,
+      "approximateRaySeparationDeg": 39.006834673751094,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1110__B110001101165110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 919.971,
+      "approximateRaySeparationDeg": 37.81594496382724,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1110__B110001101165110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 919.971,
+      "approximateRaySeparationDeg": 37.81594496382724,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__B030001100CF1110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86512.091,
+      "approximateRaySeparationDeg": 37.05877678216097,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100882F10__B030001100CF1110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86512.091,
+      "approximateRaySeparationDeg": 37.05877678216097,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__B040001100881710",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B040001100881710",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 60.649,
+      "approximateRaySeparationDeg": 35.636685162762824,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__B040001100881710",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B040001100881710",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 60.649,
+      "approximateRaySeparationDeg": 35.636685162762824,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__B040001100882F10",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100882F10",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 43.899,
+      "approximateRaySeparationDeg": 33.93441146564552,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__B040001100882F10",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100882F10",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 43.899,
+      "approximateRaySeparationDeg": 33.93441146564552,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__B040001100882F10",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100882F10",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 43.899,
+      "approximateRaySeparationDeg": 33.93441146564552,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__B110001101165110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 910.422,
+      "approximateRaySeparationDeg": 33.74065199352881,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1310__B110001101165110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 910.422,
+      "approximateRaySeparationDeg": 33.74065199352881,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1310__B110001101165110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 910.422,
+      "approximateRaySeparationDeg": 33.74065199352881,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__B030001100CF1310",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86521.64,
+      "approximateRaySeparationDeg": 33.31052406278973,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__B030001100CF1310",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86521.64,
+      "approximateRaySeparationDeg": 33.31052406278973,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100882F10__B030001100CF1310",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86521.64,
+      "approximateRaySeparationDeg": 33.31052406278973,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__B030001100CF1610",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86514.389,
+      "approximateRaySeparationDeg": 33.07093885626473,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881710__B030001100CF1610",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86514.389,
+      "approximateRaySeparationDeg": 33.07093885626473,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__20260827_020055_ssc1_u0001__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 14941.492,
+      "approximateRaySeparationDeg": 30.259874243455986,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__20260827_020055_ssc1_u0001__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 14942.826,
+      "approximateRaySeparationDeg": 30.253820330156294,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__20260827_020055_ssc1_u0001__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 97008.982,
+      "approximateRaySeparationDeg": 29.58755931054508,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__20260827_020055_ssc1_u0001__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 97008.982,
+      "approximateRaySeparationDeg": 29.58755931054508,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__20260826_054458_74_251f__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 72956.758,
+      "approximateRaySeparationDeg": 28.95410862092181,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__20260826_054458_74_251f__20260827_020055_ssc1_u0001",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 72956.758,
+      "approximateRaySeparationDeg": 28.95410862092181,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__B110001101165110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87454.811,
+      "approximateRaySeparationDeg": 27.51923771953139,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__B110001101165110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87454.811,
+      "approximateRaySeparationDeg": 27.51923771953139,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__B110001101165110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87454.811,
+      "approximateRaySeparationDeg": 27.51923771953139,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85892.519,
+      "approximateRaySeparationDeg": 26.827572488785993,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881710__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85892.519,
+      "approximateRaySeparationDeg": 26.827572488785993,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85894.856,
+      "approximateRaySeparationDeg": 26.77602176722594,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1110__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 581.672,
+      "approximateRaySeparationDeg": 26.775977687453814,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1110__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 581.672,
+      "approximateRaySeparationDeg": 26.775977687453814,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84071.159,
+      "approximateRaySeparationDeg": 26.513255526802148,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881710__20260826_054458_74_251f",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84073.221,
+      "approximateRaySeparationDeg": 26.513255526802148,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1110__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82649.162,
+      "approximateRaySeparationDeg": 25.463520863148283,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1110__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82647.828,
+      "approximateRaySeparationDeg": 25.45699493145119,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3827.697,
+      "approximateRaySeparationDeg": 25.21464136883701,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881710__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3826.363,
+      "approximateRaySeparationDeg": 25.208305894578764,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1610__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 97630.852,
+      "approximateRaySeparationDeg": 25.10368685886029,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1610__20260827_020055_ssc1_u0001",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 97630.852,
+      "approximateRaySeparationDeg": 25.10368685886029,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1110__20260826_054458_74_251f",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 170547.412,
+      "approximateRaySeparationDeg": 24.16740164218657,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1110__20260826_054458_74_251f",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 170547.412,
+      "approximateRaySeparationDeg": 24.16740164218657,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3906.828,
+      "approximateRaySeparationDeg": 23.751691807436938,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3908.162,
+      "approximateRaySeparationDeg": 23.746331774631265,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3909.496,
+      "approximateRaySeparationDeg": 23.740965562764092,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 591.221,
+      "approximateRaySeparationDeg": 23.579322858736095,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1310__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 591.221,
+      "approximateRaySeparationDeg": 23.579322858736095,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1310__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 591.221,
+      "approximateRaySeparationDeg": 23.579322858736095,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 588.884,
+      "approximateRaySeparationDeg": 23.348569129456834,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__10300100C86CED00__20260527_053219_95_254a",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10300100C86CED00",
+      "rightSceneId": "20260527_053219_95_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 145498171.764,
+      "approximateRaySeparationDeg": 22.674949203812748,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__10300100C86CED00__20260527_053221_96_254a",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10300100C86CED00",
+      "rightSceneId": "20260527_053221_96_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 145498173.776,
+      "approximateRaySeparationDeg": 22.574655982215457,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__10300100C86CED00__20260527_053221_96_254a",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10300100C86CED00",
+      "rightSceneId": "20260527_053221_96_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 145498173.776,
+      "approximateRaySeparationDeg": 22.574655982215457,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 83989.36,
+      "approximateRaySeparationDeg": 22.502920498370056,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__20260826_054458_74_251f",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 83991.422,
+      "approximateRaySeparationDeg": 22.502920498370056,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__20260826_054458_74_251f",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 83991.422,
+      "approximateRaySeparationDeg": 22.502920498370056,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B110001101165110__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 1501.643,
+      "approximateRaySeparationDeg": 22.174271785365747,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B110001101165110__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 1501.643,
+      "approximateRaySeparationDeg": 22.174271785365747,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B110001101165110__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 1501.643,
+      "approximateRaySeparationDeg": 22.174271785365747,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B110001101165110__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 1499.306,
+      "approximateRaySeparationDeg": 21.87920455085241,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85974.318,
+      "approximateRaySeparationDeg": 21.78859495310004,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85974.318,
+      "approximateRaySeparationDeg": 21.78859495310004,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85974.318,
+      "approximateRaySeparationDeg": 21.78859495310004,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85976.655,
+      "approximateRaySeparationDeg": 21.750957836676974,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1310__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82658.711,
+      "approximateRaySeparationDeg": 21.64365988965479,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1310__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82657.377,
+      "approximateRaySeparationDeg": 21.637074654808647,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82656.043,
+      "approximateRaySeparationDeg": 21.63048815421738,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__B040001100882F10",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B040001100882F10",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 22.749,
+      "approximateRaySeparationDeg": 21.326095522158063,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__B040001100882F10",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B040001100882F10",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 22.749,
+      "approximateRaySeparationDeg": 21.326095522158063,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__B040001100882F10",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B040001100882F10",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 22.749,
+      "approximateRaySeparationDeg": 21.326095522158063,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__B030001100CF1610",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86596.188,
+      "approximateRaySeparationDeg": 21.1025574182138,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__B030001100CF1610",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86596.188,
+      "approximateRaySeparationDeg": 21.1025574182138,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__B030001100CF1610",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86596.188,
+      "approximateRaySeparationDeg": 21.1025574182138,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__B030001100CF1610",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86552.289,
+      "approximateRaySeparationDeg": 21.096043130832843,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__B030001100CF1610",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86552.289,
+      "approximateRaySeparationDeg": 21.096043130832843,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100882F10__B030001100CF1610",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86552.289,
+      "approximateRaySeparationDeg": 21.096043130832843,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 170554.899,
+      "approximateRaySeparationDeg": 20.363367196076158,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1310__20260826_054458_74_251f",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 170556.961,
+      "approximateRaySeparationDeg": 20.363367196076158,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1310__20260826_054458_74_251f",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 170556.961,
+      "approximateRaySeparationDeg": 20.363367196076158,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 11055.814,
+      "approximateRaySeparationDeg": 20.143735920606932,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__20260827_020055_ssc1_u0001",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 11055.814,
+      "approximateRaySeparationDeg": 20.143735920606932,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1610__B110001101165110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 879.773,
+      "approximateRaySeparationDeg": 19.381442739038302,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1610__B110001101165110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 879.773,
+      "approximateRaySeparationDeg": 19.381442739038302,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1610__B110001101165110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 879.773,
+      "approximateRaySeparationDeg": 19.381442739038302,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1110__B030001100CF1610",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 40.198,
+      "approximateRaySeparationDeg": 18.436410828643375,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1110__B030001100CF1610",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 40.198,
+      "approximateRaySeparationDeg": 18.436410828643375,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__B030001100CF1210__20260828_045749_15_2544",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1210",
+      "rightSceneId": "20260828_045749_15_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 608.247,
+      "approximateRaySeparationDeg": 18.134147303298146,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__B030001100CF1110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86534.84,
+      "approximateRaySeparationDeg": 17.66558617404568,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__B030001100CF1110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86534.84,
+      "approximateRaySeparationDeg": 17.66558617404568,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B110001101165110__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 171465.321,
+      "approximateRaySeparationDeg": 17.097774121073876,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B110001101165110__20260826_054458_74_251f",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 171467.383,
+      "approximateRaySeparationDeg": 17.097774121073876,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B110001101165110__20260826_054458_74_251f",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 171467.383,
+      "approximateRaySeparationDeg": 17.097774121073876,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__B110001101165110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87394.162,
+      "approximateRaySeparationDeg": 16.918075037470313,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881710__B110001101165110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87394.162,
+      "approximateRaySeparationDeg": 16.918075037470313,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B110001101165110__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 83566.465,
+      "approximateRaySeparationDeg": 16.090063736102778,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B110001101165110__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 83567.799,
+      "approximateRaySeparationDeg": 16.08667937344544,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B110001101165110__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 83569.133,
+      "approximateRaySeparationDeg": 16.083306907587108,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1610__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 621.87,
+      "approximateRaySeparationDeg": 15.902245080807297,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1610__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 621.87,
+      "approximateRaySeparationDeg": 15.902245080807297,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1610__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 621.87,
+      "approximateRaySeparationDeg": 15.902245080807297,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__10300100C86CED00__10500100364E8400",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10300100C86CED00",
+      "rightSceneId": "10500100364E8400",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 60565609.897,
+      "approximateRaySeparationDeg": 15.685771598320056,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__10300100C86CED00__10500100364E8400",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10300100C86CED00",
+      "rightSceneId": "10500100364E8400",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 60565609.897,
+      "approximateRaySeparationDeg": 15.685771598320056,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1610__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 619.533,
+      "approximateRaySeparationDeg": 15.52059285296376,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__B030001100CF1310",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86544.389,
+      "approximateRaySeparationDeg": 14.91867147440663,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__B030001100CF1310",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86544.389,
+      "approximateRaySeparationDeg": 14.91867147440663,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__B030001100CF1310",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86544.389,
+      "approximateRaySeparationDeg": 14.91867147440663,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__B030001100CF1210__20260828_050143_19_2520",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1210",
+      "rightSceneId": "20260828_050143_19_2520",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 374.206,
+      "approximateRaySeparationDeg": 14.37398513244765,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__B030001100CF1610",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 30.649,
+      "approximateRaySeparationDeg": 14.360408173780534,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1310__B030001100CF1610",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 30.649,
+      "approximateRaySeparationDeg": 14.360408173780534,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1310__B030001100CF1610",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 30.649,
+      "approximateRaySeparationDeg": 14.360408173780534,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__B040001100881710",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B040001100881710",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 37.9,
+      "approximateRaySeparationDeg": 14.35229675296176,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__B040001100881710",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B040001100881710",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 37.9,
+      "approximateRaySeparationDeg": 14.35229675296176,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__B110001101165110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87432.062,
+      "approximateRaySeparationDeg": 14.08323676690317,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__B110001101165110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87432.062,
+      "approximateRaySeparationDeg": 14.08323676690317,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100882F10__B110001101165110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87432.062,
+      "approximateRaySeparationDeg": 14.08323676690317,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__B030001100CF1210__20260826_050135_34_255f",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1210",
+      "rightSceneId": "20260826_050135_34_255f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 173182.057,
+      "approximateRaySeparationDeg": 13.857686583549539,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__B030001100CF1610",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86575.038,
+      "approximateRaySeparationDeg": 13.137591245580092,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__B030001100CF1610",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86575.038,
+      "approximateRaySeparationDeg": 13.137591245580092,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__B030001100CF1610",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86575.038,
+      "approximateRaySeparationDeg": 13.137591245580092,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84033.259,
+      "approximateRaySeparationDeg": 12.961327376158183,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__20260826_054458_74_251f",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84035.321,
+      "approximateRaySeparationDeg": 12.961327376158183,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100882F10__20260826_054458_74_251f",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84035.321,
+      "approximateRaySeparationDeg": 12.961327376158183,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__B040001100881610",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100881610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 21.15,
+      "approximateRaySeparationDeg": 12.614800947689588,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__B040001100881610",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100881610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 21.15,
+      "approximateRaySeparationDeg": 12.614800947689588,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__B040001100881610",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100881610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 21.15,
+      "approximateRaySeparationDeg": 12.614800947689588,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85930.419,
+      "approximateRaySeparationDeg": 12.523602796486356,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85930.419,
+      "approximateRaySeparationDeg": 12.523602796486356,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100882F10__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85930.419,
+      "approximateRaySeparationDeg": 12.523602796486356,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85932.756,
+      "approximateRaySeparationDeg": 12.449653786005133,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3865.597,
+      "approximateRaySeparationDeg": 11.721454346268908,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100882F10__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3864.263,
+      "approximateRaySeparationDeg": 11.714827175307393,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100882F10__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3862.929,
+      "approximateRaySeparationDeg": 11.708200108386762,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3885.678,
+      "approximateRaySeparationDeg": 11.580483134548192,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3887.012,
+      "approximateRaySeparationDeg": 11.57602002434708,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 3888.346,
+      "approximateRaySeparationDeg": 11.571550429985649,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__B030001100CF1310",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86565.539,
+      "approximateRaySeparationDeg": 11.480158894873535,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__B030001100CF1310",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86565.539,
+      "approximateRaySeparationDeg": 11.480158894873535,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__B030001100CF1310",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86565.539,
+      "approximateRaySeparationDeg": 11.480158894873535,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1310__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 97600.203,
+      "approximateRaySeparationDeg": 11.45844724586468,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1310__20260827_020055_ssc1_u0001",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 97600.203,
+      "approximateRaySeparationDeg": 11.45844724586468,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__B030001100CF1110",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86555.99,
+      "approximateRaySeparationDeg": 10.871883199906973,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__B030001100CF1110",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 86555.99,
+      "approximateRaySeparationDeg": 10.871883199906973,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__B160001100CDB210__20260527_053226_41_254a",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "B160001100CDB210",
+      "rightSceneId": "20260527_053226_41_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 9580476.414,
+      "approximateRaySeparationDeg": 10.773544792062474,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84010.51,
+      "approximateRaySeparationDeg": 10.452245989536594,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__20260826_054458_74_251f",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84012.572,
+      "approximateRaySeparationDeg": 10.452245989536594,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__20260826_054458_74_251f",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84012.572,
+      "approximateRaySeparationDeg": 10.452245989536594,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1610__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82689.36,
+      "approximateRaySeparationDeg": 10.025224429171088,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1610__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82688.026,
+      "approximateRaySeparationDeg": 10.019329340825776,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1610__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82686.692,
+      "approximateRaySeparationDeg": 10.013440446112568,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85953.168,
+      "approximateRaySeparationDeg": 9.46511776809891,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881610__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85953.168,
+      "approximateRaySeparationDeg": 9.46511776809891,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881610__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85953.168,
+      "approximateRaySeparationDeg": 9.46511776809891,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 85955.505,
+      "approximateRaySeparationDeg": 9.35740394582345,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1610__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 170585.548,
+      "approximateRaySeparationDeg": 9.159440218430044,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1610__20260826_054458_74_251f",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 170587.61,
+      "approximateRaySeparationDeg": 9.159440218430044,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1610__20260826_054458_74_251f",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 170587.61,
+      "approximateRaySeparationDeg": 9.159440218430044,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B040001100881410__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 11034.664,
+      "approximateRaySeparationDeg": 8.462599486765496,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B040001100881410__20260827_020055_ssc1_u0001",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 11034.664,
+      "approximateRaySeparationDeg": 8.462599486765496,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1110__20260827_020055_ssc1_u0001",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 97590.654,
+      "approximateRaySeparationDeg": 8.073454029378702,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1110__20260827_020055_ssc1_u0001",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 97590.654,
+      "approximateRaySeparationDeg": 8.073454029378702,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_060959_65_3009__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_060959_65_3009",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82064.822,
+      "approximateRaySeparationDeg": 7.527297662554122,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__20260827_060958_31_3009__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_060958_31_3009",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82066.156,
+      "approximateRaySeparationDeg": 7.5258787792220865,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__20260827_060956_98_3009__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_060956_98_3009",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82067.49,
+      "approximateRaySeparationDeg": 7.524454158573975,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054500_80_251f__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054500_80_251f",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 169963.678,
+      "approximateRaySeparationDeg": 7.494721197820325,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__20260826_054458_74_251f__20260828_045744_48_2544",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 169965.74,
+      "approximateRaySeparationDeg": 7.494721197820325,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__20260826_054458_74_251f__20260828_045744_48_2544",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 169965.74,
+      "approximateRaySeparationDeg": 7.494721197820325,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_060959_65_3009__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_060959_65_3009",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 82067.159,
+      "approximateRaySeparationDeg": 7.136545444072039,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054500_80_251f__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054500_80_251f",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 169966.015,
+      "approximateRaySeparationDeg": 7.094996448213846,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__20260826_050135_34_255f__20260828_045749_15_2544",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_050135_34_255f",
+      "rightSceneId": "20260828_045749_15_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 172573.81,
+      "approximateRaySeparationDeg": 7.093824840157885,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__10500100364E8400__20260527_053219_95_254a",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10500100364E8400",
+      "rightSceneId": "20260527_053219_95_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84932561.867,
+      "approximateRaySeparationDeg": 7.09379511361137,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__10500100364E8400__20260527_053221_96_254a",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10500100364E8400",
+      "rightSceneId": "20260527_053221_96_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84932563.879,
+      "approximateRaySeparationDeg": 6.994035736273569,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__10500100364E8400__20260527_053221_96_254a",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10500100364E8400",
+      "rightSceneId": "20260527_053221_96_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 84932563.879,
+      "approximateRaySeparationDeg": 6.994035736273569,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__20260828_045749_15_2544__20260828_050143_19_2520",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260828_045749_15_2544",
+      "rightSceneId": "20260828_050143_19_2520",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 234.041,
+      "approximateRaySeparationDeg": 5.992511506076305,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__B030001100CF1110__B030001100CF1310",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 9.549,
+      "approximateRaySeparationDeg": 4.0762728302303834,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 4.08 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__B030001100CF1110__B030001100CF1310",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 9.549,
+      "approximateRaySeparationDeg": 4.0762728302303834,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 4.08 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__20260826_054458_74_251f__20260827_060956_98_3009",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260827_060956_98_3009",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87898.25,
+      "approximateRaySeparationDeg": 1.3117036027890365,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 1.31 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__20260826_054458_74_251f__20260827_060958_31_3009",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260827_060958_31_3009",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87899.584,
+      "approximateRaySeparationDeg": 1.3054264241795592,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 1.31 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054500_80_251f__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054500_80_251f",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 87898.856,
+      "approximateRaySeparationDeg": 1.2991490042042195,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 1.30 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__20260826_050135_34_255f__20260828_050143_19_2520",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_050135_34_255f",
+      "rightSceneId": "20260828_050143_19_2520",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 172807.851,
+      "approximateRaySeparationDeg": 1.101338096832118,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 1.10 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260828_045744_48_2544__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260828_045744_48_2544",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 2.337,
+      "approximateRaySeparationDeg": 0.40000000000037983,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 0.40 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "timure-pilot-v1__20260527_053219_95_254a__20260527_053221_96_254a",
+      "aoiId": "timure-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "20260527_053219_95_254a",
+      "rightSceneId": "20260527_053221_96_254a",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 1,
+      "acquisitionDeltaSeconds": 2.012,
+      "approximateRaySeparationDeg": 0.10035673897322316,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 0.10 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "rasuwagadhi-pilot-v1__10300100C86CED00__20260527_053219_95_254a",
+      "aoiId": "rasuwagadhi-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10300100C86CED00",
+      "rightSceneId": "20260527_053219_95_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.9565824542795497,
+      "acquisitionDeltaSeconds": 145498171.764,
+      "approximateRaySeparationDeg": 22.674949203812748,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 11116.463,
+      "approximateRaySeparationDeg": 54.657191269799455,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B110001101165110__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 98510.625,
+      "approximateRaySeparationDeg": 43.60611740324792,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 11078.563,
+      "approximateRaySeparationDeg": 40.53967445019336,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_020055_ssc1_u0002__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0002",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 14944.16,
+      "approximateRaySeparationDeg": 29.55340607654456,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_020055_ssc1_u0002__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0002",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 97008.982,
+      "approximateRaySeparationDeg": 28.894285647532303,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_020055_ssc1_u0002__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0002",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 97011.319,
+      "approximateRaySeparationDeg": 28.801524227420746,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054500_80_251f__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054500_80_251f",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 72954.696,
+      "approximateRaySeparationDeg": 28.260144213436607,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1610__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 97630.852,
+      "approximateRaySeparationDeg": 24.47545518657614,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 11055.814,
+      "approximateRaySeparationDeg": 19.448147493031957,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 97600.203,
+      "approximateRaySeparationDeg": 10.941557358707854,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.8990387484216338,
+      "acquisitionDeltaSeconds": 11034.664,
+      "approximateRaySeparationDeg": 7.848459340967317,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__B030001100CF1110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 86474.191,
+      "approximateRaySeparationDeg": 50.560323471724686,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__B110001101165110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B110001101165110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 919.971,
+      "approximateRaySeparationDeg": 37.81594496382724,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__B030001100CF1110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 86512.091,
+      "approximateRaySeparationDeg": 37.05877678216097,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 581.672,
+      "approximateRaySeparationDeg": 26.775977687453814,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 579.335,
+      "approximateRaySeparationDeg": 26.580213511771856,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 82646.494,
+      "approximateRaySeparationDeg": 25.450467046085112,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 170545.35,
+      "approximateRaySeparationDeg": 24.16740164218657,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__B030001100CF1610",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B030001100CF1610",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 40.198,
+      "approximateRaySeparationDeg": 18.436410828643375,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__B030001100CF1110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 86534.84,
+      "approximateRaySeparationDeg": 17.66558617404568,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__B030001100CF1110",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B030001100CF1110",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 86555.99,
+      "approximateRaySeparationDeg": 10.871883199906973,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__B030001100CF1310",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B030001100CF1310",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 0.6807304544405022,
+      "acquisitionDeltaSeconds": 9.549,
+      "approximateRaySeparationDeg": 4.0762728302303834,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 4.08 deg is below 5 deg"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__10300100FCB83600__B160001100CDB210",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10300100FCB83600",
+      "rightSceneId": "B160001100CDB210",
+      "providers": [
+        "VANTOR_OPEN"
+      ],
+      "commonAoiFraction": 0.5980241629522799,
+      "acquisitionDeltaSeconds": 53320014.641,
+      "approximateRaySeparationDeg": 36.668468557985264,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "bidur-pilot-v1__10300100FCB83600__20260527_053226_41_254a",
+      "aoiId": "bidur-pilot-v1",
+      "epoch": "PRE",
+      "leftSceneId": "10300100FCB83600",
+      "rightSceneId": "20260527_053226_41_254a",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.5980241629522799,
+      "acquisitionDeltaSeconds": 62900491.055,
+      "approximateRaySeparationDeg": 30.41198299910413,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.5799389769046792,
+      "acquisitionDeltaSeconds": 97590.654,
+      "approximateRaySeparationDeg": 7.691622351383928,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 11116.463,
+      "approximateRaySeparationDeg": 55.35574928669215,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B110001101165110__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 98510.625,
+      "approximateRaySeparationDeg": 44.26127942953427,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 11078.563,
+      "approximateRaySeparationDeg": 41.239671721631794,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_020055_ssc1_u0001__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 14944.16,
+      "approximateRaySeparationDeg": 30.247761946060418,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_020055_ssc1_u0001__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 97008.982,
+      "approximateRaySeparationDeg": 29.58755931054508,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_020055_ssc1_u0001__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 97011.319,
+      "approximateRaySeparationDeg": 29.49607899214512,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054500_80_251f__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054500_80_251f",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 72954.696,
+      "approximateRaySeparationDeg": 28.95410862092181,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1610__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 97630.852,
+      "approximateRaySeparationDeg": 25.10368685886029,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 11055.814,
+      "approximateRaySeparationDeg": 20.143735920606932,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 97600.203,
+      "approximateRaySeparationDeg": 11.45844724586468,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.35050624866452207,
+      "acquisitionDeltaSeconds": 11034.664,
+      "approximateRaySeparationDeg": 8.462599486765496,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__20260827_020055_ssc1_u0001",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260827_020055_ssc1_u0001",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.27423538893693256,
+      "acquisitionDeltaSeconds": 97590.654,
+      "approximateRaySeparationDeg": 8.073454029378702,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260827_020055_ssc1_u0001__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.2495449970863277,
+      "acquisitionDeltaSeconds": 0,
+      "approximateRaySeparationDeg": 0.7000000000000716,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 0.70 deg is below 5 deg",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881710__20260826_054458_74_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881710",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226526957,
+      "acquisitionDeltaSeconds": 84073.221,
+      "approximateRaySeparationDeg": 26.513255526802148,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1110__20260826_054458_74_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226526957,
+      "acquisitionDeltaSeconds": 170547.412,
+      "approximateRaySeparationDeg": 24.16740164218657,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1310__20260826_054458_74_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226526957,
+      "acquisitionDeltaSeconds": 170556.961,
+      "approximateRaySeparationDeg": 20.363367196076158,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B110001101165110__20260826_054458_74_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B110001101165110",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226526957,
+      "acquisitionDeltaSeconds": 171467.383,
+      "approximateRaySeparationDeg": 17.097774121073876,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881610__20260826_054458_74_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226526957,
+      "acquisitionDeltaSeconds": 84012.572,
+      "approximateRaySeparationDeg": 10.452245989536594,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054458_74_251f__20260827_020055_ssc1_u0002",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260827_020055_ssc1_u0002",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226389434,
+      "acquisitionDeltaSeconds": 72956.758,
+      "approximateRaySeparationDeg": 28.260144213436607,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100881410__20260826_054458_74_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226389434,
+      "acquisitionDeltaSeconds": 83991.422,
+      "approximateRaySeparationDeg": 22.502920498370056,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B040001100882F10__20260826_054458_74_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B040001100882F10",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226389434,
+      "acquisitionDeltaSeconds": 84035.321,
+      "approximateRaySeparationDeg": 12.961327376158183,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__B030001100CF1610__20260826_054458_74_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "20260826_054458_74_251f",
+      "providers": [
+        "VANTOR_OPEN",
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226389434,
+      "acquisitionDeltaSeconds": 170587.61,
+      "approximateRaySeparationDeg": 9.159440218430044,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054458_74_251f__20260828_045744_48_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260828_045744_48_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226389434,
+      "acquisitionDeltaSeconds": 169965.74,
+      "approximateRaySeparationDeg": 7.494721197820325,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054458_74_251f__20260828_045746_81_2544",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260828_045746_81_2544",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226389434,
+      "acquisitionDeltaSeconds": 169968.077,
+      "approximateRaySeparationDeg": 7.094996448213846,
+      "cameraModelsAvailable": false,
+      "verdict": "PUBLIC_PARALLAX_ONLY",
+      "reasons": [
+        "At least one public product lacks a rigorous camera model",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054458_74_251f__20260827_060959_65_3009",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260827_060959_65_3009",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226389434,
+      "acquisitionDeltaSeconds": 87900.918,
+      "approximateRaySeparationDeg": 1.2991490042042195,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 1.30 deg is below 5 deg",
+        "Pair covers less than half of the AOI"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "pairId": "syabrubesi-pilot-v1__20260826_054458_74_251f__20260826_054500_80_251f",
+      "aoiId": "syabrubesi-pilot-v1",
+      "epoch": "POST",
+      "leftSceneId": "20260826_054458_74_251f",
+      "rightSceneId": "20260826_054500_80_251f",
+      "providers": [
+        "PLANET_SOURCE_COOP"
+      ],
+      "commonAoiFraction": 0.015163285226389434,
+      "acquisitionDeltaSeconds": 2.062,
+      "approximateRaySeparationDeg": 0,
+      "cameraModelsAvailable": false,
+      "verdict": "REJECT_WEAK_GEOMETRY",
+      "reasons": [
+        "Approximate ray separation 0.00 deg is below 5 deg",
+        "Pair covers less than half of the AOI"
+      ]
+    }
+  ]
+}

@@ -35,3 +35,11 @@ Push coherent path-scoped milestones to `origin/main`. Inspect every staged diff
 ## 2026-08-29 — D9: Surface change before debris interpretation
 
 The first scientific product is surface-elevation change. Debris depth or building burial requires separate validation and must not be inferred automatically.
+
+## 2026-08-29 — D10: Explicit AOI polygons replace point flags
+
+Coverage decisions use versioned polygons. Against `syabrubesi-pilot-v1`, the public Vantor pair covers 100%, while the named SkySat-Pelican combination covers approximately 35.1%. Earlier “covers site” flags referred to the Rasuwagadhi point and cannot support Syabrubesi pair claims.
+
+## 2026-08-29 — D11: Public STAC products remain parallax-only
+
+The live catalogue contains 37 public Vantor/Planet scenes and zero rigorous camera-model assets. Approximate ray geometry may prioritize correspondence experiments, but these public orthorectified products are not promoted to absolute-height DSM reconstruction.

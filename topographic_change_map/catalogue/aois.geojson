@@ -1,0 +1,173 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "bbox": [
+        85.3409995857344,
+        28.157703398181376,
+        85.35120041426563,
+        28.166696601818618
+      ],
+      "properties": {
+        "id": "syabrubesi-pilot-v1",
+        "name": "Syabrubesi 1 km stereo pilot",
+        "status": "PILOT",
+        "purpose": "First end-to-end stereo and DSM reconstruction tile"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.3409995857344,
+              28.157703398181376
+            ],
+            [
+              85.35120041426563,
+              28.157703398181376
+            ],
+            [
+              85.35120041426563,
+              28.166696601818618
+            ],
+            [
+              85.3409995857344,
+              28.166696601818618
+            ],
+            [
+              85.3409995857344,
+              28.157703398181376
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "bbox": [
+        85.36789610989476,
+        28.230503398181376,
+        85.37810389010524,
+        28.239496601818622
+      ],
+      "properties": {
+        "id": "timure-pilot-v1",
+        "name": "Timure 1 km screening tile",
+        "status": "PRELIMINARY",
+        "purpose": "Upstream affected-settlement imagery screening"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.36789610989476,
+              28.230503398181376
+            ],
+            [
+              85.37810389010524,
+              28.230503398181376
+            ],
+            [
+              85.37810389010524,
+              28.239496601818622
+            ],
+            [
+              85.36789610989476,
+              28.239496601818622
+            ],
+            [
+              85.36789610989476,
+              28.230503398181376
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "bbox": [
+        85.37263797059832,
+        28.27517539818138,
+        85.3828500294017,
+        28.28416860181862
+      ],
+      "properties": {
+        "id": "rasuwagadhi-pilot-v1",
+        "name": "Rasuwagadhi border-post 1 km tile",
+        "status": "PRELIMINARY",
+        "purpose": "Preserves the earlier border-post elevation investigation as a separate AOI"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.37263797059832,
+              28.27517539818138
+            ],
+            [
+              85.3828500294017,
+              28.27517539818138
+            ],
+            [
+              85.3828500294017,
+              28.28416860181862
+            ],
+            [
+              85.37263797059832,
+              28.28416860181862
+            ],
+            [
+              85.37263797059832,
+              28.27517539818138
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "bbox": [
+        85.14491199740867,
+        27.895503398181376,
+        85.15508800259136,
+        27.904496601818618
+      ],
+      "properties": {
+        "id": "bidur-pilot-v1",
+        "name": "Bidur 1 km screening tile",
+        "status": "PRELIMINARY",
+        "purpose": "Downstream affected-area imagery screening; replace with authoritative EMSR927 geometry"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.14491199740867,
+              27.895503398181376
+            ],
+            [
+              85.15508800259136,
+              27.895503398181376
+            ],
+            [
+              85.15508800259136,
+              27.904496601818618
+            ],
+            [
+              85.14491199740867,
+              27.904496601818618
+            ],
+            [
+              85.14491199740867,
+              27.895503398181376
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
