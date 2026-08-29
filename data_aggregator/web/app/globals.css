@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------------
+   "Arcade ledger" design system — tokens (see lib/tokens.ts, docs/02-design-system.md)
+   ------------------------------------------------------------------------ */
+@theme {
+  --color-*: initial;
+  --color-ink: #1a1a1a;
+  --color-ground: #f2f3f6;
+  --color-canvas: #d8dbe2;
+  --color-card: #ffffff;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-ultra: #2438e8;
+  --color-ultra-deep: #1826a8;
+  --color-amber: #ffb800;
+  --color-amber-fill: #ffe294;
+  --color-amber-text: #8a3f06;
+  --color-amber-deep: #5c3a10;
+  --color-amber-link: #b45309;
+  --color-confirmed: #148a4e;
+  --color-confirmed-fill: #b9f0c9;
+  --color-confirmed-text: #0f7a42;
+  --color-board: #141419;
+  --color-live: #e5484d;
+  --color-live-green: #7ee2a8;
+  --color-dead: #8a8a8a;
+  --color-dead-dot: #bdbdbd;
+  --color-rule: #e7e9f0;
+  --color-thead: #e2e7ff;
+  --color-muted: #6b6f7c;
+  --color-muted-2: #4a4e59;
+  --color-muted-3: #3f434e;
+  --color-hint: #8a8e99;
+  --color-dashed: #b8bcc7;
+  --color-board-text: #aeb6d6;
+  --color-board-dim: #4d5878;
+  --color-board-body: #c9ccd6;
+  --color-footer-text: #d8d2c4;
+  --color-footer-link: #9db2ff;
+  --color-marker-unknown: #ffae42;
+  --color-flood: #ec3013;
+  --color-grade-d: #ffd0b0;
+  --color-scene: #e9e7e5;
+
+  --shadow-*: initial;
+  --shadow-hard-6: 6px 6px 0 #1a1a1a;
+  --shadow-hard-4: 4px 4px 0 #1a1a1a;
+  --shadow-hard-3: 3px 3px 0 #1a1a1a;
+  --shadow-hard-2: 2px 2px 0 #1a1a1a;
+  --shadow-hard-0: 0 0 0 #1a1a1a;
+  --shadow-live-3: 3px 3px 0 #e5484d;
+  --shadow-none: 0 0 #0000;
+
+  --radius-*: initial;
+  --radius-r2: 2px;
+  --radius-r4: 4px;
+  --radius-pill: 999px;
+  --radius-full: 9999px;
+  --radius-none: 0;
+
+  --font-*: initial;
+  --font-baloo: var(--font-baloo), "Baloo 2", system-ui, sans-serif;
+  --font-arcade: var(--font-arcade), "Press Start 2P", monospace;
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  --animate-ledpulse: ledpulse 2s infinite;
+  --animate-ledpulse-fast: ledpulse 1.6s infinite;
+  --animate-micring: micring 1.6s infinite;
+
+  @keyframes ledpulse {
+    0% { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0.5); }
+    70% { box-shadow: 0 0 0 8px rgba(229, 72, 77, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0); }
+  }
+  @keyframes micring {
+    0% { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0.45); }
+    70% { box-shadow: 0 0 0 14px rgba(229, 72, 77, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0); }
+  }
+}
+
+/* Devanagari runs 10–15% longer and needs line-height ≥ 1.6 (Component Sheet §02).
+   Tight leadings are variables so the same class relaxes automatically under ne/hi. */
+:root {
+  --lh-tight: 1.05;
+  --lh-snug: 1.2;
+  --lh-body: 1.5;
+  --lh-loose: 1.7;
+}
+html:lang(ne), html:lang(hi) {
+  --lh-tight: 1.6;
+  --lh-snug: 1.6;
+  --lh-body: 1.7;
+  --lh-loose: 1.8;
+}
+
+@layer base {
+  html {
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-baloo);
+    font-weight: 500;
+    line-height: var(--lh-body);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-ground);
+    color: var(--color-ink);
+    min-height: 100dvh;
+  }
+  a { color: var(--color-ultra); }
+  a:hover { color: var(--color-ultra-deep); }
+  strong, b { font-weight: 700; }
+  h1, h2, h3, h4 { font-weight: 800; margin: 0; }
+  input, textarea, button, select { font: inherit; color: inherit; }
+  /* Numbers stay Latin and tabular everywhere. */
+  .num, [data-num] { font-variant-numeric: tabular-nums lining-nums; }
+  :focus-visible {
+    outline: 3px solid var(--color-ultra);
+    outline-offset: 2px;
+  }
+  ::placeholder { color: var(--color-hint); opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+/* ---- utilities used across blocks ---- */
+@utility lh-tight { line-height: var(--lh-tight); }
+@utility lh-snug { line-height: var(--lh-snug); }
+@utility lh-body { line-height: var(--lh-body); }
+@utility lh-loose { line-height: var(--lh-loose); }
+
+/* Ink borders: 2.5px on frames/cards, 2px on chips/pills/small cards, 1.5px on dots. */
+@utility b-ink { border: 2.5px solid var(--color-ink); }
+@utility b-ink-2 { border: 2px solid var(--color-ink); }
+@utility b-ink-1 { border: 1.5px solid var(--color-ink); }
+@utility b-dashed { border: 2px dashed var(--color-dashed); }
+@utility b-rule { border-bottom: 2px solid var(--color-rule); }
+@utility b-ink-b { border-bottom: 2.5px solid var(--color-ink); }
+
+/* Press behaviour: translate + shadow shrink (Component Sheet §03). */
+@utility press-4 {
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transition: transform 60ms linear, box-shadow 60ms linear;
+  &:hover { transform: translate(1px, 1px); box-shadow: 3px 3px 0 var(--color-ink); }
+  &:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--color-ink); }
+}
+@utility press-3 {
+  box-shadow: 3px 3px 0 var(--color-ink);
+  transition: transform 60ms linear, box-shadow 60ms linear;
+  &:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--color-ink); }
+  &:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--color-ink); }
+}
+@utility press-2 {
+  box-shadow: 2px 2px 0 var(--color-ink);
+  transition: transform 60ms linear, box-shadow 60ms linear;
+  &:hover { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--color-ink); }
+  &:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--color-ink); }
+}
+@utility press-0 {
+  transition: transform 60ms linear, box-shadow 60ms linear;
+  &:hover { box-shadow: 3px 3px 0 var(--color-ink); }
+  &:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--color-ink); }
+}
+
+/* Arcade accent — Latin only, tiny. */
+@utility arcade { font-family: var(--font-arcade); font-weight: 400; letter-spacing: 0; }
+
+/* Quarter-circle amber overlay on dark cards. */
+@utility amber-quarter {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 184, 0, 0.10);
+  border: 2px solid rgba(255, 184, 0, 0.22);
+  pointer-events: none;
+}
+
+/* Horizontal scrollers with sticky first column (§03 mobile). */
+@utility scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+
+/* Visually hidden but readable by screen readers. */
+@utility sr-only-focusable {
+  position: absolute;
+  left: -9999px;
+  &:focus { left: 8px; top: 8px; z-index: 50; }
+}

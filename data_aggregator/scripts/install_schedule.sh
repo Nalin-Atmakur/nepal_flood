@@ -37,6 +37,6 @@ cat > "$PLIST" <<PL
 PL
 launchctl bootout "gui/$(id -u)/$LABEL" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$PLIST"
-pgrep -f "caffeinate -s -i" >/dev/null || (nohup caffeinate -s -i >/dev/null 2>&1 &)
+pgrep -x caffeinate >/dev/null || (nohup caffeinate -s -i >/dev/null 2>&1 &)   # skip if any caffeinate is already running
 echo "installed $LABEL: every $MINUTES min → $HERE/pipeline/run.sh (log: pipeline/run.log); caffeinate running"
 launchctl print "gui/$(id -u)/$LABEL" | grep -E 'state|interval' | head -3
