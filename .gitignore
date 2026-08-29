@@ -62,3 +62,22 @@ topographic_change_map/viewer/dist/
 
 # data_aggregator raw pulls
 data_aggregator/snapshots/
+
+# data_aggregator — local state, venvs, build output (never commit)
+data_aggregator/pipeline/.venv/
+data_aggregator/pipeline/_state.json
+data_aggregator/pipeline/run.log
+data_aggregator/pipeline/snapshots/*
+!data_aggregator/pipeline/snapshots/.gitkeep
+data_aggregator/gazetteer/.cache/
+data_aggregator/web/node_modules/
+data_aggregator/web/.next/
+data_aggregator/web/.vercel/
+data_aggregator/web/out/
+data_aggregator/web/test-results/
+data_aggregator/web/playwright-report/
+data_aggregator/design/**/.thumbnail
+data_aggregator/design/*.zip
+__pycache__/
+.pytest_cache/
+.DS_Store

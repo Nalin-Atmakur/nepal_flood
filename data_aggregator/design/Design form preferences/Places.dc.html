@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Press+Start+2P&display=swap">
+  <style>
+    body{margin:0;background:#d8dbe2;font-family:"Baloo 2",system-ui,sans-serif;color:#1a1a1a}
+    a{color:#2438e8}a:hover{color:#1826a8}
+    @keyframes ledpulse{0%{box-shadow:0 0 0 0 rgba(229,72,77,.5)}70%{box-shadow:0 0 0 8px rgba(229,72,77,0)}100%{box-shadow:0 0 0 0 rgba(229,72,77,0)}}
+  </style>
+</helmet>
+<div style="padding:44px;display:flex;flex-direction:column;gap:44px;min-width:max-content">
+  <div style="font:800 22px 'Baloo 2'">Places — /places and /places/timure</div>
+
+  <div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap">
+
+    <!-- PLACE PAGE DESKTOP -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:700 12px/1 'Baloo 2';letter-spacing:.1em;text-transform:uppercase;color:#6b6f7c">Place page — Desktop · 1280</div>
+      <div style="width:1280px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:4px;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:16px;padding:12px 28px;background:#fff;border-bottom:2.5px solid #1a1a1a">
+          <a href="#" style="font:800 18px 'Baloo 2';color:#1a1a1a;text-decoration:none">←</a>
+          <span style="font:700 13px 'Baloo 2';color:#6b6f7c">All places</span>
+          <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:#141419;color:#fff;border-radius:999px;padding:6px 12px 5px;font:400 8px/1 'Press Start 2P'"><span style="width:8px;height:8px;border-radius:50%;background:#e5484d;animation:ledpulse 2s infinite"></span>LIVE</span>
+        </div>
+        <div style="padding:26px 28px 32px">
+          <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+            <span style="font:800 36px/1 'Baloo 2'">Timure</span>
+            <span style="font:600 22px 'Baloo 2';color:#6b6f7c">तिमुरे · तिमुरे</span>
+            <span style="display:inline-flex;align-items:center;min-height:30px;padding:2px 14px 0;border:2px solid #1a1a1a;border-radius:999px;font:700 12.5px 'Baloo 2';background:#ffe294;color:#8a3f06">mostly unknown</span>
+            <span style="font:500 13px 'Baloo 2';color:#6b6f7c">Rasuwa · km 4 of the corridor · 1,610 m</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:20px">
+            <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:18px 20px">
+              <div style="font:800 44px/1 'Baloo 2'">190</div>
+              <div style="font:600 13px 'Baloo 2';margin-top:6px">reported there</div>
+              <div style="font:500 10.5px 'Baloo 2';color:#6b6f7c">site reports + manifests · 29 Aug 18:45</div>
+            </div>
+            <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:18px 20px">
+              <div style="font:800 44px/1 'Baloo 2';color:#148a4e">123</div>
+              <div style="font:600 13px 'Baloo 2';margin-top:6px">confirmed reached</div>
+              <div style="font:500 10.5px 'Baloo 2';color:#6b6f7c">rescue logs · 29 Aug 16:10</div>
+            </div>
+            <div style="background:#ffe294;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:18px 20px">
+              <div style="font:800 44px/1 'Baloo 2';color:#8a3f06">67</div>
+              <div style="font:600 13px 'Baloo 2';margin-top:6px">unknown</div>
+              <div style="font:500 10.5px 'Baloo 2';color:#8a3f06">reported − confirmed</div>
+            </div>
+            <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:18px 20px">
+              <div style="font:800 30px/1.1 'Baloo 2'">26 Aug<br>08:45</div>
+              <div style="font:600 13px 'Baloo 2';margin-top:6px">last contact out</div>
+              <div style="font:500 10.5px 'Baloo 2';color:#6b6f7c">last completed call, NTC log</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 380px;gap:24px;margin-top:24px">
+            <div>
+              <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:18px 20px">
+                <div style="font:800 17px 'Baloo 2'">Status, day by day</div>
+                <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="4">
+                  <div style="display:flex;gap:14px;margin-top:14px">
+                    <div style="display:flex;flex-direction:column;align-items:center;flex:none">
+                      <span style="width:14px;height:14px;border-radius:50%;background:{{ t.dot }};border:2px solid #1a1a1a"></span>
+                      <span style="width:2px;flex:1;background:#e7e9f0;margin-top:4px"></span>
+                    </div>
+                    <div style="padding-bottom:6px">
+                      <div style="font:800 13.5px 'Baloo 2'">{{ t.day }}</div>
+                      <div style="font:500 13px/1.5 'Baloo 2';color:#4a4e59">{{ t.what }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:18px 20px;margin-top:18px">
+                <div style="font:800 17px 'Baloo 2'">Headlines mentioning Timure</div>
+                <sc-for list="{{ news }}" as="n" hint-placeholder-count="3">
+                  <div style="display:flex;gap:12px;align-items:baseline;padding:8px 0;border-bottom:2px solid #e7e9f0">
+                    <span style="font:700 11px 'Baloo 2';color:#6b6f7c;flex:none">{{ n.time }}</span>
+                    <span style="font:600 13.5px 'Baloo 2'">{{ n.t }}</span>
+                    <span style="font:500 11px 'Baloo 2';color:#6b6f7c;margin-left:auto;flex:none">{{ n.src }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:16px 18px">
+                <sc-for list="{{ facts }}" as="fa" hint-placeholder-count="4">
+                  <div style="display:flex;gap:10px;padding:7px 0;border-bottom:2px solid #e7e9f0;font:500 13px 'Baloo 2'">
+                    <span style="color:#6b6f7c;width:110px;flex:none">{{ fa.k }}</span><strong>{{ fa.v }}</strong>
+                  </div>
+                </sc-for>
+              </div>
+              <a href="#" style="display:flex;align-items:center;justify-content:center;min-height:52px;background:#2438e8;color:#fff;font:800 16px 'Baloo 2';text-decoration:none;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a" style-hover="transform:translate(1px,1px);box-shadow:3px 3px 0 #1a1a1a">Add what you know about Timure</a>
+              <div style="background:#141419;border:2.5px solid #1a1a1a;border-radius:2px;padding:16px;position:relative;overflow:hidden">
+                <span style="position:absolute;right:-34px;top:-34px;width:110px;height:110px;border-radius:50%;background:rgba(255,184,0,.10);border:2px solid rgba(255,184,0,.22)"></span>
+                <div style="font:400 7px/1 'Press Start 2P';color:#ffb800">ON THE CORRIDOR</div>
+                <div style="font:500 12.5px/1.7 'Baloo 2';color:#c9ccd6;margin-top:8px">km 4 of 72 · between Gyirong Port (km −3) and Syabrubesi (km 16) · marker on the 3D corridor on the home page.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap">
+    <!-- PLACES INDEX DESKTOP -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:700 12px/1 'Baloo 2';letter-spacing:.1em;text-transform:uppercase;color:#6b6f7c">All places — Desktop · 1280 (same table as Home §04, own page)</div>
+      <div style="width:1280px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:4px;overflow:hidden">
+        <div style="padding:22px 28px 30px">
+          <div style="display:flex;align-items:center;gap:14px">
+            <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">Places</h2>
+            <span style="font:600 13px 'Baloo 2';color:#6b6f7c">sorted by unknown, highest first · updated 29 Aug 18:52</span>
+            <input style="margin-left:auto;width:340px;padding:10px 14px 8px;font:500 14px 'Baloo 2';border:2.5px solid #1a1a1a;border-radius:2px;background:#fff;outline:none" placeholder="Search — “syafru”, “स्याफ्रु”, “Shyaprubesi”…">
+          </div>
+          <div style="margin-top:14px;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;overflow:hidden">
+            <table style="width:100%;border-collapse:collapse;font-family:'Baloo 2';font-size:14px">
+              <thead><tr style="background:#e2e7ff">
+                <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Place</th>
+                <th style="text-align:right;padding:11px 12px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Reported</th>
+                <th style="text-align:right;padding:11px 12px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Confirmed</th>
+                <th style="text-align:right;padding:11px 12px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Unknown</th>
+                <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Last contact</th>
+                <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Phones</th>
+                <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Access</th>
+                <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Note</th>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{ places }}" as="p" hint-placeholder-count="8">
+                  <tr>
+                    <td style="padding:11px 16px;font:800 14.5px 'Baloo 2';border-bottom:2px solid #e7e9f0">{{ p.place }}</td>
+                    <td style="padding:11px 12px;text-align:right;border-bottom:2px solid #e7e9f0">{{ p.rep }}</td>
+                    <td style="padding:11px 12px;text-align:right;border-bottom:2px solid #e7e9f0;color:#0f7a42;font-weight:700">{{ p.conf }}</td>
+                    <td style="padding:11px 12px;text-align:right;border-bottom:2px solid #e7e9f0"><span style="display:inline-block;min-width:44px;text-align:center;background:#ffe294;border:2px solid #1a1a1a;border-radius:999px;padding:2px 8px 0;font:800 15px 'Baloo 2';color:#8a3f06">{{ p.unk }}</span></td>
+                    <td style="padding:11px 16px;border-bottom:2px solid #e7e9f0;white-space:nowrap">{{ p.last }}</td>
+                    <td style="padding:11px 16px;border-bottom:2px solid #e7e9f0">{{ p.phones }}</td>
+                    <td style="padding:11px 16px;border-bottom:2px solid #e7e9f0">{{ p.access }}</td>
+                    <td style="padding:11px 16px;border-bottom:2px solid #e7e9f0;color:#6b6f7c;font-size:12.5px">{{ p.note }}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:14px;background:#fff;border:2px dashed #b8bcc7;border-radius:2px;padding:16px;text-align:center;font:600 13px 'Baloo 2';color:#6b6f7c">No reports for a place you know about? <a href="#">Add the first one — it takes five minutes.</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACE PAGE MOBILE -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:700 12px/1 'Baloo 2';letter-spacing:.1em;text-transform:uppercase;color:#6b6f7c">Place page — Mobile · 390</div>
+      <div style="width:390px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:4px;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;border-bottom:2.5px solid #1a1a1a">
+          <a href="#" style="font:800 17px 'Baloo 2';color:#1a1a1a;text-decoration:none">←</a>
+          <span style="font:700 12px 'Baloo 2';color:#6b6f7c">All places</span>
+        </div>
+        <div style="padding:20px 16px 26px">
+          <div style="font:800 30px/1.05 'Baloo 2'">Timure</div>
+          <div style="font:600 17px 'Baloo 2';color:#6b6f7c">तिमुरे · तिमुरे</div>
+          <span style="display:inline-flex;align-items:center;min-height:28px;padding:2px 12px 0;border:2px solid #1a1a1a;border-radius:999px;font:700 12px 'Baloo 2';background:#ffe294;color:#8a3f06;margin-top:8px">mostly unknown</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+            <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;padding:14px"><div style="font:800 34px/1 'Baloo 2'">190</div><div style="font:600 12px 'Baloo 2';margin-top:4px">reported there</div></div>
+            <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;padding:14px"><div style="font:800 34px/1 'Baloo 2';color:#148a4e">123</div><div style="font:600 12px 'Baloo 2';margin-top:4px">confirmed reached</div></div>
+            <div style="background:#ffe294;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;padding:14px"><div style="font:800 34px/1 'Baloo 2';color:#8a3f06">67</div><div style="font:600 12px 'Baloo 2';margin-top:4px">unknown</div></div>
+            <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;padding:14px"><div style="font:800 19px/1.2 'Baloo 2'">26 Aug 08:45</div><div style="font:600 12px 'Baloo 2';margin-top:4px">last contact out</div></div>
+          </div>
+          <div style="font:500 10.5px 'Baloo 2';color:#6b6f7c;margin-top:8px">site reports + manifests + rescue logs · as of 29 Aug 18:45</div>
+          <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:14px 16px;margin-top:14px">
+            <sc-for list="{{ facts }}" as="fa" hint-placeholder-count="4">
+              <div style="display:flex;gap:10px;padding:6px 0;border-bottom:2px solid #e7e9f0;font:500 12.5px 'Baloo 2'">
+                <span style="color:#6b6f7c;width:100px;flex:none">{{ fa.k }}</span><strong>{{ fa.v }}</strong>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:14px 16px;margin-top:14px">
+            <div style="font:800 15px 'Baloo 2'">Status, day by day</div>
+            <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="4">
+              <div style="display:flex;gap:12px;margin-top:12px">
+                <span style="width:12px;height:12px;border-radius:50%;background:{{ t.dot }};border:2px solid #1a1a1a;flex:none;margin-top:3px"></span>
+                <div><div style="font:800 12.5px 'Baloo 2'">{{ t.day }}</div><div style="font:500 12px/1.5 'Baloo 2';color:#4a4e59">{{ t.what }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+          <a href="#" style="display:flex;align-items:center;justify-content:center;margin-top:16px;min-height:52px;background:#2438e8;color:#fff;font:800 15px 'Baloo 2';text-decoration:none;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a">Add what you know about Timure</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      timeline: [
+        { day: '26 Aug', what: 'Flood hits 08:37; last completed call out at 08:45. Helipad and customs yard destroyed.', dot: '#e5484d' },
+        { day: '27 Aug', what: 'First helicopter overflight; ~40 people sighted on the ridge above the bazaar.', dot: '#ffb800' },
+        { day: '28 Aug', what: '78 people lifted to Dhunche across five sorties in the morning window.', dot: '#148a4e' },
+        { day: '29 Aug', what: '123 confirmed reached in total. Helipad still unusable; landing on the ridge only.', dot: '#148a4e' }
+      ],
+      news: [
+        { t: 'China opens Gyirong military helipad to Nepali rescue flights', src: 'Reuters', time: '16:35' },
+        { t: 'रसुवागढी–तिमुरे सडकखण्ड पूर्ण रूपमा बगायो', src: 'Kantipur', time: '11:40' },
+        { t: 'Timure ridge landing zone marked; five sorties completed', src: 'Nepal Army', time: '28 Aug' }
+      ],
+      facts: [
+        { k: 'Phones', v: 'down since 26 Aug 08:40' },
+        { k: 'Access', v: 'helicopter only (ridge LZ)' },
+        { k: 'Nearest gauge', v: 'Rasuwagadhi — dead' },
+        { k: 'Shelter', v: 'ridge above bazaar' }
+      ],
+      places: [
+        { place: 'Gyirong Port (China side)', rep: '560', conf: '2', unk: '558', last: '26 Aug 08:30', phones: 'partial', access: '—', note: 'immigration building destroyed' },
+        { place: 'Betrawati', rep: '450', conf: '380', unk: '70', last: '29 Aug', phones: 'yes (since 29 Aug)', access: 'road partially', note: 'bridge gone; ~3,500 sheltering' },
+        { place: 'Timure', rep: '190', conf: '123', unk: '67', last: '26 Aug 08:45', phones: 'no', access: 'helicopter only', note: 'helipad destroyed' },
+        { place: 'Upper Trishuli-1 camp (Mailung)', rep: '320', conf: '254', unk: '66', last: '28 Aug', phones: 'no', access: 'helicopter only', note: 'tunnel rescue ongoing' },
+        { place: 'Langtang village', rep: '60', conf: '0', unk: '60', last: '27 Aug', phones: 'yes (since 27 Aug)', access: 'on foot from Syabrubesi', note: 'not in flood path; trekkers safe but cut off' },
+        { place: 'Syabrubesi', rep: '140', conf: '96', unk: '44', last: '27 Aug', phones: 'yes (since 28 Aug)', access: 'helicopter only', note: 'helipad destroyed' },
+        { place: 'Bidur / Trishuli', rep: '300', conf: '265', unk: '35', last: '29 Aug', phones: 'yes', access: 'road partially', note: 'district hospital operating' },
+        { place: 'Devighat', rep: '120', conf: '110', unk: '10', last: '29 Aug', phones: 'yes', access: 'road', note: 'powerhouse flooded' },
+        { place: 'Galchhi', rep: '85', conf: '80', unk: '5', last: '29 Aug', phones: 'yes', access: 'road', note: 'gauge live' },
+        { place: 'Malekhu', rep: '40', conf: '38', unk: '2', last: '29 Aug', phones: 'yes', access: 'road', note: '' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

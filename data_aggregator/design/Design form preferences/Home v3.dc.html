@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Press+Start+2P&display=swap">
+  <style>
+    body{margin:0;background:#d8dbe2;font-family:"Baloo 2",system-ui,sans-serif;color:#1a1a1a}
+    a{color:#b45309}a:hover{color:#8a3f06}
+    @keyframes blinkled{0%,60%{opacity:1}70%,100%{opacity:.25}}
+    @keyframes ledpulse{0%{box-shadow:0 0 0 0 rgba(229,72,77,.5)}70%{box-shadow:0 0 0 8px rgba(229,72,77,0)}100%{box-shadow:0 0 0 0 rgba(229,72,77,0)}}
+  </style>
+</helmet>
+<div style="display:flex;align-items:flex-start;gap:56px;padding:44px;min-width:max-content">
+
+  <!-- ══════ DESKTOP 1280 ══════ -->
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:700 12px/1 'Baloo 2';letter-spacing:.1em;text-transform:uppercase;color:#6b6f7c">Home — Desktop · 1280</div>
+    <div style="width:1280px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:4px;overflow:hidden">
+
+      <!-- header -->
+      <div style="display:flex;align-items:center;gap:20px;padding:16px 28px;border-bottom:2.5px solid #1a1a1a;background:#f2f3f6">
+        <div style="display:flex;align-items:center;gap:12px;margin-right:auto">
+          <div style="width:42px;height:42px;background:#2438e8;border:2.5px solid #1a1a1a;border-radius:50%;display:grid;place-items:center">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M3 14c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"></path><path d="M3 19c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"></path><path d="M12 4l3 5H9l3-5z" fill="#fff"></path></svg>
+          </div>
+          <div>
+            <div style="font:800 21px/1.1 'Baloo 2'">Nepal Flood Tracker</div>
+            <div style="font:600 12px/1.2 'Baloo 2';color:#6b6f7c">Volunteer-run · not an official source</div>
+          </div>
+          <span style="display:inline-flex;align-items:center;gap:7px;margin-left:8px;background:#1a1a1a;color:#fff;border-radius:999px;padding:6px 12px 5px;font:400 8px/1 'Press Start 2P'">
+            <span style="width:8px;height:8px;border-radius:50%;background:#e5484d;animation:ledpulse 2s infinite"></span>LIVE
+          </span>
+        </div>
+        <div style="display:inline-flex;border:2.5px solid #1a1a1a;border-radius:999px;overflow:hidden;background:#fff">
+          <span style="padding:8px 18px 6px;font:800 14px/1 'Baloo 2';background:#2438e8;color:#fff">EN</span>
+          <span style="padding:8px 18px 6px;font:600 14px/1 'Baloo 2';border-left:2.5px solid #1a1a1a">नेपाली</span>
+          <span style="padding:8px 18px 6px;font:600 14px/1 'Baloo 2';border-left:2.5px solid #1a1a1a">हिन्दी</span>
+        </div>
+        <a href="#" style="display:inline-flex;align-items:center;padding:11px 22px 9px;background:#2438e8;color:#fff;font:800 15px/1 'Baloo 2';text-decoration:none;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a" style-hover="transform:translate(1px,1px);box-shadow:3px 3px 0 #1a1a1a" style-active="transform:translate(4px,4px);box-shadow:0 0 0 #1a1a1a">Add what you know →</a>
+      </div>
+
+      <!-- official channels -->
+      <div style="display:flex;flex-wrap:wrap;gap:4px 18px;align-items:baseline;padding:9px 28px;background:#fff;border-bottom:2.5px solid #1a1a1a;font:500 13px/1.6 'Baloo 2'">
+        <span><strong>Police 1155</strong></span><span><strong>Tourist Police 1144</strong></span>
+        <span><strong>MoFA Emergency Control Room</strong> +977-9744441227 · emergency@mofa.gov.np</span>
+        <span><strong>Nepal Red Cross 1130</strong></span><span><strong>NEOC 1149</strong></span>
+        <span style="color:#6b6f7c;margin-left:auto">This page is not a substitute for official reporting.</span>
+      </div>
+      <sc-if value="{{ stale }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:9px 28px;background:#ffe294;border-bottom:2.5px solid #1a1a1a;font:700 14px 'Baloo 2';color:#8a3f06">Last update 47 min ago — showing last known data.</div>
+      </sc-if>
+
+      <!-- live scoreboard -->
+      <div style="margin:20px 28px 0;background:#141419;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:18px 24px;display:flex;align-items:center;gap:32px;position:relative;overflow:hidden"><span style="position:absolute;right:-46px;top:-46px;width:150px;height:150px;border-radius:50%;background:rgba(255,184,0,.10);border:2px solid rgba(255,184,0,.22);pointer-events:none"></span>
+        <span style="width:12px;height:12px;border-radius:50%;background:#e5484d;animation:ledpulse 2s infinite;flex:none"></span>
+        <div><div style="font:400 15px/1.4 'Press Start 2P';color:#ffb800">1,284</div><div style="font:600 12px 'Baloo 2';color:#aeb6d6;margin-top:6px">people here now</div></div>
+        <div style="width:2px;align-self:stretch;background:rgba(255,255,255,.15)"></div>
+        <div><div style="font:400 15px/1.4 'Press Start 2P';color:#ffb800">37</div><div style="font:600 12px 'Baloo 2';color:#aeb6d6;margin-top:6px">contributions · last 10 min</div></div>
+        <div style="width:2px;align-self:stretch;background:rgba(255,255,255,.15)"></div>
+        <div><div style="font:400 15px/1.4 'Press Start 2P';color:#ffb800">2,911</div><div style="font:600 12px 'Baloo 2';color:#aeb6d6;margin-top:6px">contributions today</div></div>
+        <div style="width:2px;align-self:stretch;background:rgba(255,255,255,.15)"></div>
+        <div><div style="font:400 15px/1.4 'Press Start 2P';color:#7ee2a8">4 MIN</div><div style="font:600 12px 'Baloo 2';color:#aeb6d6;margin-top:6px">since last data pull</div></div>
+        <div style="margin-left:auto;font:400 8px/1.8 'Press Start 2P';color:#4d5878;text-align:right">AUTO-REFRESH<br>EVERY 15 MIN</div>
+      </div>
+
+      <!-- 3D corridor -->
+      <div style="margin:24px 28px 0">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font:400 8px/1 'Press Start 2P';background:#2438e8;color:#fff;border:2px solid #1a1a1a;border-radius:50%;width:31px;height:31px;display:inline-grid;place-items:center;padding:0;box-sizing:border-box">01</span>
+          <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">The corridor</h2>
+          <span style="font:600 13px 'Baloo 2';color:#6b6f7c">Gyirong border → Bharatpur · 72 km · height ×1.5</span>
+          <div style="margin-left:auto;display:flex;gap:14px;font:600 12px 'Baloo 2';align-items:center">
+            <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border:2px solid #1a1a1a;border-radius:50%;background:#ffae42"></span>mostly unknown</span>
+            <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border:2px solid #1a1a1a;border-radius:50%;background:#148a4e"></span>mostly reached</span>
+            <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border:2px solid #1a1a1a;border-radius:50%;background:#ec3013"></span>flood path</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;overflow:hidden;position:relative">
+          <sc-if value="{{ corridor3d }}" hint-placeholder-val="{{ true }}">
+            <x-import component-from-global-scope="corridor-3d" from="./corridor-3d.js" height="480" hint-size="100%,480px" style="width:100%;height:480px"></x-import>
+          </sc-if>
+          <sc-if value="{{ corridorStatic }}" hint-placeholder-val="{{ false }}">
+            <div style="height:480px;display:grid;place-items:center;background:#e9e7e5;font:700 15px 'Baloo 2';color:#6b6f7c">Static fallback image — terrain, flood path, markers</div>
+          </sc-if>
+        </div>
+        <div style="font:500 12px 'Baloo 2';color:#6b6f7c;margin-top:8px">Marker size = people believed there · tap a marker for the place card · drag to orbit</div>
+      </div>
+
+      <!-- striking stats -->
+      <div style="margin:28px 28px 0">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font:400 8px/1 'Press Start 2P';background:#2438e8;color:#fff;border:2px solid #1a1a1a;border-radius:50%;width:31px;height:31px;display:inline-grid;place-items:center;padding:0;box-sizing:border-box">02</span>
+          <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">What happened, in numbers</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;margin-top:16px">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="6">
+            <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:22px 20px;transform:rotate({{ s.rot }})">
+              <div style="font:800 44px/1 'Baloo 2';letter-spacing:-.01em">{{ s.n }}</div>
+              <div style="font:500 14px/1.45 'Baloo 2';margin-top:8px;text-wrap:pretty">{{ s.c }}</div>
+              <a href="#" style="font:600 11px 'Baloo 2'">{{ s.s }}</a>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- numbers side by side -->
+      <div style="margin:28px 28px 0">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font:400 8px/1 'Press Start 2P';background:#2438e8;color:#fff;border:2px solid #1a1a1a;border-radius:50%;width:31px;height:31px;display:inline-grid;place-items:center;padding:0;box-sizing:border-box">03</span>
+          <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">The numbers, side by side</h2>
+          <span style="font:600 13px 'Baloo 2';color:#6b6f7c">no two agencies count the same thing — we show them all</span>
+        </div>
+        <div style="margin-top:14px;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;overflow:hidden">
+          <table style="width:100%;border-collapse:collapse;font-family:'Baloo 2'">
+            <thead><tr style="background:#e2e7ff">
+              <th style="text-align:left;padding:12px 16px;font:700 13px 'Baloo 2';border-bottom:2.5px solid #1a1a1a;width:190px"></th>
+              <sc-for list="{{ agencies }}" as="a" hint-placeholder-count="5"><th style="text-align:left;padding:12px 16px;font:700 13px 'Baloo 2';border-bottom:2.5px solid #1a1a1a"><a href="#" style="color:#1a1a1a">{{ a }}</a></th></sc-for>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ numberRows }}" as="r" hint-placeholder-count="3">
+                <tr>
+                  <td style="padding:14px 16px;font:800 15px 'Baloo 2';border-bottom:2px solid #e7e9f0">{{ r.label }}</td>
+                  <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5">
+                    <td style="padding:14px 16px;border-bottom:2px solid #e7e9f0;vertical-align:top">
+                      <div style="font:800 22px/1 'Baloo 2'">{{ c.v }}</div>
+                      <div style="font:500 10.5px 'Baloo 2';color:#6b6f7c;margin-top:3px">{{ c.note }} {{ c.t }}</div>
+                    </td>
+                  </sc-for>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <p style="font:500 13.5px/1.5 'Baloo 2';margin:12px 0 0;max-width:960px;color:#3f434e">These differ because each agency counts something different: NDRRMA counts everyone reported out of contact; the Police count confirmed missing-person reports; MoFA counts foreigners reported to embassies; the Tourism Department counts tourists on agency manifests; the PM’s portal counts every report submitted, including duplicates. <a href="#">More in About</a></p>
+      </div>
+
+      <!-- places -->
+      <div style="margin:28px 28px 0">
+        <div style="display:flex;align-items:center;gap:14px">
+          <span style="font:400 8px/1 'Press Start 2P';background:#2438e8;color:#fff;border:2px solid #1a1a1a;border-radius:50%;width:31px;height:31px;display:inline-grid;place-items:center;padding:0;box-sizing:border-box">04</span>
+          <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">Places</h2>
+          <span style="font:600 13px 'Baloo 2';color:#6b6f7c">sorted by unknown, highest first</span>
+          <input style="margin-left:auto;width:320px;padding:10px 14px 8px;font:500 14px 'Baloo 2';border:2.5px solid #1a1a1a;border-radius:2px;background:#fff;outline:none" placeholder="Search a place — any language, any spelling">
+        </div>
+        <div style="margin-top:14px;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;overflow:hidden">
+          <table style="width:100%;border-collapse:collapse;font-family:'Baloo 2';font-size:14px">
+            <thead><tr style="background:#e2e7ff">
+              <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Place</th>
+              <th style="text-align:right;padding:11px 12px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Reported</th>
+              <th style="text-align:right;padding:11px 12px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Confirmed</th>
+              <th style="text-align:right;padding:11px 12px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Unknown</th>
+              <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Last contact</th>
+              <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Phones</th>
+              <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Access</th>
+              <th style="text-align:left;padding:11px 16px;font:700 12.5px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">Note</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ places }}" as="p" hint-placeholder-count="8">
+                <tr>
+                  <td style="padding:11px 16px;font:800 14.5px 'Baloo 2';border-bottom:2px solid #e7e9f0">{{ p.place }}</td>
+                  <td style="padding:11px 12px;text-align:right;border-bottom:2px solid #e7e9f0">{{ p.rep }}</td>
+                  <td style="padding:11px 12px;text-align:right;border-bottom:2px solid #e7e9f0;color:#0f7a42;font-weight:700">{{ p.conf }}</td>
+                  <td style="padding:11px 12px;text-align:right;border-bottom:2px solid #e7e9f0"><span style="display:inline-block;min-width:44px;text-align:center;background:#ffe294;border:2px solid #1a1a1a;border-radius:999px;padding:2px 8px 0;font:800 15px 'Baloo 2';color:#8a3f06">{{ p.unk }}</span></td>
+                  <td style="padding:11px 16px;border-bottom:2px solid #e7e9f0;white-space:nowrap">{{ p.last }}</td>
+                  <td style="padding:11px 16px;border-bottom:2px solid #e7e9f0">{{ p.phones }}</td>
+                  <td style="padding:11px 16px;border-bottom:2px solid #e7e9f0">{{ p.access }}</td>
+                  <td style="padding:11px 16px;border-bottom:2px solid #e7e9f0;color:#6b6f7c;font-size:12.5px">{{ p.note }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- add what you know -->
+      <div style="margin:28px 28px 0">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font:400 8px/1 'Press Start 2P';background:#2438e8;color:#fff;border:2px solid #1a1a1a;border-radius:50%;width:31px;height:31px;display:inline-grid;place-items:center;padding:0;box-sizing:border-box">05</span>
+          <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">Add what you know</h2>
+        </div>
+        <p style="font:500 15px 'Baloo 2';margin:8px 0 0;max-width:560px">Do you know where someone was, or what you saw? It takes five minutes and goes into the picture above.</p>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:16px">
+          <sc-for list="{{ ctas }}" as="c" hint-placeholder-count="4">
+            <a href="#" style="display:block;text-decoration:none;color:#1a1a1a;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:20px 18px" style-hover="transform:translate(1px,1px);box-shadow:3px 3px 0 #1a1a1a">
+              <div style="font:800 17px/1.25 'Baloo 2'">{{ c.t }}</div>
+              <div style="font:500 12.5px/1.4 'Baloo 2';margin-top:8px;color:rgba(26,26,26,.75)">{{ c.d }}</div>
+              <div style="margin-top:14px;width:34px;height:34px;border-radius:50%;background:{{ c.bg }};border:2px solid #1a1a1a;display:grid;place-items:center;font:800 16px 'Baloo 2';color:{{ c.fg }}">→</div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- river & weather -->
+      <div style="margin:28px 28px 0">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font:400 8px/1 'Press Start 2P';background:#2438e8;color:#fff;border:2px solid #1a1a1a;border-radius:50%;width:31px;height:31px;display:inline-grid;place-items:center;padding:0;box-sizing:border-box">06</span>
+          <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">River &amp; weather</h2>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:14px">
+          <sc-for list="{{ gauges }}" as="g" hint-placeholder-count="7">
+            <div style="flex:1;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:12px 12px 10px">
+              <div style="display:flex;align-items:center;gap:6px;font:700 12px 'Baloo 2'"><span style="width:9px;height:9px;border-radius:50%;background:{{ g.dot }};border:1.5px solid #1a1a1a"></span>{{ g.n }}</div>
+              <div style="font:800 20px/1 'Baloo 2';margin-top:7px;color:{{ g.vcol }}">{{ g.v }}</div>
+              <div style="font:500 10px/1.35 'Baloo 2';color:#6b6f7c;margin-top:4px">{{ g.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:36px;margin-top:18px;align-items:flex-end">
+          <sc-for list="{{ fly }}" as="f" hint-placeholder-count="2">
+            <div>
+              <div style="font:700 13px 'Baloo 2';margin-bottom:6px">{{ f.site }} — flying windows</div>
+              <div style="display:flex;gap:8px;align-items:flex-end">
+                <sc-for list="{{ f.days }}" as="d" hint-placeholder-count="3">
+                  <div style="width:70px">
+                    <div style="height:{{ d.h }};background:{{ d.col }};border:2px solid #1a1a1a;border-radius:2px 2px 0 0"></div>
+                    <div style="font:600 10.5px 'Baloo 2';margin-top:3px">{{ d.day }} · {{ d.q }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+          <div style="font:500 12px/1.5 'Baloo 2';color:#6b6f7c;max-width:280px">31 Aug – 1 Sep: heavy rain, poorest flying conditions. Source: DHM forecast, 29 Aug 15:00.</div>
+        </div>
+      </div>
+
+      <!-- latest -->
+      <div style="margin:28px 28px 0">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font:400 8px/1 'Press Start 2P';background:#2438e8;color:#fff;border:2px solid #1a1a1a;border-radius:50%;width:31px;height:31px;display:inline-grid;place-items:center;padding:0;box-sizing:border-box">07</span>
+          <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">Latest</h2>
+        </div>
+        <div style="margin-top:12px;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;overflow:hidden">
+          <sc-for list="{{ headlines }}" as="h" hint-placeholder-count="10">
+            <div style="display:flex;gap:16px;align-items:baseline;padding:10px 18px;border-bottom:2px solid #e7e9f0">
+              <span style="font:700 11.5px 'Baloo 2';color:#6b6f7c;width:44px;flex:none">{{ h.time }}</span>
+              <span style="font:600 14.5px 'Baloo 2'">{{ h.t }}</span>
+              <span style="font:500 11.5px 'Baloo 2';color:#6b6f7c;margin-left:auto;flex:none">{{ h.src }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- share + footer -->
+      <div style="margin:28px;display:flex;align-items:center;gap:12px">
+        <span style="font:800 16px 'Baloo 2';margin-right:6px">Share this page</span>
+        <sc-for list="{{ shares }}" as="s" hint-placeholder-count="5">
+          <a href="#" style="display:inline-flex;padding:9px 18px 7px;background:#fff;border:2.5px solid #1a1a1a;border-radius:999px;font:700 13.5px 'Baloo 2';color:#1a1a1a;text-decoration:none;box-shadow:3px 3px 0 #1a1a1a" style-hover="transform:translate(1px,1px);box-shadow:2px 2px 0 #1a1a1a">{{ s }}</a>
+        </sc-for>
+      </div>
+      <div style="padding:14px 28px;background:#1a1a1a;color:#d8d2c4;display:flex;gap:20px;font:500 12.5px 'Baloo 2'">
+        <span>Last updated 29 Aug 18:52 NPT</span><a href="#" style="color:#9db2ff">Sources</a><a href="#" style="color:#9db2ff">About</a><a href="#" style="color:#9db2ff">Share</a>
+        <span style="margin-left:auto">Not a substitute for official reporting.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ MOBILE 390 ══════ -->
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:700 12px/1 'Baloo 2';letter-spacing:.1em;text-transform:uppercase;color:#6b6f7c">Home — Mobile · 390</div>
+    <div style="width:390px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:4px;overflow:hidden">
+
+      <div style="padding:14px 16px;border-bottom:2.5px solid #1a1a1a">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;background:#2438e8;border:2.5px solid #1a1a1a;border-radius:50%;display:grid;place-items:center;flex:none">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M3 14c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"></path><path d="M3 19c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"></path><path d="M12 4l3 5H9l3-5z" fill="#fff"></path></svg>
+          </div>
+          <div style="margin-right:auto">
+            <div style="font:800 16px/1.1 'Baloo 2'">Nepal Flood Tracker</div>
+            <div style="font:600 10px/1.3 'Baloo 2';color:#6b6f7c">Volunteer-run · not official</div>
+          </div>
+          <span style="display:inline-flex;align-items:center;gap:5px;background:#1a1a1a;color:#fff;border-radius:999px;padding:5px 9px 4px;font:400 7px/1 'Press Start 2P'"><span style="width:6px;height:6px;border-radius:50%;background:#e5484d;animation:ledpulse 2s infinite"></span>LIVE</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div style="display:inline-flex;border:2.5px solid #1a1a1a;border-radius:999px;overflow:hidden;background:#fff">
+            <span style="padding:7px 14px 5px;font:800 12.5px/1 'Baloo 2';background:#2438e8;color:#fff">EN</span>
+            <span style="padding:7px 14px 5px;font:600 12.5px/1 'Baloo 2';border-left:2.5px solid #1a1a1a">नेपाली</span>
+            <span style="padding:7px 14px 5px;font:600 12.5px/1 'Baloo 2';border-left:2.5px solid #1a1a1a">हिन्दी</span>
+          </div>
+          <a href="#" style="margin-left:auto;display:inline-flex;align-items:center;padding:8px 14px 6px;background:#2438e8;color:#fff;font:800 12.5px/1 'Baloo 2';text-decoration:none;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a">Add what you know</a>
+        </div>
+      </div>
+      <div style="padding:8px 16px;background:#fff;border-bottom:2.5px solid #1a1a1a;font:500 11px/1.6 'Baloo 2'">
+        <strong>Police 1155</strong> · <strong>Tourist Police 1144</strong> · <strong>MoFA ECR</strong> +977-9744441227 · <strong>Red Cross 1130</strong> · <strong>NEOC 1149</strong>
+        <div style="color:#6b6f7c">Not a substitute for official reporting.</div>
+      </div>
+
+      <div style="margin:14px 16px 0;background:#141419;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;padding:14px 16px;position:relative;overflow:hidden"><span style="position:absolute;right:-34px;top:-34px;width:110px;height:110px;border-radius:50%;background:rgba(255,184,0,.10);border:2px solid rgba(255,184,0,.22);pointer-events:none"></span>
+        <div style="display:flex;align-items:center;gap:8px;font:400 7px/1 'Press Start 2P';color:#4d5878"><span style="width:9px;height:9px;border-radius:50%;background:#e5484d;animation:ledpulse 2s infinite"></span>RIGHT NOW</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+          <div><div style="font:400 13px/1 'Press Start 2P';color:#ffb800">1,284</div><div style="font:600 10.5px 'Baloo 2';color:#aeb6d6;margin-top:5px">people here now</div></div>
+          <div><div style="font:400 13px/1 'Press Start 2P';color:#ffb800">37</div><div style="font:600 10.5px 'Baloo 2';color:#aeb6d6;margin-top:5px">added in 10 min</div></div>
+          <div><div style="font:400 13px/1 'Press Start 2P';color:#ffb800">2,911</div><div style="font:600 10.5px 'Baloo 2';color:#aeb6d6;margin-top:5px">today</div></div>
+          <div><div style="font:400 13px/1 'Press Start 2P';color:#7ee2a8">4 MIN</div><div style="font:600 10.5px 'Baloo 2';color:#aeb6d6;margin-top:5px">since data pull</div></div>
+        </div>
+      </div>
+
+      <div style="margin:16px 16px 0;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;overflow:hidden">
+        <sc-if value="{{ corridor3d }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="corridor-3d" from="./corridor-3d.js" height="400" hint-size="100%,400px" style="width:100%;height:400px"></x-import>
+        </sc-if>
+        <sc-if value="{{ corridorStatic }}" hint-placeholder-val="{{ false }}">
+          <div style="height:400px;display:grid;place-items:center;background:#e9e7e5;font:700 13px 'Baloo 2';color:#6b6f7c">Static fallback image</div>
+        </sc-if>
+      </div>
+      <div style="margin:10px 16px 0;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;overflow:hidden">
+        <sc-for list="{{ places }}" as="p" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 14px;border-bottom:2px solid #e7e9f0;font:600 13px 'Baloo 2'">
+            <span style="width:9px;height:9px;border-radius:50%;background:{{ p.dotc }};border:1.5px solid #1a1a1a;flex:none"></span>
+            {{ p.place }}
+            <span style="margin-left:auto;font:800 15px 'Baloo 2';color:#8a3f06">{{ p.unk }}</span>
+            <span style="font:500 10px 'Baloo 2';color:#6b6f7c">unknown</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="6">
+        <div style="margin:18px 16px 0;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;padding:26px 20px;transform:rotate({{ s.rot }})">
+          <div style="font:800 46px/1 'Baloo 2'">{{ s.n }}</div>
+          <div style="font:500 14px/1.45 'Baloo 2';margin-top:8px">{{ s.c }}</div>
+          <a href="#" style="font:600 11px 'Baloo 2'">{{ s.s }}</a>
+        </div>
+      </sc-for>
+
+      <div style="margin:22px 16px 0">
+        <h3 style="font:800 20px 'Baloo 2';margin:0 0 10px">The numbers, side by side</h3>
+        <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;overflow:hidden">
+          <div style="overflow-x:auto">
+            <table style="border-collapse:collapse;font-family:'Baloo 2';min-width:640px">
+              <thead><tr style="background:#e2e7ff">
+                <th style="text-align:left;padding:10px 12px;font:700 12px 'Baloo 2';border-bottom:2.5px solid #1a1a1a;position:sticky;left:0;background:#e2e7ff"></th>
+                <sc-for list="{{ agencies }}" as="a" hint-placeholder-count="5"><th style="text-align:left;padding:10px 12px;font:700 12px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">{{ a }}</th></sc-for>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{ numberRows }}" as="r" hint-placeholder-count="3">
+                  <tr>
+                    <td style="padding:10px 12px;font:800 13px 'Baloo 2';border-bottom:2px solid #e7e9f0;position:sticky;left:0;background:#fff;white-space:nowrap">{{ r.label }}</td>
+                    <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5">
+                      <td style="padding:10px 12px;border-bottom:2px solid #e7e9f0;vertical-align:top"><div style="font:800 17px/1 'Baloo 2'">{{ c.v }}</div><div style="font:500 9.5px 'Baloo 2';color:#6b6f7c;margin-top:2px">{{ c.note }} {{ c.t }}</div></td>
+                    </sc-for>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="font:500 12px/1.5 'Baloo 2';color:#3f434e;margin-top:8px">Each agency counts something different. <a href="#">Why they differ</a></div>
+      </div>
+
+      <div style="margin:22px 16px 0">
+        <h3 style="font:800 20px 'Baloo 2';margin:0">Places</h3>
+        <input style="width:100%;box-sizing:border-box;margin-top:10px;padding:12px 14px 10px;font:500 14px 'Baloo 2';border:2.5px solid #1a1a1a;border-radius:2px;background:#fff;outline:none" placeholder="Search a place — any language">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+          <sc-for list="{{ places }}" as="p" hint-placeholder-count="6">
+            <a href="#" style="display:block;text-decoration:none;color:#1a1a1a;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:12px 14px" style-hover="box-shadow:3px 3px 0 #1a1a1a">
+              <div style="display:flex;align-items:baseline;gap:8px">
+                <span style="font:800 15px 'Baloo 2'">{{ p.place }}</span>
+                <span style="margin-left:auto;display:inline-block;background:#ffe294;border:2px solid #1a1a1a;border-radius:999px;padding:2px 9px 0;font:800 16px 'Baloo 2';color:#8a3f06">{{ p.unk }}</span>
+              </div>
+              <div style="font:500 12.5px 'Baloo 2';margin-top:5px">{{ p.rep }} reported · <span style="color:#0f7a42;font-weight:700">{{ p.conf }} confirmed</span> · last {{ p.last }}</div>
+              <div style="font:500 11px 'Baloo 2';color:#6b6f7c;margin-top:2px">phones: {{ p.phones }} · {{ p.access }} · {{ p.note }}</div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin:24px 16px 0">
+        <h3 style="font:800 20px 'Baloo 2';margin:0">Add what you know</h3>
+        <p style="font:500 13.5px/1.5 'Baloo 2';margin:6px 0 0">Do you know where someone was, or what you saw? Five minutes, no login.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
+          <sc-for list="{{ ctas }}" as="c" hint-placeholder-count="4">
+            <a href="#" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#1a1a1a;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;padding:15px 16px;min-height:44px">
+              <span style="font:800 15px/1.3 'Baloo 2'">{{ c.t }}</span>
+              <span style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:{{ c.bg }};border:2px solid #1a1a1a;display:inline-grid;place-items:center;font:800 14px 'Baloo 2';color:{{ c.fg }};flex:none">→</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin:24px 16px 0">
+        <h3 style="font:800 20px 'Baloo 2';margin:0 0 10px">River &amp; weather</h3>
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px">
+          <sc-for list="{{ gauges }}" as="g" hint-placeholder-count="7">
+            <div style="flex:none;width:118px;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:10px">
+              <div style="display:flex;align-items:center;gap:5px;font:700 11px 'Baloo 2'"><span style="width:8px;height:8px;border-radius:50%;background:{{ g.dot }};border:1.5px solid #1a1a1a"></span>{{ g.n }}</div>
+              <div style="font:800 17px/1 'Baloo 2';margin-top:6px;color:{{ g.vcol }}">{{ g.v }}</div>
+              <div style="font:500 9px/1.35 'Baloo 2';color:#6b6f7c;margin-top:3px">{{ g.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font:500 11.5px 'Baloo 2';color:#6b6f7c;margin-top:8px">Flying windows: 31 Aug – 1 Sep heavy rain, poorest conditions. DHM forecast 29 Aug 15:00.</div>
+      </div>
+
+      <div style="margin:24px 16px 0">
+        <h3 style="font:800 20px 'Baloo 2';margin:0 0 10px">Latest</h3>
+        <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;overflow:hidden">
+          <sc-for list="{{ headlines }}" as="h" hint-placeholder-count="8">
+            <div style="padding:9px 14px;border-bottom:2px solid #e7e9f0">
+              <div style="font:600 13px/1.35 'Baloo 2'">{{ h.t }}</div>
+              <div style="font:500 10.5px 'Baloo 2';color:#6b6f7c;margin-top:2px">{{ h.src }} · {{ h.time }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin:20px 16px;display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ shares }}" as="s" hint-placeholder-count="5">
+          <a href="#" style="display:inline-flex;align-items:center;min-height:44px;padding:0 16px;background:#fff;border:2.5px solid #1a1a1a;border-radius:999px;font:700 13px 'Baloo 2';color:#1a1a1a;text-decoration:none;box-shadow:2px 2px 0 #1a1a1a">{{ s }}</a>
+        </sc-for>
+      </div>
+      <div style="padding:12px 16px;background:#1a1a1a;color:#d8d2c4;font:500 11.5px/1.7 'Baloo 2'">
+        Last updated 29 Aug 18:52 NPT · <a href="#" style="color:#9db2ff">Sources</a> · <a href="#" style="color:#9db2ff">About</a><br>Not a substitute for official reporting.
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;corridorMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;3D&quot;,&quot;options&quot;:[&quot;3D&quot;,&quot;Static fallback&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;States&quot;},&quot;staleBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const UNK = '#ffae42', OK = '#148a4e', DEAD = '#bdbdbd', LIVE = '#148a4e';
+    return {
+      corridor3d: (this.props.corridorMode ?? '3D') === '3D',
+      corridorStatic: (this.props.corridorMode ?? '3D') !== '3D',
+      stale: this.props.staleBanner ?? false,
+      agencies: ['NDRRMA', 'Nepal Police', 'MoFA', 'Dept of Tourism', 'OPMCM portal'],
+      numberRows: [
+        { label: 'Dead', cells: [
+          { v: '675', t: 'as of 29 Aug 18:30', note: '' }, { v: '626', t: 'as of 29 Aug 17:00', note: '' },
+          { v: '626', t: 'as of 29 Aug 12:00', note: '' }, { v: '—', t: '', note: '' }, { v: '—', t: '', note: '' }] },
+        { label: 'Missing / out of contact', cells: [
+          { v: '2,498', t: 'as of 29 Aug 18:30', note: '' }, { v: '977', t: 'as of 29 Aug 17:00', note: '' },
+          { v: '511', t: 'as of 29 Aug 12:00', note: 'foreigners ·' }, { v: '753', t: 'as of 29 Aug 09:00', note: 'tourists ·' },
+          { v: '10,792', t: 'as of 29 Aug 18:45', note: 'open reports ·' }] },
+        { label: 'Rescued', cells: [
+          { v: '4,451', t: 'as of 29 Aug 18:30', note: '' }, { v: '2,301', t: 'as of 29 Aug 17:00', note: '' },
+          { v: '187', t: 'as of 29 Aug 12:00', note: 'foreigners ·' }, { v: '261', t: 'as of 29 Aug 09:00', note: 'tourists ·' },
+          { v: '1,716', t: 'as of 29 Aug 18:45', note: '' }] }
+      ],
+      stats: [
+        { n: '7 minutes', c: 'From the glacier collapse to the border town being destroyed.', s: 'NDRRMA event timeline · 27 Aug', rot: '-0.6deg' },
+        { n: '~193 km/h', c: 'Average speed of the wave over the first 22 km.', s: 'ICIMOD preliminary estimate · 28 Aug', rot: '0.5deg' },
+        { n: '9 m in 30 min', c: 'River rise at Galchhi, 60 km downstream.', s: 'DHM gauge record · 26 Aug', rot: '-0.4deg' },
+        { n: '240 km', c: 'How far downstream bodies have been recovered.', s: 'Nepal Police · 29 Aug', rot: '0.6deg' },
+        { n: '5 numbers', c: 'Five different “missing” figures on the same day, from five agencies.', s: 'See the table below', rot: '-0.5deg' },
+        { n: '412 people', c: 'have added what they know on this site.', s: 'Live · this site', rot: '0.4deg' }
+      ],
+      places: [
+        { place: 'Gyirong Port (China side)', rep: '560', conf: '2', unk: '558', last: '26 Aug 08:30', phones: 'partial', access: '—', note: 'immigration building destroyed', dotc: UNK },
+        { place: 'Betrawati', rep: '450', conf: '380', unk: '70', last: '29 Aug', phones: 'yes (since 29 Aug)', access: 'road partially', note: 'bridge gone; ~3,500 sheltering', dotc: OK },
+        { place: 'Timure', rep: '190', conf: '123', unk: '67', last: '26 Aug 08:45', phones: 'no', access: 'helicopter only', note: 'helipad destroyed', dotc: UNK },
+        { place: 'Upper Trishuli-1 camp (Mailung)', rep: '320', conf: '254', unk: '66', last: '28 Aug', phones: 'no', access: 'helicopter only', note: 'tunnel rescue ongoing', dotc: OK },
+        { place: 'Langtang village', rep: '60', conf: '0', unk: '60', last: '27 Aug', phones: 'yes (since 27 Aug)', access: 'on foot from Syabrubesi', note: 'not in flood path; trekkers safe but cut off', dotc: UNK },
+        { place: 'Syabrubesi', rep: '140', conf: '96', unk: '44', last: '27 Aug', phones: 'yes (since 28 Aug)', access: 'helicopter only', note: 'helipad destroyed', dotc: OK },
+        { place: 'Bidur / Trishuli', rep: '300', conf: '265', unk: '35', last: '29 Aug', phones: 'yes', access: 'road partially', note: 'district hospital operating', dotc: OK },
+        { place: 'Devighat', rep: '120', conf: '110', unk: '10', last: '29 Aug', phones: 'yes', access: 'road', note: 'powerhouse flooded', dotc: OK },
+        { place: 'Galchhi', rep: '85', conf: '80', unk: '5', last: '29 Aug', phones: 'yes', access: 'road', note: 'gauge live', dotc: OK },
+        { place: 'Malekhu', rep: '40', conf: '38', unk: '2', last: '29 Aug', phones: 'yes', access: 'road', note: '', dotc: OK }
+      ],
+      ctas: [
+        { t: 'I’m looking for someone', d: 'Their place, when you last heard, how to reach you.', bg: '#2438e8', fg: '#fff' },
+        { t: 'I was there', d: 'Where you were, who you saw, where they went.', bg: '#ffb800', fg: '#1a1a1a' },
+        { t: 'I’m a rescuer or local official', d: 'Places reached, people evacuated, access status.', bg: '#148a4e', fg: '#fff' },
+        { t: 'I represent a company, agency or group', d: 'Manifests, staff lists, group counts.', bg: '#141419', fg: '#fff' }
+      ],
+      gauges: [
+        { n: 'Rasuwagadhi', v: '—', note: 'dead since 26 Aug 08:40', dot: DEAD, vcol: '#8a8a8a' },
+        { n: 'Syabrubesi', v: '—', note: 'dead since 26 Aug 08:40', dot: DEAD, vcol: '#8a8a8a' },
+        { n: 'Betrawati', v: '—', note: 'dead since 26 Aug 08:41', dot: DEAD, vcol: '#8a8a8a' },
+        { n: 'Dhunche', v: '2.76 m', note: 'alive · 18:45', dot: LIVE, vcol: '#1a1a1a' },
+        { n: 'Galchhi', v: '1.94 m', note: 'alive · first live sensor for any second surge', dot: LIVE, vcol: '#1a1a1a' },
+        { n: 'Kali Khola', v: '1.12 m', note: 'alive · 18:45', dot: LIVE, vcol: '#1a1a1a' },
+        { n: 'Devghat', v: '3.05 m', note: 'alive · 18:45', dot: LIVE, vcol: '#1a1a1a' }
+      ],
+      fly: [
+        { site: 'Dhunche', days: [
+          { day: '30 Aug', q: 'good', h: '38px', col: '#b9f0c9' }, { day: '31 Aug', q: 'poor', h: '14px', col: '#ffe294' }, { day: '1 Sep', q: 'poor', h: '11px', col: '#ffe294' }] },
+        { site: 'Langtang', days: [
+          { day: '30 Aug', q: 'good', h: '30px', col: '#b9f0c9' }, { day: '31 Aug', q: 'poor', h: '11px', col: '#ffe294' }, { day: '1 Sep', q: 'poor', h: '9px', col: '#ffe294' }] }
+      ],
+      headlines: [
+        { t: 'Tunnel rescue at Upper Trishuli-1 enters fourth day; 61 workers still inside', src: 'Kathmandu Post', time: '17:42' },
+        { t: 'रसुवागढीमा थप ३ शव भेटिए, मृतकको संख्या ६७५ पुग्यो', src: 'Kantipur', time: '17:10' },
+        { t: 'China opens Gyirong military helipad to Nepali rescue flights', src: 'Reuters', time: '16:35' },
+        { t: 'Betrawati shelter count passes 3,500 as rain continues', src: 'Setopati', time: '15:58' },
+        { t: 'MoFA: 511 foreigners from 34 countries still unreached', src: 'The Himalayan Times', time: '15:20' },
+        { t: 'बाढी प्रभावित क्षेत्रमा मोबाइल टावर मर्मत सुरु', src: 'Onlinekhabar', time: '14:47' },
+        { t: 'Barrier lake level stable, army engineers say — no controlled breach planned', src: 'Republica', time: '14:05' },
+        { t: 'Langtang trekkers safe but cut off; food drops begin', src: 'AFP', time: '13:30' },
+        { t: 'बाढ़ प्रभावित इलाकों में भारतीय राहत दल पहुंचा', src: 'Dainik Jagran', time: '12:55' },
+        { t: 'Trishuli 3A powerhouse flooded; national grid loses 60 MW', src: 'myRepublica', time: '12:10' },
+        { t: 'Red Cross opens family reunification desk at TIA arrivals', src: 'NRCS', time: '11:20' },
+        { t: 'Helicopter shuttle Dhunche–Syabrubesi resumes in morning window', src: 'Nepal Army', time: '09:15' }
+      ],
+      shares: ['WhatsApp', 'X', 'LinkedIn', 'Telegram', 'Copy link']
+    };
+  }
+}
+</script>
+</body>
+</html>

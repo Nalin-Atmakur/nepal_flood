@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Press+Start+2P&display=swap">
+  <style>
+    body{margin:0;background:#d8dbe2;font-family:"Baloo 2",system-ui,sans-serif;color:#1a1a1a}
+    a{color:#2438e8}a:hover{color:#1826a8}
+    @keyframes ledpulse{0%{box-shadow:0 0 0 0 rgba(229,72,77,.5)}70%{box-shadow:0 0 0 8px rgba(229,72,77,0)}100%{box-shadow:0 0 0 0 rgba(229,72,77,0)}}
+  </style>
+</helmet>
+<div style="padding:44px;display:flex;flex-direction:column;gap:12px;min-width:max-content">
+  <div style="font:800 22px 'Baloo 2'">Component sheet — “Arcade ledger” system</div>
+  <div style="width:1280px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:4px;padding:28px;box-sizing:border-box;display:flex;flex-direction:column;gap:28px">
+
+    <!-- COLOR -->
+    <div>
+      <div style="font:800 18px 'Baloo 2';margin-bottom:12px">01 · Colour tokens</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">
+        <sc-for list="{{ colors }}" as="c" hint-placeholder-count="12">
+          <div style="background:#fff;border:2px solid #1a1a1a;border-radius:2px;overflow:hidden">
+            <div style="height:52px;background:{{ c.hex }};border-bottom:2px solid #1a1a1a"></div>
+            <div style="padding:8px 10px">
+              <div style="font:800 12.5px 'Baloo 2'">{{ c.name }}</div>
+              <div style="font:600 11px 'Baloo 2';color:#6b6f7c">{{ c.hex }}</div>
+              <div style="font:500 10.5px/1.4 'Baloo 2';color:#6b6f7c;margin-top:2px">{{ c.use }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font:500 12px 'Baloo 2';color:#6b6f7c;margin-top:8px">Colour is reserved for meaning: amber = unknown / signal, green = confirmed reached, grey = dead gauge, red = live indicator only. Everything else is ink on ground.</div>
+    </div>
+
+    <!-- TYPE -->
+    <div>
+      <div style="font:800 18px 'Baloo 2';margin-bottom:12px">02 · Type — Baloo 2 (Latin + Devanagari in one family)</div>
+      <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:18px 22px">
+        <sc-for list="{{ type }}" as="t" hint-placeholder-count="5">
+          <div style="display:flex;align-items:baseline;gap:18px;padding:10px 0;border-bottom:2px solid #e7e9f0">
+            <span style="width:170px;flex:none;font:600 11.5px 'Baloo 2';color:#6b6f7c">{{ t.role }}</span>
+            <span style="font-family:'Baloo 2';font-weight:{{ t.w }};font-size:{{ t.px }};line-height:1.2">{{ t.en }}</span>
+            <span style="font-family:'Baloo 2';font-weight:{{ t.w }};font-size:{{ t.px }};line-height:1.6;color:#4a4e59">{{ t.dv }}</span>
+          </div>
+        </sc-for>
+        <div style="display:flex;gap:18px;align-items:baseline;padding:12px 0 2px">
+          <span style="width:170px;flex:none;font:600 11.5px 'Baloo 2';color:#6b6f7c">Arcade accent — restricted</span>
+          <span style="font:400 10px/1.8 'Press Start 2P'">PRESS START 2P — LIVE CHIP · SCOREBOARD DIGITS · TINY LABELS ONLY</span>
+        </div>
+        <div style="font:500 12px/1.6 'Baloo 2';color:#6b6f7c;margin-top:10px">Devanagari runs 10–15% longer and needs line-height ≥ 1.6 — all containers size to content, never to the English string. Numbers stay Latin in all three languages. Never set Devanagari in Press Start 2P.</div>
+      </div>
+    </div>
+
+    <!-- SHAPE + SPACING -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:18px 22px">
+        <div style="font:800 18px 'Baloo 2'">03 · Shape &amp; shadow</div>
+        <div style="display:flex;gap:16px;margin-top:14px;align-items:flex-start">
+          <div style="width:120px;height:76px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;display:grid;place-items:center;font:700 11px 'Baloo 2'">rect · r2 · s4</div>
+          <div style="width:120px;height:76px;background:#f2f3f6;border:2px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;display:grid;place-items:center;font:700 11px 'Baloo 2'">card · r2 · s3</div>
+          <span style="display:inline-flex;align-items:center;min-height:38px;padding:2px 18px 0;border:2px solid #1a1a1a;border-radius:999px;background:#f2f3f6;font:700 12px 'Baloo 2'">pill</span>
+          <span style="width:44px;height:44px;border-radius:50%;background:#2438e8;border:2.5px solid #1a1a1a;display:inline-grid;place-items:center;font:800 14px 'Baloo 2';color:#fff">◐</span>
+        </div>
+        <div style="font:500 12px/1.7 'Baloo 2';color:#6b6f7c;margin-top:12px">Rectangles are sharp (2px radius; outer frames 4px). Curves are the contrast: pills, circle badges, quarter-circle overlays. Shadows are always hard offsets in ink — 4·4 / 3·3 / 2·2 — never blurred. Press: translate(2px,2px) + shadow shrinks. Stat cards tilt ±0.6deg.</div>
+      </div>
+      <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:18px 22px">
+        <div style="font:800 18px 'Baloo 2'">04 · Spacing</div>
+        <div style="display:flex;gap:14px;align-items:flex-end;margin-top:14px">
+          <sc-for list="{{ space }}" as="s" hint-placeholder-count="6">
+            <div style="text-align:left">
+              <div style="width:{{ s.px }};height:{{ s.px }};background:#ffb800;border:2px solid #1a1a1a"></div>
+              <div style="font:700 11px 'Baloo 2';margin-top:4px">{{ s.px }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font:500 12px/1.7 'Baloo 2';color:#6b6f7c;margin-top:12px">Scale: 4 · 8 · 12 · 16 · 22 · 28. Section gap 28, card padding 14–22, chip/badge padding 12–16 horizontal. Tap targets ≥ 44px on mobile.</div>
+      </div>
+    </div>
+
+    <!-- COMPONENTS -->
+    <div>
+      <div style="font:800 18px 'Baloo 2';margin-bottom:12px">05 · Core components</div>
+      <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:20px 22px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+          <a href="#" style="display:inline-flex;align-items:center;min-height:48px;padding:2px 24px 0;background:#2438e8;color:#fff;font:800 15px 'Baloo 2';text-decoration:none;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a" style-hover="transform:translate(1px,1px);box-shadow:3px 3px 0 #1a1a1a" style-active="transform:translate(4px,4px);box-shadow:0 0 0 #1a1a1a">Primary — Send</a>
+          <a href="#" style="display:inline-flex;align-items:center;min-height:48px;padding:2px 24px 0;background:#141419;color:#fff;font:800 15px 'Baloo 2';text-decoration:none;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a">Dark</a>
+          <a href="#" style="display:inline-flex;align-items:center;min-height:48px;padding:2px 24px 0;background:#fff;color:#1a1a1a;font:700 15px 'Baloo 2';text-decoration:none;border:2.5px solid #1a1a1a;border-radius:2px">Secondary</a>
+          <a href="#" style="display:inline-flex;align-items:center;min-height:44px;padding:2px 18px 0;background:#fff;color:#1a1a1a;font:700 13px 'Baloo 2';text-decoration:none;border:2.5px solid #1a1a1a;border-radius:999px;box-shadow:2px 2px 0 #1a1a1a">Share pill</a>
+          <span style="display:inline-flex;align-items:center;gap:7px;background:#141419;color:#fff;border-radius:999px;padding:7px 13px 6px;font:400 8px/1 'Press Start 2P'"><span style="width:8px;height:8px;border-radius:50%;background:#e5484d;animation:ledpulse 2s infinite"></span>LIVE</span>
+          <span style="display:inline-flex;border:2.5px solid #1a1a1a;border-radius:999px;overflow:hidden;background:#fff">
+            <span style="padding:7px 15px 5px;font:800 13px/1 'Baloo 2';background:#2438e8;color:#fff">EN</span>
+            <span style="padding:7px 15px 5px;font:600 13px/1 'Baloo 2';border-left:2.5px solid #1a1a1a">नेपाली</span>
+            <span style="padding:7px 15px 5px;font:600 13px/1 'Baloo 2';border-left:2.5px solid #1a1a1a">हिन्दी</span>
+          </span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <span style="display:inline-flex;align-items:center;min-height:36px;padding:2px 14px 0;border:2px solid #1a1a1a;border-radius:999px;font:600 13px 'Baloo 2';background:#fff">chip — tap to add</span>
+          <span style="display:inline-flex;align-items:center;min-height:36px;padding:2px 14px 0;border:2px solid #1a1a1a;border-radius:999px;font:600 13px 'Baloo 2';background:#ffe294">chip — inserted</span>
+          <span style="display:inline-block;background:#ffe294;border:2px solid #1a1a1a;border-radius:999px;padding:2px 12px 0;font:800 15px 'Baloo 2';color:#8a3f06">67</span>
+          <span style="font:500 11px 'Baloo 2';color:#6b6f7c">← unknown badge</span>
+          <span style="display:inline-flex;align-items:center;min-height:30px;padding:2px 12px 0;border:2px solid #1a1a1a;border-radius:999px;font:700 12px 'Baloo 2';background:#148a4e;color:#fff">Received</span>
+          <span style="display:inline-flex;align-items:center;min-height:30px;padding:2px 12px 0;border:2px solid #b8bcc7;border-radius:999px;font:700 12px 'Baloo 2';background:#fff;color:#6b6f7c">Not yet matched</span>
+          <span style="display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2px solid #1a1a1a;background:#148a4e;color:#fff;font:800 13px 'Baloo 2'">A</span>
+          <span style="display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2px solid #1a1a1a;background:#ffe294;color:#8a3f06;font:800 13px 'Baloo 2'">C</span>
+          <span style="font:500 11px 'Baloo 2';color:#6b6f7c">← reliability grades</span>
+        </div>
+        <div style="display:flex;gap:14px;align-items:stretch">
+          <div style="width:150px;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:12px">
+            <div style="display:flex;align-items:center;gap:5px;font:700 11px 'Baloo 2'"><span style="width:8px;height:8px;border-radius:50%;background:#148a4e;border:1.5px solid #1a1a1a"></span>Dhunche</div>
+            <div style="font:800 18px/1 'Baloo 2';margin-top:6px">2.76 m</div>
+            <div style="font:500 9.5px 'Baloo 2';color:#6b6f7c;margin-top:3px">alive · 18:45</div>
+          </div>
+          <div style="width:150px;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:12px">
+            <div style="display:flex;align-items:center;gap:5px;font:700 11px 'Baloo 2'"><span style="width:8px;height:8px;border-radius:50%;background:#bdbdbd;border:1.5px solid #1a1a1a"></span>Rasuwagadhi</div>
+            <div style="font:800 18px/1 'Baloo 2';margin-top:6px;color:#8a8a8a">—</div>
+            <div style="font:500 9.5px 'Baloo 2';color:#6b6f7c;margin-top:3px">dead since 26 Aug 08:40</div>
+          </div>
+          <div style="flex:1;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:3px 3px 0 #1a1a1a;padding:16px;transform:rotate(-0.6deg)">
+            <div style="font:800 30px/1 'Baloo 2'">7 minutes</div>
+            <div style="font:500 12px 'Baloo 2';margin-top:4px">From the collapse to the border town. <a href="#" style="font-size:10.5px">NDRRMA timeline</a></div>
+          </div>
+          <div style="flex:1;background:#141419;border:2.5px solid #1a1a1a;border-radius:2px;padding:14px 16px;position:relative;overflow:hidden">
+            <span style="position:absolute;right:-30px;top:-30px;width:96px;height:96px;border-radius:50%;background:rgba(255,184,0,.10);border:2px solid rgba(255,184,0,.22)"></span>
+            <div style="font:400 11px/1 'Press Start 2P';color:#ffb800">1,284</div>
+            <div style="font:600 11px 'Baloo 2';color:#aeb6d6;margin-top:6px">scoreboard digit + label</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D + STATES -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:18px 22px">
+        <div style="font:800 18px 'Baloo 2'">06 · 3D corridor panel</div>
+        <div style="margin-top:12px;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;overflow:hidden">
+          <x-import component-from-global-scope="corridor-3d" from="./corridor-3d.js" height="240" hint-size="100%,240px" style="width:100%;height:240px"></x-import>
+        </div>
+        <div style="margin-top:10px;border:2px dashed #b8bcc7;border-radius:2px;height:70px;display:grid;place-items:center;font:600 12px 'Baloo 2';color:#6b6f7c">Static fallback — pre-rendered PNG of the same view, same legend, &lt; 60 KB</div>
+        <div style="font:500 12px/1.6 'Baloo 2';color:#6b6f7c;margin-top:8px">Always inside the chunky frame with hard shadow. Lazy-loaded; fallback swaps in on 2G/3G or WebGL failure. Legend dots are circles; marker colours = status colours.</div>
+      </div>
+      <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;padding:18px 22px">
+        <div style="font:800 18px 'Baloo 2'">07 · Empty &amp; error states</div>
+        <div style="margin-top:12px;background:#ffe294;border:2.5px solid #1a1a1a;border-radius:2px;padding:11px 16px;font:700 13px 'Baloo 2';color:#8a3f06">Last update 47 min ago — showing last known data.</div>
+        <div style="margin-top:10px;border:2px dashed #b8bcc7;border-radius:2px;padding:14px 16px;font:600 12.5px 'Baloo 2';color:#6b6f7c">No data yet from this source. Last attempt 18:45; retrying every 15 minutes.</div>
+        <div style="margin-top:10px;border:2px dashed #b8bcc7;border-radius:2px;padding:14px 16px;font:600 12.5px 'Baloo 2';color:#6b6f7c">No reports for this place yet. <a href="#">Add the first one — it takes five minutes.</a></div>
+        <div style="font:500 12px/1.6 'Baloo 2';color:#6b6f7c;margin-top:10px">Stale = amber banner (never red). Empty = dashed border, always with the one action that fills it. Errors state the time and the retry rule — no spinners without words.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      colors: [
+        { name: 'Ink', hex: '#1a1a1a', use: 'text, borders, shadows' },
+        { name: 'Ground', hex: '#f2f3f6', use: 'page background' },
+        { name: 'Card', hex: '#ffffff', use: 'all surfaces' },
+        { name: 'Ultramarine', hex: '#2438e8', use: 'CTAs, badges, active toggle' },
+        { name: 'Signal amber', hex: '#ffb800', use: 'scoreboard digits, accents' },
+        { name: 'Amber fill', hex: '#ffe294', use: 'unknown badges, stale banner' },
+        { name: 'Amber text', hex: '#8a3f06', use: 'text on amber fill (AA)' },
+        { name: 'Confirmed', hex: '#148a4e', use: 'reached counts, alive gauges' },
+        { name: 'Scoreboard', hex: '#141419', use: 'live strip, dark cards' },
+        { name: 'Live red', hex: '#e5484d', use: 'LED dot + mic only' },
+        { name: 'Dead / neutral', hex: '#8a8a8a', use: 'dead gauges, disabled' },
+        { name: 'Row rule', hex: '#e7e9f0', use: 'table + list dividers' }
+      ],
+      type: [
+        { role: 'Display · 800 · 44–92px', w: '800', px: '40px', en: '2,498', dv: 'संख्या सधैं ल्याटिनमा — 2,498' },
+        { role: 'Section head · 800 · 28px', w: '800', px: '26px', en: 'The corridor', dv: 'करिडोर' },
+        { role: 'Card title · 800 · 17px', w: '800', px: '17px', en: 'I’m looking for someone', dv: 'म कसैलाई खोज्दै छु' },
+        { role: 'Body · 500 · 14px', w: '500', px: '14px', en: 'Tell us what you know. Any language.', dv: 'तपाईंलाई थाहा भएको कुरा भन्नुहोस्। जुनसुकै भाषामा।' },
+        { role: 'Caption · 500 · 11–12px', w: '500', px: '11.5px', en: 'NDRRMA · as of 29 Aug 18:30', dv: 'स्रोत सहित · २९ अगस्ट' }
+      ],
+      space: [
+        { px: '4px' }, { px: '8px' }, { px: '12px' }, { px: '16px' }, { px: '22px' }, { px: '28px' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

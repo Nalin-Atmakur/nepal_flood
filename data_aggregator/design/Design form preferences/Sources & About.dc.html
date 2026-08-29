@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Press+Start+2P&display=swap">
+  <style>
+    body{margin:0;background:#d8dbe2;font-family:"Baloo 2",system-ui,sans-serif;color:#1a1a1a}
+    a{color:#2438e8}a:hover{color:#1826a8}
+  </style>
+</helmet>
+<div style="padding:44px;display:flex;flex-direction:column;gap:44px;min-width:max-content">
+
+  <!-- SOURCES -->
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:700 12px/1 'Baloo 2';letter-spacing:.1em;text-transform:uppercase;color:#6b6f7c">Sources — Desktop · 1280 · /sources</div>
+    <div style="width:1280px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:4px;overflow:hidden">
+      <div style="padding:24px 28px 32px">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <h2 style="font:800 28px/1.1 'Baloo 2';margin:0">Every source we pull</h2>
+          <span style="font:600 13px 'Baloo 2';color:#6b6f7c">fetched every 15 minutes · reliability grades explained below</span>
+        </div>
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+          <div style="margin-top:20px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="width:28px;height:28px;border-radius:50%;background:#2438e8;border:2px solid #1a1a1a;display:inline-grid;place-items:center;font:400 7px 'Press Start 2P';color:#fff">{{ g.n }}</span>
+              <span style="font:800 17px 'Baloo 2'">{{ g.name }}</span>
+            </div>
+            <div style="margin-top:10px;background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;overflow:hidden">
+              <table style="width:100%;border-collapse:collapse;font-family:'Baloo 2';font-size:13.5px">
+                <thead><tr style="background:#e2e7ff">
+                  <th style="text-align:left;padding:9px 16px;font:700 12px 'Baloo 2';border-bottom:2.5px solid #1a1a1a;width:260px">Source</th>
+                  <th style="text-align:left;padding:9px 16px;font:700 12px 'Baloo 2';border-bottom:2.5px solid #1a1a1a">What it holds</th>
+                  <th style="text-align:left;padding:9px 16px;font:700 12px 'Baloo 2';border-bottom:2.5px solid #1a1a1a;width:110px">Reliability</th>
+                  <th style="text-align:left;padding:9px 16px;font:700 12px 'Baloo 2';border-bottom:2.5px solid #1a1a1a;width:130px">Last fetched</th>
+                  <th style="text-align:left;padding:9px 16px;font:700 12px 'Baloo 2';border-bottom:2.5px solid #1a1a1a;width:80px">Link</th>
+                </tr></thead>
+                <tbody>
+                  <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+                    <tr>
+                      <td style="padding:9px 16px;font:700 13.5px 'Baloo 2';border-bottom:2px solid #e7e9f0">{{ r.s }}</td>
+                      <td style="padding:9px 16px;border-bottom:2px solid #e7e9f0;color:#4a4e59">{{ r.holds }}</td>
+                      <td style="padding:9px 16px;border-bottom:2px solid #e7e9f0"><span style="display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2px solid #1a1a1a;background:{{ r.gc }};color:{{ r.gt }};font:800 13px 'Baloo 2'">{{ r.g }}</span></td>
+                      <td style="padding:9px 16px;border-bottom:2px solid #e7e9f0;color:{{ r.fc }};font-weight:600">{{ r.f }}</td>
+                      <td style="padding:9px 16px;border-bottom:2px solid #e7e9f0"><a href="#">visit ↗</a></td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:flex;gap:14px;margin-top:20px;align-items:center;flex-wrap:wrap">
+          <span style="font:700 13px 'Baloo 2'">Grades:</span>
+          <sc-for list="{{ grades }}" as="gr" hint-placeholder-count="5">
+            <span style="display:inline-flex;align-items:center;gap:7px;font:500 12.5px 'Baloo 2'"><span style="display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:2px solid #1a1a1a;background:{{ gr.bg }};color:{{ gr.fg }};font:800 12px 'Baloo 2'">{{ gr.g }}</span>{{ gr.d }}</span>
+          </sc-for>
+        </div>
+        <div style="margin-top:16px;background:#fff;border:2px dashed #b8bcc7;border-radius:2px;padding:14px 18px;font:600 13px 'Baloo 2';color:#6b6f7c">Empty state — “No data yet from this source. Last attempt 18:45; retrying every 15 minutes.”</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:700 12px/1 'Baloo 2';letter-spacing:.1em;text-transform:uppercase;color:#6b6f7c">About — Desktop · 1280 · /about</div>
+    <div style="width:1280px;background:#f2f3f6;border:2.5px solid #1a1a1a;border-radius:4px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:28px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:20px 22px">
+            <div style="font:800 22px 'Baloo 2'">What this is</div>
+            <div style="font:500 14px/1.7 'Baloo 2';color:#4a4e59;margin-top:8px">A volunteer-run aggregation site for the 26 August 2026 Bhote Koshi / Trishuli flood. We pull every public data source into one place every 15 minutes, show official numbers side by side with their sources, and let anyone add what they know in under five minutes. Per place, we show how many people are believed there, how many are confirmed reached, and how many are unknown.</div>
+          </div>
+          <div style="background:#ffe294;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:20px 22px">
+            <div style="font:800 22px 'Baloo 2';color:#8a3f06">What this is not</div>
+            <div style="font:500 14px/1.7 'Baloo 2';color:#5c3a10;margin-top:8px">Not an official source, and it must never be treated as one. Not a missing-persons registry — the Nepal Police and Red Cross run those, and we point you to them at the top of every page. We publish observed status only: no hazard predictions, no danger ratings for villages.</div>
+          </div>
+          <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:20px 22px">
+            <div style="font:800 22px 'Baloo 2'">Why the numbers differ</div>
+            <div style="font:500 14px/1.7 'Baloo 2';color:#4a4e59;margin-top:8px">Each agency counts something different: NDRRMA counts everyone reported out of contact; the Police count confirmed missing-person reports; MoFA counts foreigners reported to embassies; the Tourism Department counts tourists on agency manifests; the PM’s portal counts every report submitted, including duplicates. We show them all rather than choosing one.</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:20px 22px">
+            <div style="font:800 22px 'Baloo 2'">Data handling</div>
+            <sc-for list="{{ handling }}" as="h" hint-placeholder-count="4">
+              <div style="display:flex;gap:12px;margin-top:12px">
+                <span style="width:26px;height:26px;border-radius:50%;background:#148a4e;border:2px solid #1a1a1a;display:inline-grid;place-items:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg></span>
+                <div style="font:500 13.5px/1.6 'Baloo 2';color:#4a4e59">{{ h }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:#fff;border:2.5px solid #1a1a1a;border-radius:2px;box-shadow:4px 4px 0 #1a1a1a;padding:20px 22px">
+            <div style="font:800 22px 'Baloo 2'">Who runs it</div>
+            <div style="font:500 14px/1.7 'Baloo 2';color:#4a4e59;margin-top:8px">A volunteer team of Nepali and international engineers, data people and translators, working with Nepali partners. No agency affiliation, no funding to disclose, no ads, no tracking beyond an anonymous visit counter.</div>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <a href="#" style="display:inline-flex;align-items:center;min-height:42px;padding:0 18px;background:#141419;color:#fff;font:700 13px 'Baloo 2';text-decoration:none;border:2px solid #1a1a1a;border-radius:2px">contact@nepalfloodtracker.com</a>
+              <a href="#" style="display:inline-flex;align-items:center;min-height:42px;padding:0 18px;background:#fff;font:700 13px 'Baloo 2';color:#1a1a1a;text-decoration:none;border:2px solid #1a1a1a;border-radius:999px">Press kit</a>
+            </div>
+          </div>
+          <div style="background:#141419;border:2.5px solid #1a1a1a;border-radius:2px;padding:18px 20px;position:relative;overflow:hidden">
+            <span style="position:absolute;right:-40px;top:-40px;width:130px;height:130px;border-radius:50%;background:rgba(255,184,0,.10);border:2px solid rgba(255,184,0,.22)"></span>
+            <div style="font:400 7px/1 'Press Start 2P';color:#ffb800">FOR AGENCIES &amp; NGOS</div>
+            <div style="font:500 13px/1.7 'Baloo 2';color:#c9ccd6;margin-top:8px">Want a data feed, a correction channel, or to endorse? Everything we hold is exportable as CSV/JSON with source attribution per cell. Write to us — we answer within hours.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const A = { g: 'A', gc: '#148a4e', gt: '#fff' }, B = { g: 'B', gc: '#b9f0c9', gt: '#1a1a1a' },
+          C = { g: 'C', gc: '#ffe294', gt: '#8a3f06' }, D = { g: 'D', gc: '#ffd0b0', gt: '#8a3f06' }, E = { g: 'E', gc: '#e7e9f0', gt: '#6b6f7c' };
+    const ok = '#148a4e', warn = '#8a3f06';
+    return {
+      groups: [
+        { n: 'G', name: 'Government', rows: [
+          { s: 'NDRRMA situation reports', holds: 'dead / missing / rescued, district level', ...A, f: '4 min ago', fc: ok },
+          { s: 'Nepal Police missing-person desk', holds: 'confirmed missing-person reports', ...A, f: '9 min ago', fc: ok },
+          { s: 'MoFA consular list', holds: 'foreigners reported by embassies, 34 countries', ...B, f: '12 min ago', fc: ok },
+          { s: 'Dept of Tourism manifests', holds: 'tourists on agency manifests (TAAN/NMA)', ...C, f: '31 min ago', fc: warn },
+          { s: 'rescue.opmcm.gov.np', holds: 'all submitted reports, incl. duplicates', ...D, f: '4 min ago', fc: ok }] },
+        { n: 'U', name: 'UN / humanitarian', rows: [
+          { s: 'UN OCHA flash updates', holds: 'shelter counts, access constraints', ...B, f: '1 h 20 min ago', fc: warn },
+          { s: 'Nepal Red Cross', holds: 'restoring-family-links caseload (counts only)', ...A, f: '22 min ago', fc: ok }] },
+        { n: 'S', name: 'Geospatial', rows: [
+          { s: 'DHM river gauges', holds: 'live river levels, 7 stations on the corridor', ...A, f: '2 min ago', fc: ok },
+          { s: 'ICIMOD rapid mapping', holds: 'flood extent, barrier-lake levels (satellite)', ...B, f: '3 h ago', fc: warn },
+          { s: 'Copernicus EMS', holds: 'damage grading per settlement', ...B, f: '6 h ago', fc: warn }] },
+        { n: 'N', name: 'News', rows: [
+          { s: 'Kantipur / Kathmandu Post / Setopati / Onlinekhabar', holds: 'headlines, NE + EN', ...C, f: '4 min ago', fc: ok },
+          { s: 'Reuters / AFP wires', holds: 'international coverage', ...B, f: '15 min ago', fc: ok }] },
+        { n: 'C', name: 'Community', rows: [
+          { s: 'This site — “Add what you know”', holds: '412 contributions; extracted counts per place', ...C, f: 'live', fc: ok },
+          { s: 'Verified operator rosters', holds: 'trekking-agency and hydropower staff lists', ...C, f: '48 min ago', fc: warn }] }
+      ],
+      grades: [
+        { g: 'A', bg: '#148a4e', fg: '#fff', d: 'official, machine-readable' },
+        { g: 'B', bg: '#b9f0c9', fg: '#1a1a1a', d: 'official or wire, hand-checked' },
+        { g: 'C', bg: '#ffe294', fg: '#8a3f06', d: 'credible, unverified' },
+        { g: 'D', bg: '#ffd0b0', fg: '#8a3f06', d: 'raw / duplicated' },
+        { g: 'E', bg: '#e7e9f0', fg: '#6b6f7c', d: 'anecdotal only' }
+      ],
+      handling: [
+        'Names, contacts and photos are stripped and encrypted on arrival; the public site shows counts, places, statuses and times only.',
+        'Full reports go to Nepal Police and MoFA through an agreed channel, with your permission flag attached (on by default).',
+        'Every public number carries its source and an “as of” time. We never blend sources into a single invented figure.',
+        'Everything is deletable: from “My folder” you can withdraw a contribution and it leaves the public counts within 15 minutes.'
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
