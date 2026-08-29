@@ -1,0 +1,30 @@
+{
+  "name": "nepal-flood-topographic-change-map",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Coverage-first imagery acquisition and DSM-readiness pipeline for the 2026 Nepal flood",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "cli": "tsx src/cli.ts",
+    "preflight": "tsx src/cli.ts preflight",
+    "browser:prepare": "tsx src/cli.ts browser-prepare",
+    "browser:smoke": "tsx src/cli.ts browser-smoke",
+    "remote:check": "tsx src/cli.ts remote-check"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "playwright-core": "^1.55.0",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -14,7 +14,7 @@
 
 ```text
 Google Chrome
-Node.js 24+
+Node.js 22+
 Peekaboo (read-only diagnostics)
 Playwright
 GDAL/PROJ
@@ -49,6 +49,8 @@ The automation launcher must assert:
 - user data directory is the project clone, not the original Chrome directory;
 - window is within secondary display bounds;
 - original system mouse position is unchanged after a synthetic form test.
+
+Use CoreGraphics display bounds for placement. On the current display arrangement, the built-in display origin is `(2560, 508)`; some UI inventory tools normalize this to `(2560, 0)` and must not be used for the placement assertion.
 
 ## Sandbox checks
 

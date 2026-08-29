@@ -47,8 +47,8 @@ All provider and Gmail browser automation runs visibly on the main Mac's seconda
 ```text
 Display index: 1
 Logical resolution: 1440 x 932
-Desktop origin: x=2560, y=0
-Chrome bounds: x=2590, y=30, width=1380, height=860
+CoreGraphics desktop origin: x=2560, y=508
+Chrome bounds: x=2590, y=538, width=1380, height=860
 ```
 
 - Clone the existing Breeze Chrome `Profile 12` into a persistent custom automation directory.

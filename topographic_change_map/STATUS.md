@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 19:48 BST
+Last updated: 2026-08-29 19:55 BST
 
 ## Goal
 
@@ -8,13 +8,22 @@ Active: complete the Nepal flood topographic change map end to end. Do not mark 
 
 ## Current milestone
 
-**M0 — Durable foundation**
+**M2 — Public imagery catalogue**
+
+Completed:
+
+- M0 durable foundation committed and pushed as `78d0013`.
+- M1 TypeScript harness implemented and verified.
+- Breeze `Profile 12` cloned into the ignored automation directory without modifying the source.
+- Headed Google Chrome smoke test passed on display 1 at CDP bounds `(2590, 542, 1380 x 860)`.
+- The browser smoke test confirmed the system mouse position was unchanged.
+- Six unit tests pass and TypeScript compilation is clean.
 
 In progress:
 
-- Persist canonical project plan and recovery documents.
-- Add Git exclusions for secrets, browser profiles, caches, and bulk products.
-- Prepare the first path-scoped commit and direct push to `origin/main`.
+- Normalize the existing Vantor, Planet, Sentinel-2, and Google Earth inventory.
+- Implement source adapters for public STAC/JSON catalogues.
+- Build affected-area and pair records with transparent provenance.
 
 ## Verified environment
 
@@ -23,12 +32,12 @@ In progress:
 | Repository branch | `main` |
 | Git remote | `origin` configured |
 | Breeze Chrome profile | `Profile 12` found |
-| Secondary built-in display | index 1, origin `(2560, 0)`, logical `1440 x 932` |
+| Secondary built-in display | index 1, CoreGraphics origin `(2560, 508)`, logical `1440 x 932` |
 | Chrome | installed |
 | Peekaboo permissions | Screen Recording and Accessibility granted |
 | Sandbox SSH | `zoral@100.99.74.22` reachable with key authentication |
 | Sandbox free space | 87 GiB at milestone start |
-| SMS helper | not installed yet |
+| SMS helper | not installed yet; not needed for public-source milestone |
 | NASA ASP | not yet verified/installed |
 
 ## Existing research
@@ -37,14 +46,14 @@ The `research/` directory contains the goal, source inventory, acquisition plan,
 
 ## Immediate next actions
 
-1. Commit and push the durable foundation.
-2. Scaffold the TypeScript automation/catalogue application.
-3. Implement configuration validation, secret redaction, persistent state, and account register.
-4. Build and verify the headed Breeze-profile clone launcher on the secondary display.
+1. Commit and push milestone M1.
+2. Implement normalized scene/pair schemas and public catalogue ingestion.
+3. Validate exact candidate footprints against explicit AOIs.
+4. Generate the first reproducible catalogue report.
 
 ## Active blockers
 
-- None for milestone M0.
+- The populated local env file is not yet available; public-source work can continue without it.
 - Gmail may require a one-time reauthentication in the cloned profile.
 - CAPTCHA remains an explicit user handoff.
 - Institutional or paid camera-bearing imagery may remain inaccessible; free alternatives must be exhausted first.
