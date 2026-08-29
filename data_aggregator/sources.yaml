@@ -1,0 +1,635 @@
+# Source registry for data_aggregator — the pollable subset of
+# ../aryaa_research_general/11-data-catalogue-2026-08-29.md
+#
+# Fields
+#   id        stable slug
+#   family    json_api | post_api | rss | html | s3 | gcs | stac | pdf | fdsn | mediawiki
+#   url       endpoint or page (templated where noted)
+#   auth      none | key | account | browser_ua
+#   cadence   poll interval
+#   format    what comes back
+#   holds     one line
+#   pii       true if rows contain names/phones/photos — process in memory, never persist rows
+#   parser    notes for the normaliser
+#   catalogue row id in 11-data-catalogue-2026-08-29.md
+#   verified  2026-08-29 fetch status: C confirmed | R reported | U unconfirmed
+#
+# Everything here was reachable without login on 2026-08-29 unless auth says otherwise.
+
+version: 2026-08-29
+sources:
+
+# ── 1. Person / status registries ─────────────────────────────────────────────
+
+- id: opmcm_stats
+  family: json_api
+  url: https://rescue.opmcm.gov.np/api/stats
+  auth: none
+  cadence: 30m
+  format: json
+  holds: totals — persons lost/found/rescued, last24h, withoutContact, help requests/offers
+  pii: false
+  parser: flat object; keep every counter with fetch timestamp
+  catalogue: A1
+  verified: C
+
+- id: opmcm_person_reports
+  family: json_api
+  url: https://rescue.opmcm.gov.np/api/person-reports?type={lost|found|rescued}&limit=200&page={n}
+  auth: none
+  cadence: 60m
+  format: json (photos inlined as base64 — keep limit<=200)
+  holds: person reports with fullName, locationText, daoOffice, source, status, createdAt
+  pii: true
+  parser: aggregate only — counts by type/status/daoOffice/locationText-normalised; drop fullName/images
+  catalogue: A1
+  verified: C
+
+- id: opmcm_help_requests
+  family: json_api
+  url: https://rescue.opmcm.gov.np/api/help-requests
+  auth: none
+  cadence: 60m
+  format: json
+  holds: geocoded help requests (problemType, affectedCount, urgency, district/municipality/ward, Point)
+  pii: true
+  parser: keep placeName/ward/location/affectedCount/urgency/status; drop reporterName/phone
+  catalogue: A1
+  verified: C
+
+- id: opmcm_government_efforts
+  family: json_api
+  url: https://rescue.opmcm.gov.np/api/government-efforts
+  auth: none
+  cadence: 6h
+  format: json
+  holds: official notices mirrored from nepal.gov.np
+  pii: false
+  parser: title/date/body
+  catalogue: A1
+  verified: C
+
+- id: ndrrma_rescues
+  family: json_api
+  url: https://ndrrma.gov.np/api/v1/rescues/{rescued-persons/?limit=500&offset={n} | status-counts/ | rescued-statistics/ | rescued-locations/ | stationed-locations/}
+  auth: none
+  cadence: 30m
+  format: json (DRF)
+  holds: named rescued register; counts; 21 rescue sites + 11 stationing sites with centroids
+  pii: true   # rescued-persons only; the location endpoints are clean
+  parser: persons → counts by nationality/status/rescued_location/stationed_location; locations → gazetteer seeds
+  catalogue: A2 / B3
+  verified: C
+
+- id: setu_recordlist
+  family: html
+  url: https://setu.ndrrma.gov.np/admin/recordlist.php
+  auth: none
+  cadence: 2h
+  format: html card list
+  holds: NDRRMA family-intake records (missing/found/safe/rescued)
+  pii: true
+  parser: count cards by status; no row storage
+  catalogue: A3
+  verified: C
+
+- id: police_udb
+  family: html
+  url: https://udb.nepalpolice.gov.np/{dead-bodies-lists|missing|found}?province_id=&district_id=&date_from=2026-08-26   # districts via GET /get-district/{province_id}
+  auth: none (self-signed TLS — curl -k)
+  cadence: daily
+  format: html, 20 rows/page
+  holds: unidentified bodies (photo, sex, place found), missing, found
+  pii: true
+  parser: page counts per district + place-found distribution only; never store photos/names
+  catalogue: A4 / A20
+  verified: C
+
+- id: volunteer_bulletin_repo
+  family: s3   # raw.githubusercontent
+  url: https://raw.githubusercontent.com/nirajbhusal/rasuwa-flood-bulletin/main/   # ndrrma-rescue.csv, army-heli-rescue.csv, rasuwa-foreign-rescued.csv, family.json, dhm-rivers.json, ems927-grading.csv
+  auth: none
+  cadence: 60m
+  format: csv/json
+  holds: normalised copies of official lists + family registry; 716-commit history of list changes
+  pii: true
+  parser: row counts and rescued-location distributions; git history = timeline of official list revisions
+  catalogue: A8
+  verified: C
+
+# ── 2. Official bulletins & documents ─────────────────────────────────────────
+
+- id: ndrrma_publications
+  family: json_api
+  url: https://ndrrma.gov.np/api/v1/publication/publications/?ordering=-id&limit=40
+  auth: none
+  cadence: 30m
+  format: json → pdffile URLs under https://ndrrma.gov.np/mediafiles/publications/
+  holds: numbered Situation Reports (Canva PDFs, text-extractable) + morning situation updates (scanned, OCR) + lists (PII)
+  pii: mixed   # sitreps clean; list PDFs (ids 373,377,380,381,383,384) are PII — skip
+  parser: pdftotext -layout on sitreps; tables → bodies by district, missing by category, shelters, health, roads, lake; Nepali digits
+  catalogue: A16 / A17
+  verified: C
+
+- id: ndrrma_newsinfo
+  family: json_api
+  url: https://ndrrma.gov.np/api/v1/pressnotenews/newsinfo/?ordering=-id
+  auth: none
+  cadence: 2h
+  format: json (title + jpg)
+  holds: dated official news cards
+  pii: false
+  catalogue: A18
+  verified: C
+
+- id: ndrrma_bulletins
+  family: json_api
+  url: https://ndrrma.gov.np/api/v1/bulletin/bulletins/?ordering=-id
+  auth: none
+  cadence: daily
+  format: json → pdf
+  holds: Daily Disaster Bulletin (national incident table)
+  pii: false
+  catalogue: A16
+  verified: C
+
+- id: mofa_flashflood
+  family: html
+  url: https://mofa.gov.np/category/flashflood/
+  auth: none
+  cadence: daily
+  format: html (table one day, PNG the next — OCR fallback)
+  holds: bodies + foreigner nationality table (total/found/missing per country)
+  pii: false
+  catalogue: A21
+  verified: C
+
+- id: heoc_sitreps
+  family: html
+  url: https://heoc.mohp.gov.np/news/{sitrep-slug}/detail
+  auth: none
+  cadence: daily
+  format: base64-embedded JPEG — OCR required
+  holds: health-sector sitrep (treated/referred/deaths in care, facility damage)
+  pii: false
+  catalogue: A24
+  verified: C
+
+- id: dao_rasuwa_hub
+  family: html
+  url: https://daorasuwa.moha.gov.np/page/bha-ta-ka-sha-b-dha-bha-tha-ra
+  auth: none
+  cadence: daily
+  format: html + scanned pdf
+  holds: district notices, treatment list (PII)
+  pii: mixed
+  catalogue: A23
+  verified: C
+
+- id: dao_nuwakot_rescued
+  family: pdf
+  url: https://daonuwakot.moha.gov.np/post/ma-ta-bha-tha-ra-gata-sama-ma-utha-tha-ra-gara-eka-va-yaka-ta-hara-ka-va-varanae
+  auth: none
+  cadence: daily
+  format: xlsx + pdf
+  holds: rescued persons (~1,436) + rescued foreigners (~170) with rescue location
+  pii: true
+  parser: row counts + rescue-location distribution only
+  catalogue: A22
+  verified: C
+
+- id: reliefweb_rss
+  family: rss
+  url: https://reliefweb.int/updates/rss.xml?search=rasuwa
+  auth: browser_ua   # API v1 is 410, v2 needs approved appname
+  cadence: 60m
+  format: rss → html/pdf
+  holds: UN RCO flash updates, OCHA/IOM/WFP/IFRC/NRCS sitreps, UNOSAT maps
+  pii: false
+  catalogue: A25
+  verified: C
+
+- id: ifrc_go
+  family: json_api
+  url: https://goadmin.ifrc.org/api/v2/event/8073/
+  auth: none
+  cadence: 6h
+  format: json
+  holds: event, appeal MDRNP022, field reports
+  pii: false
+  catalogue: A28
+  verified: C
+
+- id: gdacs_event
+  family: json_api
+  url: https://www.gdacs.org/gdacsapi/api/events/geteventdata?eventtype=FL&eventid=1104124
+  auth: none
+  cadence: 6h
+  format: json
+  holds: event metadata, Sendai fields, GLIDE FL-2026-000167-NPL (note second GLIDE FF-2026-000162-NPL elsewhere)
+  pii: false
+  catalogue: E7
+  verified: C
+
+- id: china_mwr
+  family: html
+  url: http://www.mwr.gov.cn/xw/slyw/   # bulletins t2026MMDD_*.html
+  auth: none
+  cadence: 6h
+  format: html zh
+  holds: barrier-lake consultations, response levels, new upstream risks
+  pii: false
+  catalogue: A27 / E6
+  verified: C
+
+- id: china_mfa_pressers
+  family: html
+  url: https://www.mfa.gov.cn/eng/xw/fyrbt/lxjzh/
+  auth: none
+  cadence: daily
+  format: html en
+  holds: Tibet-side statements, Chinese nationals missing
+  pii: false
+  catalogue: A27
+  verified: C
+
+- id: us_embassy_alerts
+  family: html
+  url: https://np.usembassy.gov/category/alert/
+  auth: browser_ua   # serves placeholder to non-browser fetchers
+  cadence: daily
+  format: html
+  holds: English road/hazard status, citizen guidance
+  pii: false
+  catalogue: A29
+  verified: C
+
+# ── 3. Place-status signals ───────────────────────────────────────────────────
+
+- id: bipad_river_stations
+  family: json_api
+  url: https://bipadportal.gov.np/api/v1/river-stations/?limit=1000
+  auth: none
+  cadence: 10m
+  format: json (count field is buggy int64-max — page via next)
+  holds: live DHM gauge mirror — level, warning/danger, timestamp, camera image URL
+  pii: false
+  parser: flag stations whose timestamp is stale (>2h) as dead; corridor ids — Rasuwagadhi 4913, BhoteKoshi@Syabrubesi 191, Langtang@Syabrubesi 190, Trishuli@Betrawati 52, Phalakhu 4658, Dhunche 4657, Galchhi 5705, KaliKhola 4781, Devghat 265
+  catalogue: B2
+  verified: C
+
+- id: bipad_river_series
+  family: json_api
+  url: https://bipadportal.gov.np/api/v1/river/?water_level_on__gt=2026-08-26&limit=1000
+  auth: none
+  cadence: 60m
+  format: json 10-min series
+  holds: hydrograph incl. pre-collapse window
+  pii: false
+  catalogue: B2
+  verified: C
+
+- id: dhm_riverwatch_post
+  family: post_api
+  url: https://dhm.gov.np/site/riverWatchTableViewData   # plain POST, no body
+  auth: none
+  cadence: 10m
+  format: json 332 stations
+  holds: same as river-stations, direct from DHM
+  pii: false
+  catalogue: B2
+  verified: C
+
+- id: dhm_weather
+  family: json_api
+  url: https://dhm.gov.np/mfd/api/{three-days-forecast-latest|country-forecast|weather|mountain/all-info}
+  auth: none
+  cadence: 2/day (08:00, 18:00 NPT)
+  format: json (+ png maps)
+  holds: official 3-day forecast, heavy-rain warnings by province
+  pii: false
+  catalogue: E1
+  verified: C
+
+- id: openmeteo_corridor
+  family: json_api
+  url: https://api.open-meteo.com/v1/forecast?latitude=28.11&longitude=85.30&hourly=precipitation,cloud_cover_low&models=ecmwf_ifs025   # Dhunche; Langtang 28.21,85.51
+  auth: none
+  cadence: 6h
+  format: json
+  holds: hourly precip + low cloud → flying windows
+  pii: false
+  catalogue: E2
+  verified: C
+
+- id: hot_bridge_damage
+  family: s3
+  url: https://production-raw-data-api.s3.amazonaws.com/ISO3/NPL/combined/hot_flood_npl_bridge_damage.geojson
+  auth: none
+  cadence: 60m
+  format: geojson
+  holds: 59 bridge points with status
+  pii: false
+  catalogue: B6
+  verified: C
+
+- id: nesra_bridges
+  family: gcs
+  url: https://storage.googleapis.com/npl-flood-front/bridges_to_inspect.geojson
+  auth: none
+  cadence: 6h
+  format: geojson
+  holds: 62 bridges intersecting flood path
+  pii: false
+  catalogue: B7
+  verified: C
+
+- id: dor_rimes_bridges
+  family: json_api
+  url: https://navigate-dor-api.rimes.int/Bridge_api/getAllBridges
+  auth: none
+  cadence: static (fetch once)
+  format: json 2,135 bridges with coords
+  holds: national bridge inventory — join key for "bridges lost" claims
+  pii: false
+  catalogue: B8
+  verified: C
+
+- id: ntc_restoration_articles
+  family: rss   # via outlet feeds below; filter title/body for NTC|Ncell|tower|BTS
+  url: (derived from outlet_rss_* sources)
+  cadence: 60m
+  holds: site-by-site telecom restoration — best reached/unreached proxy
+  pii: false
+  catalogue: B1
+  verified: R
+
+# ── 4. Geospatial & imagery ───────────────────────────────────────────────────
+
+- id: hot_s3_listing
+  family: s3
+  url: https://production-raw-data-api.s3.amazonaws.com/?list-type=2&prefix=ISO3/NPL/
+  auth: none
+  cadence: 60m
+  format: xml listing → geojson/gpkg/pmtiles
+  holds: flood extent, destroyed features, helipads, health, police, admin, TM boundaries, Vantor mosaic
+  pii: false
+  catalogue: C2
+  verified: C
+
+- id: hdx_search
+  family: json_api
+  url: https://data.humdata.org/api/3/action/package_search?q=nepal&sort=metadata_modified%20desc&rows=50
+  auth: none
+  cadence: 60m
+  format: json
+  holds: every HDX dataset touching the event (HOT, UNOSAT, EMSR927, Microsoft, HeiGIT, GLIDE)
+  pii: false
+  catalogue: C1–C13
+  verified: C
+
+- id: emsr927_dashboard
+  family: json_api
+  url: https://mapping.emergency.copernicus.eu/backend/dashboard-api/public-activations/?code=EMSR927
+  auth: none
+  cadence: 60m
+  format: json
+  holds: AOI list, product versions/status, stats; products zip at https://rapidmapping.emergency.copernicus.eu/backend/EMSR927/EMSR927_products.zip (GET only)
+  pii: false
+  parser: watch AOI04 status + products.zip last-modified
+  catalogue: C1
+  verified: C
+
+- id: nesra_bucket
+  family: gcs
+  url: https://storage.googleapis.com/npl-flood-front/{summary.json|flood_zones.geojson|buildings_in_extent.geojson|roads_bridges_in_extent.geojson|cems_buildings.geojson|cems_roads.geojson}
+  auth: none
+  cadence: 6h
+  format: json/geojson (+ S2 COGs under cog/)
+  holds: NESRA FloodWatch analytical layers (3,216 buildings, 772 flood polygons)
+  pii: false
+  catalogue: C7
+  verified: C
+
+- id: microsoft_unosat_extent
+  family: s3
+  url: https://opendata.aiforgood.ai/damage-assessment/data/unosat_damage_area.geojson
+  auth: none
+  cadence: daily
+  format: geojson
+  holds: UNOSAT impacted-area polygon (37 km²)
+  pii: false
+  catalogue: C6 / C8
+  verified: C
+
+- id: vantor_stac
+  family: stac
+  url: https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/collection.json
+  auth: none (CC-BY-NC)
+  cadence: 6h
+  format: stac → COG
+  holds: 13 VHR scenes (0.35–0.58 m)
+  pii: false
+  catalogue: D1
+  verified: C
+
+- id: planet_stac
+  family: stac
+  url: https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/catalog.json
+  auth: none (CC-BY-NC)
+  cadence: 6h
+  format: stac catalog (pre-event/, post-event/) + items.parquet
+  holds: 24 scenes (PlanetScope, SkySat 0.8 m, Pelican 0.55 m)
+  pii: false
+  catalogue: D2
+  verified: C
+
+- id: oam_bbox
+  family: json_api
+  url: https://api.openaerialmap.org/meta?bbox=84.3,27.5,85.9,28.6&order_by=uploaded_at&sort=desc
+  auth: none
+  cadence: 6h
+  format: json
+  holds: drone/satellite uploads — watch for first post-event drone orthomosaic
+  pii: false
+  catalogue: D7 / D8
+  verified: C
+
+- id: cdse_catalogue
+  family: json_api
+  url: https://catalogue.dataspace.copernicus.eu/odata/v1/Products?$filter=Collection/Name eq 'SENTINEL-2' and OData.CSC.Intersects(area=geography'SRID=4326;POLYGON((85.0 27.85,85.55 27.85,85.55 28.45,85.0 28.45,85.0 27.85))') and ContentDate/Start gt 2026-08-26T00:00:00.000Z
+  auth: none for search; account for download
+  cadence: 6h
+  format: odata json
+  holds: new S1/S2 acquisitions over the corridor
+  pii: false
+  catalogue: D3–D5
+  verified: C
+
+- id: hf_fair_footprints
+  family: s3
+  url: https://huggingface.co/datasets/hotosm/nepal_flood_2026   # upperstream/buildings.parquet
+  auth: none
+  cadence: daily
+  format: parquet/geojson
+  holds: 13,663 fAIr footprints (HDX copy is 403)
+  pii: false
+  catalogue: C5
+  verified: C
+
+- id: hot_tasking_manager
+  family: json_api
+  url: https://tasking-manager-production-api.hotosm.org/api/v2/projects/?campaign=2026%20Nepal%20Floods   # + /projects/{id}/statistics/
+  auth: none
+  cadence: 60m
+  format: json
+  holds: mapping/validation progress per project (63069, 63102, 63235, 63236)
+  pii: false
+  catalogue: C2
+  verified: C
+
+# ── 5. Text corpus ────────────────────────────────────────────────────────────
+
+- id: outlet_rss_set
+  family: rss
+  url:
+    - https://www.onlinekhabar.com/feed                 # NE, 55 items — highest volume
+    - https://english.onlinekhabar.com/feed
+    - https://kathmandupost.com/rss
+    - https://english.khabarhub.com/feed/
+    - https://risingnepaldaily.com/rss
+    - https://english.nepalnews.com/rss
+    - https://radionepalonline.com/en/feed/
+    - https://english.ratopati.com/rss
+    - https://annapurnapost.com/rss
+    - https://gorkhapatraonline.com/rss
+    - https://newsofnepal.com/feed/
+    - https://feeds.bbci.co.uk/nepali/rss.xml
+    - https://nepalitimes.com/feed
+  auth: none
+  cadence: 30m
+  format: rss
+  holds: Nepali + English news stream; headlines encode place+count+status
+  pii: some articles name individuals — extract place/count/status only
+  catalogue: F12–F17
+  verified: C
+
+- id: google_news_site_queries
+  family: rss
+  url: https://news.google.com/rss/search?q=site:{domain}+flood+when:2d&hl=en&gl=US&ceid=US:en   # domains without RSS: thehimalayantimes.com, myrepublica.nagariknetwork.com, ekantipur.com (q=बाढी), setopati.com, nagariknews.nagariknetwork.com, english.news.cn, globaltimes.cn, apnews.com, theguardian.com, aljazeera.com, cbsnews.com
+  auth: none
+  cadence: 60m
+  format: rss (100/query; links are redirectors)
+  holds: enumerator for non-RSS outlets; also topic queries "Rasuwa flood", "Bhotekoshi", "Gyirong" in EN/HI/ZH editions
+  pii: false
+  catalogue: F24
+  verified: C
+
+- id: outlet_tag_pages
+  family: html
+  url:
+    - https://kathmandupost.com/tags/rasuwa-flood?page={n}
+    - https://kathmandupost.com/tags/bhotekoshi-flood?page={n}
+    - https://thehimalayantimes.com/tag/rasuwa-flood?page={n}
+    - https://english.onlinekhabar.com/tag/rasuwa-flood/page/{n}
+    - https://gorkhapatraonline.com/categories/bhotekoshi-fast-flood?page={n}
+    - https://inseconline.org/?s=भोटेकोशी
+  auth: browser_ua
+  cadence: 60m
+  format: html
+  holds: back-catalogue and outlets without feeds
+  pii: some
+  catalogue: F12, F15–F17
+  verified: C
+
+- id: ekantipur_live
+  family: html
+  url: https://ekantipur.com/news/2026/08/26/17877170054081721.html   # + homepage for new dated links
+  auth: none
+  cadence: 30m
+  format: html (364 timestamped sub-headlines)
+  holds: richest Nepali per-place stream (Timure 48×, Dhunche 27×…)
+  pii: headlines sometimes name individuals
+  catalogue: F14
+  verified: C
+
+- id: live_blogs
+  family: html
+  url:
+    - https://www.bbc.com/news/live/cr0qxd1y219kt
+    - https://www.cnn.com/2026/08/28/world/live-news/nepal-china-flood
+    - https://www.nbcnews.com/world/live-blog/live-updates-massive-flash-flood-nepal-tibet-border-hundreds-missing-rcna594833
+    - https://www.theguardian.com/world/live/2026/aug/29/nepal-tibet-floods-latest-updates-death-toll-missing-search-and-rescue
+    - https://www.abc.net.au/news/2026-08-29/death-toll-rises-as-rescuers-work-through-flood-devastation/107092742
+  auth: browser_ua (curl works; some block fetch tools)
+  cadence: 60m
+  format: html
+  holds: timestamped official quotes
+  pii: false
+  catalogue: F19
+  verified: C
+
+- id: china_search_apis
+  family: post_api
+  url:
+    - https://api.thepaper.cn/search/web/news            # {"word":"吉隆口岸","pageNum":1,"pageSize":20}
+    - http://search.people.cn/search-platform/front/search   # {"key":"吉隆口岸","page":1,"limit":20}
+  auth: none
+  cadence: 2h
+  format: json
+  holds: Tibet-side coverage (the only side with Gyirong counts)
+  pii: some headlines name officers
+  catalogue: F23
+  verified: C
+
+- id: wikipedia_revisions
+  family: mediawiki
+  url: https://en.wikipedia.org/w/api.php?action=query&prop=revisions|extlinks&titles=2026_Nepal_floods&rvlimit=50&format=json   # + Timeline article, zh, Wikidata Q141182413
+  auth: none
+  cadence: 60m
+  format: json
+  holds: curated timeline; 174 external links as crawl seeds; revision stream as change detector
+  pii: false
+  catalogue: F25
+  verified: C
+
+- id: gdelt_monitor
+  family: json_api
+  url: https://api.gdeltproject.org/api/v2/doc/doc?query=Rasuwa&mode=artlist&maxrecords=250&timespan=1d&format=json
+  auth: none
+  cadence: 2h
+  format: json (250 cap; flaky)
+  holds: volume monitor + Nepali-outlet discovery (onlinekhabar/ratopati/ekantipur); misses KP/THT
+  pii: false
+  catalogue: F24
+  verified: C
+
+# ── 6. Seismic ────────────────────────────────────────────────────────────────
+
+- id: usgs_fdsn
+  family: fdsn
+  url: https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2026-08-25&latitude=28.3&longitude=85.5&maxradiuskm=100&minmagnitude=2.5
+  auth: none
+  cadence: 60m
+  format: geojson
+  holds: landslide-type events (us7000tbwb M5.2 02:52Z; us7000tc90 M4.2 06:00Z) — a new one = a new collapse/breach
+  pii: false
+  catalogue: E5
+  verified: C
+
+- id: geofon_fdsn
+  family: fdsn
+  url: https://geofon.gfz.de/fdsnws/event/1/query?format=text&starttime=2026-08-25&latitude=28.3&longitude=85.5&maxradius=1&minmagnitude=3
+  auth: none
+  cadence: 60m
+  format: text
+  holds: independent confirmation of USGS events
+  pii: false
+  catalogue: E5
+  verified: C
+
+# ── Held data (not pollable; request via government channel) ─────────────────
+# See catalogue §I: DHM observation API key; NDRRMA/NTA consolidated tower-restoration table;
+# Army daily sortie log; helicopter operators' GPS logs; NEA feeder restoration log;
+# ICIMOD/MWR lake level series; NTB/TAAN agency manifests; Garmin/Zoleo aggregate device counts;
+# NTC/Ncell last-attach aggregates per tower.

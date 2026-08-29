@@ -25,8 +25,9 @@ This is not a detection problem; it is a coverage, logistics and reconciliation 
 | [08-decision-chain-and-plug-in.md](08-decision-chain-and-plug-in.md) | Who tasks helicopters; entry points in order; constraints (drones, border, language, PII) |
 | [09-72-hour-plan.md](09-72-hour-plan.md) | Day-by-day plan for four people, Sat 29 → Tue 1 Sep |
 | [10-discussion-log.md](10-discussion-log.md) | Sketch-vs-platform reasoning, PII explanation, "what can we even do", alignment with `docs/DECISIONS.md` D3, answers to open questions #2 and #10 |
+| [11-data-catalogue-2026-08-29.md](11-data-catalogue-2026-08-29.md) | **Every publicly available data source found in a five-domain internet sweep (evening 29 Aug), as tables**: person/status registries incl. the open OPMCM and NDRRMA APIs, official bulletins, place-status signals, geospatial layers, imagery, hazard/hydrology/weather, text/social corpus, dead ends, access matrix, asks |
 | [sources.md](sources.md) | All sources used, grouped |
-| [agent-reports/](agent-reports/) | The four raw parallel research reports the synthesis was built from (rescue ops; geospatial data; ML methods; Nepal ecosystem) — denser and more sourced than the sections above |
+| [agent-reports/](agent-reports/) | Raw parallel research reports: the afternoon synthesis pass (rescue ops; geospatial data; ML methods; Nepal ecosystem — only rescue-ops is committed) and the evening data-sweep pass (`deepdive-*`: official, crowd, geospatial, signals, text) — denser and more sourced than the sections above |
 | [sketch/](sketch/) | Aryaa's notebook sketch of the priority-map pipeline and how it maps onto what already exists |
 
 ## How this maps onto the rest of the repo

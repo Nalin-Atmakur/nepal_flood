@@ -58,3 +58,6 @@ topographic_change_map/downloads/
 topographic_change_map/artifacts/
 topographic_change_map/automation-profile/
 topographic_change_map/reports/private/
+
+# data_aggregator raw pulls
+data_aggregator/snapshots/
