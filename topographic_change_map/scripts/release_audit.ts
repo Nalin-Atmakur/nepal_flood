@@ -46,10 +46,35 @@ for (const [name, tag] of [["ortho-change-v3-strict", "32m"], ["ortho-change-10m
   check(`${name}-promotion`, promotion.promotedToMosaic === true && promotion.accuracyClass === "RESEARCH_ONLY", "promoted only as RESEARCH_ONLY");
 }
 
+const release = readJson("topographic_change_map/products/release-manifest.json") as {
+  defaultProduct?: { id?: string };
+  rejectedProducts?: unknown[];
+};
+check(
+  "release-selection",
+  release.defaultProduct?.id === "ortho-change-v3-strict" && release.rejectedProducts?.length === 2,
+  "strict default plus two documented expansion rejections",
+);
+for (const name of ["rejected-pair2-diagnostic", "rejected-pair3-diagnostic"]) {
+  const promotion = readJson(`topographic_change_map/products/${name}/promotion.json`);
+  check(
+    `${name}-excluded`,
+    promotion.promotedToMosaic === false && promotion.accuracyClass === "FAILED",
+    "failed promotion is explicit and no rejected raster is published",
+  );
+}
+
 const catalogue = readJson("topographic_change_map/catalogue/public-scenes.json") as { scenes?: unknown[] };
 const sentinel = readJson("topographic_change_map/catalogue/sentinel2-context.json") as { scenes?: unknown[] };
 check("public-imagery-catalogue", (catalogue.scenes?.length ?? 0) >= 37, `${catalogue.scenes?.length ?? 0} Vantor/Planet scenes`);
 check("sentinel-context-catalogue", (sentinel.scenes?.length ?? 0) >= 1, `${sentinel.scenes?.length ?? 0} exact-overlap Sentinel-2 products`);
+
+const accounts = fs.readFileSync(path.join(PROJECT_ROOT, "ACCOUNTS_REDACTED.md"), "utf8");
+check(
+  "provider-access-register",
+  accounts.includes("Planet | Created and verified") && accounts.includes("NASA Earthdata/NSIDC | Registration submitted"),
+  "redacted Planet entitlement and Earthdata handoff recorded",
+);
 
 const viewerFiles = [
   "docs/topographic-change-viewer/index.html",

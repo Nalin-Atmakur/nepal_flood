@@ -119,3 +119,19 @@ Instead:
 3. calculate broad regional surface change;
 4. report large uncertainty;
 5. exclude building-level debris claims.
+
+## Current public-ortho fallback
+
+The implemented fallback does not independently triangulate a post-event DSM.
+It measures opposing-look displacement remaining in two post-event orthos,
+calibrates that displacement to stable terrain, and converts it approximately
+with published constant-look vectors. The resulting `surface_change` cells may
+be localized at 32 m or 10 m, but their vertical error remains approximately
+4–7 m and their relationship to the unknown orthorectification DEM is not fully
+known.
+
+`post_surface_estimate = GLO-30 + residual-derived change` is therefore a
+context visualization only. The unknown ortho reference DEM is a systematic
+uncertainty outside the reported match-error layer. This fallback must remain
+`RESEARCH_ONLY` and must not be presented as the rigorous pre/post DSM
+difference described above.

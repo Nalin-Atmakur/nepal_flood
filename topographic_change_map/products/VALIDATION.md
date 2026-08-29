@@ -68,6 +68,21 @@ Independent relaxed-layer runs used Apple Silicon/Python 3.13 and Intel/Python 3
 | Median bias | −0.132 m |
 | Support-mask IoU | 0.729 |
 
+## Rejected second pair
+
+The automatically selected 28 August pair
+`B030001100CF1310 + B110001101165110` produced 2,997 supported 32 m cells
+(3.069 km²) and passed all internal raster invariants. It was nevertheless
+rejected because stable-terrain NMAD was 6.289 m, exceeding the fixed 6.0 m
+promotion ceiling; median uncertainty was 9.906 m. None of those cells enters
+the mosaic or viewer.
+
+The automatically selected 27 August pair
+`B040001100881410 + B040001100882F10` also passed raster invariants but was
+rejected: 7,708 supported cells (7.893 km²), stable NMAD 6.613 m, and median
+uncertainty 9.784 m. Its larger footprint does not compensate for failure of
+the stable-terrain accuracy gate.
+
 ## Affected-area coverage
 
 The strict layer directly measures 0.520 km² of UNOSAT’s 37.415 km² affected mask: 1.39% of the full authoritative extent and 9.54% of the affected area inside the current processing rectangle. Additional Vantor pairs and the 10 m experimental layer are tracked separately and must not be conflated with the default strict coverage.
@@ -86,3 +101,8 @@ Only four building records intersect a two-sigma significant cell. This is not e
 ## Interpretation boundary
 
 The output supports broad surface-change screening. It does not currently support precise debris depth, individual-building burial depth, or operational rescue decisions.
+
+The unknown orthorectification reference DEM is an additional systematic
+uncertainty not captured by the per-cell match uncertainty. `post_surface_estimate`
+must therefore remain contextual until an original camera-bearing product or a
+documented orthorectification reference is obtained.

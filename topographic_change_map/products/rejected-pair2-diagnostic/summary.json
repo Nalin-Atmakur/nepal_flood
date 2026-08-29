@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "method": "opposite-look orthorectified-image parallax",
+  "leftSceneId": "B030001100CF1310",
+  "rightSceneId": "B110001101165110",
+  "leftOffNadirDeg": 21.53,
+  "rightOffNadirDeg": 19.45,
+  "leftAzimuthDeg": 342.8,
+  "rightAzimuthDeg": 230.9,
+  "parallaxAxisEastNorth": [
+    0.2538944721447364,
+    0.9672319251422307
+  ],
+  "horizontalSensitivityPerHeight": 0.6198998135473077,
+  "tiePoints": 5286,
+  "stableTiePoints": 2621,
+  "corridorTiePoints": 2997,
+  "stableMedianChangeM": -0.3971300373234957,
+  "stableNmadChangeM": 6.289084520522465,
+  "baseUncertaintyM": 6.289006130326443,
+  "minimumReliability": 25.0,
+  "candidateBufferM": 1500.0,
+  "outputResolutionM": 32.0,
+  "corridorMedianChangeM": 3.221830690624992,
+  "corridorP10ChangeM": -6.017799411345486,
+  "corridorP90ChangeM": 21.004839769987615,
+  "supportedCells": 2997,
+  "supportedAreaKm2": 3.068928,
+  "significantCells2Sigma": 309,
+  "absoluteHeightSource": "Copernicus GLO-30 broad baseline",
+  "accuracyClass": "FAILED",
+  "limitations": [
+    "Public orthos lack original camera models.",
+    "The orthorectification reference DEM is not supplied; adding the residual-derived change to GLO-30 assumes compatible reference surfaces.",
+    "Look angles are treated as constant over the working extent.",
+    "GLO-30 is too coarse for building-level burial depth.",
+    "Only cells with direct tie-point support are published as measured change."
+  ]
+}

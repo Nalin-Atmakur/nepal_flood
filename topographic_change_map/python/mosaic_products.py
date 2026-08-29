@@ -122,6 +122,12 @@ def main() -> None:
     source_index = np.zeros((height, width), dtype=np.uint8)
     contributions = []
     for index, product in enumerate(inputs, start=1):
+        source_summary_path = product / "summary.json"
+        source_summary = (
+            json.loads(source_summary_path.read_text())
+            if source_summary_path.exists()
+            else {}
+        )
         # Direct-support measurements are categorical samples at their source
         # cell centres. Nearest-neighbour preserves those samples and their
         # support mask; bilinear resampling would invent intermediate changes.
@@ -144,6 +150,8 @@ def main() -> None:
             {
                 "sourceIndex": index,
                 "path": str(product),
+                "leftSceneId": source_summary.get("leftSceneId"),
+                "rightSceneId": source_summary.get("rightSceneId"),
                 "selectedCells": int(use.sum()),
                 "promotion": promotions[index - 1],
             }
@@ -161,6 +169,8 @@ def main() -> None:
     write(output / "post_surface_estimate_32m.tif", np.where(np.isfinite(post), post, -9999), transform, "float32", -9999)
     summary = {
         "schemaVersion": 1,
+        "method": "lowest-uncertainty mosaic of promoted pair products",
+        "accuracyClass": "RESEARCH_ONLY",
         "inputs": contributions,
         "measuredCells": int(measured.sum()),
         "measuredAreaKm2": float(measured.sum() * resolution**2 / 1e6),

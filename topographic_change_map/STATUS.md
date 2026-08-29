@@ -1,14 +1,16 @@
 # Project status
 
-Last updated: 2026-08-29 23:15 BST
+Last updated: 2026-08-30 00:53 BST
 
 ## Goal
 
-Active: complete the Nepal flood topographic change map end to end. Do not mark complete after signup, catalogue creation, or a visually plausible DSM.
+Achievable public-data scope complete and release-audited. Rigorous absolute DSM
+and HMA baseline acquisition remain explicitly external-gated; they are not
+misrepresented as completed products.
 
 ## Current milestone
 
-**M5 — Multi-pair expansion, 10 m experiment, and final release**
+**M6 — COMPLETE: final audited research release**
 
 Completed:
 
@@ -67,19 +69,19 @@ Completed:
 - Viewer now exposes strict 32 m and lazy-loaded experimental 10 m grids; both pass headless WebGL smoke tests.
 - Official Copernicus Data Space catalogue added 61 exact-overlap Sentinel-2 L2A context products (57 pre-cutoff, 4 post-cutoff); all are automatically rejected for precision DSM use, and only two have scene cloud below 20%.
 - Current automated checks pass: 16 Python tests and 12 TypeScript tests.
-- Machine-readable release audit currently passes 13/13 artifact, validation, catalogue, publication, source-exclusion, and secret-safety checks; external gates remain listed separately.
+- Machine-readable release audit passes 17/17 artifact, validation, selection, rejection, catalogue, provider, publication, source-exclusion, and secret-safety checks; external gates remain listed separately.
 - Redundant local source COGs and 1 m warp caches were checksum-matched to the sandbox copies and moved to recoverable macOS Trash; bulk/source storage is now sandbox-only.
 - Earthdata was retried in ordinary sandbox Chrome after restoring the password fields, but its invisible reCAPTCHA again rejected submission; no solvable checkbox/image challenge is exposed, so VNC remains the explicit user handoff.
 - Dense matching now evaluates candidates in worker batches with durable progress reporting, reducing scheduler overhead for subsequent pairs.
+- Second expansion pair completed with 3.069 km² raw support but was rejected: stable NMAD 6.289 m exceeds the fixed 6.0 m ceiling.
+- Third expansion pair completed with 7.893 km² raw support but was rejected: stable NMAD 6.613 m exceeds the same ceiling.
+- Neither rejected pair is present in the viewer or a mosaic; only diagnostic JSON is published, preventing post-hoc threshold relaxation.
+- Final release selection is explicit in `products/release-manifest.json`: strict 32 m default, validated 10 m experimental alternate, no multi-pair mosaic.
+- Viewer CI is green and retains a downloadable static artifact even before GitHub Pages is enabled; Pages deployment activates automatically after admin enablement.
 - A self-contained static viewer bundle is prepared under `docs/topographic-change-viewer/`; GitHub Pages activation remains repository-admin controlled.
 - The protected HMA request was exercised safely and returned HTTP 401, confirming that the pending Earthdata CAPTCHA/account activation is the only download gate.
 
-In progress:
-
-- Complete and validate the second Vantor pair, then mosaic by lowest uncertainty.
-- Warp and evaluate the automatically selected third Vantor pair (`B040001100881410 + B040001100882F10`) for additional affected-area coverage.
-- Complete Earthdata CAPTCHA and replace/compare the coarse baseline with HMA 8 m.
-- Run final viewer/product/completion audit and release checkpoint.
+In progress: none within the achievable public-data release.
 
 ## Verified environment
 
@@ -102,9 +104,11 @@ The `research/` directory contains the goal, source inventory, acquisition plan,
 
 ## Immediate next actions
 
-1. Finish 10 m and second-pair processing.
-2. Mosaic passing pairs and regenerate coverage/building/viewer products.
-3. Complete final audit, documentation, and GitHub release.
+No automated release action remains. Optional external handoffs are:
+
+1. The user completes the Earthdata invisible reCAPTCHA over VNC, enabling the pinned HMA 8 m download and baseline comparison.
+2. A repository administrator enables GitHub Pages; the already-green workflow deploys on its next run.
+3. A partner supplies original RPC/physical-camera Nepal imagery, enabling the verified ASP route and a rigorous absolute DSM.
 
 ## Active blockers
 

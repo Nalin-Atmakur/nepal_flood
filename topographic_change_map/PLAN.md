@@ -16,6 +16,15 @@ Success is measured by affected-area coverage with:
 
 Account creation, provider access, and catalogue breadth support this goal. They are not substitutes for a validated surface product.
 
+## Execution outcome
+
+The achievable public-data release is recorded in
+`products/release-manifest.json`: a promoted strict 32 m research layer, a
+separately promoted experimental 10 m layer, two accuracy-gated expansion
+rejections, and no lower-quality multi-pair mosaic. A rigorous RPC-derived Nepal
+DSM remains externally blocked by camera-product entitlement; the installed ASP
+pipeline is verified and ready when such a product becomes accessible.
+
 ## Completion criteria
 
 The project is complete only when all of the following exist or have been exhausted and documented:

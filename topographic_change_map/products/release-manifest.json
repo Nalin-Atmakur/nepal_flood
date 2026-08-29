@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-30T00:52:00+01:00",
+  "scientificClass": "RESEARCH_ONLY",
+  "defaultProduct": {
+    "id": "ortho-change-v3-strict",
+    "resolutionM": 32,
+    "supportedCells": 1252,
+    "supportedAreaKm2": 1.282048,
+    "stableNmadM": 4.323690259986187,
+    "medianUncertaintyM": 6.8823,
+    "affectedAreaMeasuredKm2": 0.520192,
+    "affectedAreaFraction": 0.013903
+  },
+  "alternateProducts": [
+    {
+      "id": "ortho-change-10m-experimental",
+      "resolutionM": 10,
+      "supportedCells": 6882,
+      "supportedAreaKm2": 0.6882,
+      "stableNmadM": 4.033632449061553,
+      "medianUncertaintyM": 6.573469161987305,
+      "affectedAreaMeasuredKm2": 0.2484,
+      "affectedAreaFraction": 0.0066390863022999045
+    }
+  ],
+  "rejectedProducts": [
+    {
+      "id": "rejected-pair2-diagnostic",
+      "pair": "B030001100CF1310 + B110001101165110",
+      "rawSupportedAreaKm2": 3.068928,
+      "stableNmadM": 6.289084520522465,
+      "reason": "Stable NMAD exceeds fixed 6.0 m promotion ceiling"
+    },
+    {
+      "id": "rejected-pair3-diagnostic",
+      "pair": "B040001100881410 + B040001100882F10",
+      "rawSupportedAreaKm2": 7.892992,
+      "stableNmadM": 6.613076149112811,
+      "reason": "Stable NMAD exceeds fixed 6.0 m promotion ceiling"
+    }
+  ],
+  "mosaicDecision": "No multi-pair mosaic published because both expansion pairs failed the predeclared accuracy gate. The sole promoted 32 m pair remains the default.",
+  "viewer": "https://raw.githack.com/Nalin-Atmakur/nepal_flood/main/docs/topographic-change-viewer/",
+  "limitations": [
+    "Public orthos lack original camera models and a documented orthorectification reference DEM.",
+    "GLO-30 provides broad absolute-height context, not building-scale pre-event ground.",
+    "Surface change is not debris depth or burial depth.",
+    "Products are not suitable for operational rescue decisions."
+  ]
+}

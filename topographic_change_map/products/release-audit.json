@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T22:14:54.480Z",
+  "generatedAt": "2026-08-29T23:51:27.520Z",
   "passed": true,
   "scientificClass": "RESEARCH_ONLY",
   "checks": [
@@ -40,6 +40,21 @@
       "evidence": "promoted only as RESEARCH_ONLY"
     },
     {
+      "id": "release-selection",
+      "passed": true,
+      "evidence": "strict default plus two documented expansion rejections"
+    },
+    {
+      "id": "rejected-pair2-diagnostic-excluded",
+      "passed": true,
+      "evidence": "failed promotion is explicit and no rejected raster is published"
+    },
+    {
+      "id": "rejected-pair3-diagnostic-excluded",
+      "passed": true,
+      "evidence": "failed promotion is explicit and no rejected raster is published"
+    },
+    {
       "id": "public-imagery-catalogue",
       "passed": true,
       "evidence": "37 Vantor/Planet scenes"
@@ -48,6 +63,11 @@
       "id": "sentinel-context-catalogue",
       "passed": true,
       "evidence": "61 exact-overlap Sentinel-2 products"
+    },
+    {
+      "id": "provider-access-register",
+      "passed": true,
+      "evidence": "redacted Planet entitlement and Earthdata handoff recorded"
     },
     {
       "id": "static-viewer",

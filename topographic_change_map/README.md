@@ -2,6 +2,9 @@
 
 Research reconstruction of post-flood surface change in the upper Bhote Koshi corridor after the August 2026 Nepal flood.
 
+**Live review viewer:**
+<https://raw.githack.com/Nalin-Atmakur/nepal_flood/main/docs/topographic-change-viewer/>
+
 ## Current deliverable
 
 - Strict 32 m surface-change, uncertainty, support, coverage, pre-reference, and post-surface rasters.

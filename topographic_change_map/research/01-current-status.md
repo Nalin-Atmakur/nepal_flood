@@ -20,6 +20,9 @@ orthorectified and contain no original RPC/physical camera model. The method
 therefore measures opposing-look residual ortho-parallax, removes a stable-
 terrain bias plane, and uses the published look vectors for an approximate
 height conversion. This is not conventional absolute stereo triangulation.
+The original orthorectification reference DEM is also unknown; adding the
+derived change to GLO-30 produces contextual absolute heights rather than an
+independently validated post-event DSM.
 
 Current validated products:
 
@@ -44,8 +47,10 @@ The default processing rectangle spans approximately `28.139691–28.283023°N`
 and `85.310212–85.393888°E`. Strict direct support measures 0.520 km² of the
 37.415 km² UNOSAT affected mask (1.39%). Plausible public Vantor pair footprints
 could cover up to 8.61 km² (23.0%) before cloud and matching losses. Additional
-pairs are being evaluated and can enter the mosaic only through the automated
-promotion gate.
+pairs were evaluated through the automated gate. The 28 August pair yielded
+3.069 km² raw support but 6.289 m stable NMAD; the additional 27 August pair
+yielded 7.893 km² raw support but 6.613 m stable NMAD. Both exceed the fixed
+6.0 m ceiling and are excluded, so no multi-pair mosaic is published.
 
 One-kilometre cells are reporting bins generated after matching. They are not
 image pixels, processing tiles, correlation windows, or output resolution.

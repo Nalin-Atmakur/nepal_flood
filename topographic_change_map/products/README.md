@@ -45,10 +45,26 @@ A measured surface change is not automatically debris depth or burial depth. Uns
 
 ## Scientific classification
 
-All current products are `RESEARCH_ONLY`. The public orthos lack original camera models, angles are treated as locally constant, and the baseline is too coarse for building-scale burial estimates.
+All current products are `RESEARCH_ONLY`. The public orthos lack original camera
+models, their orthorectification reference DEM is not supplied, angles are
+treated as locally constant, and GLO-30 is too coarse for building-scale burial
+estimates. Consequently, `post_surface_estimate` is contextual GLO-30 plus the
+measured residual-derived change; it is not an independently triangulated
+absolute DSM.
 
 Additional pairs must pass `python/quality_gate.py` before entering a mosaic.
 The mandatory default gates are: valid bundle invariants, stable-terrain NMAD no
 greater than 6 m, at least 100 stable calibration ties, at least 100 corridor
 ties, and at least 0.05 km² of direct support. Passing a gate without rigorous
 camera models can produce only `RESEARCH_ONLY`, never a higher accuracy class.
+
+## Rejected products
+
+`rejected-pair2-diagnostic/` preserves the gate evidence for
+`B030001100CF1310 + B110001101165110`. It is excluded from all mosaics and the
+viewer because stable NMAD was 6.289 m, above the fixed 6.0 m ceiling. Only
+diagnostic JSON is retained; rejected rasters are not published.
+
+`rejected-pair3-diagnostic/` records the same outcome for
+`B040001100881410 + B040001100882F10`: 7.893 km² raw support but 6.613 m stable
+NMAD and 9.784 m median uncertainty. It is likewise excluded.

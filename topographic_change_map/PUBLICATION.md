@@ -17,11 +17,12 @@ and both the 32 m and 10 m WebGL modes pass the automated browser smoke test.
 
 ## GitHub Pages
 
-The workflow `.github/workflows/topographic-change-viewer.yml` builds and
-uploads the same viewer. Its build stage passes, but GitHub rejects the
-`configure-pages` step until a repository administrator enables Pages. An
-administrator can select **Settings → Pages → Source: GitHub Actions** and rerun
-the workflow. No code or data change is needed.
+The workflow `.github/workflows/topographic-change-viewer.yml` builds the same
+viewer and always retains a downloadable `topographic-change-viewer` artifact.
+The workflow is green even while Pages is disabled. Its Pages deployment job is
+conditionally skipped until a repository administrator selects **Settings →
+Pages → Source: GitHub Actions**; the next run then deploys automatically. No
+code or data change is needed.
 
 The `docs/` bundle is also compatible with **Deploy from a branch → main →
 /docs** if that publication mode is preferred.

@@ -27,6 +27,7 @@
   "accuracyClass": "RESEARCH_ONLY",
   "limitations": [
     "Public orthos lack original camera models.",
+    "The orthorectification reference DEM is not supplied; adding the residual-derived change to GLO-30 assumes compatible reference surfaces.",
     "Look angles are treated as constant over the working extent.",
     "GLO-30 is too coarse for building-level burial depth.",
     "Only cells with direct tie-point support are published as measured change."
