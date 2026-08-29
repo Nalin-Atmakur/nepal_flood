@@ -1,0 +1,47 @@
+# ── Personal-data firewall ──────────────────────────────────────────
+# This repo must never carry personal data. Block every format that
+# commonly does. Err toward over-blocking; force-add only after review
+# confirming a file is synthetic or aggregate-only.
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.sqlite
+*.sqlite3
+*.db
+*.mdb
+*.parquet
+*.vcf
+data/raw/
+data/**/*.json
+*.kml
+*.kmz
+*.gpx
+
+# Credentials & secrets
+.env
+.env.*
+*.pem
+*.key
+*_rsa
+*_ed25519
+credentials*
+secrets*
+token*
+*.p12
+
+# Bulky binaries that belong in object storage, not git
+*.tif
+*.tiff
+*.jp2
+*.img
+*.zip
+*.tar.gz
+*.7z
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
