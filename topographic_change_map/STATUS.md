@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 22:12 BST
+Last updated: 2026-08-29 22:30 BST
 
 ## Goal
 
@@ -45,7 +45,6 @@ Completed:
 - Strong Vantor pair corrected to `B040001100881410` + `B040001100881710` (approximately 48-degree geometry).
 - Independent dense phase-correlation engine implemented; four Python tests pass locally and on sandbox Python 3.9.
 - Full correct-pair Vantor COGs downloaded and checksum-verified; common upper corridor warped to identical 1 m UTM grids.
-- Dense upper-corridor surface-change/uncertainty/support reconstruction is running on 12 sandbox cores.
 - Strict 32 m upper-corridor bundle completed and passed all raster invariants.
 - Strict results: 1,252 measured cells, 1.282 km² direct support, stable NMAD 4.324 m, median change +1.746 m, median uncertainty 6.882 m.
 - GeoPera comparison: dense correlation 0.906, sparse centerline correlation 0.991, deposition precision 82.9%.
@@ -59,6 +58,9 @@ Completed:
 - Geographic context panel now includes OpenStreetMap, live cursor coordinates, UNOSAT/HOT extents, Vantor overlap, measured support, reporting grid, and settlement markers.
 - GitHub Pages workflow prepared for public viewer deployment.
 - Planet account is entitlement-blocked; Earthdata registration is filled and waiting for manual reCAPTCHA.
+- Exact four-granule HMA 8 m baseline manifest and a mode-0600, resumable Earthdata downloader are implemented; download remains gated only by the Earthdata CAPTCHA/account activation.
+- Processing/AOI semantics are explicit: manual 1 km AOIs are feasibility fixtures, production candidates come from affected-area/image intersections, and 1 km cells are post-analysis reporting bins only.
+- Current automated checks pass: 11 Python tests and 11 TypeScript tests, with TypeScript compilation clean.
 
 In progress:
 
@@ -80,7 +82,7 @@ In progress:
 | Sandbox SSH | `zoral@100.99.74.22` reachable with key authentication |
 | Sandbox free space | 87 GiB at milestone start |
 | SMS helper | not installed yet; not needed for public-source milestone |
-| NASA ASP | not yet verified/installed |
+| NASA ASP | 3.7.0 installed and verified on the sandbox with the official ASTER RPC fixture |
 
 ## Existing research
 
@@ -88,10 +90,9 @@ The `research/` directory contains the goal, source inventory, acquisition plan,
 
 ## Immediate next actions
 
-1. Push the validated strict-product/viewer checkpoint.
-2. Finish 10 m and second-pair processing.
-3. Mosaic passing pairs and regenerate coverage/building/viewer products.
-4. Complete final audit, documentation, and GitHub release.
+1. Finish 10 m and second-pair processing.
+2. Mosaic passing pairs and regenerate coverage/building/viewer products.
+3. Complete final audit, documentation, and GitHub release.
 
 ## Active blockers
 

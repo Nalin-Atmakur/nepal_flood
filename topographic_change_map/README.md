@@ -39,6 +39,7 @@ Open <http://127.0.0.1:4174/>. Use **Map context** to see the processing footpri
 ## Start here
 
 - [PLAN.md](PLAN.md) — complete objective and execution contract
+- [SCALES_AND_AOI.md](SCALES_AND_AOI.md) — exact distinction between source pixels, measurements, and 1 km reporting bins
 - [STATUS.md](STATUS.md) — current evidence, work, and blockers
 - [products/README.md](products/README.md) — raster and building product guide
 - [products/VALIDATION.md](products/VALIDATION.md) — numerical validation

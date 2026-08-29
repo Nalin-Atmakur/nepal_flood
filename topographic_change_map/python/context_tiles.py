@@ -71,6 +71,7 @@ def main() -> None:
         ]
         left, bottom, right, top = dataset.bounds
         working_geometry = utm_polygon_wgs84(left, bottom, right, top)
+        cell_area_km2 = abs(dataset.transform.a * dataset.transform.e) / 1e6
         rows, cols = np.nonzero(coverage)
         east, north = xy(dataset.transform, rows, cols, offset="center")
         tile_counts: dict[tuple[int, int], int] = {}
@@ -105,7 +106,7 @@ def main() -> None:
             "east": round(max(longitudes), 6),
             "north": round(max(latitudes), 6),
             "measured_cells": count,
-            "measured_area_km2": round(count * 32 * 32 / 1e6, 4),
+            "measured_area_km2": round(count * cell_area_km2, 4),
             "nearest_settlement": settlement,
             "distance_to_settlement_km": round(distance_km, 2),
         }
@@ -116,7 +117,7 @@ def main() -> None:
             f"| {tile_id} | {center_lat[0]:.6f} | {center_lon[0]:.6f} | "
             f"{min(latitudes):.6f}…{max(latitudes):.6f} | "
             f"{min(longitudes):.6f}…{max(longitudes):.6f} | {count} | "
-            f"{count * 32 * 32 / 1e6:.4f} | {settlement} ({distance_km:.2f} km) |"
+            f"{count * cell_area_km2:.4f} | {settlement} ({distance_km:.2f} km) |"
         )
 
     (output / "measured-support.geojson").write_text(

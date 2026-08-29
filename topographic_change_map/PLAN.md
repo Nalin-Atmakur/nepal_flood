@@ -36,8 +36,9 @@ The project is complete only when all of the following exist or have been exhaus
 
 ### Main Mac
 
-- Headed Chrome account/provider automation.
-- Gmail and SMS verification.
+- Headless catalogue, metadata, geometry, small-crop, and viewer work.
+- No provider identity or bulk-data state is required here; the ignored local
+  credential file is retained only as an encrypted/private recovery copy.
 - Metadata, RPC, footprint, licence, and preview collection.
 - Geometry scoring and small image crops.
 - Project dashboard and a maximum 20 GiB local working cache.
@@ -71,7 +72,10 @@ SSH: zoral@100.99.74.22
 Root: /Users/zoral/topographic-change-map
 ```
 
-It stores full imagery, point clouds, DSMs, and ASP intermediates and performs bulk processing. Never touch the remote primary account.
+It owns the persistent Breeze-derived Chrome profile, Gmail/provider sessions,
+CAPTCHA handoffs, full imagery, point clouds, DSMs, and ASP intermediates. It
+performs bulk processing and is the only machine used for provider identity
+automation. Never touch the remote primary account.
 
 Storage guards:
 
@@ -99,8 +103,16 @@ Storage guards:
 ### Phase 2 — Affected-area catalogue
 
 - Build the master affected AOI from Copernicus EMSR927, UNOSAT, HOT/NAXA, and corridor reference layers.
-- Divide it into overlapping approximately 1 km tiles.
-- Prioritize Syabrubesi, Timure-Rasuwagadhi, remaining Rasuwa, Nuwakot/Bidur, then remaining authoritative affected polygons.
+- Derive processing candidates automatically from the intersection of authoritative
+  affected polygons, common acquisition footprints, locally usable imagery, and the
+  stable-terrain buffer required for co-registration. Manual settlement-centred AOIs
+  are discovery and feasibility fixtures only; they never define production coverage.
+- Schedule candidates by affected-area coverage, expected stereo quality, cloud-free
+  overlap, exposed population/infrastructure, and compute cost. Elevation or
+  "mountain first" is not a priority rule.
+- Generate 1 km UTM cells only after measurement as geographic reporting/indexing
+  bins. They are not download tiles, correlation windows, DSM pixels, or change-map
+  resolution.
 - Catalogue maximum metadata, RPCs, previews, footprints, product levels, access states, and licences.
 - Generate same-epoch pre/pre and post/post pair candidates per tile.
 

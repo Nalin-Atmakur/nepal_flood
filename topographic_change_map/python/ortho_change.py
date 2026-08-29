@@ -290,16 +290,17 @@ def main() -> None:
     uncertainty_out = np.where(valid, uncertainty, -9999.0)
     coverage = np.where(valid, 1, 0).astype(np.uint8)
 
-    write_raster(output / "surface_change_32m.tif", change_out, output_transform, "float32", -9999.0)
-    write_raster(output / "uncertainty_32m.tif", uncertainty_out, output_transform, "float32", -9999.0)
-    write_raster(output / "support_count_32m.tif", support, output_transform, "uint16", 0)
-    write_raster(output / "coverage_32m.tif", coverage, output_transform, "uint8", 0)
+    resolution_tag = f"{args.output_res_m:g}m"
+    write_raster(output / f"surface_change_{resolution_tag}.tif", change_out, output_transform, "float32", -9999.0)
+    write_raster(output / f"uncertainty_{resolution_tag}.tif", uncertainty_out, output_transform, "float32", -9999.0)
+    write_raster(output / f"support_count_{resolution_tag}.tif", support, output_transform, "uint16", 0)
+    write_raster(output / f"coverage_{resolution_tag}.tif", coverage, output_transform, "uint8", 0)
     significance = np.full(change.shape, -128, dtype=np.int8)
     significance[valid] = 0
     significance[valid & (np.abs(change) > 2 * uncertainty) & (change > 0)] = 1
     significance[valid & (np.abs(change) > 2 * uncertainty) & (change < 0)] = -1
     write_raster(
-        output / "significant_change_32m.tif",
+        output / f"significant_change_{resolution_tag}.tif",
         significance,
         output_transform,
         "int8",
@@ -325,8 +326,8 @@ def main() -> None:
             resampling=Resampling.bilinear,
         )
     post_dem = np.where(valid & (pre_dem != -9999.0), pre_dem + change, -9999.0)
-    write_raster(output / "pre_glo30_32m.tif", pre_dem, output_transform, "float32", -9999.0)
-    write_raster(output / "post_surface_estimate_32m.tif", post_dem, output_transform, "float32", -9999.0)
+    write_raster(output / f"pre_glo30_{resolution_tag}.tif", pre_dem, output_transform, "float32", -9999.0)
+    write_raster(output / f"post_surface_estimate_{resolution_tag}.tif", post_dem, output_transform, "float32", -9999.0)
 
     with open(output / "tie_points.csv", "w", newline="") as handle:
         writer = csv.writer(handle)
@@ -375,6 +376,7 @@ def main() -> None:
         "baseUncertaintyM": float(base_uncertainty_m),
         "minimumReliability": args.min_reliability,
         "candidateBufferM": args.candidate_buffer_m,
+        "outputResolutionM": args.output_res_m,
         "corridorMedianChangeM": float(np.median(corridor_change)),
         "corridorP10ChangeM": float(np.percentile(corridor_change, 10)),
         "corridorP90ChangeM": float(np.percentile(corridor_change, 90)),

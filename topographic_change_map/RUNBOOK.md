@@ -23,6 +23,24 @@ imsg for scoped SMS OTP reading
 
 NASA ASP and bulk geospatial processing may run on the sandbox Mac after installation verification.
 
+## HMA 8 m pre-event baseline
+
+The exact NSIDC/Earthdata granules are pinned in
+`catalogue/hma-dem-granules.json`. After the user completes Earthdata's CAPTCHA
+and activates the account, copy the manifest and downloader to the sandbox and
+run:
+
+```bash
+python3 python/download_hma.py \
+  --manifest catalogue/hma-dem-granules.json \
+  --env .env.topographic.local \
+  --output /Users/zoral/topographic-change-map/data/hma-dem-8m
+```
+
+The downloader refuses non-`0600` secret files, rejects unexpected download
+hosts and unsafe filenames, resumes `.part` downloads, and atomically renames
+completed files. Never commit the downloaded rasters or credential file.
+
 ## Secret file
 
 Expected local file:

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "collection": "HMA_DEM8m_MOS",
+  "version": 1,
+  "doi": "10.5067/KXOVQ9L172S2",
+  "queriedAt": "2026-08-29",
+  "granules": [
+    {
+      "conceptId": "G3254104821-NSIDC_CPRD",
+      "title": "HMA_DEM8m_MOS_20170716_tile-642.tif",
+      "updated": "2018-02-21T16:12:35.994Z",
+      "downloadUrl": "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-642.tif",
+      "metadataUrl": "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-public/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-642.tif.xml"
+    },
+    {
+      "conceptId": "G3254116791-NSIDC_CPRD",
+      "title": "HMA_DEM8m_MOS_20170716_tile-643.tif",
+      "updated": "2018-02-21T16:13:26.039Z",
+      "downloadUrl": "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-643.tif",
+      "metadataUrl": "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-public/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-643.tif.xml"
+    },
+    {
+      "conceptId": "G3254120169-NSIDC_CPRD",
+      "title": "HMA_DEM8m_MOS_20170716_tile-676.tif",
+      "updated": "2018-02-21T16:13:19.383Z",
+      "downloadUrl": "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-676.tif",
+      "metadataUrl": "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-public/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-676.tif.xml"
+    },
+    {
+      "conceptId": "G3254145253-NSIDC_CPRD",
+      "title": "HMA_DEM8m_MOS_20170716_tile-675.tif",
+      "updated": "2018-02-21T16:13:50.948Z",
+      "downloadUrl": "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-675.tif",
+      "metadataUrl": "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-public/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-675.tif.xml"
+    }
+  ]
+}

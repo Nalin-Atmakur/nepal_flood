@@ -18,6 +18,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--products", required=True)
     parser.add_argument("--upstream-csv")
     parser.add_argument("--output", required=True)
+    parser.add_argument(
+        "--resolution-tag",
+        default="32m",
+        help="Filename suffix for the product grid, for example 32m or 10m",
+    )
     return parser.parse_args()
 
 
@@ -34,13 +39,13 @@ def valid(array: np.ndarray, nodata: float | int | None) -> np.ndarray:
     return mask
 
 
-def bundle_invariants(products: Path) -> dict:
-    change, change_ds = read(products / "surface_change_32m.tif")
-    uncertainty, uncertainty_ds = read(products / "uncertainty_32m.tif")
-    support, support_ds = read(products / "support_count_32m.tif")
-    coverage, coverage_ds = read(products / "coverage_32m.tif")
-    pre, pre_ds = read(products / "pre_glo30_32m.tif")
-    post, post_ds = read(products / "post_surface_estimate_32m.tif")
+def bundle_invariants(products: Path, resolution_tag: str = "32m") -> dict:
+    change, change_ds = read(products / f"surface_change_{resolution_tag}.tif")
+    uncertainty, uncertainty_ds = read(products / f"uncertainty_{resolution_tag}.tif")
+    support, support_ds = read(products / f"support_count_{resolution_tag}.tif")
+    coverage, coverage_ds = read(products / f"coverage_{resolution_tag}.tif")
+    pre, pre_ds = read(products / f"pre_glo30_{resolution_tag}.tif")
+    post, post_ds = read(products / f"post_surface_estimate_{resolution_tag}.tif")
     datasets = [uncertainty_ds, support_ds, coverage_ds, pre_ds, post_ds]
     same_grid = all(
         dataset.shape == change_ds.shape
@@ -79,10 +84,12 @@ def bundle_invariants(products: Path) -> dict:
     }
 
 
-def upstream_comparison(products: Path, upstream_path: str | None) -> dict | None:
+def upstream_comparison(
+    products: Path, upstream_path: str | None, resolution_tag: str = "32m"
+) -> dict | None:
     if not upstream_path:
         return None
-    change, dataset = read(products / "surface_change_32m.tif")
+    change, dataset = read(products / f"surface_change_{resolution_tag}.tif")
     change_valid = valid(change, dataset.nodata)
     observed: list[float] = []
     upstream: list[float] = []
@@ -109,8 +116,8 @@ def upstream_comparison(products: Path, upstream_path: str | None) -> dict | Non
 def main() -> None:
     args = parse_args()
     products = Path(args.products)
-    invariants = bundle_invariants(products)
-    comparison = upstream_comparison(products, args.upstream_csv)
+    invariants = bundle_invariants(products, args.resolution_tag)
+    comparison = upstream_comparison(products, args.upstream_csv, args.resolution_tag)
     passed = bool(
         invariants["sameGrid"]
         and invariants["masksConsistent"]
@@ -120,6 +127,7 @@ def main() -> None:
     )
     result = {
         "schemaVersion": 1,
+        "resolutionTag": args.resolution_tag,
         "passed": passed,
         "invariants": invariants,
         "upstreamComparison": comparison,
