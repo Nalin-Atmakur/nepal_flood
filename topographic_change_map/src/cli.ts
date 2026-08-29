@@ -2,12 +2,15 @@
 import { cloneBreezeProfile } from "./browser/clone.js";
 import {
   isWithinSecondaryDisplay,
+  launchBrowserSession,
   launchHeadedSession,
   readChromeWindowBounds,
 } from "./browser/launch.js";
 import { loadConfig } from "./config.js";
 import { buildPublicCatalogue } from "./catalogue/build.js";
+import { startDashboard } from "./dashboard.js";
 import { readMousePosition } from "./mouse.js";
+import { runPublicParallaxPilots } from "./parallax/publicPilot.js";
 import { checkRemote } from "./remote.js";
 import { loadState, saveState } from "./state.js";
 
@@ -27,6 +30,10 @@ async function main(): Promise<void> {
   }
   if (command === "catalogue-public") {
     process.stdout.write(`${JSON.stringify(await buildPublicCatalogue())}\n`);
+    return;
+  }
+  if (command === "parallax-public") {
+    process.stdout.write(`${JSON.stringify(await runPublicParallaxPilots())}\n`);
     return;
   }
   if (command === "browser-prepare") {
@@ -61,9 +68,23 @@ async function main(): Promise<void> {
     await session.context.close();
     return;
   }
+  if (command === "browser-run") {
+    const dashboard = await startDashboard();
+    const session = await launchBrowserSession({ headed: false, dashboardUrl: dashboard.url });
+    process.stdout.write(`${JSON.stringify({ ok: true, persistent: true, headed: false })}\n`);
+    await new Promise<void>((resolve) => {
+      const finish = (): void => resolve();
+      process.once("SIGINT", finish);
+      process.once("SIGTERM", finish);
+      session.context.once("close", finish);
+    });
+    await session.context.close().catch(() => undefined);
+    await dashboard.close().catch(() => undefined);
+    return;
+  }
 
   process.stdout.write(
-    "Usage: npm run cli -- <preflight|remote-check|browser-prepare|browser-smoke|catalogue-public>\n",
+    "Usage: npm run cli -- <preflight|remote-check|browser-prepare|browser-smoke|browser-run|catalogue-public|parallax-public>\n",
   );
 }
 

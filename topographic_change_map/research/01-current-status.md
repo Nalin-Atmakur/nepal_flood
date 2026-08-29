@@ -37,7 +37,9 @@ Status:
 | Public RPC/physical camera model | Fail |
 | Trustworthy absolute elevation | Blocked |
 
-The matching artifacts, AOI, parameters, plots, and residual measurements are not yet committed to this repository. Until they are, these findings should be treated as project-summary claims awaiting reproducible artifacts.
+The original matching artifacts, AOI, parameters, plots, and residual measurements described in the supplied summary were not committed. Those original numbers remain project-summary claims; the replacement pilot below is the reproducible evidence used by this project.
+
+A reproducible replacement pilot is now committed under `python/`, `src/parallax/`, and `parallax/`. Using reciprocal SIFT matching at ratio 0.82, it obtains 200 matches, 100 RANSAC inliers, 23% AOI-grid support, and a 3.44 m median residual after global partial-affine alignment. The residual/elevation correlation against coarse GLO-30 is weak (0.229), so the run does not strongly validate terrain dependence and still cannot recover absolute height.
 
 ## Planet SkySat and Pelican
 
@@ -64,6 +66,8 @@ Status:
 | Authenticated API test | Blocked until `PL_API_KEY` is available |
 
 The reproducible public catalogue now computes approximately 30.25 degrees of separation from the published look metadata. This is a ranking estimate, not RPC ray geometry. The exact SkySat-Pelican common footprint covers only 35.1% of the explicit 1 km Syabrubesi pilot square; the earlier “fully cover” statement did not use this versioned AOI polygon.
+
+The reproducible public-ortho correspondence pilot fails for this pair: 65 reciprocal matches produce only four RANSAC inliers and 4% grid support. This does not rule out the original Basic/RPC products, but it removes the public orthos as a credible reconstruction route.
 
 ## Pre-flood baseline
 

@@ -12,9 +12,9 @@ Catalogue every discoverable free candidate and camera/product record. Download 
 
 Never make purchases, submit priced orders, or start auto-renewing trials. Record prices and access blockers without committing financially.
 
-## 2026-08-29 — D4: Headed Breeze Chrome clone
+## 2026-08-29 — D4: Breeze Chrome clone with headless default
 
-Clone the existing Breeze `Profile 12` into a custom persistent automation directory. Run installed Google Chrome visibly on the secondary built-in display using Playwright/CDP. Preserve the original profile and never use system mouse/keyboard automation.
+Clone the existing Breeze `Profile 12` into a custom persistent automation directory. Run installed Google Chrome headlessly by default using Playwright/CDP so it does not steal focus. Escalate the same persistent clone to a headed window on the secondary built-in display only for CAPTCHA/MFA, visual review, or debugging. Preserve the original profile and never use system mouse/keyboard automation.
 
 ## 2026-08-29 — D5: Gmail and scoped SMS verification
 
@@ -43,3 +43,11 @@ Coverage decisions use versioned polygons. Against `syabrubesi-pilot-v1`, the pu
 ## 2026-08-29 — D11: Public STAC products remain parallax-only
 
 The live catalogue contains 37 public Vantor/Planet scenes and zero rigorous camera-model assets. Approximate ray geometry may prioritize correspondence experiments, but these public orthorectified products are not promoted to absolute-height DSM reconstruction.
+
+## 2026-08-29 — D12: Public-pilot evidence is limited
+
+The reproducible Vantor pilot finds 200 reciprocal SIFT matches, 100 RANSAC inliers, 23% spatial support, and a 3.44 m median residual after global alignment. Its GLO-30 residual/elevation correlation is weak (0.229), so the pilot supports correspondence and uncalibrated residual displacement but does not independently establish a strong height relationship. The public SkySat-Pelican pair fails sparse correspondence with only four RANSAC inliers.
+
+## 2026-08-29 — D13: Headless browser default
+
+Routine provider and Gmail automation runs headlessly to avoid focus interruption. The persistent Breeze clone is reopened headed on secondary display 1 only for CAPTCHA/MFA handoff, explicit visual inspection, or debugging. Headless screenshots and DOM/network diagnostics remain available.

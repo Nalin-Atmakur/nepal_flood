@@ -40,9 +40,9 @@ The project is complete only when all of the following exist or have been exhaus
 - Geometry scoring and small image crops.
 - Project dashboard and a maximum 20 GiB local working cache.
 
-### Headed Chrome invariant
+### Browser mode policy
 
-All provider and Gmail browser automation runs visibly on the main Mac's secondary built-in display:
+Headless Chrome is the default so provider automation does not steal focus. A headed session is an explicit escalation for CAPTCHA/MFA handoff, visual review, or provider-flow debugging and uses the main Mac's secondary built-in display:
 
 ```text
 Display index: 1
@@ -53,11 +53,12 @@ Chrome bounds: x=2590, y=538, width=1380, height=860
 
 - Clone the existing Breeze Chrome `Profile 12` into a persistent custom automation directory.
 - Never modify the original Breeze profile.
-- Use installed Google Chrome, `headless: false`, controlled with Playwright/CDP.
+- Use installed Google Chrome controlled with Playwright/CDP.
 - Never use the system mouse or global keyboard input.
-- Keep Gmail, the active provider, and the local dashboard visible in tabs.
-- Do not fall back to headless execution.
-- CAPTCHA challenges pause visibly for user completion.
+- Run routine navigation, metadata discovery, and inbox polling headlessly.
+- When a visual gate is detected, persist state, close the headless context cleanly, and reopen the same clone headed on display 1.
+- Keep Gmail, the active provider, and the local dashboard visible in headed-mode tabs.
+- CAPTCHA challenges pause visibly for user completion, then the workflow may return to headless mode.
 
 ### Sandbox Mac
 

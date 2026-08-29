@@ -40,9 +40,11 @@ stat -f '%Lp' topographic_change_map/.env.topographic.local
 
 The runner must refuse to load a tracked file or permissions broader than `0600`. Never print the file.
 
-## Headed Chrome invariant
+## Browser mode policy
 
-The automation launcher must assert:
+Routine automation runs headlessly. Use headed mode only for CAPTCHA/MFA handoff or explicit visual inspection.
+
+The headed launcher must assert:
 
 - browser is not headless;
 - executable is installed Google Chrome;

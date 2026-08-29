@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T19:09:51.443Z",
+  "results": [
+    {
+      "pilotId": "vantor-opposite-look-syabrubesi",
+      "schemaVersion": 1,
+      "aoiId": "syabrubesi-pilot-v1",
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B040001100881710",
+      "algorithm": "SIFT reciprocal ratio + RANSAC partial affine in EPSG:32645",
+      "leftKeypoints": 30001,
+      "rightKeypoints": 30000,
+      "reciprocalRatioMatches": 200,
+      "ransacInliers": 100,
+      "inlierFraction": 0.5,
+      "gridSize": 10,
+      "occupiedGridCells": 23,
+      "spatialSupportFraction": 0.23,
+      "directOffsetMedianM": [
+        -0.8718988099426497,
+        -4.523458935320377
+      ],
+      "residualMedianM": 3.4443633808027,
+      "residualP90M": 8.233210185177924,
+      "residualMaxM": 14.329993049307195,
+      "globalAffineLocalUtm": [
+        [
+          1.009019630374602,
+          -0.0032941692636935566,
+          0.024755989765116542
+        ],
+        [
+          0.0032941692636935566,
+          1.009019630374602,
+          -3.563175083097374
+        ]
+      ],
+      "qualityVerdict": "PASS_LIMITED_PARALLAX",
+      "elevationDiagnostic": {
+        "sampleCount": 100,
+        "principalResidualDirection": [
+          0.24309558403534018,
+          0.9700023386685811
+        ],
+        "principalResidualVsElevationCorrelation": 0.22873033911536425,
+        "rSquared": 0.05231756803182953,
+        "dem": "Copernicus GLO-30; coarse diagnostic only"
+      },
+      "absoluteHeightRecoverable": false,
+      "limitation": "Orthorectified public products lack rigorous camera models; residuals cannot be converted defensibly to height."
+    },
+    {
+      "pilotId": "skysat-pelican-syabrubesi",
+      "schemaVersion": 1,
+      "aoiId": "syabrubesi-pilot-v1",
+      "leftSceneId": "20260827_020055_ssc1_u0001",
+      "rightSceneId": "20260827_060959_65_3009",
+      "algorithm": "SIFT reciprocal ratio + RANSAC partial affine in EPSG:32645",
+      "leftKeypoints": 16699,
+      "rightKeypoints": 13040,
+      "reciprocalRatioMatches": 65,
+      "ransacInliers": 4,
+      "inlierFraction": 0.06153846153846154,
+      "gridSize": 10,
+      "occupiedGridCells": 4,
+      "spatialSupportFraction": 0.04,
+      "directOffsetMedianM": [
+        -106.81549226355855,
+        -429.92207951121964
+      ],
+      "residualMedianM": 3.9140982923558165,
+      "residualP90M": 5.916267953877752,
+      "residualMaxM": 6.571048596832857,
+      "globalAffineLocalUtm": [
+        [
+          -0.13746782882396355,
+          0.3473442320455809,
+          -239.07313212948813
+        ],
+        [
+          -0.3473442320455809,
+          -0.13746782882396355,
+          -393.79705012586294
+        ]
+      ],
+      "qualityVerdict": "FAIL_SPARSE_CORRESPONDENCE",
+      "elevationDiagnostic": {
+        "sampleCount": 0,
+        "principalResidualVsElevationCorrelation": null,
+        "rSquared": null
+      },
+      "absoluteHeightRecoverable": false,
+      "limitation": "Orthorectified public products lack rigorous camera models; residuals cannot be converted defensibly to height."
+    }
+  ]
+}

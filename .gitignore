@@ -45,6 +45,8 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
+__pycache__/
+*.pyc
 
 # Topographic-change automation: local secrets, browser state, caches, and bulk products
 .firecrawl/

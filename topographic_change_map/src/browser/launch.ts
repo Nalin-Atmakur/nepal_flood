@@ -14,6 +14,11 @@ export interface HeadedSession {
   provider: Page;
 }
 
+export interface BrowserLaunchOptions {
+  headed: boolean;
+  dashboardUrl?: string;
+}
+
 export interface WindowBounds {
   x: number;
   y: number;
@@ -30,21 +35,31 @@ export function isWithinSecondaryDisplay(bounds: WindowBounds = CHROME_BOUNDS): 
   );
 }
 
-export async function launchHeadedSession(): Promise<HeadedSession> {
+export async function launchHeadedSession(dashboardUrl?: string): Promise<HeadedSession> {
+  return await launchBrowserSession({ headed: true, ...(dashboardUrl ? { dashboardUrl } : {}) });
+}
+
+export async function launchBrowserSession(options: BrowserLaunchOptions): Promise<HeadedSession> {
   if (!fs.existsSync(CHROME_EXECUTABLE)) throw new Error("Google Chrome is not installed");
-  if (!isWithinSecondaryDisplay()) throw new Error("Configured Chrome bounds leave display 1");
+  if (options.headed && !isWithinSecondaryDisplay()) {
+    throw new Error("Configured Chrome bounds leave display 1");
+  }
 
   const context = await chromium.launchPersistentContext(AUTOMATION_PROFILE_ROOT, {
     executablePath: CHROME_EXECUTABLE,
     channel: "chrome",
-    headless: false,
+    headless: !options.headed,
     chromiumSandbox: true,
     viewport: null,
     acceptDownloads: true,
     args: [
       "--profile-directory=Default",
-      `--window-position=${CHROME_BOUNDS.x},${CHROME_BOUNDS.y}`,
-      `--window-size=${CHROME_BOUNDS.width},${CHROME_BOUNDS.height}`,
+      ...(options.headed
+        ? [
+            `--window-position=${CHROME_BOUNDS.x},${CHROME_BOUNDS.y}`,
+            `--window-size=${CHROME_BOUNDS.width},${CHROME_BOUNDS.height}`,
+          ]
+        : []),
       "--no-first-run",
       "--no-default-browser-check",
       "--disable-backgrounding-occluded-windows",
@@ -53,7 +68,10 @@ export async function launchHeadedSession(): Promise<HeadedSession> {
 
   const existing = context.pages();
   const dashboard = existing[0] ?? (await context.newPage());
-  await dashboard.goto("data:text/html,<title>Topographic Change Map</title><h1>Automation dashboard</h1><p>Headed Chrome is ready.</p>");
+  await dashboard.goto(
+    options.dashboardUrl ??
+      "data:text/html,<title>Topographic Change Map</title><h1>Automation dashboard</h1><p>Headed Chrome is ready.</p>",
+  );
   const gmail = await context.newPage();
   await gmail.goto("https://mail.google.com/", { waitUntil: "domcontentloaded" });
   const provider = await context.newPage();

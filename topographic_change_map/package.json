@@ -11,8 +11,11 @@
     "preflight": "tsx src/cli.ts preflight",
     "browser:prepare": "tsx src/cli.ts browser-prepare",
     "browser:smoke": "tsx src/cli.ts browser-smoke",
+    "browser:run": "tsx src/cli.ts browser-run",
+    "browser:headed": "tsx src/cli.ts browser-smoke",
     "remote:check": "tsx src/cli.ts remote-check",
-    "catalogue:public": "tsx src/cli.ts catalogue-public"
+    "catalogue:public": "tsx src/cli.ts catalogue-public",
+    "parallax:public": "tsx src/cli.ts parallax-public"
   },
   "dependencies": {
     "@turf/turf": "^7.4.0",
