@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 23:01 BST
+Last updated: 2026-08-29 23:15 BST
 
 ## Goal
 
@@ -67,6 +67,10 @@ Completed:
 - Viewer now exposes strict 32 m and lazy-loaded experimental 10 m grids; both pass headless WebGL smoke tests.
 - Official Copernicus Data Space catalogue added 61 exact-overlap Sentinel-2 L2A context products (57 pre-cutoff, 4 post-cutoff); all are automatically rejected for precision DSM use, and only two have scene cloud below 20%.
 - Current automated checks pass: 16 Python tests and 12 TypeScript tests.
+- Machine-readable release audit currently passes 13/13 artifact, validation, catalogue, publication, source-exclusion, and secret-safety checks; external gates remain listed separately.
+- Redundant local source COGs and 1 m warp caches were checksum-matched to the sandbox copies and moved to recoverable macOS Trash; bulk/source storage is now sandbox-only.
+- Earthdata was retried in ordinary sandbox Chrome after restoring the password fields, but its invisible reCAPTCHA again rejected submission; no solvable checkbox/image challenge is exposed, so VNC remains the explicit user handoff.
+- Dense matching now evaluates candidates in worker batches with durable progress reporting, reducing scheduler overhead for subsequent pairs.
 - A self-contained static viewer bundle is prepared under `docs/topographic-change-viewer/`; GitHub Pages activation remains repository-admin controlled.
 - The protected HMA request was exercised safely and returned HTTP 401, confirming that the pending Earthdata CAPTCHA/account activation is the only download gate.
 

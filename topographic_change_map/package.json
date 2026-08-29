@@ -23,6 +23,7 @@
     "parallax:public": "tsx src/cli.ts parallax-public",
     "viewer:build": "vite build",
     "viewer:test": "tsx scripts/viewer_smoke.ts",
+    "audit:release": "tsx scripts/release_audit.ts",
     "coverage:build": "tsx src/cli.ts coverage-build"
   },
   "dependencies": {

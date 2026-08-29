@@ -52,6 +52,7 @@ grid, settlement markers, and live latitude/longitude over OpenStreetMap.
 - [UPSTREAM.md](UPSTREAM.md) — GeoPera audit and attribution
 - [RUNBOOK.md](RUNBOOK.md) — operation and recovery
 - [PUBLICATION.md](PUBLICATION.md) — live viewer URL, Pages activation, and local build
+- [products/release-audit.json](products/release-audit.json) — machine-readable release-completeness evidence and external gates
 - [research/README.md](research/README.md) — detailed research package
 
 ## Test everything
@@ -62,6 +63,7 @@ npm test
 npm run test:python
 npm run viewer:build
 npm run viewer:test
+npm run audit:release
 ```
 
 Raw satellite imagery, credentials, browser profiles, caches, and large intermediates are deliberately excluded from Git.

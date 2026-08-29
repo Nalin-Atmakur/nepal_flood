@@ -158,33 +158,42 @@ def extract_tie_points(
         flush=True,
     )
 
-    def evaluate(candidate: Candidate):
-        return _window_candidate(
-            candidate,
-            ref,
-            tgt,
-            hanning,
-            window_size,
-            max_shift,
-            nodata,
-            min_std,
-            min_range_fraction,
-            max_mean,
-        )
+    def evaluate_batch(batch: list[Candidate]):
+        return [
+            _window_candidate(
+                candidate,
+                ref,
+                tgt,
+                hanning,
+                window_size,
+                max_shift,
+                nodata,
+                min_std,
+                min_range_fraction,
+                max_mean,
+            )
+            for candidate in batch
+        ]
 
     with ThreadPoolExecutor(max_workers=worker_count) as executor:
         measured = []
-        for index, result in enumerate(
-            executor.map(evaluate, candidates, chunksize=64), start=1
-        ):
-            if result:
-                measured.append(result)
-            if index % 10_000 == 0 or index == len(candidates):
+        batch_size = 64
+        batches = [
+            candidates[start : start + batch_size]
+            for start in range(0, len(candidates), batch_size)
+        ]
+        completed = 0
+        next_report = 10_000
+        for batch, results in zip(batches, executor.map(evaluate_batch, batches)):
+            measured.extend(result for result in results if result)
+            completed += len(batch)
+            if completed >= next_report or completed == len(candidates):
                 print(
-                    f"tie-point progress={index}/{len(candidates)} "
+                    f"tie-point progress={completed}/{len(candidates)} "
                     f"quality-passing={len(measured)}",
                     flush=True,
                 )
+                next_report += 10_000
     measured = [result for result in measured if result[4] >= min_reliability]
     if not measured:
         empty = np.array([], dtype=np.float64)

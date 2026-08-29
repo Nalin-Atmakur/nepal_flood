@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T22:14:54.480Z",
+  "passed": true,
+  "scientificClass": "RESEARCH_ONLY",
+  "checks": [
+    {
+      "id": "durable-documentation",
+      "passed": true,
+      "evidence": "7 canonical documents"
+    },
+    {
+      "id": "ortho-change-v3-strict-bundle",
+      "passed": true,
+      "evidence": "13 required artifacts"
+    },
+    {
+      "id": "ortho-change-v3-strict-validation",
+      "passed": true,
+      "evidence": "validation.json passed=true"
+    },
+    {
+      "id": "ortho-change-v3-strict-promotion",
+      "passed": true,
+      "evidence": "promoted only as RESEARCH_ONLY"
+    },
+    {
+      "id": "ortho-change-10m-experimental-bundle",
+      "passed": true,
+      "evidence": "13 required artifacts"
+    },
+    {
+      "id": "ortho-change-10m-experimental-validation",
+      "passed": true,
+      "evidence": "validation.json passed=true"
+    },
+    {
+      "id": "ortho-change-10m-experimental-promotion",
+      "passed": true,
+      "evidence": "promoted only as RESEARCH_ONLY"
+    },
+    {
+      "id": "public-imagery-catalogue",
+      "passed": true,
+      "evidence": "37 Vantor/Planet scenes"
+    },
+    {
+      "id": "sentinel-context-catalogue",
+      "passed": true,
+      "evidence": "61 exact-overlap Sentinel-2 products"
+    },
+    {
+      "id": "static-viewer",
+      "passed": true,
+      "evidence": "32 m and 10 m static viewer grids"
+    },
+    {
+      "id": "source-imagery-excluded",
+      "passed": true,
+      "evidence": "21 tracked TIFFs, all aggregate products"
+    },
+    {
+      "id": "secret-file-mode",
+      "passed": true,
+      "evidence": "mode=600"
+    },
+    {
+      "id": "secret-file-untracked",
+      "passed": true,
+      "evidence": "ignored local secret file is not tracked"
+    }
+  ],
+  "externalGates": [
+    "Earthdata HMA download awaits manual CAPTCHA/account activation.",
+    "Rigorous absolute DSM awaits original RPC/physical camera products.",
+    "GitHub Pages awaits repository-admin activation; committed static viewer is independently reachable."
+  ]
+}
