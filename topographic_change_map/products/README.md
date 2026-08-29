@@ -12,6 +12,7 @@ These are aggregate, non-personal research products derived from public Vantor i
 | `uncertainty_32m.tif` | Per-cell uncertainty derived from stable-terrain residual scatter and match reliability |
 | `support_count_32m.tif` | Number of direct tie-point observations entering each cell |
 | `coverage_32m.tif` | `1` only where direct measurement support exists |
+| `significant_change_32m.tif` | `−1` significant loss, `0` measured but not significant, `+1` significant gain, `−128` nodata; two-sigma threshold |
 | `pre_glo30_32m.tif` | Coarse pre-event contextual surface |
 | `post_surface_estimate_32m.tif` | Pre-event context plus measured change, only at supported cells |
 | `measured-support.geojson` | WGS84 polygons of direct measurement support |

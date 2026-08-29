@@ -10,6 +10,9 @@
 | Median per-cell uncertainty | 6.882 m |
 | Median change | +1.746 m |
 | P10 / P90 change | −5.487 m / +13.337 m |
+| Two-sigma significant cells | 132 of 1,252 (10.5%) |
+| Significant positive / negative | 115 / 17 |
+| Significant area | 0.135 km² |
 | Raster grids identical | Pass |
 | Change/uncertainty/support masks identical | Pass |
 | Uncertainty positive | Pass |
@@ -47,6 +50,17 @@ Independent relaxed-layer runs used Apple Silicon/Python 3.13 and Intel/Python 3
 ## Affected-area coverage
 
 The strict layer directly measures 0.520 km² of UNOSAT’s 37.415 km² affected mask: 1.39% of the full authoritative extent and 9.54% of the affected area inside the current processing rectangle. Additional Vantor pairs and the 10 m experimental layer are tracked separately and must not be conflated with the default strict coverage.
+
+## Buildings
+
+| Classification | Records |
+|---|---:|
+| Significant positive change | 2 |
+| Significant negative change | 2 |
+| Measured but not significant | 305 |
+| Unsupported | 3,951 |
+
+Only four building records intersect a two-sigma significant cell. This is not enough evidence to label any building buried; the building layer is a screening overlay only.
 
 ## Interpretation boundary
 

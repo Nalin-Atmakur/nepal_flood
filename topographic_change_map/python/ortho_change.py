@@ -294,6 +294,17 @@ def main() -> None:
     write_raster(output / "uncertainty_32m.tif", uncertainty_out, output_transform, "float32", -9999.0)
     write_raster(output / "support_count_32m.tif", support, output_transform, "uint16", 0)
     write_raster(output / "coverage_32m.tif", coverage, output_transform, "uint8", 0)
+    significance = np.full(change.shape, -128, dtype=np.int8)
+    significance[valid] = 0
+    significance[valid & (np.abs(change) > 2 * uncertainty) & (change > 0)] = 1
+    significance[valid & (np.abs(change) > 2 * uncertainty) & (change < 0)] = -1
+    write_raster(
+        output / "significant_change_32m.tif",
+        significance,
+        output_transform,
+        "int8",
+        -128,
+    )
 
     pre_dem = np.full((output_height, output_width), -9999.0, dtype=np.float32)
     env = {
@@ -369,6 +380,9 @@ def main() -> None:
         "corridorP90ChangeM": float(np.percentile(corridor_change, 90)),
         "supportedCells": int(valid.sum()),
         "supportedAreaKm2": float(valid.sum() * args.output_res_m**2 / 1e6),
+        "significantCells2Sigma": int(
+            ((significance == 1) | (significance == -1)).sum()
+        ),
         "absoluteHeightSource": "Copernicus GLO-30 broad baseline",
         "accuracyClass": "RESEARCH_ONLY",
         "limitations": [

@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 22:02 BST
+Last updated: 2026-08-29 22:12 BST
 
 ## Goal
 
@@ -53,6 +53,11 @@ Completed:
 - Strict building overlay: 309 of 4,260 building records have direct measurement support; all others remain null/unsupported.
 - Exact WGS84 processing bounds and 1 km reporting tiles exported; strict layer spans 22 reporting tiles.
 - Interactive Three.js viewer and lazy OpenStreetMap context panel pass headless Chrome/WebGL tests with no failed local resources.
+- Two-sigma significance layer added: 132 significant strict cells (115 positive, 17 negative); non-significant measured cells are muted in the viewer.
+- Building significance classification added: 2 positive, 2 negative, 305 measured-not-significant, 3,951 unsupported.
+- Exact context export covers `28.139691–28.283023°N`, `85.310212–85.393888°E`; strict support occupies 22 one-kilometre reporting tiles.
+- Geographic context panel now includes OpenStreetMap, live cursor coordinates, UNOSAT/HOT extents, Vantor overlap, measured support, reporting grid, and settlement markers.
+- GitHub Pages workflow prepared for public viewer deployment.
 - Planet account is entitlement-blocked; Earthdata registration is filled and waiting for manual reCAPTCHA.
 
 In progress:

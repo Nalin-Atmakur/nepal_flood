@@ -6,9 +6,9 @@ import "./style.css";
 type Mode = "change" | "elevation" | "uncertainty" | "support";
 interface GridData {
   schemaVersion:number; width:number; height:number; originX:number; originY:number; resolutionM:number; baseElevationM:number;
-  elevationM:(number|null)[]; surfaceChangeM:(number|null)[]; uncertaintyM:(number|null)[]; supportCount:number[]; measured:number[];
+  elevationM:(number|null)[]; surfaceChangeM:(number|null)[]; uncertaintyM:(number|null)[]; supportCount:number[]; measured:number[]; significance:number[];
   statistics:Record<string,number|null>; provenance:Record<string,string>;
-  buildings?:Array<{id:string;source:string;damage:string|number;col:number;row:number;elevationM:number;changeM:number|null;uncertaintyM:number|null;validFraction:number}>;
+  buildings?:Array<{id:string;source:string;damage:string|number;col:number;row:number;elevationM:number;changeM:number|null;uncertaintyM:number|null;validFraction:number;significanceClass:string}>;
 }
 
 const viewport=document.querySelector<HTMLElement>("#viewport")!;
@@ -38,6 +38,7 @@ function colorAt(index:number):THREE.Color {
   const measured=grid.measured[index]===1;
   if(!measured && !unsupported.checked) return new THREE.Color(0x071018);
   if(!measured) return new THREE.Color(0x26323a);
+  if(mode==="change"&&grid.significance[index]===0) return new THREE.Color(0x667078);
   if(mode==="change") return ramp(grid.surfaceChangeM[index]??0,-20,20,changeStops);
   if(mode==="uncertainty") return ramp(grid.uncertaintyM[index]??0,0,10,[new THREE.Color(0x1f9d72),new THREE.Color(0xf0be45),new THREE.Color(0xc73b38)]);
   if(mode==="support") return ramp(grid.supportCount[index]??0,1,5,[new THREE.Color(0x596873),new THREE.Color(0x65d0e8),new THREE.Color(0xffffff)]);
@@ -51,7 +52,7 @@ function build(data:GridData):void {
   for(let row=0;row<height-1;row++)for(let col=0;col<width-1;col++){const a=row*width+col,b=a+1,c=a+width,d=c+1;indices.push(a,c,b,b,c,d);}
   const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.BufferAttribute(positions,3));geometry.setAttribute("color",new THREE.BufferAttribute(colors,3));geometry.setIndex(indices);
   mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({vertexColors:true,roughness:.86,metalness:0,side:THREE.DoubleSide}));scene.add(mesh);updateGeometry();
-  if(grid.buildings?.length){const buildingPositions=new Float32Array(grid.buildings.length*3),buildingColors=new Float32Array(grid.buildings.length*3);grid.buildings.forEach((building,i)=>{buildingPositions.set([(building.col-(width-1)/2)*resolutionM,((height-1)/2-building.row)*resolutionM,(building.elevationM-grid.baseElevationM)*vertical+20],i*3);const damage=String(building.damage).toLowerCase(),color=damage.includes("destroy")?new THREE.Color(0xff473d):damage.includes("damage")?new THREE.Color(0xffb23d):new THREE.Color(0x67d2ee);buildingColors.set([color.r,color.g,color.b],i*3);});const pointsGeometry=new THREE.BufferGeometry();pointsGeometry.setAttribute("position",new THREE.BufferAttribute(buildingPositions,3));pointsGeometry.setAttribute("color",new THREE.BufferAttribute(buildingColors,3));buildingPoints=new THREE.Points(pointsGeometry,new THREE.PointsMaterial({size:28,vertexColors:true,sizeAttenuation:true}));scene.add(buildingPoints);}
+  if(grid.buildings?.length){const buildingPositions=new Float32Array(grid.buildings.length*3),buildingColors=new Float32Array(grid.buildings.length*3);grid.buildings.forEach((building,i)=>{buildingPositions.set([(building.col-(width-1)/2)*resolutionM,((height-1)/2-building.row)*resolutionM,(building.elevationM-grid.baseElevationM)*vertical+20],i*3);const significance=building.significanceClass??"MEASURED_NOT_SIGNIFICANT",color=significance==="SIGNIFICANT_POSITIVE"?new THREE.Color(0xff6b32):significance==="SIGNIFICANT_NEGATIVE"?new THREE.Color(0x8046c7):new THREE.Color(0x74838c);buildingColors.set([color.r,color.g,color.b],i*3);});const pointsGeometry=new THREE.BufferGeometry();pointsGeometry.setAttribute("position",new THREE.BufferAttribute(buildingPositions,3));pointsGeometry.setAttribute("color",new THREE.BufferAttribute(buildingColors,3));buildingPoints=new THREE.Points(pointsGeometry,new THREE.PointsMaterial({size:28,vertexColors:true,sizeAttenuation:true}));scene.add(buildingPoints);}
   stats.innerHTML=Object.entries(grid.statistics).map(([key,value])=>`<dt>${key.replace(/[A-Z]/g,m=>` ${m.toLowerCase()}`)}</dt><dd>${typeof value==="number"?value.toFixed(key.includes("Fraction")?3:2):"n/a"}</dd>`).join("");
   controls.target.set(0,0,500);controls.update();updateLegend();
   const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();renderer.domElement.addEventListener("click",event=>{const rect=renderer.domElement.getBoundingClientRect();pointer.set((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObject(mesh)[0];if(!hit)return;const index=hit.face?.a??0,row=Math.floor(index/grid.width),col=index%grid.width;inspection.textContent=`Cell ${col}, ${row} · elevation ${(grid.elevationM[index]??NaN).toFixed(1)} m · change ${grid.surfaceChangeM[index]?.toFixed(1)??"unsupported"} m · uncertainty ${grid.uncertaintyM[index]?.toFixed(1)??"n/a"} m · support ${grid.supportCount[index]}`;});

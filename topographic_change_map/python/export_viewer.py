@@ -59,6 +59,8 @@ def main() -> None:
     post, post_dataset = read(products / "post_surface_estimate_32m.tif")
     change, change_dataset = read(products / "surface_change_32m.tif")
     uncertainty, uncertainty_dataset = read(products / "uncertainty_32m.tif")
+    with rasterio.open(products / "significant_change_32m.tif") as source:
+        significance = source.read(1).astype(np.int8)
     with rasterio.open(products / "support_count_32m.tif") as source:
         support = source.read(1).astype(np.int32)
     for dataset in [post_dataset, change_dataset, uncertainty_dataset]:
@@ -96,6 +98,7 @@ def main() -> None:
                     "changeM": properties.get("surface_change_median_m"),
                     "uncertaintyM": properties.get("change_uncertainty_median_m"),
                     "validFraction": properties.get("change_valid_fraction"),
+                    "significanceClass": properties.get("change_significance_class"),
                 }
             )
     payload = {
@@ -112,6 +115,7 @@ def main() -> None:
         "uncertaintyM": finite_or_none(uncertainty),
         "supportCount": support.ravel().tolist(),
         "measured": measured.astype(np.uint8).ravel().tolist(),
+        "significance": significance.ravel().tolist(),
         "buildings": buildings,
         "statistics": {
             "totalCells": int(measured.size),
@@ -121,6 +125,9 @@ def main() -> None:
             "changeP10M": float(np.nanpercentile(change, 10)) if measured.any() else None,
             "changeP90M": float(np.nanpercentile(change, 90)) if measured.any() else None,
             "uncertaintyMedianM": float(np.nanmedian(uncertainty)) if measured.any() else None,
+            "significantCells": int(
+                ((significance == 1) | (significance == -1)).sum()
+            ),
         },
         "provenance": {
             "method": "Opposite-look orthorectified-image parallax",

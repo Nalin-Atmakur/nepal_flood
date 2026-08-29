@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "sigmaThreshold": 2.0,
+  "measuredCells": 1252,
+  "significantPositiveCells": 115,
+  "significantNegativeCells": 17,
+  "notSignificantCells": 1120,
+  "significantAreaKm2": 0.13516799999999998,
+  "significantFractionOfMeasured": 0.10543130990415335
+}

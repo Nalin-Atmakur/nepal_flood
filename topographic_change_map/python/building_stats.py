@@ -82,6 +82,18 @@ def sample_geometry(
     measured = values[valid]
     measured_uncertainty = uncertainties[valid]
     measured_support = supports[valid]
+    significant = valid & (np.abs(values) > 2 * uncertainties)
+    significant_values = values[significant]
+    if significant_values.size:
+        significance_class = (
+            "SIGNIFICANT_POSITIVE"
+            if np.median(significant_values) > 0
+            else "SIGNIFICANT_NEGATIVE"
+        )
+    elif measured.size:
+        significance_class = "MEASURED_NOT_SIGNIFICANT"
+    else:
+        significance_class = "UNSUPPORTED"
     return {
         "change_valid_cells": int(valid.sum()),
         "change_candidate_cells": candidate_count,
@@ -91,6 +103,11 @@ def sample_geometry(
         "surface_change_p90_m": float(np.percentile(measured, 90)) if measured.size else None,
         "change_uncertainty_median_m": float(np.median(measured_uncertainty)) if measured.size else None,
         "change_support_median": float(np.median(measured_support)) if measured.size else None,
+        "change_significant_cells": int(significant.sum()),
+        "change_significant_fraction": float(significant.sum() / valid.sum())
+        if valid.any()
+        else 0.0,
+        "change_significance_class": significance_class,
         "change_measurement_status": "MEASURED" if measured.size else "UNSUPPORTED",
     }
 
