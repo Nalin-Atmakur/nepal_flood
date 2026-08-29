@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "upstreamRepository": "geo-pera/bhotekoshi-2026-reconstruction",
+  "upstreamCommit": "43c22e0f9a3777d071c2f181302ca2daad384a53",
+  "denseChangeComparison": {
+    "sampleCount": 144,
+    "correlation": 0.9057097047016895,
+    "rSquared": 0.8203100691908217,
+    "medianAbsoluteDifferenceM": 3.4762675857543943,
+    "medianDifferenceM": -3.3837624502182004,
+    "differenceNmadM": 1.2177552170276642,
+    "observedMedianM": 1.6269899010658264,
+    "referenceMedianM": 3.295
+  },
+  "sparseCenterlineComparison": {
+    "sampleCount": 5,
+    "correlation": 0.991285282158287,
+    "rSquared": 0.9826465106236347,
+    "medianAbsoluteDifferenceM": 0.7803489685058587,
+    "medianDifferenceM": 0.30886180877685554,
+    "differenceNmadM": 1.0548647759628311,
+    "observedMedianM": 14.728861808776855,
+    "referenceMedianM": 14.42
+  },
+  "preBaselineVsHmaCenterline": {
+    "sampleCount": 555,
+    "correlation": 0.999789402651163,
+    "rSquared": 0.9995788496535694,
+    "medianAbsoluteDifferenceM": 1.3751220703125,
+    "medianDifferenceM": 0.747412109375091,
+    "differenceNmadM": 2.014576860351293,
+    "observedMedianM": 1543.629638671875,
+    "referenceMedianM": 1542.5
+  },
+  "depositionWedgeComparison": {
+    "ourDepositionCells": 451,
+    "upstreamWedgeCellsInGrid": 2477,
+    "intersectionCells": 374,
+    "precision": 0.8292682926829268,
+    "recall": 0.15098909971740007,
+    "intersectionOverUnion": 0.14643696162881753
+  },
+  "interpretation": "GeoPera is a same-source reproducibility benchmark, not independent ground truth."
+}

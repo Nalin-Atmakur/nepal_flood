@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "rasterCellAreaKm2": 0.001024,
+  "processingExtentAreaKm2": 126.208,
+  "authoritativeAffectedAreaKm2": 37.41478701880251,
+  "affectedAreaInsideProcessingExtentKm2": 5.451776,
+  "directMeasuredAreaKm2": 1.2820479999999999,
+  "directMeasuredAffectedAreaKm2": 0.520192,
+  "directMeasuredFractionOfAuthoritativeAffectedArea": 0.01390337995880029,
+  "directMeasuredFractionInsideProcessingExtent": 0.09541697971450037
+}

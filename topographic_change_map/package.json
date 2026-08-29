@@ -21,11 +21,13 @@
     "catalogue:public": "tsx src/cli.ts catalogue-public",
     "parallax:public": "tsx src/cli.ts parallax-public",
     "viewer:build": "vite build",
+    "viewer:test": "tsx scripts/viewer_smoke.ts",
     "coverage:build": "tsx src/cli.ts coverage-build"
   },
   "dependencies": {
     "@turf/turf": "^7.4.0",
     "dotenv": "^17.2.2",
+    "maplibre-gl": "^6.6.0",
     "playwright-core": "^1.55.0",
     "three": "^0.185.1",
     "zod": "^4.1.5"

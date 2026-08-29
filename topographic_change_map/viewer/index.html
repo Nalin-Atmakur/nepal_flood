@@ -13,7 +13,7 @@
           <p class="eyebrow">BHOTE KOSHI / TRISHULI · AUGUST 2026</p>
           <h1>Topographic change reconstruction</h1>
         </div>
-        <div class="research-badge">RESEARCH ONLY</div>
+        <div class="header-actions"><button id="context-toggle">Map context</button><div class="research-badge">RESEARCH ONLY</div></div>
       </header>
       <aside id="controls">
         <h2>Surface layer</h2>
@@ -31,6 +31,7 @@
         <dl id="statistics"></dl>
       </aside>
       <main id="viewport" aria-label="Interactive three-dimensional terrain"></main>
+      <section id="context-panel" aria-label="Geographic context map"><div id="context-map"></div><div class="map-key"><span class="unosat">UNOSAT affected</span><span class="pair">Vantor overlap</span><span class="measured">Measured support</span><span class="tiles">1 km reporting grid</span><output id="map-coordinates">28.21°N, 85.35°E</output></div></section>
       <section id="inspection" aria-live="polite">Click the terrain to inspect a cell.</section>
       <footer>
         Drag to orbit · scroll to zoom · right-drag to pan. Unsupported cells are context-only GLO-30 terrain, never measured change.

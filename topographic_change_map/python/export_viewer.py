@@ -9,12 +9,14 @@ from pathlib import Path
 
 import numpy as np
 import rasterio
+from rasterio.warp import transform as transform_coordinates
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--products", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--buildings")
     return parser.parse_args()
 
 
@@ -28,6 +30,25 @@ def read(path: Path) -> tuple[np.ndarray, rasterio.DatasetReader]:
 
 def finite_or_none(array: np.ndarray) -> list[float | None]:
     return [round(float(value), 3) if np.isfinite(value) else None for value in array.ravel()]
+
+
+def geometry_center(geometry: dict) -> tuple[float, float]:
+    points: list[tuple[float, float]] = []
+
+    def visit(value: object) -> None:
+        if isinstance(value, list) and len(value) >= 2 and all(
+            isinstance(item, (int, float)) for item in value[:2]
+        ):
+            points.append((float(value[0]), float(value[1])))
+        elif isinstance(value, list):
+            for item in value:
+                visit(item)
+
+    visit(geometry["coordinates"])
+    return (
+        (min(point[0] for point in points) + max(point[0] for point in points)) / 2,
+        (min(point[1] for point in points) + max(point[1] for point in points)) / 2,
+    )
 
 
 def main() -> None:
@@ -46,6 +67,37 @@ def main() -> None:
     measured = np.isfinite(change) & np.isfinite(post)
     display_elevation = np.where(measured, post, pre)
     finite_pre = pre[np.isfinite(pre)]
+    buildings = []
+    if args.buildings:
+        source = json.loads(Path(args.buildings).read_text())
+        for item in source["features"]:
+            properties = item.get("properties") or {}
+            if properties.get("change_measurement_status") != "MEASURED":
+                continue
+            lon, lat = geometry_center(item["geometry"])
+            east, north = transform_coordinates(
+                "EPSG:4326", "EPSG:32645", [lon], [lat]
+            )
+            col = int((east[0] - pre_dataset.transform.c) / pre_dataset.transform.a)
+            row = int((pre_dataset.transform.f - north[0]) / abs(pre_dataset.transform.e))
+            if row < 0 or row >= pre_dataset.height or col < 0 or col >= pre_dataset.width:
+                continue
+            index = row * pre_dataset.width + col
+            buildings.append(
+                {
+                    "id": properties.get("change_feature_id"),
+                    "source": properties.get("change_source"),
+                    "damage": properties.get("damage")
+                    or properties.get("grade")
+                    or properties.get("damage_class"),
+                    "col": col,
+                    "row": row,
+                    "elevationM": round(float(display_elevation[row, col]), 3),
+                    "changeM": properties.get("surface_change_median_m"),
+                    "uncertaintyM": properties.get("change_uncertainty_median_m"),
+                    "validFraction": properties.get("change_valid_fraction"),
+                }
+            )
     payload = {
         "schemaVersion": 1,
         "crs": str(pre_dataset.crs),
@@ -60,6 +112,7 @@ def main() -> None:
         "uncertaintyM": finite_or_none(uncertainty),
         "supportCount": support.ravel().tolist(),
         "measured": measured.astype(np.uint8).ravel().tolist(),
+        "buildings": buildings,
         "statistics": {
             "totalCells": int(measured.size),
             "measuredCells": int(measured.sum()),

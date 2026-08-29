@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "reference": ".work/products/ortho-change-v2",
+  "candidate": ".work/products/ortho-change-remote-v2",
+  "referenceMeasuredCells": 1889,
+  "candidateMeasuredCells": 1635,
+  "overlapCells": 1486,
+  "maskIntersectionOverUnion": 0.7291462217860648,
+  "changeCorrelation": 0.9935660994003161,
+  "changeRSquared": 0.9871735938775589,
+  "changeMedianAbsoluteDifferenceM": 0.2470170259475708,
+  "changeMedianDifferenceM": -0.13246917724609375,
+  "uncertaintyMedianAbsoluteDifferenceM": 0.5629870891571045
+}

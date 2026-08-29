@@ -15,6 +15,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+import cv2
 import rasterio
 from rasterio.transform import from_origin
 from rasterio.warp import Resampling, reproject
@@ -45,6 +46,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--window-size", type=int, default=96)
     parser.add_argument("--output-res-m", type=float, default=32.0)
     parser.add_argument("--workers", type=int, default=12)
+    parser.add_argument("--min-reliability", type=float, default=25.0)
+    parser.add_argument("--candidate-buffer-m", type=float, default=0.0)
     parser.add_argument("--glo30-url", default=GLO30_URL)
     return parser.parse_args()
 
@@ -178,6 +181,33 @@ def main() -> None:
     if str(source_crs) != "EPSG:32645":
         raise RuntimeError("Inputs must use EPSG:32645")
 
+    cx, cy, centerline_chainage = centerline_arrays(args.centerline)
+    candidate_mask = None
+    if args.candidate_buffer_m > 0:
+        candidate_mask = np.zeros(left_array.shape, dtype=np.uint8)
+        centerline_cols = np.round((cx - source_transform.c) / source_transform.a).astype(np.int32)
+        centerline_rows = np.round((source_transform.f - cy) / abs(source_transform.e)).astype(np.int32)
+        centerline_pixels = np.column_stack([centerline_cols, centerline_rows])
+        centerline_pixels = centerline_pixels[
+            (centerline_cols >= 0)
+            & (centerline_cols < source_width)
+            & (centerline_rows >= 0)
+            & (centerline_rows < source_height)
+        ]
+        if len(centerline_pixels) >= 2:
+            cv2.polylines(
+                candidate_mask,
+                [centerline_pixels.reshape(-1, 1, 2)],
+                isClosed=False,
+                color=1,
+                thickness=max(
+                    1,
+                    round(
+                        2 * args.candidate_buffer_m / abs(source_transform.a)
+                    ),
+                ),
+            )
+        candidate_mask = candidate_mask.astype(bool)
     points = extract_tie_points(
         left_array,
         right_array,
@@ -186,12 +216,13 @@ def main() -> None:
         grid_res=args.grid_res_px,
         window_size=args.window_size,
         max_shift=100,
-        min_reliability=12.0,
+        min_reliability=args.min_reliability,
         nodata=0,
         ransac=False,
         min_std=1.2,
         min_range_fraction=0.002,
         workers=args.workers,
+        candidate_mask=candidate_mask,
     )
     x, y = points["x_map"], points["y_map"]
     if len(x) < 100:
@@ -204,7 +235,6 @@ def main() -> None:
         args.right_azimuth_deg,
     )
     along = points["x_shift_m"] * axis[0] + points["y_shift_m"] * axis[1]
-    cx, cy, centerline_chainage = centerline_arrays(args.centerline)
     distance, chainage = nearest_centerline(x, y, cx, cy, centerline_chainage)
 
     stable = distance > 500
@@ -251,7 +281,8 @@ def main() -> None:
     )
     uncertainty = np.where(
         np.isfinite(change),
-        base_uncertainty_m * np.sqrt(100.0 / np.clip(rel_grid, 12.0, 100.0)),
+        base_uncertainty_m
+        * np.sqrt(100.0 / np.clip(rel_grid, args.min_reliability, 100.0)),
         np.nan,
     ).astype(np.float32)
     valid = np.isfinite(change)
@@ -331,6 +362,8 @@ def main() -> None:
         "stableMedianChangeM": float(np.median(stable_change)),
         "stableNmadChangeM": float(robust_nmad(stable_change)),
         "baseUncertaintyM": float(base_uncertainty_m),
+        "minimumReliability": args.min_reliability,
+        "candidateBufferM": args.candidate_buffer_m,
         "corridorMedianChangeM": float(np.median(corridor_change)),
         "corridorP10ChangeM": float(np.percentile(corridor_change, 10)),
         "corridorP90ChangeM": float(np.percentile(corridor_change, 90)),

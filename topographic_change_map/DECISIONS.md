@@ -71,3 +71,11 @@ The project has a hard 24-hour delivery window. Account setup and access decisio
 ## 2026-08-29 — D18: Completion quality bar
 
 Finish permanent paths, tests, documentation, recovery behavior, and end-to-end verification when they are within reach. Do not present scaffolding, a workaround, or an unvalidated pilot as the finished map.
+
+## 2026-08-29 — D19: Separate acquisition, measurement, and reporting scales
+
+Source imagery is 0.3–0.5 m, co-registration uses a 1 m working grid, phase-correlation windows span 64–96 m, validated change is currently published on 32 m cells, and 1 km tiles are post-analysis reporting bins only. The initial Syabrubesi 1 km AOI was a manually declared feasibility pilot; production coverage is derived from authoritative affected polygons, common acquisition footprints, and stable-terrain calibration buffers.
+
+## 2026-08-29 — D20: Commit small aggregate raster deliverables
+
+The repository normally ignores GeoTIFFs to prevent raw imagery, personal data, and bulky products entering Git. The final derived change, uncertainty, support, coverage, and cropped baseline rasters are aggregate, non-personal, licence-compatible, and collectively small. They may be force-added at named product paths after secret/licence review; source satellite imagery remains excluded.

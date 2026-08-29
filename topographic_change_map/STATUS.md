@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 21:03 BST
+Last updated: 2026-08-29 22:02 BST
 
 ## Goal
 
@@ -8,7 +8,7 @@ Active: complete the Nepal flood topographic change map end to end. Do not mark 
 
 ## Current milestone
 
-**M4 — Account-backed camera products and ASP readiness**
+**M5 — Multi-pair expansion, 10 m experiment, and final release**
 
 Completed:
 
@@ -46,13 +46,21 @@ Completed:
 - Independent dense phase-correlation engine implemented; four Python tests pass locally and on sandbox Python 3.9.
 - Full correct-pair Vantor COGs downloaded and checksum-verified; common upper corridor warped to identical 1 m UTM grids.
 - Dense upper-corridor surface-change/uncertainty/support reconstruction is running on 12 sandbox cores.
+- Strict 32 m upper-corridor bundle completed and passed all raster invariants.
+- Strict results: 1,252 measured cells, 1.282 km² direct support, stable NMAD 4.324 m, median change +1.746 m, median uncertainty 6.882 m.
+- GeoPera comparison: dense correlation 0.906, sparse centerline correlation 0.991, deposition precision 82.9%.
+- Cross-machine relaxed-layer comparison: correlation 0.9936 and median absolute difference 0.247 m across 1,486 shared cells.
+- Strict building overlay: 309 of 4,260 building records have direct measurement support; all others remain null/unsupported.
+- Exact WGS84 processing bounds and 1 km reporting tiles exported; strict layer spans 22 reporting tiles.
+- Interactive Three.js viewer and lazy OpenStreetMap context panel pass headless Chrome/WebGL tests with no failed local resources.
+- Planet account is entitlement-blocked; Earthdata registration is filled and waiting for manual reCAPTCHA.
 
 In progress:
 
-- Complete and validate the dense upper-corridor change products.
-- Compare independent outputs against the pinned upstream reconstruction.
-- Export web-ready terrain/change data and implement the interactive viewer.
-- Expand authoritative coverage/gap reporting downstream.
+- Complete the 10 m experimental layer.
+- Complete and validate the second Vantor pair, then mosaic by lowest uncertainty.
+- Complete Earthdata CAPTCHA and replace/compare the coarse baseline with HMA 8 m.
+- Run final viewer/product/completion audit and release checkpoint.
 
 ## Verified environment
 
@@ -75,10 +83,10 @@ The `research/` directory contains the goal, source inventory, acquisition plan,
 
 ## Immediate next actions
 
-1. Finish dense ortho-change reconstruction and validation.
-2. Publish supported surface-change, uncertainty, coverage, pre-GLO30, and post-surface products.
-3. Build the interactive 3D viewer and affected-area gap map.
-4. Commit and push milestone M4.
+1. Push the validated strict-product/viewer checkpoint.
+2. Finish 10 m and second-pair processing.
+3. Mosaic passing pairs and regenerate coverage/building/viewer products.
+4. Complete final audit, documentation, and GitHub release.
 
 ## Active blockers
 

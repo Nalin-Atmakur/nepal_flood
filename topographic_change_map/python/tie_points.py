@@ -55,12 +55,54 @@ def _window_candidate(
     tgt_work = np.where(valid, tgt, np.median(tgt_values)).astype(np.float32)
     ref_work -= ref_work.mean()
     tgt_work -= tgt_work.mean()
-    (dx, dy), response = cv2.phaseCorrelate(ref_work, tgt_work, window)
-    if not np.isfinite(dx) or not np.isfinite(dy) or not np.isfinite(response):
+    cross_power = np.fft.fft2(ref_work * window) * np.conj(
+        np.fft.fft2(tgt_work * window)
+    )
+    correlation = np.abs(
+        np.fft.ifft2(cross_power / (np.abs(cross_power) + 1e-12))
+    )
+    peak_row, peak_col = np.unravel_index(np.argmax(correlation), correlation.shape)
+
+    def subpixel(row: int, col: int, axis: int) -> float:
+        if axis == 0:
+            previous = correlation[(row - 1) % window_size, col]
+            center = correlation[row, col]
+            following = correlation[(row + 1) % window_size, col]
+        else:
+            previous = correlation[row, (col - 1) % window_size]
+            center = correlation[row, col]
+            following = correlation[row, (col + 1) % window_size]
+        denominator = previous - 2 * center + following
+        return float(0.5 * (previous - following) / denominator) if abs(denominator) > 1e-12 else 0.0
+
+    dy = (peak_row if peak_row < window_size // 2 else peak_row - window_size) + subpixel(
+        peak_row, peak_col, 0
+    )
+    dx = (peak_col if peak_col < window_size // 2 else peak_col - window_size) + subpixel(
+        peak_row, peak_col, 1
+    )
+    peak_mask = np.zeros_like(correlation, dtype=bool)
+    for row_offset in (-1, 0, 1):
+        for col_offset in (-1, 0, 1):
+            peak_mask[
+                (peak_row + row_offset) % window_size,
+                (peak_col + col_offset) % window_size,
+            ] = True
+    peak_mean = float(correlation[peak_mask].mean())
+    background = correlation[~peak_mask]
+    reliability = float(
+        np.clip(
+            100.0
+            - 100.0 * (float(background.mean()) + 3.0 * float(background.std())) / max(peak_mean, 1e-12),
+            0.0,
+            100.0,
+        )
+    )
+    if not np.isfinite(dx) or not np.isfinite(dy) or not np.isfinite(reliability):
         return None
     if abs(dx) > max_shift or abs(dy) > max_shift:
         return None
-    return row, col, float(dx), float(dy), float(response * 100.0)
+    return row, col, float(dx), float(dy), reliability
 
 
 def extract_tie_points(
@@ -78,6 +120,7 @@ def extract_tie_points(
     min_range_fraction: float = 0.0,
     max_mean: float = 215.0,
     workers: int = 0,
+    candidate_mask: np.ndarray | None = None,
 ) -> dict[str, Any]:
     """Return world-coordinate shifts between co-gridded rasters.
 
@@ -89,6 +132,8 @@ def extract_tie_points(
         raise ValueError("ref and tgt must be 2D arrays")
     if ref.shape != tgt.shape:
         raise ValueError("ref and tgt must share a grid and shape")
+    if candidate_mask is not None and candidate_mask.shape != ref.shape:
+        raise ValueError("candidate_mask must share the input shape")
     if window_size < 16 or window_size % 2:
         raise ValueError("window_size must be an even integer >= 16")
     if grid_res < 1:
@@ -103,6 +148,7 @@ def extract_tie_points(
         Candidate(row, col)
         for row in range(half, ref.shape[0] - half, grid_res)
         for col in range(half, ref.shape[1] - half, grid_res)
+        if candidate_mask is None or candidate_mask[row, col]
     ]
     hanning = cv2.createHanningWindow((window_size, window_size), cv2.CV_32F)
     worker_count = workers if workers > 0 else min(16, max(1, len(candidates) // 1000))

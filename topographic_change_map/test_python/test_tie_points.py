@@ -39,8 +39,10 @@ def test_recovers_known_shift() -> None:
         workers=2,
     )
     assert len(points["x_map"]) >= 4
-    assert abs(np.median(points["x_shift_m"]) - shift_x_px * 2) < 0.8
-    assert abs(np.median(points["y_shift_m"]) - (-shift_y_px * 2)) < 0.8
+    # The returned vector is the shift applied to the target to align it with
+    # the reference, matching the ortho-parallax model's convention.
+    assert abs(np.median(points["x_shift_m"]) - (-shift_x_px * 2)) < 0.8
+    assert abs(np.median(points["y_shift_m"]) - (shift_y_px * 2)) < 0.8
 
 
 def test_rejects_flat_windows() -> None:
@@ -60,3 +62,28 @@ def test_rejects_flat_windows() -> None:
         min_std=2,
     )
     assert len(points["x_map"]) == 0
+
+
+def test_candidate_mask_restricts_evaluation() -> None:
+    reference = textured_image()
+    target = np.roll(reference, 2, axis=1)
+    mask = np.zeros(reference.shape, dtype=bool)
+    mask[:128, :128] = True
+    gt = (0.0, 1.0, 0.0, 256.0, 0.0, -1.0)
+    points = extract_tie_points(
+        reference,
+        target,
+        gt,
+        gt,
+        grid_res=64,
+        window_size=64,
+        max_shift=10,
+        min_reliability=1,
+        nodata=0,
+        ransac=False,
+        min_std=2,
+        candidate_mask=mask,
+    )
+    assert len(points["x_map"]) > 0
+    assert np.all(points["x_map"] < 128)
+    assert np.all(points["y_map"] > 128)
