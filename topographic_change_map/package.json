@@ -6,27 +6,36 @@
   "description": "Coverage-first imagery acquisition and DSM-readiness pipeline for the 2026 Nepal flood",
   "scripts": {
     "check": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --config vitest.config.ts",
+    "test:python": ".work/venv/bin/python -m pytest -q test_python",
     "cli": "tsx src/cli.ts",
     "preflight": "tsx src/cli.ts preflight",
     "browser:prepare": "tsx src/cli.ts browser-prepare",
     "browser:smoke": "tsx src/cli.ts browser-smoke",
     "browser:run": "tsx src/cli.ts browser-run",
     "browser:headed": "tsx src/cli.ts browser-smoke",
+    "browser:headed:run": "tsx src/cli.ts browser-headed-run",
+    "browser:command": "tsx src/cli.ts browser-command",
+    "gmail:auth": "tsx src/cli.ts gmail-auth",
     "remote:check": "tsx src/cli.ts remote-check",
     "catalogue:public": "tsx src/cli.ts catalogue-public",
-    "parallax:public": "tsx src/cli.ts parallax-public"
+    "parallax:public": "tsx src/cli.ts parallax-public",
+    "viewer:build": "vite build",
+    "coverage:build": "tsx src/cli.ts coverage-build"
   },
   "dependencies": {
     "@turf/turf": "^7.4.0",
     "dotenv": "^17.2.2",
     "playwright-core": "^1.55.0",
+    "three": "^0.185.1",
     "zod": "^4.1.5"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
+    "@types/three": "^0.185.4",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
+    "vite": "^7.3.6",
     "vitest": "^3.2.4"
   },
   "engines": {

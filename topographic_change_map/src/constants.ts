@@ -30,3 +30,30 @@ export const CHROME_BOUNDS = Object.freeze({
   width: 1380,
   height: 860,
 });
+
+export const SANDBOX_DISPLAY = Object.freeze({
+  index: 0,
+  x: 0,
+  y: 0,
+  width: 1792,
+  height: 1120,
+});
+
+export const SANDBOX_CHROME_BOUNDS = Object.freeze({
+  x: 20,
+  y: 30,
+  width: 1750,
+  height: 1050,
+});
+
+export function isSandboxRuntime(): boolean {
+  return process.env.USER === "zoral" && process.env.HOME === "/Users/zoral";
+}
+
+export function targetDisplay() {
+  return isSandboxRuntime() ? SANDBOX_DISPLAY : SECONDARY_DISPLAY;
+}
+
+export function targetChromeBounds() {
+  return isSandboxRuntime() ? SANDBOX_CHROME_BOUNDS : CHROME_BOUNDS;
+}

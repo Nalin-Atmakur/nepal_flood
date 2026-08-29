@@ -6,7 +6,7 @@ The encrypted private register is local-only under an ignored path.
 
 | Provider | Account status | Verification | Plan/tier | API access | Candidate/product access | Licence/access blocker | Last checked |
 |---|---|---|---|---|---|---|---|
-| Planet | Not started | — | — | Unknown | SkySat/Pelican Basic+RPC unknown | Authentication/entitlement not checked | — |
+| Planet | Created and verified | Email | Free 30-day trial, no card | Catalog/Statistical/Process APIs | Sandbox Data only; exact SkySat/Pelican Basic+RPC not entitled | “My Products”: no active products | 2026-08-29 |
 | Satellogic | Not started | — | — | Unknown | NewSat L1C unknown | Free-trial limits expected | — |
 | Copernicus Data Space | Not started | — | Free | Unknown | Open Sentinel catalogue expected | None known | — |
 | NASA Earthdata/ASF | Not started | — | Free | Unknown | NISAR/SAR catalogue unknown | None known | — |

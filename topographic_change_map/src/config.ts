@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse } from "dotenv";
 import { z } from "zod";
-import { LOCAL_ENV_PATH, PROJECT_ROOT } from "./constants.js";
+import { isSandboxRuntime, LOCAL_ENV_PATH, PROJECT_ROOT } from "./constants.js";
 import { runCommand } from "./process.js";
 
 const configSchema = z.object({
@@ -18,6 +18,11 @@ const configSchema = z.object({
   TCM_PROJECT_NAME: z.literal("Cambridge Helpers"),
   TCM_PROJECT_STATUS: z.literal("Independent volunteer research project"),
   TCM_PROJECT_PURPOSE: z.string().min(20),
+  TCM_PROVIDER_FIRST_NAME: z.string().default(""),
+  TCM_PROVIDER_LAST_NAME: z.string().default(""),
+  TCM_PROVIDER_COMPANY: z.string().default("Cambridge Helpers"),
+  TCM_PROVIDER_JOB_TITLE: z.string().default("Independent Volunteer Researcher"),
+  TCM_PLANET_PASSWORD: z.string().default(""),
   TCM_LOCAL_CACHE_LIMIT_GB: z.coerce.number().int().min(5).max(20).default(20),
   TCM_REMOTE_HOST: z.string().regex(/^zoral@/),
   TCM_REMOTE_ROOT: z.literal("/Users/zoral/topographic-change-map"),
@@ -36,6 +41,16 @@ export async function assertSecretFileSafety(envPath = LOCAL_ENV_PATH): Promise<
     throw new Error(`Secret file must have mode 0600; found ${mode.toString(8)}`);
   }
   const relative = path.relative(PROJECT_ROOT, absolute);
+  const repository = await runCommand("git", ["rev-parse", "--show-toplevel"], {
+    cwd: PROJECT_ROOT,
+  });
+  if (repository.exitCode !== 0) {
+    const expectedSandboxRoot = "/Users/zoral/topographic-change-map/app";
+    if (isSandboxRuntime() && PROJECT_ROOT === expectedSandboxRoot && absolute.startsWith(`${expectedSandboxRoot}/`)) {
+      return;
+    }
+    throw new Error("Secret file is outside a verifiable Git checkout");
+  }
   const ignored = await runCommand("git", ["check-ignore", "-q", "--", relative], {
     cwd: PROJECT_ROOT,
   });
@@ -60,5 +75,6 @@ export function knownSecrets(config: AppConfig): string[] {
     config.TCM_ADDRESS_LINE1,
     config.TCM_ADDRESS_LINE2,
     config.TCM_POSTCODE,
+    config.TCM_PLANET_PASSWORD,
   ];
 }

@@ -51,3 +51,23 @@ The reproducible Vantor pilot finds 200 reciprocal SIFT matches, 100 RANSAC inli
 ## 2026-08-29 — D13: Headless browser default
 
 Routine provider and Gmail automation runs headlessly to avoid focus interruption. The persistent Breeze clone is reopened headed on secondary display 1 only for CAPTCHA/MFA handoff, explicit visual inspection, or debugging. Headless screenshots and DOM/network diagnostics remain available.
+
+## 2026-08-29 — D14: Sandbox owns the browser identity boundary
+
+Gmail, provider cookies, SMS verification, browser downloads, and GUI handoffs run on the isolated `zoral` sandbox Mac. The user can observe headed flows over VNC without interrupting the main Mac. Main-Mac automation remains headless.
+
+## 2026-08-29 — D15: Planet is entitlement-blocked
+
+A truthful free Planet account was created and email-verified. It exposes Planet Sandbox Data plus Catalog, Statistical, and Process APIs, but its product page reports no active products. The exact SkySat/Pelican Basic+RPC products therefore remain inaccessible under this account.
+
+## 2026-08-29 — D16: Independently reproduce the public-ortho method
+
+An upstream open reconstruction at commit `43c22e0f9a3777d071c2f181302ca2daad384a53` identifies the stronger Vantor pair `B040001100881410` plus `B040001100881710` and a constant-look-angle ortho-parallax conversion. Its dense tie-point engine is omitted, so this project implements and tests an independent engine and reruns the source COGs before adopting results.
+
+## 2026-08-29 — D17: 24-hour delivery deadline
+
+The project has a hard 24-hour delivery window. Account setup and access decisions are time-boxed; provider entitlement blockers trigger immediate fallback rather than waiting. Scientific caveats remain non-negotiable.
+
+## 2026-08-29 — D18: Completion quality bar
+
+Finish permanent paths, tests, documentation, recovery behavior, and end-to-end verification when they are within reach. Do not present scaffolding, a workaround, or an unvalidated pilot as the finished map.

@@ -4,6 +4,8 @@
 
 Generate the best scientifically defensible post-flood digital surface model (DSM) and topographic-change map obtainable from free data across the affected Bhote Koshi/Trishuli corridor in Rasuwa and Nuwakot.
 
+Delivery deadline: 24 hours from the user-imposed deadline on 2026-08-29. Provider access decisions are time-boxed and fallbacks run immediately.
+
 Success is measured by affected-area coverage with:
 
 - validated post-flood surface elevation;

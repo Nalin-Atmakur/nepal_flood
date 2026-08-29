@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T20:11:24.812Z",
+  "pairFootprintKm2": 162.7871300539474,
+  "sources": [
+    {
+      "source": "UNOSAT",
+      "file": "unosat_damage_area.geojson",
+      "polygons": 1,
+      "affectedAreaKm2": 37.41478701880251,
+      "pairCoveredAreaKm2": 3.888709379184478,
+      "pairCoverageFraction": 0.10393509328892445
+    },
+    {
+      "source": "HOT",
+      "file": "hot_flood_extent.geojson",
+      "polygons": 1,
+      "affectedAreaKm2": 31.752655490656757,
+      "pairCoveredAreaKm2": 3.8400256259046874,
+      "pairCoverageFraction": 0.12093557425565928
+    },
+    {
+      "source": "NESRA",
+      "file": "nesra_flood_zones.geojson",
+      "polygons": 772,
+      "affectedAreaKm2": 20.166285385825475,
+      "pairCoveredAreaKm2": 2.4932476371159007,
+      "pairCoverageFraction": 0.12363445173042928
+    }
+  ],
+  "plausibleVantorPairs": [
+    {
+      "leftSceneId": "B030001100CF1310",
+      "rightSceneId": "B110001101165110",
+      "acquisitionDeltaSeconds": 910.422,
+      "separationDeg": 33.74065199352881,
+      "affectedCoverageKm2": 7.568685411468721,
+      "workingBboxWgs84": [
+        85.31873643220908,
+        28.144377779565932,
+        85.44796451580632,
+        28.34592736554058
+      ]
+    },
+    {
+      "leftSceneId": "B030001100CF1610",
+      "rightSceneId": "B110001101165110",
+      "acquisitionDeltaSeconds": 879.773,
+      "separationDeg": 19.381442739038302,
+      "affectedCoverageKm2": 7.568685411468721,
+      "workingBboxWgs84": [
+        85.31873643220908,
+        28.144377779565932,
+        85.44796451580632,
+        28.34592736554058
+      ]
+    },
+    {
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100882F10",
+      "acquisitionDeltaSeconds": 43.899,
+      "separationDeg": 33.93441146564552,
+      "affectedCoverageKm2": 6.568534773989388,
+      "workingBboxWgs84": [
+        85.2790577164842,
+        28.11070332108897,
+        85.41748670242927,
+        28.3226843237396
+      ]
+    },
+    {
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B040001100882F10",
+      "acquisitionDeltaSeconds": 22.749,
+      "separationDeg": 21.326095522158063,
+      "affectedCoverageKm2": 6.339588348351258,
+      "workingBboxWgs84": [
+        85.2893108072935,
+        28.12078826161529,
+        85.41748670287215,
+        28.322684323714416
+      ]
+    },
+    {
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B030001100CF1610",
+      "acquisitionDeltaSeconds": 40.198,
+      "separationDeg": 18.436410828643375,
+      "affectedCoverageKm2": 5.661704864192677,
+      "workingBboxWgs84": [
+        85.32474707437632,
+        28.15144124473242,
+        85.42571448859378,
+        28.324539735451964
+      ]
+    },
+    {
+      "leftSceneId": "B030001100CF1110",
+      "rightSceneId": "B110001101165110",
+      "acquisitionDeltaSeconds": 919.971,
+      "separationDeg": 37.81594496382724,
+      "affectedCoverageKm2": 5.661704864192677,
+      "workingBboxWgs84": [
+        85.32474707437632,
+        28.15144124473242,
+        85.42571448859378,
+        28.324539735451964
+      ]
+    },
+    {
+      "leftSceneId": "B040001100881410",
+      "rightSceneId": "B040001100881710",
+      "acquisitionDeltaSeconds": 81.799,
+      "separationDeg": 48.251477202106656,
+      "affectedCoverageKm2": 3.888709379184478,
+      "workingBboxWgs84": [
+        85.27905771401163,
+        28.110703320395885,
+        85.37755897092579,
+        28.264011163600532
+      ]
+    },
+    {
+      "leftSceneId": "B040001100881610",
+      "rightSceneId": "B040001100881710",
+      "acquisitionDeltaSeconds": 60.649,
+      "separationDeg": 35.636685162762824,
+      "affectedCoverageKm2": 3.659762953534247,
+      "workingBboxWgs84": [
+        85.28931080499521,
+        28.12078826101679,
+        85.37755897126404,
+        28.264011163731183
+      ]
+    }
+  ],
+  "plausiblePairUnionAffectedKm2": 8.605112809599195,
+  "plausiblePairUnionAffectedFraction": 0.22999229703685772
+}

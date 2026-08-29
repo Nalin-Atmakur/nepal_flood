@@ -2,9 +2,9 @@ import fs from "node:fs";
 import { chromium, type BrowserContext, type Page } from "playwright-core";
 import {
   AUTOMATION_PROFILE_ROOT,
-  CHROME_BOUNDS,
   CHROME_EXECUTABLE,
-  SECONDARY_DISPLAY,
+  targetChromeBounds,
+  targetDisplay,
 } from "../constants.js";
 
 export interface HeadedSession {
@@ -26,23 +26,27 @@ export interface WindowBounds {
   height: number;
 }
 
-export function isWithinSecondaryDisplay(bounds: WindowBounds = CHROME_BOUNDS): boolean {
+export function isWithinTargetDisplay(bounds: WindowBounds = targetChromeBounds()): boolean {
+  const display = targetDisplay();
   return (
-    bounds.x >= SECONDARY_DISPLAY.x &&
-    bounds.y >= SECONDARY_DISPLAY.y &&
-    bounds.x + bounds.width <= SECONDARY_DISPLAY.x + SECONDARY_DISPLAY.width &&
-    bounds.y + bounds.height <= SECONDARY_DISPLAY.y + SECONDARY_DISPLAY.height
+    bounds.x >= display.x &&
+    bounds.y >= display.y &&
+    bounds.x + bounds.width <= display.x + display.width &&
+    bounds.y + bounds.height <= display.y + display.height
   );
 }
+
+export const isWithinSecondaryDisplay = isWithinTargetDisplay;
 
 export async function launchHeadedSession(dashboardUrl?: string): Promise<HeadedSession> {
   return await launchBrowserSession({ headed: true, ...(dashboardUrl ? { dashboardUrl } : {}) });
 }
 
 export async function launchBrowserSession(options: BrowserLaunchOptions): Promise<HeadedSession> {
+  const bounds = targetChromeBounds();
   if (!fs.existsSync(CHROME_EXECUTABLE)) throw new Error("Google Chrome is not installed");
-  if (options.headed && !isWithinSecondaryDisplay()) {
-    throw new Error("Configured Chrome bounds leave display 1");
+  if (options.headed && !isWithinTargetDisplay(bounds)) {
+    throw new Error("Configured Chrome bounds leave the target display");
   }
 
   const context = await chromium.launchPersistentContext(AUTOMATION_PROFILE_ROOT, {
@@ -56,8 +60,8 @@ export async function launchBrowserSession(options: BrowserLaunchOptions): Promi
       "--profile-directory=Default",
       ...(options.headed
         ? [
-            `--window-position=${CHROME_BOUNDS.x},${CHROME_BOUNDS.y}`,
-            `--window-size=${CHROME_BOUNDS.width},${CHROME_BOUNDS.height}`,
+            `--window-position=${bounds.x},${bounds.y}`,
+            `--window-size=${bounds.width},${bounds.height}`,
           ]
         : []),
       "--no-first-run",

@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 20:11 BST
+Last updated: 2026-08-29 21:03 BST
 
 ## Goal
 
@@ -36,12 +36,23 @@ Completed:
 - Local env safety preflight passes; secret file is ignored, untracked, and mode `0600`.
 - Sandbox storage preflight passes with approximately 86.6 GiB free.
 - Browser mode changed to headless by default, with headed mode reserved for user handoff or debugging.
+- Gmail authenticated successfully in ordinary Chrome on the isolated sandbox.
+- Planet free account created and email-verified; no payment or marketing opt-in.
+- Planet trial exposes Sandbox Data and open APIs but reports no active imagery products; SkySat/Pelican Basic+RPC is not entitled.
+- NASA ASP 3.7.0 installed user-scoped on the sandbox and its official ASTER RPC fixture completed end to end.
+- ASTER validation produced point cloud, DEM, orthoimage, and intersection-error rasters with 72.9% valid DEM pixels.
+- ASTER comparison to the historical bundled reference shows a systematic vertical/version offset of approximately 29 m and residual spread near 4.9 m, confirming datum/version alignment must be explicit.
+- Strong Vantor pair corrected to `B040001100881410` + `B040001100881710` (approximately 48-degree geometry).
+- Independent dense phase-correlation engine implemented; four Python tests pass locally and on sandbox Python 3.9.
+- Full correct-pair Vantor COGs downloaded and checksum-verified; common upper corridor warped to identical 1 m UTM grids.
+- Dense upper-corridor surface-change/uncertainty/support reconstruction is running on 12 sandbox cores.
 
 In progress:
 
-- Implement provider account state and generated per-provider passwords.
-- Run Planet self-service login/signup and exact Basic/RPC product entitlement checks headlessly.
-- Verify/install NASA ASP on the sandbox and prepare an RPC smoke-test fixture.
+- Complete and validate the dense upper-corridor change products.
+- Compare independent outputs against the pinned upstream reconstruction.
+- Export web-ready terrain/change data and implement the interactive viewer.
+- Expand authoritative coverage/gap reporting downstream.
 
 ## Verified environment
 
@@ -64,18 +75,17 @@ The `research/` directory contains the goal, source inventory, acquisition plan,
 
 ## Immediate next actions
 
-1. Commit and push milestone M3.
-2. Verify Gmail session state in headless Breeze clone without reading unrelated mail.
-3. Implement Planet adapter and entitlement query for the two exact candidate scenes.
-4. Verify NASA ASP installation path on the sandbox.
+1. Finish dense ortho-change reconstruction and validation.
+2. Publish supported surface-change, uncertainty, coverage, pre-GLO30, and post-surface products.
+3. Build the interactive 3D viewer and affected-area gap map.
+4. Commit and push milestone M4.
 
 ## Active blockers
 
-- Legal name/address fields are not populated; email-only self-service flows can proceed, while providers requiring those fields must pause.
-- Gmail cloned session must be verified headlessly before reading provider-specific verification mail.
 - CAPTCHA remains an explicit user handoff.
 - Institutional or paid camera-bearing imagery may remain inaccessible; free alternatives must be exhausted first.
 - All current public Vantor/Planet products lack rigorous camera models; absolute-height reconstruction remains blocked until a camera-bearing product is obtained.
+- Planet exact products are entitlement-blocked; public-ortho surface change is necessarily research-only.
 
 ## Worktree safety
 
