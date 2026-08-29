@@ -5,6 +5,7 @@ Research reconstruction of post-flood surface change in the upper Bhote Koshi co
 ## Current deliverable
 
 - Strict 32 m surface-change, uncertainty, support, coverage, pre-reference, and post-surface rasters.
+- Separately validated 10 m experimental surface-change bundle and building overlay.
 - Relaxed 32 m sensitivity layer.
 - Support-aware HOT/Copernicus building summaries.
 - Exact WGS84 processing extent and 1 km reporting-grid table.
@@ -22,7 +23,10 @@ npm run viewer:build
 npx vite preview --config vite.config.ts --host 127.0.0.1 --port 4174
 ```
 
-Open <http://127.0.0.1:4174/>. Use **Map context** to see the processing footprint, affected polygons, direct support, reporting grid, settlement markers, and live latitude/longitude over OpenStreetMap.
+Open <http://127.0.0.1:4174/>. Use **Product grid** to switch between the strict
+32 m default and the lazily loaded experimental 10 m product. Use **Map context**
+to see the processing footprint, affected polygons, direct support, reporting
+grid, settlement markers, and live latitude/longitude over OpenStreetMap.
 
 ## Key locations and scales
 

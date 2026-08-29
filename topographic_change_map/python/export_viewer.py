@@ -17,6 +17,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--products", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--buildings")
+    parser.add_argument(
+        "--resolution-tag",
+        default="32m",
+        help="Filename suffix for the product grid, for example 32m or 10m",
+    )
     return parser.parse_args()
 
 
@@ -55,13 +60,14 @@ def main() -> None:
     args = parse_args()
     products = Path(args.products)
     output = Path(args.output)
-    pre, pre_dataset = read(products / "pre_glo30_32m.tif")
-    post, post_dataset = read(products / "post_surface_estimate_32m.tif")
-    change, change_dataset = read(products / "surface_change_32m.tif")
-    uncertainty, uncertainty_dataset = read(products / "uncertainty_32m.tif")
-    with rasterio.open(products / "significant_change_32m.tif") as source:
+    tag = args.resolution_tag
+    pre, pre_dataset = read(products / f"pre_glo30_{tag}.tif")
+    post, post_dataset = read(products / f"post_surface_estimate_{tag}.tif")
+    change, change_dataset = read(products / f"surface_change_{tag}.tif")
+    uncertainty, uncertainty_dataset = read(products / f"uncertainty_{tag}.tif")
+    with rasterio.open(products / f"significant_change_{tag}.tif") as source:
         significance = source.read(1).astype(np.int8)
-    with rasterio.open(products / "support_count_32m.tif") as source:
+    with rasterio.open(products / f"support_count_{tag}.tif") as source:
         support = source.read(1).astype(np.int32)
     for dataset in [post_dataset, change_dataset, uncertainty_dataset]:
         if dataset.shape != pre_dataset.shape or dataset.transform != pre_dataset.transform:
@@ -101,6 +107,8 @@ def main() -> None:
                     "significanceClass": properties.get("change_significance_class"),
                 }
             )
+    summary_path = products / "summary.json"
+    summary = json.loads(summary_path.read_text()) if summary_path.exists() else {}
     payload = {
         "schemaVersion": 1,
         "crs": str(pre_dataset.crs),
@@ -131,10 +139,11 @@ def main() -> None:
         },
         "provenance": {
             "method": "Opposite-look orthorectified-image parallax",
-            "leftSceneId": "B040001100881410",
-            "rightSceneId": "B040001100881710",
+            "leftSceneId": summary.get("leftSceneId", "unknown"),
+            "rightSceneId": summary.get("rightSceneId", "unknown"),
             "preSurface": "Copernicus GLO-30",
-            "classification": "RESEARCH_ONLY",
+            "classification": summary.get("accuracyClass", "RESEARCH_ONLY"),
+            "productResolution": tag,
             "warning": "Unsupported cells show the coarse pre-event terrain for context and are not post-event measurements.",
         },
     }

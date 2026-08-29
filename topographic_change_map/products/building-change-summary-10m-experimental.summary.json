@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "sources": {
+    "HOT": {
+      "total": 1053,
+      "measured": 105
+    },
+    "CEMS": {
+      "total": 3207,
+      "measured": 216
+    }
+  },
+  "total": 4260,
+  "measured": 321,
+  "warning": "Surface change is not automatically debris depth or burial depth."
+}

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "resolutionTag": "10m",
+  "passed": true,
+  "invariants": {
+    "sameGrid": true,
+    "masksConsistent": true,
+    "measuredCells": 6882,
+    "preValidCells": 1259224,
+    "uncertaintyPositive": true,
+    "postEquationMaxErrorM": 0.0,
+    "postEquationPass": true,
+    "changeMedianM": 1.0796092748641968,
+    "changeP10M": -5.91620397567749,
+    "changeP90M": 8.804150581359863,
+    "uncertaintyMedianM": 6.573469161987305,
+    "transform": [
+      10.0,
+      0.0,
+      334277.0,
+      0.0,
+      -10.0,
+      3129604.0
+    ],
+    "crs": "EPSG:32645",
+    "shape": [
+      1576,
+      799
+    ]
+  },
+  "upstreamComparison": {
+    "sampleCount": 30,
+    "correlation": 0.8943169084888246,
+    "rSquared": 0.7998027328090087,
+    "medianAbsoluteDifferenceM": 3.179395017623901,
+    "observedMedianM": 0.9166171550750732,
+    "upstreamMedianM": 1.6600000000000001
+  },
+  "note": "Upstream agreement is diagnostic, not ground truth. Bundle invariants are mandatory."
+}

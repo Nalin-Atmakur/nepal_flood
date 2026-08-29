@@ -9,7 +9,7 @@ interchangeably.
 | 1 m | Common orthoimage co-registration grid |
 | 64–96 m | Local image neighbourhood used for phase correlation |
 | 32 m | Default validated change-product cell spacing |
-| 10 m | Experimental output spacing under separate validation |
+| 10 m | Separately validated experimental output spacing; research-only |
 | 1 km | Geographic reporting/indexing bin only |
 
 Native image resolution is not change-map resolution. A 0.4 m image contains
@@ -50,3 +50,8 @@ The strict product contains 1,252 supported 32 m cells covering 1.282 km².
 Those cells happen to occupy 22 one-kilometre reporting bins within the upper
 Bhote Koshi processing rectangle. The relaxed product occupies 24 bins. Neither
 number means that an entire 22 or 24 km² was directly measured.
+
+The experimental product contains 6,882 supported 10 m cells covering
+0.688 km² across 23 reporting bins. Its stable-terrain error remains roughly
+4 m, so the smaller horizontal cells must not be described as more accurate
+vertical measurements.

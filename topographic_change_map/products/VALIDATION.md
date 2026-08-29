@@ -35,6 +35,27 @@ Pinned upstream: `geo-pera/bhotekoshi-2026-reconstruction@43c22e0f9a3777d071c2f1
 
 GeoPera is a same-source reproducibility benchmark, not independent ground truth. High precision and low recall mean the strict layer agrees where it makes a claim but deliberately leaves most of the broader upstream wedge unsupported.
 
+## Experimental 10 m bundle
+
+| Check | Result |
+|---|---:|
+| Direct measured cells | 6,882 |
+| Direct support | 0.688 km² |
+| Stable-terrain NMAD | 4.034 m |
+| Median per-cell uncertainty | 6.573 m |
+| Median change | +1.080 m |
+| P10 / P90 change | −5.916 m / +8.804 m |
+| Two-sigma significant cells | 284 of 6,882 (4.1%) |
+| Significant positive / negative | 230 / 54 |
+| Directly measured UNOSAT area | 0.248 km² (0.664% of full mask) |
+| GeoPera shared-point correlation | 0.894 (`R²=0.800`) |
+| Raster bundle invariants | Pass |
+| Automated promotion gate | Pass as `RESEARCH_ONLY` |
+
+The 10 m grid gives finer localization, not 10 m vertical accuracy. It covers
+less direct area than the default 32 m layer because the finer cells require a
+direct match rather than inheriting support from a coarser aggregate cell.
+
 ## Cross-machine reproducibility
 
 Independent relaxed-layer runs used Apple Silicon/Python 3.13 and Intel/Python 3.9:

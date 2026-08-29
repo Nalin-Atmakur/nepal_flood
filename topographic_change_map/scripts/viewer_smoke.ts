@@ -37,21 +37,32 @@ try {
     await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle" });
     await page.waitForSelector("canvas");
     await page.waitForTimeout(1200);
-    const result = {
+    const defaultResult = {
       title: await page.title(),
       canvases: await page.locator("canvas").count(),
       modes: await page.locator("button[data-mode]").count(),
       contextButtons: await page.locator("#context-toggle").count(),
+      productOptions: await page.locator("#product-grid option").count(),
       statistics: await page.locator("#statistics dd").count(),
-      failures,
     };
-    if (result.title !== "Nepal Flood Topographic Change" || result.canvases < 1 || result.modes !== 4 || result.contextButtons !== 1 || result.statistics < 5 || failures.length) {
-      throw new Error(`Viewer smoke failure: ${JSON.stringify(result)}`);
+    if (defaultResult.title !== "Nepal Flood Topographic Change" || defaultResult.canvases < 1 || defaultResult.modes !== 4 || defaultResult.contextButtons !== 1 || defaultResult.productOptions !== 2 || defaultResult.statistics < 5) {
+      throw new Error(`Default viewer smoke failure: ${JSON.stringify(defaultResult)}`);
     }
     const screenshotRoot = path.join(WORK_ROOT, "screenshots");
     fs.mkdirSync(screenshotRoot, { recursive: true, mode: 0o700 });
     await page.screenshot({ path: path.join(screenshotRoot, "viewer-smoke.png"), fullPage: true });
-    process.stdout.write(`${JSON.stringify(result)}\n`);
+    await page.goto(`http://127.0.0.1:${port}/?grid=10m`, { waitUntil: "networkidle", timeout: 120_000 });
+    await page.waitForSelector("#statistics dd");
+    await page.waitForFunction(() => document.querySelectorAll("#statistics dd").length >= 5, undefined, { timeout: 120_000 });
+    const experimentalResult = {
+      selectedGrid: await page.locator("#product-grid").inputValue(),
+      canvases: await page.locator("canvas").count(),
+      statistics: await page.locator("#statistics dd").count(),
+    };
+    if (experimentalResult.selectedGrid !== "10m" || experimentalResult.canvases < 1 || experimentalResult.statistics < 5 || failures.length) {
+      throw new Error(`Experimental viewer smoke failure: ${JSON.stringify({ experimentalResult, failures })}`);
+    }
+    process.stdout.write(`${JSON.stringify({ default: defaultResult, experimental: experimentalResult, failures })}\n`);
   } finally {
     await browser.close();
   }

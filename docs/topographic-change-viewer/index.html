@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Research reconstruction of surface change after the August 2026 Nepal flood" />
     <title>Nepal Flood Topographic Change</title>
-    <script type="module" crossorigin src="./assets/index-C0msDWf6.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BT9uvKqG.css">
+    <script type="module" crossorigin src="./assets/index-tsRMRLaT.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-ClgJGaMn.css">
   </head>
   <body>
     <div id="app">
@@ -19,6 +19,12 @@
       </header>
       <aside id="controls">
         <h2>Surface layer</h2>
+        <label>Product grid
+          <select id="product-grid" aria-label="Product grid">
+            <option value="32m">Strict 32 m (default)</option>
+            <option value="10m">Experimental 10 m</option>
+          </select>
+        </label>
         <div class="segmented" role="group" aria-label="Surface color mode">
           <button data-mode="change" class="active">Change</button>
           <button data-mode="elevation">Elevation</button>

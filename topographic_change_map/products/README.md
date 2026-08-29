@@ -28,10 +28,18 @@ These are aggregate, non-personal research products derived from public Vantor i
 
 `ortho-change-v2/` uses a relaxed 12% match threshold. It has broader support but slightly higher stable-terrain error. It remains available for sensitivity analysis and is not the viewer default.
 
+`ortho-change-10m-experimental/` is a separately validated finer-grid
+experiment from the same strong pair. It contains 6,882 directly supported 10 m
+cells (0.688 km²), stable-terrain NMAD 4.034 m, median uncertainty 6.573 m, and
+284 two-sigma significant cells. Its smaller cell spacing does not improve its
+vertical accuracy class: it remains `RESEARCH_ONLY`. The interactive viewer
+loads it lazily through **Product grid → Experimental 10 m**.
+
 ## Buildings
 
 - `building-change-summary-strict.geojson` is the default building overlay.
 - `building-change-summary.geojson` is the relaxed-layer alternative.
+- `building-change-summary-10m-experimental.geojson` is the experimental 10 m overlay.
 
 A measured surface change is not automatically debris depth or burial depth. Unsupported buildings have null measurements and the explicit status `UNSUPPORTED`.
 

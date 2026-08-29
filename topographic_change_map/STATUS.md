@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 22:43 BST
+Last updated: 2026-08-29 22:48 BST
 
 ## Goal
 
@@ -62,12 +62,14 @@ Completed:
 - Processing/AOI semantics are explicit: manual 1 km AOIs are feasibility fixtures, production candidates come from affected-area/image intersections, and 1 km cells are post-analysis reporting bins only.
 - Current automated checks pass: 14 Python tests and 11 TypeScript tests, with TypeScript compilation clean.
 - Pair promotion is now machine-gated by raster invariants, stable-terrain NMAD, calibration support, corridor support, and measured area; the strict default passes only as `RESEARCH_ONLY`.
+- Experimental 10 m bundle completed and passed invariants/promotion: 6,882 measured cells, 0.688 km² support, 4.034 m stable NMAD, 6.573 m median uncertainty, and 284 two-sigma significant cells.
+- Experimental 10 m building overlay contains 321 measured records: 2 significant positive, 1 significant negative, 318 measured-not-significant, and 3,939 unsupported.
+- Viewer now exposes strict 32 m and lazy-loaded experimental 10 m grids; both pass headless WebGL smoke tests.
 - A self-contained static viewer bundle is prepared under `docs/topographic-change-viewer/`; GitHub Pages activation remains repository-admin controlled.
 - The protected HMA request was exercised safely and returned HTTP 401, confirming that the pending Earthdata CAPTCHA/account activation is the only download gate.
 
 In progress:
 
-- Complete the 10 m experimental layer.
 - Complete and validate the second Vantor pair, then mosaic by lowest uncertainty.
 - Warp and evaluate the automatically selected third Vantor pair (`B040001100881410 + B040001100882F10`) for additional affected-area coverage.
 - Complete Earthdata CAPTCHA and replace/compare the coarse baseline with HMA 8 m.
