@@ -13,7 +13,7 @@ Per-building zonal statistics
               |
 Interpretation and confidence rules
               |
-CesiumJS terrain and building viewer
+Three.js terrain viewer + OpenStreetMap context panel
 ```
 
 ## Building inputs
@@ -52,18 +52,20 @@ debris_confidence
 
 These require a model of the pre-event ground and building surface. A DSM measures the top visible surface, which may be a roof, vegetation, rubble, or debris. It does not automatically measure ground-level burial.
 
-## Viewer capabilities
+## Implemented viewer capabilities
 
-An eventual CesiumJS viewer may provide:
+The current viewer provides:
 
 - pan, zoom, rotate, and tilt;
-- pre/post imagery switching;
-- post-flood reconstructed terrain;
-- surface-change color layer;
+- strict 32 m and lazy experimental 10 m product selection;
+- contextual pre-event terrain plus supported post-event surface cells;
+- surface-change, elevation, uncertainty, and support color modes;
 - uncertainty and support layers;
 - building footprints and source damage classes;
-- click inspection for coordinates, elevation, change, and confidence;
-- clear timestamp and provenance display.
+- click inspection for elevation, change, uncertainty, and support;
+- an OpenStreetMap panel with authoritative affected polygons, acquisition
+  overlap, direct support, reporting bins, settlements, and live coordinates;
+- an explicit `RESEARCH ONLY` classification and nodata warning.
 
 ## Communication rules
 

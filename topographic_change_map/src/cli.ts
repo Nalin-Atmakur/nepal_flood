@@ -9,6 +9,7 @@ import {
 } from "./browser/launch.js";
 import { loadConfig } from "./config.js";
 import { buildPublicCatalogue } from "./catalogue/build.js";
+import { buildSentinel2Catalogue } from "./catalogue/sentinel2.js";
 import { startDashboard } from "./dashboard.js";
 import { ensureGmailAuthenticated } from "./email/gmail.js";
 import { readMousePosition } from "./mouse.js";
@@ -33,6 +34,10 @@ async function main(): Promise<void> {
   }
   if (command === "catalogue-public") {
     process.stdout.write(`${JSON.stringify(await buildPublicCatalogue())}\n`);
+    return;
+  }
+  if (command === "catalogue-sentinel2") {
+    process.stdout.write(`${JSON.stringify(await buildSentinel2Catalogue())}\n`);
     return;
   }
   if (command === "parallax-public") {
@@ -135,7 +140,7 @@ async function main(): Promise<void> {
   }
 
   process.stdout.write(
-    "Usage: npm run cli -- <preflight|remote-check|browser-prepare|browser-smoke|browser-run|browser-headed-run|browser-command TYPE|gmail-auth|catalogue-public|parallax-public|coverage-build>\n",
+    "Usage: npm run cli -- <preflight|remote-check|browser-prepare|browser-smoke|browser-run|browser-headed-run|browser-command TYPE|gmail-auth|catalogue-public|catalogue-sentinel2|parallax-public|coverage-build>\n",
   );
 }
 

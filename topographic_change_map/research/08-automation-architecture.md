@@ -4,14 +4,18 @@
 
 Create a repeatable system that discovers candidate imagery, evaluates pair feasibility, reconstructs pilot DSMs, validates them, and generates change products with minimal manual repetition.
 
-Humans remain responsible for account creation, licences, access requests, accuracy requirements, and scientific acceptance.
+Ordinary free individual signups, verification mail, entitlement checks,
+catalogue discovery, evaluation, reconstruction, validation, and publication
+are automated. Humans remain responsible for CAPTCHA/MFA, payment, institutional
+claims, non-standard licences, operational accuracy requirements, and any debris
+or burial interpretation.
 
-## Proposed components
+## Implemented components
 
 ```text
 AOI registry
     |
-Provider adapters ---- Secret manager
+Provider/browser harness ---- ignored mode-0600 secret file
     |
 Candidate catalogue
     |
@@ -21,29 +25,30 @@ Pilot asset manager
     |
 Sparse matcher and triangulation tester
     |
-ASP runner
+ASP runner + verified official RPC fixture
     |
 DSM validator and aligner
     |
-Change-map generator
+Change/uncertainty/significance generator
     |
-JSON/HTML report and web-export builder
+Quality gate + lower-uncertainty mosaic
+    |
+Three.js/OpenStreetMap viewer + static publication bundle
 ```
 
-## Proposed commands
+## Principal commands
 
 ```text
-flood3d aoi validate syabrubesi.geojson
-flood3d discover --aoi syabrubesi-pilot-v1
-flood3d access-check --provider planet
-flood3d score-pairs
-flood3d fetch-pilot --pair PAIR_ID
-flood3d test-matching --pair PAIR_ID
-flood3d pilot-stereo --pair PAIR_ID
-flood3d validate-dsm --run RUN_ID
-flood3d align --pre PRE_RUN --post POST_RUN
-flood3d difference --pre PRE_RUN --post POST_RUN
-flood3d report --run RUN_ID
+npm run catalogue:public
+npm run coverage:build
+npm run parallax:public
+python/ortho_change.py ...
+python/validate_products.py ...
+python/quality_gate.py ...
+python/mosaic_products.py ...
+python/export_viewer.py ...
+npm run viewer:build
+npm run viewer:test
 ```
 
 ## Storage classes
@@ -57,7 +62,7 @@ flood3d report --run RUN_ID
 - aggregate quality reports;
 - documentation and decision records.
 
-### Local/object storage, not Git
+### Sandbox/object storage, not Git
 
 - original imagery;
 - large RPC/product bundles if licensing restricts redistribution;
@@ -82,16 +87,18 @@ Every run receives an immutable identifier and manifest. A resumed run should re
 
 ## Automation boundaries
 
-The system may automatically reject poor candidates. It should not automatically publish a scientifically accepted change layer.
+The system automatically rejects poor candidates and may publish a clearly
+labelled research layer after all mandatory gates pass. It may never promote a
+public-ortho product to rigorous absolute DSM, debris depth, burial depth, or
+operational status without the corresponding evidence and human acceptance.
 
 Human approval is required at these gates:
 
 1. licence/access acceptance;
 2. target-accuracy definition;
-3. pilot reconstruction acceptance;
-4. pre/post alignment acceptance;
-5. debris/burial interpretation acceptance;
-6. external publication or operational use.
+3. promotion beyond `RESEARCH_ONLY`;
+4. debris/burial interpretation acceptance;
+5. operational use.
 
 ## Reporting
 

@@ -1,101 +1,90 @@
-# Current status
+# Current scientific status
 
-## Project phase
+## Product phase
 
-The project is in **data feasibility and photogrammetry validation**, not final product development.
+The project now has reproducible **research-only surface-change products** and
+an interactive viewer. It does not yet have a rigorous RPC-triangulated
+post-flood DSM or a building-burial product.
 
-The immediate go/no-go question is whether we can obtain image pairs with enough overlap, angular separation, image quality, and original camera information to reconstruct defensible elevation.
+## Public WorldView route
 
-## Vantor / WorldView-3
-
-The supplied project summary reports that the post-event scenes below were tested:
-
-```text
-B040001100881610
-B040001100881710
-```
-
-Reported findings:
-
-- acquisitions were approximately 61 seconds apart;
-- viewing azimuths were approximately 17.5 and 190.5 degrees;
-- hundreds of image features were matched;
-- a global registration difference was removed;
-- coherent terrain-dependent residual displacement remained;
-- sparse support covered approximately 16% of the particular test AOI.
-
-Interpretation: the public images appear to retain real parallax, but their public orthorectified COG products do not include the original RPCs or physical camera model needed to convert that signal into trustworthy absolute height.
-
-Status:
-
-| Requirement | Status |
-|---|---|
-| Opposite-look acquisition | Reported pass |
-| Useful overlap for the tested area | Reported pass |
-| Sparse feature matching | Reported pass |
-| Terrain-dependent residual parallax | Reported pass |
-| Public RPC/physical camera model | Fail |
-| Trustworthy absolute elevation | Blocked |
-
-The original matching artifacts, AOI, parameters, plots, and residual measurements described in the supplied summary were not committed. Those original numbers remain project-summary claims; the replacement pilot below is the reproducible evidence used by this project.
-
-A reproducible replacement pilot is now committed under `python/`, `src/parallax/`, and `parallax/`. Using reciprocal SIFT matching at ratio 0.82, it obtains 200 matches, 100 RANSAC inliers, 23% AOI-grid support, and a 3.44 m median residual after global partial-affine alignment. The residual/elevation correlation against coarse GLO-30 is weak (0.229), so the run does not strongly validate terrain dependence and still cannot recover absolute height.
-
-## Planet SkySat and Pelican
-
-Leading post-event candidates from 27 August 2026:
+The strongest reproducible pair is:
 
 ```text
-SkySat:  20260827_020055_ssc1_u0001
-Pelican: 20260827_060959_65_3009
+B040001100881410 + B040001100881710
 ```
 
-The supplied summary reports that they appear to cover the Syabrubesi pilot AOI and may have roughly 30 degrees of viewing-ray separation. That value has not been verified from the actual RPC-bearing products.
+It was acquired on 27 August 2026 about 82 seconds apart with approximately
+48.25° separation from published constant-look metadata. Both public COGs are
+orthorectified and contain no original RPC/physical camera model. The method
+therefore measures opposing-look residual ortho-parallax, removes a stable-
+terrain bias plane, and uses the published look vectors for an approximate
+height conversion. This is not conventional absolute stereo triangulation.
 
-Status:
+Current validated products:
 
-| Requirement | Status |
-|---|---|
-| Candidate acquisitions exist | Pass |
-| Syabrubesi overlap | Exact public footprints overlap 35.1% of `syabrubesi-pilot-v1` |
-| Different viewing directions | Likely; must recompute from RPCs |
-| Basic/RPC products exist as Planet product types | Yes in principle |
-| Public disaster copies have useful RPCs | No |
-| Exact camera-bearing products exist | Unknown |
-| Account entitlement | Unknown |
-| Authenticated API test | Blocked until `PL_API_KEY` is available |
+| Product | Support | Stable NMAD | Median uncertainty | Classification |
+|---|---:|---:|---:|---|
+| Strict 32 m | 1.282 km² / 1,252 cells | 4.324 m | 6.882 m | Research only |
+| Experimental 10 m | 0.688 km² / 6,882 cells | 4.034 m | 6.573 m | Research only |
 
-The reproducible public catalogue now computes approximately 30.25 degrees of separation from the published look metadata. This is a ranking estimate, not RPC ray geometry. The exact SkySat-Pelican common footprint covers only 35.1% of the explicit 1 km Syabrubesi pilot square; the earlier “fully cover” statement did not use this versioned AOI polygon.
+The strict layer has 132 two-sigma significant cells. The 10 m experiment has
+284. The smaller 10 m cell spacing improves localization but does not establish
+better vertical accuracy.
 
-The reproducible public-ortho correspondence pilot fails for this pair: 65 reciprocal matches produce only four RANSAC inliers and 4% grid support. This does not rule out the original Basic/RPC products, but it removes the public orthos as a credible reconstruction route.
+Cross-machine reproduction of the relaxed 32 m layer achieved correlation
+0.9936 and median absolute difference 0.247 m across 1,486 shared cells.
+Comparison with the pinned GeoPera same-source reconstruction gives dense
+correlation 0.906 and sparse centerline correlation 0.991. GeoPera is a
+reproducibility benchmark, not independent ground truth.
 
-## Pre-flood baseline
+## Coverage
 
-No suitably recent, high-resolution pre-flood DSM has been confirmed.
+The default processing rectangle spans approximately `28.139691–28.283023°N`
+and `85.310212–85.393888°E`. Strict direct support measures 0.520 km² of the
+37.415 km² UNOSAT affected mask (1.39%). Plausible public Vantor pair footprints
+could cover up to 8.61 km² (23.0%) before cloud and matching losses. Additional
+pairs are being evaluated and can enter the mosaic only through the automated
+promotion gate.
 
-Available broad references include:
+One-kilometre cells are reporting bins generated after matching. They are not
+image pixels, processing tiles, correlation windows, or output resolution.
 
-- Copernicus GLO-30, approximately 30 m;
-- NASADEM, approximately 30 m;
-- a manually observed July 2026 Google Earth frame for visual context only;
-- possible historical Cartosat-1 stereo from 2014.
+## Planet and camera-bearing imagery
 
-The existing point check found approximately 1822.6 m from GLO-30 and 1819 m from Open-Meteo near the border target. This confirms only broad elevation plausibility, not building-scale accuracy.
+The exact SkySat and Pelican acquisitions exist, but the public disaster copies
+are orthorectified and cross-sensor matching fails on those copies. A truthful
+Planet free account was created and email-verified. It exposes Sandbox Data and
+APIs but reports no active imagery products, so the exact Basic/RPC products are
+not entitled.
 
-## Other candidates
+NASA Ames Stereo Pipeline 3.7.0 is installed on the isolated sandbox and passed
+its official ASTER RPC end-to-end fixture. The Nepal public products cannot use
+that rigorous route because they lack camera models; ASP is ready when a
+camera-bearing product becomes accessible.
 
-Approximate fallback order:
+## Pre-event baseline
 
-1. Airbus Pléiades Neo plus Pléiades with Primary/DIMAP camera metadata.
-2. International Charter multi-sensor products through an authorized partner.
-3. Original commercial Vantor/WorldView products with RPC or exact camera models.
-4. Historical Cartosat-1 stereo as a contextual pre-event surface.
-5. SAR as a separate change-detection experiment, not the primary optical DSM route.
+Copernicus GLO-30 is the current broad pre-event context and is too coarse for
+building-scale burial analysis. Four exact High Mountain Asia 8 m mosaic
+granules are catalogued. Earthdata registration is filled but awaits the user's
+manual CAPTCHA; the protected request currently returns HTTP 401. GeoPera's HMA
+profile agrees closely with GLO-30 along the centerline (correlation 0.9998,
+median absolute difference 1.375 m), but that is not a substitute for obtaining
+and validating the original baseline locally.
 
-## What is not yet demonstrated
+## Interpretation boundary
 
-- A scientifically reliable post-flood DSM.
-- A comparable high-resolution pre-flood DSM.
-- Accurate SkySat–Pelican cross-sensor triangulation.
-- Building-level surface-change accuracy.
-- A defensible conversion from surface change to debris or burial depth.
+Demonstrated:
+
+- reproducible relative surface-change signal;
+- direct support, uncertainty, significance, coverage, and building overlays;
+- stable-terrain and cross-machine diagnostics;
+- a viewer that distinguishes measured, insignificant, significant, and nodata.
+
+Not demonstrated:
+
+- rigorous absolute post-flood elevation from the public products;
+- sub-metre or building-scale vertical accuracy;
+- debris depth or building burial depth;
+- suitability for operational rescue decisions.

@@ -1,5 +1,10 @@
 # Execution roadmap
 
+This is the original staged roadmap. Milestones 0, 1, the public-ortho portions
+of 2–8, the viewer, and research publication have now been executed. Rigorous
+RPC triangulation remains conditional on obtaining camera-bearing Nepal imagery;
+the current public-ortho change products are a separately labelled fallback.
+
 ## Milestone 0 — Define the experiment
 
 Deliverables:

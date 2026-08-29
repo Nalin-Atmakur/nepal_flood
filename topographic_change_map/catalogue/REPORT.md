@@ -10,6 +10,16 @@ Generated: 2026-08-29T18:59:04.925Z
 - Same-epoch overlapping AOI pair records: 244
 - Public-parallax-only pairs: 232
 
+## Sentinel-2 temporal context
+
+The official Copernicus Data Space OData catalogue adds 61 L2A products with
+exact UNOSAT overlap from 1 July through 29 August 2026: 57 before the post-event
+cutoff and 4 after it. Only two have scene cloud cover below 20%; all four
+post-cutoff products have high scene-wide cloud cover. They are retained for
+cloud screening, flood extent, and temporal context and explicitly rejected for
+precision DSM generation because of 10 m GSD and weak multi-angle geometry.
+See `sentinel2-context.json` and `SENTINEL2.md`.
+
 The public Vantor and Planet disaster products are orthorectified. Their view metadata can rank correspondence/parallax experiments, but no pair is promoted to rigorous DSM reconstruction unless both original camera models become available.
 
 ## Named candidate combinations

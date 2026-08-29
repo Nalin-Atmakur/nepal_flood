@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 22:48 BST
+Last updated: 2026-08-29 23:01 BST
 
 ## Goal
 
@@ -65,6 +65,8 @@ Completed:
 - Experimental 10 m bundle completed and passed invariants/promotion: 6,882 measured cells, 0.688 km² support, 4.034 m stable NMAD, 6.573 m median uncertainty, and 284 two-sigma significant cells.
 - Experimental 10 m building overlay contains 321 measured records: 2 significant positive, 1 significant negative, 318 measured-not-significant, and 3,939 unsupported.
 - Viewer now exposes strict 32 m and lazy-loaded experimental 10 m grids; both pass headless WebGL smoke tests.
+- Official Copernicus Data Space catalogue added 61 exact-overlap Sentinel-2 L2A context products (57 pre-cutoff, 4 post-cutoff); all are automatically rejected for precision DSM use, and only two have scene cloud below 20%.
+- Current automated checks pass: 16 Python tests and 12 TypeScript tests.
 - A self-contained static viewer bundle is prepared under `docs/topographic-change-viewer/`; GitHub Pages activation remains repository-admin controlled.
 - The protected HMA request was exercised safely and returned HTTP 401, confirming that the pending Earthdata CAPTCHA/account activation is the only download gate.
 

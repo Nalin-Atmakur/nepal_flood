@@ -4,21 +4,28 @@
 
 Automate catalogue discovery, metadata normalization, entitlement checks, selective download, and provenance tracking across imagery providers.
 
-Do not make automated account creation the center of the system. Account creation may require CAPTCHA, MFA, licence acceptance, payment, organization verification, or humanitarian-access approval. Those actions require human review and may create legal obligations.
+Automate truthful individual self-service account creation when it is free and
+creates no purchase, recurring trial, institutional representation, or new
+binding access request. CAPTCHA and MFA are explicit user handoffs. Any payment,
+organization verification, humanitarian representation, or non-standard licence
+acceptance remains a human decision.
 
 ## Human and automated responsibilities
 
 Human-controlled:
 
-- create provider accounts;
-- accept licences and terms;
-- complete MFA;
+- complete CAPTCHA/MFA when automation cannot;
+- accept non-standard licences or terms that create a new obligation;
 - request humanitarian, research, or commercial access;
 - approve purchases or binding agreements;
 - provide secrets through a secure local mechanism.
 
 Automated:
 
+- fill and submit ordinary free individual signup forms truthfully;
+- follow email verification links and scoped OTP flows;
+- persist provider sessions in the isolated Breeze-derived Chrome profile;
+- record redacted account and entitlement state;
 - search catalogues by AOI and date;
 - retrieve scene and asset metadata;
 - identify Basic/non-orthorectified products;
@@ -114,7 +121,11 @@ This minimizes bandwidth, storage, and licence exposure.
 
 ## Immediate Planet query
 
-When `PL_API_KEY` becomes available, query the two exact candidate IDs and record:
+Completed outcome: the free account is verified but has no active imagery
+products. The exact SkySat/Pelican Basic+RPC products are not entitled. The
+public orthos remain available for correspondence testing only.
+
+The entitlement check records:
 
 - product existence;
 - footprint and Syabrubesi AOI overlap;

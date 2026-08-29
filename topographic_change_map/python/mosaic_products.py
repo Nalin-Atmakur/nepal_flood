@@ -44,6 +44,16 @@ def read_metadata(product: Path):
     return rasterio.open(product / LAYERS["change"])
 
 
+def require_promotion(product: Path) -> dict:
+    path = product / "promotion.json"
+    if not path.exists():
+        raise RuntimeError(f"Missing promotion decision for mosaic input: {product}")
+    decision = json.loads(path.read_text())
+    if decision.get("promotedToMosaic") is not True:
+        raise RuntimeError(f"Product failed promotion gate: {product}")
+    return decision
+
+
 def warp_layer(
     source_path: Path,
     transform: rasterio.Affine,
@@ -93,6 +103,7 @@ def write(path: Path, values: np.ndarray, transform, dtype: str, nodata) -> None
 def main() -> None:
     args = parse_args()
     inputs = [Path(value) for value in args.input]
+    promotions = [require_promotion(value) for value in inputs]
     metadata = [read_metadata(value) for value in inputs]
     if any(str(dataset.crs) != "EPSG:32645" for dataset in metadata):
         raise RuntimeError("All products must use EPSG:32645")
@@ -111,8 +122,15 @@ def main() -> None:
     source_index = np.zeros((height, width), dtype=np.uint8)
     contributions = []
     for index, product in enumerate(inputs, start=1):
-        candidate_change = warp_layer(product / LAYERS["change"], transform, width, height)
-        candidate_uncertainty = warp_layer(product / LAYERS["uncertainty"], transform, width, height)
+        # Direct-support measurements are categorical samples at their source
+        # cell centres. Nearest-neighbour preserves those samples and their
+        # support mask; bilinear resampling would invent intermediate changes.
+        candidate_change = warp_layer(
+            product / LAYERS["change"], transform, width, height, True
+        )
+        candidate_uncertainty = warp_layer(
+            product / LAYERS["uncertainty"], transform, width, height, True
+        )
         candidate_support = warp_layer(product / LAYERS["support"], transform, width, height, True)
         candidate_pre = warp_layer(product / LAYERS["pre"], transform, width, height)
         use = select_lower_uncertainty(change, uncertainty, candidate_change, candidate_uncertainty)
@@ -122,7 +140,14 @@ def main() -> None:
         source_index[use] = index
         pre_missing = ~np.isfinite(pre) & np.isfinite(candidate_pre)
         pre[pre_missing] = candidate_pre[pre_missing]
-        contributions.append({"sourceIndex": index, "path": str(product), "selectedCells": int(use.sum())})
+        contributions.append(
+            {
+                "sourceIndex": index,
+                "path": str(product),
+                "selectedCells": int(use.sum()),
+                "promotion": promotions[index - 1],
+            }
+        )
     measured = np.isfinite(change) & np.isfinite(uncertainty) & (support > 0)
     post = np.where(measured & np.isfinite(pre), pre + change, np.nan)
     output = Path(args.output)

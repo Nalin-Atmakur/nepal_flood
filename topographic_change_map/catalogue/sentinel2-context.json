@@ -1,0 +1,4579 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T22:00:03.001Z",
+  "source": "Copernicus Data Space official OData catalogue",
+  "query": {
+    "start": "2026-07-01",
+    "end": "2026-08-29",
+    "productType": "S2MSI2A"
+  },
+  "interpretation": "Sentinel-2 is context imagery, not a building-scale stereo DSM source.",
+  "scenes": [
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "ff004fa1-0640-4bf8-bac7-fe18041c1f71",
+      "name": "S2A_MSIL2A_20260702T045241_N0512_R076_T45RUM_20260702T095512.SAFE",
+      "acquiredAt": "2026-07-02T04:52:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 55.91132,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 692012634,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/02/S2A_MSIL2A_20260702T045241_N0512_R076_T45RUM_20260702T095512.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.31516630457504,
+              27.925871447430563
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.57019517859354,
+              28.9195261483324
+            ],
+            [
+              85.55315627903018,
+              28.85188689795539
+            ],
+            [
+              85.51664805039056,
+              28.70352933242499
+            ],
+            [
+              85.47962887336595,
+              28.55534167898222
+            ],
+            [
+              85.4397227131025,
+              28.408100388751127
+            ],
+            [
+              85.40066494030958,
+              28.260636311155285
+            ],
+            [
+              85.36499968870962,
+              28.112189301281862
+            ],
+            [
+              85.32473449254536,
+              27.96527411149785
+            ],
+            [
+              85.31516630457504,
+              27.925871447430563
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 14.342185641657753,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "06a4178f-27ec-4555-a563-3405105c7d5c",
+      "name": "S2C_MSIL2A_20260703T045701_N0512_R119_T45RTL_20260703T095511.SAFE",
+      "acquiredAt": "2026-07-03T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 60.115093,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1172638768,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/03/S2C_MSIL2A_20260703T045701_N0512_R119_T45RTL_20260703T095511.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "2d81d9dc-463a-45fb-9ab6-21da5360fe08",
+      "name": "S2C_MSIL2A_20260703T045701_N0512_R119_T45RUM_20260703T095511.SAFE",
+      "acquiredAt": "2026-07-03T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 44.403166,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1114808917,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/03/S2C_MSIL2A_20260703T045701_N0512_R119_T45RUM_20260703T095511.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07618510224299,
+              28.7431084152457
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.85335760783803,
+              27.93163499705096
+            ],
+            [
+              85.85777416870181,
+              27.949075754776576
+            ],
+            [
+              85.89464444078723,
+              28.097751338589656
+            ],
+            [
+              85.93613579529709,
+              28.24512894714028
+            ],
+            [
+              85.95151240052435,
+              28.298223880841554
+            ],
+            [
+              85.97777324696364,
+              28.389517264127047
+            ],
+            [
+              86.01798415897822,
+              28.53750153211482
+            ],
+            [
+              86.01864845969578,
+              28.539845922307567
+            ],
+            [
+              86.01875602542985,
+              28.540243773947807
+            ],
+            [
+              86.06032203355278,
+              28.686923317762176
+            ],
+            [
+              86.07618510224299,
+              28.7431084152457
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "be495e2f-7634-4580-be14-5f49c6a317bd",
+      "name": "S2C_MSIL2A_20260703T045701_N0512_R119_T45RUL_20260703T095511.SAFE",
+      "acquiredAt": "2026-07-03T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 57.538575,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 887928357,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/03/S2C_MSIL2A_20260703T045701_N0512_R119_T45RUL_20260703T095511.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87539960711096,
+              28.02014852417115
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.61000388834954,
+              27.02623951897625
+            ],
+            [
+              85.61880713539988,
+              27.058480735882576
+            ],
+            [
+              85.65905854067536,
+              27.20625997880988
+            ],
+            [
+              85.6982883694736,
+              27.35435775038456
+            ],
+            [
+              85.72703865019882,
+              27.46011983929987
+            ],
+            [
+              85.73918844040291,
+              27.50523586947388
+            ],
+            [
+              85.7517401634519,
+              27.551030831305475
+            ],
+            [
+              85.778609504203,
+              27.649960416700672
+            ],
+            [
+              85.81911002295665,
+              27.79764283877259
+            ],
+            [
+              85.8391072149883,
+              27.87536097369828
+            ],
+            [
+              85.85777416870181,
+              27.949075754776576
+            ],
+            [
+              85.87539960711096,
+              28.02014852417115
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "70ba5897-8727-4f43-b603-5f87abdaa08e",
+      "name": "S2B_MSIL2A_20260705T044659_N0512_R076_T45RUM_20260705T083506.SAFE",
+      "acquiredAt": "2026-07-05T04:46:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 64.30285,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 633768128,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/05/S2B_MSIL2A_20260705T044659_N0512_R076_T45RUM_20260705T083506.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.3158826007932,
+              27.925879118325227
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.57176691733027,
+              28.919543524342192
+            ],
+            [
+              85.54025433894051,
+              28.7940839706396
+            ],
+            [
+              85.5040353121337,
+              28.645811524400063
+            ],
+            [
+              85.46491832887635,
+              28.498476759332288
+            ],
+            [
+              85.42725945025178,
+              28.350697933672944
+            ],
+            [
+              85.38918721699478,
+              28.203073846914894
+            ],
+            [
+              85.35186916933002,
+              28.055176687004632
+            ],
+            [
+              85.3158826007932,
+              27.925879118325227
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 14.1627849056248,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "9673aeff-d819-4d45-8ebf-369529579cda",
+      "name": "S2B_MSIL2A_20260708T045659_N0512_R119_T45RTL_20260708T084403.SAFE",
+      "acquiredAt": "2026-07-08T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 93.83111,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 964602237,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/08/S2B_MSIL2A_20260708T045659_N0512_R119_T45RTL_20260708T084403.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "aaf23382-3bfe-4a8e-81ac-96ff0a18ea51",
+      "name": "S2B_MSIL2A_20260708T045659_N0512_R119_T45RUL_20260708T084403.SAFE",
+      "acquiredAt": "2026-07-08T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 93.253869,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 688646560,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/08/S2B_MSIL2A_20260708T045659_N0512_R119_T45RUL_20260708T084403.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87757344778834,
+              28.020171871398283
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.61149692457428,
+              27.026255032856003
+            ],
+            [
+              85.64780384379243,
+              27.16057849965769
+            ],
+            [
+              85.68699829853372,
+              27.30855189866186
+            ],
+            [
+              85.72711179697465,
+              27.456313333221168
+            ],
+            [
+              85.7679759048228,
+              27.60388058048428
+            ],
+            [
+              85.80956835375505,
+              27.75127952795861
+            ],
+            [
+              85.8486765753734,
+              27.899394929202007
+            ],
+            [
+              85.87757344778834,
+              28.020171871398283
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "b4468095-9241-40e7-a3e2-1f98d4654c38",
+      "name": "S2B_MSIL2A_20260708T045659_N0512_R119_T45RUM_20260708T084403.SAFE",
+      "acquiredAt": "2026-07-08T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 89.433187,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 901011404,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/08/S2B_MSIL2A_20260708T045659_N0512_R119_T45RUM_20260708T084403.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07623607765936,
+              28.737221409748166
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.85639806599744,
+              27.931667557650442
+            ],
+            [
+              85.88435122269325,
+              28.048500159531216
+            ],
+            [
+              85.92618397051865,
+              28.19596125995956
+            ],
+            [
+              85.96548730390795,
+              28.3441416277636
+            ],
+            [
+              86.00638952253942,
+              28.491925529100765
+            ],
+            [
+              86.04917152886716,
+              28.639158760275944
+            ],
+            [
+              86.07623607765936,
+              28.737221409748166
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "24524992-4dc5-421a-9dc1-047fe81f7796",
+      "name": "S2C_MSIL2A_20260710T044701_N0512_R076_T45RUM_20260710T095809.SAFE",
+      "acquiredAt": "2026-07-10T04:47:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 74.48352,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 592407999,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/10/S2C_MSIL2A_20260710T044701_N0512_R076_T45RUM_20260710T095809.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.30642511195248,
+              27.925777837041252
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56153338567104,
+              28.91943038979753
+            ],
+            [
+              85.5266541543238,
+              28.780742304052342
+            ],
+            [
+              85.49104490064643,
+              28.632212692023927
+            ],
+            [
+              85.4616773492463,
+              28.519628286824386
+            ],
+            [
+              85.45296495821827,
+              28.48589804994178
+            ],
+            [
+              85.42574528230176,
+              28.38711817703804
+            ],
+            [
+              85.41217773060286,
+              28.33775720003522
+            ],
+            [
+              85.37531997461414,
+              28.189812493435245
+            ],
+            [
+              85.3375709327947,
+              28.042143713817456
+            ],
+            [
+              85.30642511195248,
+              27.925777837041252
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.542006603899802,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "48dfc8a1-44fa-44ed-8738-bdc57ebc4cfb",
+      "name": "S2C_MSIL2A_20260713T045701_N0512_R119_T45RUL_20260713T095014.SAFE",
+      "acquiredAt": "2026-07-13T04:57:01.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.936628,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 502025298,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/13/S2C_MSIL2A_20260713T045701_N0512_R119_T45RUL_20260713T095014.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.86754493598865,
+              28.020064164359205
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60185554435637,
+              27.026154850950928
+            ],
+            [
+              85.6315435570145,
+              27.137258472039147
+            ],
+            [
+              85.67249216143409,
+              27.284777711391207
+            ],
+            [
+              85.68046733347806,
+              27.315498766654997
+            ],
+            [
+              85.7114232611032,
+              27.436322647532027
+            ],
+            [
+              85.74658677953022,
+              27.55979619802264
+            ],
+            [
+              85.7524662999213,
+              27.58072544640526
+            ],
+            [
+              85.79325648782739,
+              27.728519758932087
+            ],
+            [
+              85.83138966617456,
+              27.877118791611224
+            ],
+            [
+              85.86754493598865,
+              28.020064164359205
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "e6bc7c57-04f9-49a6-8aa8-f35a0ae5407e",
+      "name": "S2C_MSIL2A_20260713T045701_N0512_R119_T45RTL_20260713T095014.SAFE",
+      "acquiredAt": "2026-07-13T04:57:01.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.946439,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 723605618,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/13/S2C_MSIL2A_20260713T045701_N0512_R119_T45RTL_20260713T095014.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "ea41008f-c0d4-409b-9129-93a7fb95d4fb",
+      "name": "S2C_MSIL2A_20260713T045701_N0512_R119_T45RUM_20260713T095014.SAFE",
+      "acquiredAt": "2026-07-13T04:57:01.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 95.204401,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 713959523,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/13/S2C_MSIL2A_20260713T045701_N0512_R119_T45RUM_20260713T095014.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07591924433623,
+              28.773811586894457
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.84515627224123,
+              27.931547168049676
+            ],
+            [
+              85.86901184990337,
+              28.02586383221975
+            ],
+            [
+              85.90939006135758,
+              28.173680995440264
+            ],
+            [
+              85.93987532274137,
+              28.28734912677899
+            ],
+            [
+              85.94972815627929,
+              28.324507405187003
+            ],
+            [
+              85.97323270652944,
+              28.40703387483851
+            ],
+            [
+              85.99080568257821,
+              28.469140648265626
+            ],
+            [
+              86.0332222392635,
+              28.61633872639671
+            ],
+            [
+              86.05057410638923,
+              28.680237021176065
+            ],
+            [
+              86.07402418151568,
+              28.767048292393472
+            ],
+            [
+              86.07591924433623,
+              28.773811586894457
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "6338330e-08e9-4907-9dbf-2e1866584cc0",
+      "name": "S2B_MSIL2A_20260715T044659_N0512_R076_T45RUM_20260715T083355.SAFE",
+      "acquiredAt": "2026-07-15T04:46:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 78.187168,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 565760575,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/15/S2B_MSIL2A_20260715T044659_N0512_R076_T45RUM_20260715T083355.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.3080535601626,
+              27.925795276271515
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56467839886295,
+              28.919465158794907
+            ],
+            [
+              85.53508515433708,
+              28.802021065505567
+            ],
+            [
+              85.49856859761577,
+              28.65384422505607
+            ],
+            [
+              85.46005591721713,
+              28.50630188441289
+            ],
+            [
+              85.42243875007556,
+              28.35847073212812
+            ],
+            [
+              85.3843749735406,
+              28.210744994810288
+            ],
+            [
+              85.34729341190109,
+              28.062748251726017
+            ],
+            [
+              85.3080535601626,
+              27.925795276271515
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.093165195186039,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "28f858da-a349-4e91-aea0-8b8ea0252883",
+      "name": "S2A_MSIL2A_20260715T050241_N0512_R119_T45RTL_20260715T100502.SAFE",
+      "acquiredAt": "2026-07-15T05:02:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 94.032526,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 932575987,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/15/S2A_MSIL2A_20260715T050241_N0512_R119_T45RTL_20260715T100502.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "7fcff5c6-19d0-4037-ba00-d90a3864f0dd",
+      "name": "S2A_MSIL2A_20260715T050241_N0512_R119_T45RUM_20260715T100502.SAFE",
+      "acquiredAt": "2026-07-15T05:02:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 82.464522,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 892963740,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/15/S2A_MSIL2A_20260715T050241_N0512_R119_T45RUM_20260715T100502.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07618980565528,
+              28.74256523157084
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.85287635916481,
+              27.9316298433062
+            ],
+            [
+              85.86789841154646,
+              27.990752794797253
+            ],
+            [
+              85.90706981662512,
+              28.13909988762344
+            ],
+            [
+              85.94733156822834,
+              28.28716065652893
+            ],
+            [
+              85.99010025919169,
+              28.43446670784064
+            ],
+            [
+              86.03128544760555,
+              28.58221929576693
+            ],
+            [
+              86.07263897711114,
+              28.729908243548525
+            ],
+            [
+              86.07618980565528,
+              28.74256523157084
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "ba182f3f-8f45-4af0-a265-12a11dce5893",
+      "name": "S2A_MSIL2A_20260715T050241_N0512_R119_T45RUL_20260715T100502.SAFE",
+      "acquiredAt": "2026-07-15T05:02:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 95.320487,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 637985453,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/15/S2A_MSIL2A_20260715T050241_N0512_R119_T45RUL_20260715T100502.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87566116604245,
+              28.020151333335523
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60999522470576,
+              27.026239428953836
+            ],
+            [
+              85.6309777516635,
+              27.103242224883807
+            ],
+            [
+              85.67118092867497,
+              27.250868222326453
+            ],
+            [
+              85.70824480836201,
+              27.39926910911687
+            ],
+            [
+              85.75114610670605,
+              27.54608592364378
+            ],
+            [
+              85.79017677370607,
+              27.694134989395764
+            ],
+            [
+              85.83012611124305,
+              27.842090693121246
+            ],
+            [
+              85.86789841154646,
+              27.990752794797253
+            ],
+            [
+              85.87566116604245,
+              28.020151333335523
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "24f4fd86-d6d9-46b8-8ee7-d2f67055834a",
+      "name": "S2B_MSIL2A_20260718T045659_N0512_R119_T45RTL_20260718T085032.SAFE",
+      "acquiredAt": "2026-07-18T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.983943,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 766111062,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/18/S2B_MSIL2A_20260718T045659_N0512_R119_T45RTL_20260718T085032.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "62054dce-1e18-48e1-866b-3f28a72d6a95",
+      "name": "S2B_MSIL2A_20260718T045659_N0512_R119_T45RUM_20260718T085032.SAFE",
+      "acquiredAt": "2026-07-18T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 93.861485,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 765682821,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/18/S2B_MSIL2A_20260718T045659_N0512_R119_T45RUM_20260718T085032.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.0760348539569,
+              28.76046016142546
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.84886932275225,
+              27.931586931514328
+            ],
+            [
+              85.86488699515195,
+              27.995314077173937
+            ],
+            [
+              85.87237676339417,
+              28.025235384140128
+            ],
+            [
+              85.91284485420739,
+              28.17300899993108
+            ],
+            [
+              85.92045593534209,
+              28.201094281468432
+            ],
+            [
+              85.9529308743519,
+              28.321268460842088
+            ],
+            [
+              85.99425955901954,
+              28.468876253466167
+            ],
+            [
+              86.03650458295267,
+              28.616274187620647
+            ],
+            [
+              86.0760348539569,
+              28.76046016142546
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "bfe232df-097b-4f4e-82cb-f21837643f2d",
+      "name": "S2B_MSIL2A_20260718T045659_N0512_R119_T45RUL_20260718T085032.SAFE",
+      "acquiredAt": "2026-07-18T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.939144,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 539424942,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/18/S2B_MSIL2A_20260718T045659_N0512_R119_T45RUL_20260718T085032.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.8710918622898,
+              28.02010225863853
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60558677230415,
+              27.026193621491622
+            ],
+            [
+              85.6355890245251,
+              27.137843202095308
+            ],
+            [
+              85.67623786558121,
+              27.285519391401955
+            ],
+            [
+              85.71495842909513,
+              27.433649947011048
+            ],
+            [
+              85.75579589888744,
+              27.581180963349823
+            ],
+            [
+              85.79697907534553,
+              27.728663931235623
+            ],
+            [
+              85.83515067516426,
+              27.87700657606208
+            ],
+            [
+              85.86488699515195,
+              27.995314077173937
+            ],
+            [
+              85.8710918622898,
+              28.02010225863853
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "41f7a030-105b-4bb0-9a58-168ae8930f5a",
+      "name": "S2C_MSIL2A_20260720T044701_N0512_R076_T45RUM_20260720T095911.SAFE",
+      "acquiredAt": "2026-07-20T04:47:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 76.903105,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 596028322,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/20/S2C_MSIL2A_20260720T044701_N0512_R076_T45RUM_20260720T095911.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.30161205826344,
+              27.92572629352207
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.55812390557143,
+              28.91939269704478
+            ],
+            [
+              85.55244597569617,
+              28.89679705263163
+            ],
+            [
+              85.51419227272144,
+              28.749153478095742
+            ],
+            [
+              85.47829172561921,
+              28.60082905559616
+            ],
+            [
+              85.4494505613316,
+              28.493468818257256
+            ],
+            [
+              85.43915274032115,
+              28.45494809259016
+            ],
+            [
+              85.42446883582521,
+              28.40071997216869
+            ],
+            [
+              85.39904721279011,
+              28.30652431322184
+            ],
+            [
+              85.3798318795287,
+              28.23172447099461
+            ],
+            [
+              85.36151640029493,
+              28.160187272163032
+            ],
+            [
+              85.32531918328635,
+              28.011930860813024
+            ],
+            [
+              85.3250089668487,
+              28.010809926577135
+            ],
+            [
+              85.32495417443488,
+              28.010585244380408
+            ],
+            [
+              85.30161205826344,
+              27.92572629352207
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.873544343900686,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "dfd16373-08a5-4370-be14-fbb8bdc73b30",
+      "name": "S2A_MSIL2A_20260722T045241_N0512_R076_T45RUM_20260722T095321.SAFE",
+      "acquiredAt": "2026-07-22T04:52:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 67.730594,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 618418092,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/22/S2A_MSIL2A_20260722T045241_N0512_R076_T45RUM_20260722T095321.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.30830604897092,
+              27.92579798020182
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56500209295321,
+              28.919468737323292
+            ],
+            [
+              85.5379358904415,
+              28.811783691521285
+            ],
+            [
+              85.50149666772025,
+              28.663757444380707
+            ],
+            [
+              85.46359253728144,
+              28.51614225620509
+            ],
+            [
+              85.42515000907562,
+              28.36863046479339
+            ],
+            [
+              85.38626656816137,
+              28.221219223194687
+            ],
+            [
+              85.35070607230931,
+              28.07269626272718
+            ],
+            [
+              85.3084336244144,
+              27.92633202520622
+            ],
+            [
+              85.30830604897092,
+              27.92579798020182
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.12926654767305,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "1140572d-ce3e-4ee4-b5ca-dc9a422a997f",
+      "name": "S2C_MSIL2A_20260723T045701_N0512_R119_T45RUL_20260723T095515.SAFE",
+      "acquiredAt": "2026-07-23T04:57:01.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 70.299894,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 810065896,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/23/S2C_MSIL2A_20260723T045701_N0512_R119_T45RUL_20260723T095515.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.86368793440224,
+              28.02002273984589
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.59812162649995,
+              27.026116052459862
+            ],
+            [
+              85.61594000280233,
+              27.091437493334023
+            ],
+            [
+              85.6560301697895,
+              27.23916732240215
+            ],
+            [
+              85.69371647185609,
+              27.387688954776248
+            ],
+            [
+              85.73517992013117,
+              27.535058857041967
+            ],
+            [
+              85.77100680057339,
+              27.66453832053369
+            ],
+            [
+              85.77682727157939,
+              27.685759507427147
+            ],
+            [
+              85.78048845621973,
+              27.69932171046816
+            ],
+            [
+              85.81575578505328,
+              27.8308752130084
+            ],
+            [
+              85.85348671913198,
+              27.97966854985884
+            ],
+            [
+              85.86368793440224,
+              28.02002273984589
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "2d390ca0-a13c-4f4b-892a-95367849add4",
+      "name": "S2C_MSIL2A_20260723T045701_N0512_R119_T45RUM_20260723T095515.SAFE",
+      "acquiredAt": "2026-07-23T04:57:01.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 72.013122,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 982725834,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/23/S2C_MSIL2A_20260723T045701_N0512_R119_T45RUM_20260723T095515.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07581594452776,
+              28.78574138725161
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.84127358122078,
+              27.931505587886225
+            ],
+            [
+              85.85348671913198,
+              27.97966854985884
+            ],
+            [
+              85.89110558058992,
+              28.128482062970065
+            ],
+            [
+              85.93239811580936,
+              28.276074288571248
+            ],
+            [
+              85.97522806507698,
+              28.42310020115932
+            ],
+            [
+              86.0158736954097,
+              28.570856927073848
+            ],
+            [
+              86.05671010089466,
+              28.71857648288304
+            ],
+            [
+              86.07581594452776,
+              28.78574138725161
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "72fe9f53-8ecc-43a7-a41f-a3ecf3559038",
+      "name": "S2C_MSIL2A_20260723T045701_N0512_R119_T45RTL_20260723T095515.SAFE",
+      "acquiredAt": "2026-07-23T04:57:01.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 61.769408,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1155599656,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/23/S2C_MSIL2A_20260723T045701_N0512_R119_T45RTL_20260723T095515.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "25453f99-ea51-49f9-93e0-b016b095afb0",
+      "name": "S2B_MSIL2A_20260725T044659_N0512_R076_T45RUM_20260725T083358.SAFE",
+      "acquiredAt": "2026-07-25T04:46:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 85.772127,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 544743566,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/25/S2B_MSIL2A_20260725T044659_N0512_R076_T45RUM_20260725T083358.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.30645283608595,
+              27.925778133942035
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56129972960505,
+              28.9194278066646
+            ],
+            [
+              85.52540964507291,
+              28.776495204858502
+            ],
+            [
+              85.4901997477871,
+              28.6278999821644
+            ],
+            [
+              85.45093651176985,
+              28.480597609248942
+            ],
+            [
+              85.41039233582947,
+              28.333659487933687
+            ],
+            [
+              85.37411654120145,
+              28.185332260735912
+            ],
+            [
+              85.33659535475438,
+              28.037455567462747
+            ],
+            [
+              85.30645283608595,
+              27.925778133942035
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.56029348342927,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "2a58ce3b-7862-48f7-b033-48f696c918cb",
+      "name": "S2B_MSIL2A_20260728T045659_N0512_R119_T45RTL_20260728T104345.SAFE",
+      "acquiredAt": "2026-07-28T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 58.800429,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1170111268,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/28/S2B_MSIL2A_20260728T045659_N0512_R119_T45RTL_20260728T104345.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "4851412e-883b-49a4-b274-29b8a147114a",
+      "name": "S2B_MSIL2A_20260728T045659_N0512_R119_T45RUM_20260728T104345.SAFE",
+      "acquiredAt": "2026-07-28T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 74.358648,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 928052988,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/28/S2B_MSIL2A_20260728T045659_N0512_R119_T45RUM_20260728T104345.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07596923292326,
+              28.768038547503817
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.8474148031078,
+              27.931571354904126
+            ],
+            [
+              85.87405967532565,
+              28.03973511052298
+            ],
+            [
+              85.91519389491782,
+              28.187475342281868
+            ],
+            [
+              85.95441280695556,
+              28.335728896350805
+            ],
+            [
+              85.99619415814844,
+              28.48329518043136
+            ],
+            [
+              86.038582497468,
+              28.63071174792351
+            ],
+            [
+              86.07596923292326,
+              28.768038547503817
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "90f05753-40bb-4f3f-81bc-7c7e90855fbf",
+      "name": "S2B_MSIL2A_20260728T045659_N0512_R119_T45RUL_20260728T104345.SAFE",
+      "acquiredAt": "2026-07-28T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 71.983826,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 808469946,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/28/S2B_MSIL2A_20260728T045659_N0512_R119_T45RUL_20260728T104345.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.86921839597977,
+              28.020082137456736
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60351385977593,
+              27.02617208221805
+            ],
+            [
+              85.63749940541203,
+              27.151819430115744
+            ],
+            [
+              85.67770518449449,
+              27.29947972756304
+            ],
+            [
+              85.69061062125449,
+              27.349305706925666
+            ],
+            [
+              85.71590780968273,
+              27.447120397427376
+            ],
+            [
+              85.72046541584194,
+              27.462972985951403
+            ],
+            [
+              85.7581989295152,
+              27.594896111143505
+            ],
+            [
+              85.79928843527365,
+              27.742461993234087
+            ],
+            [
+              85.83739148682317,
+              27.890882117431445
+            ],
+            [
+              85.86921839597977,
+              28.020082137456736
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "6aad2be8-2c56-4778-b997-48c91bd37c98",
+      "name": "S2C_MSIL2A_20260730T044701_N0512_R076_T45RUM_20260730T094910.SAFE",
+      "acquiredAt": "2026-07-30T04:47:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.891651,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 455142956,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/07/30/S2C_MSIL2A_20260730T044701_N0512_R076_T45RUM_20260730T094910.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.30119428032089,
+              27.92572181949232
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.5568368632614,
+              28.919378468433333
+            ],
+            [
+              85.53726830225179,
+              28.841531095606378
+            ],
+            [
+              85.50086044811793,
+              28.69324845055162
+            ],
+            [
+              85.462821933423,
+              28.545524555017256
+            ],
+            [
+              85.42453725021058,
+              28.397923099853568
+            ],
+            [
+              85.38603356006385,
+              28.250438973728087
+            ],
+            [
+              85.35232879554921,
+              28.11336568558596
+            ],
+            [
+              85.34995092879022,
+              28.103588059290804
+            ],
+            [
+              85.34974570106692,
+              28.102860546049616
+            ],
+            [
+              85.34960273769767,
+              28.10227913094725
+            ],
+            [
+              85.30842403199519,
+              27.95624508152853
+            ],
+            [
+              85.30119428032089,
+              27.92572181949232
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.738485809287258,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "65f81228-0b3f-4863-9f0b-66f874c083cc",
+      "name": "S2C_MSIL2A_20260802T045701_N0512_R119_T45RTL_20260802T095114.SAFE",
+      "acquiredAt": "2026-08-02T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.898118,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 748692863,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/02/S2C_MSIL2A_20260802T045701_N0512_R119_T45RTL_20260802T095114.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "a47be9fa-0bd9-4fbf-949d-8740978653a5",
+      "name": "S2C_MSIL2A_20260802T045701_N0512_R119_T45RUL_20260802T095114.SAFE",
+      "acquiredAt": "2026-08-02T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.914879,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 526089485,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/02/S2C_MSIL2A_20260802T045701_N0512_R119_T45RUL_20260802T095114.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.86545875614227,
+              28.020041758616586
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60001825974298,
+              27.026135760046042
+            ],
+            [
+              85.60422760366441,
+              27.041551060689525
+            ],
+            [
+              85.64437719890297,
+              27.189424731167914
+            ],
+            [
+              85.68410088384162,
+              27.33747487177148
+            ],
+            [
+              85.72448367080077,
+              27.48534982488672
+            ],
+            [
+              85.7630599013603,
+              27.63378064897216
+            ],
+            [
+              85.79599086790358,
+              27.75115634894569
+            ],
+            [
+              85.80497976403491,
+              27.78336191058855
+            ],
+            [
+              85.84278074858393,
+              27.929683619910968
+            ],
+            [
+              85.86545875614227,
+              28.020041758616586
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "d0d56cf1-ea40-481d-8f89-a10234165ee5",
+      "name": "S2C_MSIL2A_20260802T045701_N0512_R119_T45RUM_20260802T095114.SAFE",
+      "acquiredAt": "2026-08-02T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.55588,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 732855890,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/02/S2C_MSIL2A_20260802T045701_N0512_R119_T45RUM_20260802T095114.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07588565021432,
+              28.777691276251762
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.84324331871937,
+              27.931526682020863
+            ],
+            [
+              85.87993512476227,
+              28.07772132858563
+            ],
+            [
+              85.88081022818758,
+              28.08125266293516
+            ],
+            [
+              85.92114091461802,
+              28.22907713858978
+            ],
+            [
+              85.95038224975798,
+              28.32970899569868
+            ],
+            [
+              85.9630792662442,
+              28.373483485460977
+            ],
+            [
+              86.00343456406218,
+              28.52135308869109
+            ],
+            [
+              86.03008388026035,
+              28.61506073582033
+            ],
+            [
+              86.04581000587137,
+              28.670381938587475
+            ],
+            [
+              86.05386094406106,
+              28.69909555798524
+            ],
+            [
+              86.07588565021432,
+              28.777691276251762
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "92a48f48-0b2b-48b9-a2c8-374767b9a500",
+      "name": "S2B_MSIL2A_20260804T044659_N0512_R076_T45RUM_20260804T083355.SAFE",
+      "acquiredAt": "2026-08-04T04:46:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 80.390173,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 579572995,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/04/S2B_MSIL2A_20260804T044659_N0512_R076_T45RUM_20260804T083355.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.30906107803116,
+              27.925806065890733
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56341284435393,
+              28.91945116773709
+            ],
+            [
+              85.52727315548482,
+              28.7753148168558
+            ],
+            [
+              85.49262933061328,
+              28.626537247490766
+            ],
+            [
+              85.45294553340864,
+              28.479430248169702
+            ],
+            [
+              85.41243008713916,
+              28.33261570133493
+            ],
+            [
+              85.3765483418984,
+              28.18433920093039
+            ],
+            [
+              85.33910188286121,
+              28.03658988389103
+            ],
+            [
+              85.30906107803116,
+              27.925806065890733
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.484290697127344,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "7c3cd477-99b7-4e81-a43c-1dfc5b6dd5b1",
+      "name": "S2A_MSIL2A_20260804T050241_N0512_R119_T45RTL_20260804T114612.SAFE",
+      "acquiredAt": "2026-08-04T05:02:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 91.352266,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 997234744,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/04/S2A_MSIL2A_20260804T050241_N0512_R119_T45RTL_20260804T114612.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "dacdb44d-f63e-4ab6-9271-e4bfd17c28f3",
+      "name": "S2A_MSIL2A_20260804T050241_N0512_R119_T45RUL_20260804T114612.SAFE",
+      "acquiredAt": "2026-08-04T05:02:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 81.200576,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 727965808,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/04/S2A_MSIL2A_20260804T050241_N0512_R119_T45RUL_20260804T114612.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87004340022426,
+              28.02009099806997
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60368690278119,
+              27.026173880277824
+            ],
+            [
+              85.61183526433416,
+              27.056034655624465
+            ],
+            [
+              85.65207770480548,
+              27.203765336733383
+            ],
+            [
+              85.69157928054541,
+              27.351853655921488
+            ],
+            [
+              85.73214402523993,
+              27.49973888683052
+            ],
+            [
+              85.77160334503526,
+              27.647947206657072
+            ],
+            [
+              85.81238841542827,
+              27.79569846625016
+            ],
+            [
+              85.85104553983382,
+              27.944036477231737
+            ],
+            [
+              85.87004340022426,
+              28.02009099806997
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "e152354b-045f-4313-9fa1-23d9abb716ba",
+      "name": "S2A_MSIL2A_20260804T050241_N0512_R119_T45RUM_20260804T114612.SAFE",
+      "acquiredAt": "2026-08-04T05:02:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 83.47609,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 901998262,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/04/S2A_MSIL2A_20260804T050241_N0512_R119_T45RUM_20260804T114612.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07600531033026,
+              28.763872070631706
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.84779817882239,
+              27.931575460516648
+            ],
+            [
+              85.85104553983382,
+              27.944036477231737
+            ],
+            [
+              85.88820365623553,
+              28.092792320263648
+            ],
+            [
+              85.92869084317545,
+              28.240578278579125
+            ],
+            [
+              85.97111492376891,
+              28.38776058454243
+            ],
+            [
+              86.01128164420349,
+              28.535478985694684
+            ],
+            [
+              86.0532222782211,
+              28.68274632477788
+            ],
+            [
+              86.07600531033026,
+              28.763872070631706
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "39884223-9661-4616-91d5-33bd59ab4247",
+      "name": "S2B_MSIL2A_20260807T045659_N0512_R119_T45RUL_20260807T084539.SAFE",
+      "acquiredAt": "2026-08-07T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 77.507961,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 800147461,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/07/S2B_MSIL2A_20260807T045659_N0512_R119_T45RUL_20260807T084539.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87285217971002,
+              28.020121164591973
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60724155347695,
+              27.026210816034997
+            ],
+            [
+              85.6377170328419,
+              27.139166112135875
+            ],
+            [
+              85.67810092285212,
+              27.28696713554708
+            ],
+            [
+              85.71697556748192,
+              27.43522828739316
+            ],
+            [
+              85.75782210632961,
+              27.58296369091183
+            ],
+            [
+              85.79947248932297,
+              27.7304866542008
+            ],
+            [
+              85.83724500929132,
+              27.87906138587697
+            ],
+            [
+              85.87285217971002,
+              28.020121164591973
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "66b0e633-e73c-43f5-b401-3d17322a21c0",
+      "name": "S2B_MSIL2A_20260807T045659_N0512_R119_T45RUM_20260807T084539.SAFE",
+      "acquiredAt": "2026-08-07T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 63.177466,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1029620877,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/07/S2B_MSIL2A_20260807T045659_N0512_R119_T45RUM_20260807T084539.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07608161259039,
+              28.75506014015887
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.8505082586222,
+              27.931604483058088
+            ],
+            [
+              85.87475013627486,
+              28.02764002469508
+            ],
+            [
+              85.91515807756677,
+              28.175378368238256
+            ],
+            [
+              85.95496690321512,
+              28.323206829778737
+            ],
+            [
+              85.99622893430234,
+              28.47066725435372
+            ],
+            [
+              86.03842147479193,
+              28.617936204035328
+            ],
+            [
+              86.07608161259039,
+              28.75506014015887
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "815c9247-87c1-44ed-bbdb-f7217827d9cd",
+      "name": "S2B_MSIL2A_20260807T045659_N0512_R119_T45RTL_20260807T084539.SAFE",
+      "acquiredAt": "2026-08-07T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 84.710813,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1047512432,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/07/S2B_MSIL2A_20260807T045659_N0512_R119_T45RTL_20260807T084539.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "1e3e2b4a-b2d2-496e-af28-a47221141acd",
+      "name": "S2C_MSIL2A_20260809T044701_N0512_R076_T45RUM_20260809T095114.SAFE",
+      "acquiredAt": "2026-08-09T04:47:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 79.045314,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 610451280,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/09/S2C_MSIL2A_20260809T044701_N0512_R076_T45RUM_20260809T095114.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.30736857545601,
+              27.92578794069526
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56248496177544,
+              28.919440909736576
+            ],
+            [
+              85.55277742119952,
+              28.88044399134232
+            ],
+            [
+              85.51507200946371,
+              28.732664852034205
+            ],
+            [
+              85.48197150712117,
+              28.597379441586096
+            ],
+            [
+              85.4791348772385,
+              28.585701986935465
+            ],
+            [
+              85.4789488107265,
+              28.58502534743423
+            ],
+            [
+              85.47881088743958,
+              28.58446163972108
+            ],
+            [
+              85.43860981906305,
+              28.437445699052866
+            ],
+            [
+              85.39953273537407,
+              28.290045127661905
+            ],
+            [
+              85.36191725523331,
+              28.14216710593948
+            ],
+            [
+              85.32559122251367,
+              27.993919448946148
+            ],
+            [
+              85.30736857545601,
+              27.92578794069526
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.55919850259021,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "d4e93b61-28a1-4be0-8154-7b5e767856c9",
+      "name": "S2A_MSIL2A_20260811T045241_N0512_R076_T45RUM_20260811T100012.SAFE",
+      "acquiredAt": "2026-08-11T04:52:41.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 61.064899,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 655922968,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/11/S2A_MSIL2A_20260811T045241_N0512_R076_T45RUM_20260811T100012.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.31047274382273,
+              27.92582118357433
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56608444807215,
+              28.919480703060792
+            ],
+            [
+              85.54670288681406,
+              28.842411957442227
+            ],
+            [
+              85.51029311089388,
+              28.694192667068567
+            ],
+            [
+              85.47198173578286,
+              28.54656316267648
+            ],
+            [
+              85.4334991532897,
+              28.39897993802412
+            ],
+            [
+              85.39510318598914,
+              28.25135592924337
+            ],
+            [
+              85.35911820039088,
+              28.10290005609393
+            ],
+            [
+              85.31759193959718,
+              27.95619352991156
+            ],
+            [
+              85.31047274382273,
+              27.92582118357433
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.015391571096574,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "25faa527-2502-4f7d-a703-cfff3e99d483",
+      "name": "S2C_MSIL2A_20260812T045701_N0512_R119_T45RUM_20260812T100317.SAFE",
+      "acquiredAt": "2026-08-12T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 18.746611,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1142906699,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/12/S2C_MSIL2A_20260812T045701_N0512_R119_T45RUM_20260812T100317.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07604033874381,
+              28.759826739022365
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.84856889358903,
+              27.93158371418551
+            ],
+            [
+              85.8569692544807,
+              27.964245323992664
+            ],
+            [
+              85.86629555517366,
+              28.001409104559695
+            ],
+            [
+              85.8934599034619,
+              28.110324656468123
+            ],
+            [
+              85.93122662803566,
+              28.245795298991247
+            ],
+            [
+              85.93536068405822,
+              28.26066227241861
+            ],
+            [
+              85.9503570205109,
+              28.311424182498495
+            ],
+            [
+              85.9778960012283,
+              28.404970168354108
+            ],
+            [
+              86.01811647852264,
+              28.55291024012904
+            ],
+            [
+              86.05589230244709,
+              28.68905629574412
+            ],
+            [
+              86.05982409329533,
+              28.703344958967968
+            ],
+            [
+              86.075641188383,
+              28.75843159425008
+            ],
+            [
+              86.07604033874381,
+              28.759826739022365
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "3af134a8-03e0-44b7-b770-8a96384dd8d7",
+      "name": "S2C_MSIL2A_20260812T045701_N0512_R119_T45RTL_20260812T100317.SAFE",
+      "acquiredAt": "2026-08-12T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 16.107024,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1216556055,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/12/S2C_MSIL2A_20260812T045701_N0512_R119_T45RTL_20260812T100317.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "d5883e5c-6124-4672-8e68-dd7c84307c8c",
+      "name": "S2C_MSIL2A_20260812T045701_N0512_R119_T45RUL_20260812T100317.SAFE",
+      "acquiredAt": "2026-08-12T04:57:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 27.947062,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 917254527,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/12/S2C_MSIL2A_20260812T045701_N0512_R119_T45RUL_20260812T100317.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87095740659909,
+              28.020100814573386
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60556087134167,
+              27.026193352359225
+            ],
+            [
+              85.61839575800268,
+              27.073209393031128
+            ],
+            [
+              85.6497397191664,
+              27.188382854687248
+            ],
+            [
+              85.6594077371371,
+              27.224060618309338
+            ],
+            [
+              85.6985401373765,
+              27.37216447034669
+            ],
+            [
+              85.72521161135603,
+              27.47300573052601
+            ],
+            [
+              85.7367997103997,
+              27.517379699549032
+            ],
+            [
+              85.77888056426282,
+              27.66463549819693
+            ],
+            [
+              85.80439421787534,
+              27.760695427156897
+            ],
+            [
+              85.81878849823764,
+              27.8157939683146
+            ],
+            [
+              85.8569692544807,
+              27.964245323992664
+            ],
+            [
+              85.86629555517366,
+              28.001409104559695
+            ],
+            [
+              85.87095740659909,
+              28.020100814573386
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "23988b32-b424-4288-8bf5-fe2999e11531",
+      "name": "S2B_MSIL2A_20260814T044659_N0512_R076_T45RUM_20260814T083413.SAFE",
+      "acquiredAt": "2026-08-14T04:46:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 49.037722,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 404439573,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/14/S2B_MSIL2A_20260814T044659_N0512_R076_T45RUM_20260814T083413.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.08088441310429,
+              28.200398402341975
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.57002260284295,
+              28.91952424045938
+            ],
+            [
+              85.54824105602749,
+              28.8328392170678
+            ],
+            [
+              85.51176034803521,
+              28.684709073357627
+            ],
+            [
+              85.47363153780599,
+              28.53712290290608
+            ],
+            [
+              85.43502822389696,
+              28.389630906592664
+            ],
+            [
+              85.41245065569785,
+              28.310749244251507
+            ],
+            [
+              85.6847393374968,
+              28.26689214039031
+            ],
+            [
+              85.68502087273728,
+              28.268017328390915
+            ],
+            [
+              85.68506078192507,
+              28.26801085122662
+            ],
+            [
+              85.68591588300342,
+              28.27141382035828
+            ],
+            [
+              85.91771340145624,
+              28.234727615337505
+            ],
+            [
+              85.91759532710512,
+              28.23427991417061
+            ],
+            [
+              85.91812084708992,
+              28.234196322338303
+            ],
+            [
+              85.91683260923173,
+              28.22930995075435
+            ],
+            [
+              86.08088441310429,
+              28.200398402341975
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 10.801807336896188,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "50d37a02-f5e8-4358-a47c-f99c331e257d",
+      "name": "S2B_MSIL2A_20260814T044659_N0512_R076_T45RUM_20260814T083006.SAFE",
+      "acquiredAt": "2026-08-14T04:46:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 62.630904,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 362940521,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/14/S2B_MSIL2A_20260814T044659_N0512_R076_T45RUM_20260814T083006.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.31577071591575,
+              27.925877920137818
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07936408666673,
+              28.37597656792802
+            ],
+            [
+              85.96950791029728,
+              28.395656979312168
+            ],
+            [
+              85.96951992628063,
+              28.39570577379241
+            ],
+            [
+              85.96926584466911,
+              28.395751406640382
+            ],
+            [
+              85.97024354112611,
+              28.39971676090685
+            ],
+            [
+              85.71171357519182,
+              28.441658447617524
+            ],
+            [
+              85.71114303477657,
+              28.43936639428615
+            ],
+            [
+              85.71078904400412,
+              28.439422892737728
+            ],
+            [
+              85.71071169613289,
+              28.43911263982255
+            ],
+            [
+              85.71051937678759,
+              28.43914298295816
+            ],
+            [
+              85.71040610955276,
+              28.438687690742253
+            ],
+            [
+              85.71031442002125,
+              28.43870222146941
+            ],
+            [
+              85.71010407916489,
+              28.43785520208387
+            ],
+            [
+              85.70967876845027,
+              28.437923685657797
+            ],
+            [
+              85.70965026593984,
+              28.43780903648225
+            ],
+            [
+              85.70950939939411,
+              28.43783163406688
+            ],
+            [
+              85.7093730836193,
+              28.437280222985216
+            ],
+            [
+              85.70891280161865,
+              28.43735507893607
+            ],
+            [
+              85.70885890456346,
+              28.43713717688921
+            ],
+            [
+              85.70864861771425,
+              28.43717119994516
+            ],
+            [
+              85.70856400507537,
+              28.436828617778342
+            ],
+            [
+              85.70836895340733,
+              28.436860317499068
+            ],
+            [
+              85.70827497205366,
+              28.436480239758712
+            ],
+            [
+              85.70795267228176,
+              28.43653283149936
+            ],
+            [
+              85.70784435723971,
+              28.436094682892527
+            ],
+            [
+              85.45809106120164,
+              28.477029171806453
+            ],
+            [
+              85.41826362639452,
+              28.331087418417205
+            ],
+            [
+              85.38352571969466,
+              28.18228417631805
+            ],
+            [
+              85.34560631056348,
+              28.034508890405665
+            ],
+            [
+              85.31577071591575,
+              27.925877920137818
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 14.439460183195646,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "1455bf82-6c31-4b16-a398-ddf3b8cb66a0",
+      "name": "S2B_MSIL2A_20260817T045659_N0512_R119_T45RTL_20260817T084758.SAFE",
+      "acquiredAt": "2026-08-17T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.842429,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 800116509,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/17/S2B_MSIL2A_20260817T045659_N0512_R119_T45RTL_20260817T084758.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "7a11071c-411b-4c1c-86cf-9aca4329e5a2",
+      "name": "S2B_MSIL2A_20260817T045659_N0512_R119_T45RUM_20260817T084758.SAFE",
+      "acquiredAt": "2026-08-17T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 97.080457,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 788136598,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/17/S2B_MSIL2A_20260817T045659_N0512_R119_T45RUM_20260817T084758.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07632852287554,
+              28.726545175306537
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.85773794312611,
+              27.931681906541385
+            ],
+            [
+              85.8623499852915,
+              27.949943364874148
+            ],
+            [
+              85.89886442070362,
+              28.09891145523944
+            ],
+            [
+              85.94097212633852,
+              28.24633135122632
+            ],
+            [
+              85.98393065308363,
+              28.39346820039163
+            ],
+            [
+              86.0240191092911,
+              28.541290882220714
+            ],
+            [
+              86.06559419686435,
+              28.68865502644412
+            ],
+            [
+              86.07632852287554,
+              28.726545175306537
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "8bcb2c54-2e78-49ae-9de6-98c6fb86b8d8",
+      "name": "S2B_MSIL2A_20260817T045659_N0512_R119_T45RUL_20260817T084758.SAFE",
+      "acquiredAt": "2026-08-17T04:56:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 99.899292,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 574214798,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/17/S2B_MSIL2A_20260817T045659_N0512_R119_T45RUL_20260817T084758.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87956935751586,
+              28.020193307632425
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.6148558154952,
+              27.026289934507403
+            ],
+            [
+              85.62461478839614,
+              27.062044752233685
+            ],
+            [
+              85.66473001843633,
+              27.209787757037315
+            ],
+            [
+              85.7044110947504,
+              27.35765990927661
+            ],
+            [
+              85.74373619641817,
+              27.505670363271207
+            ],
+            [
+              85.78462875557736,
+              27.653339732640145
+            ],
+            [
+              85.82480705713371,
+              27.80129151095411
+            ],
+            [
+              85.8623499852915,
+              27.949943364874148
+            ],
+            [
+              85.87956935751586,
+              28.020193307632425
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "7d708f58-89b0-46a3-affa-5e70b48d250f",
+      "name": "S2C_MSIL2A_20260819T044701_N0512_R076_T45RUM_20260819T095714.SAFE",
+      "acquiredAt": "2026-08-19T04:47:01.025000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 84.667307,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 579693509,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/19/S2C_MSIL2A_20260819T044701_N0512_R076_T45RUM_20260819T095714.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.31416313868053,
+              27.92586070441711
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56943042650488,
+              28.91951769378492
+            ],
+            [
+              85.55042593783358,
+              28.843925109205568
+            ],
+            [
+              85.51403681916102,
+              28.695676985708445
+            ],
+            [
+              85.47613997261587,
+              28.54789488090135
+            ],
+            [
+              85.43707091521482,
+              28.400516814472688
+            ],
+            [
+              85.39864527529174,
+              28.252939811718115
+            ],
+            [
+              85.36329896652211,
+              28.10440431370305
+            ],
+            [
+              85.3323621470559,
+              27.996013486579987
+            ],
+            [
+              85.32196461777994,
+              27.95929315029239
+            ],
+            [
+              85.31416313868053,
+              27.92586070441711
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 14.380433419583094,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "681bf159-5509-4be1-ac51-6c464803d999",
+      "name": "S2C_MSIL2A_20260822T045651_N0512_R119_T45RUL_20260822T095910.SAFE",
+      "acquiredAt": "2026-08-22T04:56:51.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 56.715876,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 809522558,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/22/S2C_MSIL2A_20260822T045651_N0512_R119_T45RUL_20260822T095910.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87627165848718,
+              28.02015789007444
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.6105589855311,
+              27.026245286894525
+            ],
+            [
+              85.6426633581961,
+              27.14618631603624
+            ],
+            [
+              85.68294618893533,
+              27.293887952976128
+            ],
+            [
+              85.72142971551644,
+              27.442146756472567
+            ],
+            [
+              85.76311026965125,
+              27.589438460261423
+            ],
+            [
+              85.80444019405921,
+              27.736909373028777
+            ],
+            [
+              85.84277581589862,
+              27.88542880727536
+            ],
+            [
+              85.86619556780666,
+              27.97938687648065
+            ],
+            [
+              85.87627165848718,
+              28.02015789007444
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "cccc41ef-7316-40c3-9670-4b439adf5730",
+      "name": "S2C_MSIL2A_20260822T045651_N0512_R119_T45RTL_20260822T095910.SAFE",
+      "acquiredAt": "2026-08-22T04:56:51.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 68.685782,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1089586138,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/22/S2C_MSIL2A_20260822T045651_N0512_R119_T45RTL_20260822T095910.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "d3f7e073-b108-4dcc-b9bf-d0b38511daa1",
+      "name": "S2C_MSIL2A_20260822T045651_N0512_R119_T45RUM_20260822T095910.SAFE",
+      "acquiredAt": "2026-08-22T04:56:51.024000Z",
+      "epoch": "PRE",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 78.243607,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 919670139,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/22/S2C_MSIL2A_20260822T045651_N0512_R119_T45RUM_20260822T095910.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07618239704404,
+              28.743420830960247
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.8542955581907,
+              27.93164504166403
+            ],
+            [
+              85.86619556780666,
+              27.97938687648065
+            ],
+            [
+              85.88048694667795,
+              28.03721426417587
+            ],
+            [
+              85.90270215624211,
+              28.116722046578637
+            ],
+            [
+              85.92080705018253,
+              28.18210992853978
+            ],
+            [
+              85.96003540153642,
+              28.330347521568005
+            ],
+            [
+              86.00132245201213,
+              28.477961396245767
+            ],
+            [
+              86.01003186126343,
+              28.508113728045103
+            ],
+            [
+              86.04443071634249,
+              28.62799308955808
+            ],
+            [
+              86.06318756888723,
+              28.69590380732111
+            ],
+            [
+              86.07618239704404,
+              28.743420830960247
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "a7144f04-93ac-40a9-be0c-386db16f9765",
+      "name": "S2B_MSIL2A_20260824T044659_N0512_R076_T45RUM_20260824T083447.SAFE",
+      "acquiredAt": "2026-08-24T04:46:59.024000Z",
+      "epoch": "PRE",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 38.568816,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 705362589,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/24/S2B_MSIL2A_20260824T044659_N0512_R076_T45RUM_20260824T083447.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.31747805514154,
+              27.92589620422061
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.57229342380111,
+              28.91954934501797
+            ],
+            [
+              85.56377513332684,
+              28.88517476074006
+            ],
+            [
+              85.52625997221635,
+              28.73737283718152
+            ],
+            [
+              85.49145110496539,
+              28.588624388898893
+            ],
+            [
+              85.45066232727729,
+              28.441743037861134
+            ],
+            [
+              85.4117671256445,
+              28.29421493910846
+            ],
+            [
+              85.37288224663848,
+              28.146718725018378
+            ],
+            [
+              85.33748338978796,
+              27.998079342372662
+            ],
+            [
+              85.31747805514154,
+              27.92589620422061
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 14.198097786608676,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "35b149d6-cdde-4959-8ff4-d28f37bf67bb",
+      "name": "S2A_MSIL2A_20260824T050231_N0512_R119_T45RUM_20260824T115710.SAFE",
+      "acquiredAt": "2026-08-24T05:02:31.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 50.966662,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1069015437,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/24/S2A_MSIL2A_20260824T050231_N0512_R119_T45RUM_20260824T115710.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07612166566237,
+              28.750434525073413
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.85263704599703,
+              27.931627280475276
+            ],
+            [
+              85.88303388586763,
+              28.055367264137832
+            ],
+            [
+              85.92404985412972,
+              28.203152333996428
+            ],
+            [
+              85.96440346657916,
+              28.35116641627314
+            ],
+            [
+              86.00497134455635,
+              28.49909382360776
+            ],
+            [
+              86.04762132500947,
+              28.64636935527956
+            ],
+            [
+              86.07612166566237,
+              28.750434525073413
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "58acf71b-d90b-4c1d-84e9-1ae1ffae0a19",
+      "name": "S2A_MSIL2A_20260824T050231_N0512_R119_T45RUL_20260824T115710.SAFE",
+      "acquiredAt": "2026-08-24T05:02:31.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 79.761755,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 816220666,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/24/S2A_MSIL2A_20260824T050231_N0512_R119_T45RUL_20260824T115710.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87437967937943,
+              28.020137570063678
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.60781153245142,
+              27.026216738587394
+            ],
+            [
+              85.64618778451302,
+              27.16766387782582
+            ],
+            [
+              85.68567357005118,
+              27.315499654090768
+            ],
+            [
+              85.72490291392974,
+              27.4633970087186
+            ],
+            [
+              85.7660924599904,
+              27.610806931719942
+            ],
+            [
+              85.80737108419929,
+              27.758234813351727
+            ],
+            [
+              85.84644498583688,
+              27.906420534434684
+            ],
+            [
+              85.87437967937943,
+              28.020137570063678
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "97e3dd1e-46d8-450a-93cd-1ba772075e28",
+      "name": "S2A_MSIL2A_20260824T050231_N0512_R119_T45RTL_20260824T115710.SAFE",
+      "acquiredAt": "2026-08-24T05:02:31.024000Z",
+      "epoch": "PRE",
+      "platform": "A",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 77.188253,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1106872252,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/24/S2A_MSIL2A_20260824T050231_N0512_R119_T45RTL_20260824T115710.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "2f35c992-1ea6-42f9-965c-011ea770d334",
+      "name": "S2B_MSIL2A_20260827T045659_N0512_R119_T45RUL_20260827T084453.SAFE",
+      "acquiredAt": "2026-08-27T04:56:59.024000Z",
+      "epoch": "POST",
+      "platform": "B",
+      "tileId": "45RUL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 54.286689,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 873013807,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/27/S2B_MSIL2A_20260827T045659_N0512_R119_T45RUL_20260827T084453.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.87659957738256,
+              28.020161411950266
+            ],
+            [
+              84.96592364373934,
+              28.01038067774639
+            ],
+            [
+              84.98407353867857,
+              27.019735585570864
+            ],
+            [
+              85.61166133848934,
+              27.0262567412524
+            ],
+            [
+              85.62538457335674,
+              27.07655523095373
+            ],
+            [
+              85.66543816597073,
+              27.224235701877745
+            ],
+            [
+              85.70399634961379,
+              27.37237609402516
+            ],
+            [
+              85.74401426383886,
+              27.520168008862484
+            ],
+            [
+              85.7859866603375,
+              27.66753620012581
+            ],
+            [
+              85.82453192440458,
+              27.81591334224957
+            ],
+            [
+              85.86263108044032,
+              27.96444800801939
+            ],
+            [
+              85.87659957738256,
+              28.020161411950266
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 11.702109780836087,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "3754c118-e70a-482e-93e2-a7ab17df12a2",
+      "name": "S2B_MSIL2A_20260827T045659_N0512_R119_T45RTL_20260827T084453.SAFE",
+      "acquiredAt": "2026-08-27T04:56:59.024000Z",
+      "epoch": "POST",
+      "platform": "B",
+      "tileId": "45RTL",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 84.982914,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 1021059375,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/27/S2B_MSIL2A_20260827T045659_N0512_R119_T45RTL_20260827T084453.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              83.94966291515031,
+              27.991577831689415
+            ],
+            [
+              83.9768526405984,
+              27.001706217086564
+            ],
+            [
+              85.08260664643534,
+              27.02111225850134
+            ],
+            [
+              85.06534249241301,
+              28.011816421914702
+            ],
+            [
+              83.94966291515031,
+              27.991577831689415
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 3.103628943517338,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "76de2c15-9281-45e3-8f0b-e97085fa6d69",
+      "name": "S2B_MSIL2A_20260827T045659_N0512_R119_T45RUM_20260827T084453.SAFE",
+      "acquiredAt": "2026-08-27T04:56:59.024000Z",
+      "epoch": "POST",
+      "platform": "B",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 78.471315,
+      "relativeOrbitNumber": 119,
+      "contentLengthBytes": 941822565,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/27/S2B_MSIL2A_20260827T045659_N0512_R119_T45RUM_20260827T084453.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86.07620966099518,
+              28.74027219497689
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              84.94856806237455,
+              28.912653887310096
+            ],
+            [
+              84.96757810552188,
+              27.92214908733191
+            ],
+            [
+              85.85421690035542,
+              27.931644199308657
+            ],
+            [
+              85.86263108044032,
+              27.96444800801939
+            ],
+            [
+              85.8999286249787,
+              28.113209408267966
+            ],
+            [
+              85.94191454032125,
+              28.260718047903893
+            ],
+            [
+              85.98499093002968,
+              28.407804555528468
+            ],
+            [
+              86.02529434713477,
+              28.55554567271025
+            ],
+            [
+              86.0655079376437,
+              28.703302426571373
+            ],
+            [
+              86.07620966099518,
+              28.74027219497689
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 29.742403130223533,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    },
+    {
+      "provider": "COPERNICUS_DATA_SPACE",
+      "productId": "2bdadece-d47d-4569-9a2b-ed5477c09bf9",
+      "name": "S2C_MSIL2A_20260829T044701_N0512_R076_T45RUM_20260829T095112.SAFE",
+      "acquiredAt": "2026-08-29T04:47:01.025000Z",
+      "epoch": "POST",
+      "platform": "C",
+      "tileId": "45RUM",
+      "processingLevel": "S2MSI2A",
+      "cloudCoverPct": 82.618147,
+      "relativeOrbitNumber": 76,
+      "contentLengthBytes": 581930077,
+      "online": true,
+      "s3Path": "/eodata/Sentinel-2/MSI/L2A/2026/08/29/S2C_MSIL2A_20260829T044701_N0512_R076_T45RUM_20260829T095112.SAFE",
+      "footprint": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.30891313619998,
+              27.925804481565457
+            ],
+            [
+              86.0831903155732,
+              27.93409630069409
+            ],
+            [
+              86.07460921979444,
+              28.92510258614215
+            ],
+            [
+              85.56331271410424,
+              28.91945006076927
+            ],
+            [
+              85.54922948944622,
+              28.863326052340646
+            ],
+            [
+              85.51252043893801,
+              28.715209536688945
+            ],
+            [
+              85.47507885609932,
+              28.567306442804327
+            ],
+            [
+              85.43613304460001,
+              28.41989414745027
+            ],
+            [
+              85.3980624402247,
+              28.272219404280204
+            ],
+            [
+              85.36057601087552,
+              28.12434872986126
+            ],
+            [
+              85.32188483771577,
+              27.976837198805043
+            ],
+            [
+              85.30891313619998,
+              27.925804481565457
+            ]
+          ]
+        ]
+      },
+      "affectedOverlapKm2": 15.430462893767436,
+      "cameraModelAssets": [],
+      "dsmVerdict": "REJECTED_WEAK_GEOMETRY_AND_10M_GSD",
+      "contextUses": [
+        "cloud screening",
+        "flood extent",
+        "temporal landscape context"
+      ]
+    }
+  ]
+}

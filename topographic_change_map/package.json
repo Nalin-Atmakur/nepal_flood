@@ -19,6 +19,7 @@
     "gmail:auth": "tsx src/cli.ts gmail-auth",
     "remote:check": "tsx src/cli.ts remote-check",
     "catalogue:public": "tsx src/cli.ts catalogue-public",
+    "catalogue:sentinel2": "tsx src/cli.ts catalogue-sentinel2",
     "parallax:public": "tsx src/cli.ts parallax-public",
     "viewer:build": "vite build",
     "viewer:test": "tsx scripts/viewer_smoke.ts",

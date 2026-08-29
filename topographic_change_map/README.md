@@ -11,6 +11,7 @@ Research reconstruction of post-flood surface change in the upper Bhote Koshi co
 - Exact WGS84 processing extent and 1 km reporting-grid table.
 - Interactive Three.js terrain viewer with an OpenStreetMap geographic context panel.
 - Reproducible public imagery catalogue, sparse/dense matching, validation, and cross-machine tests.
+- Official 61-scene Sentinel-2 temporal-context catalogue with exact affected-area overlap and explicit DSM rejection.
 
 The default layer is classified **RESEARCH_ONLY**. It is not a building-burial product or an operational rescue assessment.
 
@@ -50,6 +51,7 @@ grid, settlement markers, and live latitude/longitude over OpenStreetMap.
 - [products/ortho-change-v3-strict/MAPPED_TILES.md](products/ortho-change-v3-strict/MAPPED_TILES.md) — exact tile coordinates
 - [UPSTREAM.md](UPSTREAM.md) — GeoPera audit and attribution
 - [RUNBOOK.md](RUNBOOK.md) — operation and recovery
+- [PUBLICATION.md](PUBLICATION.md) — live viewer URL, Pages activation, and local build
 - [research/README.md](research/README.md) — detailed research package
 
 ## Test everything
