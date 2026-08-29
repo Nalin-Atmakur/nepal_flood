@@ -10,5 +10,9 @@
 | ICIMOD | NONE KNOWN | They publish openly; a channel would need an introduction |
 | Nepal Red Cross / RFL | NONE KNOWN | Referral destination for family inquiries, not a build partner |
 | Diaspora / family networks | `[UNKNOWN]` — does the team have Nepali community links? | Clarify with team |
+| **"Nepal Flood Response 2026" hackathon** | OPEN — kickoff 2026-08-30 09:00 NPT, hybrid, free; matches volunteers to Nepal-side problem leads; organisers unnamed (`[UNVERIFIED]`) | Verify provenance (hello@nepalhackathon.org), then attend — see docs/OPEN_QUESTIONS.md Q2 |
+| **NDRRMA drone-imagery form** | OPEN for data submission (opened 29 Aug) | Relevant only if we ever hold drone data; also the model of official intake to feed, not bypass |
+| **NESRA / Youth Innovation Lab** | ACTIVE org, no contact yet; YIL built BIPAD — shortest visible path to government screens | Introduction via HOT contact or hackathon |
+| **Kathmandu Living Labs** | `[UNVERIFIED]` — site stale since 2022 | One email settles it |
 
-**Honest assessment:** as of 2026-08-29 the team's only *open* channel is HOT's volunteer pipeline. Every plan should be weighed against that fact.
+**Honest assessment:** as of 2026-08-29 the team's open channels are HOT's volunteer pipeline (asking for exactly what we can give) and, provenance permitting, tomorrow's hackathon. Every plan should be weighed against that fact.
