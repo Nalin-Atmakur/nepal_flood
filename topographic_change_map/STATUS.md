@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-29 22:30 BST
+Last updated: 2026-08-29 22:43 BST
 
 ## Goal
 
@@ -60,12 +60,16 @@ Completed:
 - Planet account is entitlement-blocked; Earthdata registration is filled and waiting for manual reCAPTCHA.
 - Exact four-granule HMA 8 m baseline manifest and a mode-0600, resumable Earthdata downloader are implemented; download remains gated only by the Earthdata CAPTCHA/account activation.
 - Processing/AOI semantics are explicit: manual 1 km AOIs are feasibility fixtures, production candidates come from affected-area/image intersections, and 1 km cells are post-analysis reporting bins only.
-- Current automated checks pass: 11 Python tests and 11 TypeScript tests, with TypeScript compilation clean.
+- Current automated checks pass: 14 Python tests and 11 TypeScript tests, with TypeScript compilation clean.
+- Pair promotion is now machine-gated by raster invariants, stable-terrain NMAD, calibration support, corridor support, and measured area; the strict default passes only as `RESEARCH_ONLY`.
+- A self-contained static viewer bundle is prepared under `docs/topographic-change-viewer/`; GitHub Pages activation remains repository-admin controlled.
+- The protected HMA request was exercised safely and returned HTTP 401, confirming that the pending Earthdata CAPTCHA/account activation is the only download gate.
 
 In progress:
 
 - Complete the 10 m experimental layer.
 - Complete and validate the second Vantor pair, then mosaic by lowest uncertainty.
+- Warp and evaluate the automatically selected third Vantor pair (`B040001100881410 + B040001100882F10`) for additional affected-area coverage.
 - Complete Earthdata CAPTCHA and replace/compare the coarse baseline with HMA 8 m.
 - Run final viewer/product/completion audit and release checkpoint.
 

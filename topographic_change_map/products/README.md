@@ -20,6 +20,7 @@ These are aggregate, non-personal research products derived from public Vantor i
 | `MAPPED_TILES.md` | Latitude/longitude table for reporting tiles |
 | `summary.json` | Method and aggregate statistics |
 | `validation.json` | Mandatory raster-bundle invariants and upstream diagnostic |
+| `promotion.json` | Automated quality-gate decision governing mosaic inclusion |
 | `geopera-comparison.json` | Detailed benchmark against pinned GeoPera products |
 | `affected-coverage.json` | Direct support intersected with the UNOSAT affected mask |
 
@@ -37,3 +38,9 @@ A measured surface change is not automatically debris depth or burial depth. Uns
 ## Scientific classification
 
 All current products are `RESEARCH_ONLY`. The public orthos lack original camera models, angles are treated as locally constant, and the baseline is too coarse for building-scale burial estimates.
+
+Additional pairs must pass `python/quality_gate.py` before entering a mosaic.
+The mandatory default gates are: valid bundle invariants, stable-terrain NMAD no
+greater than 6 m, at least 100 stable calibration ties, at least 100 corridor
+ties, and at least 0.05 km² of direct support. Passing a gate without rigorous
+camera models can produce only `RESEARCH_ONLY`, never a higher accuracy class.

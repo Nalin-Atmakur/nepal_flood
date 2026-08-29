@@ -152,6 +152,11 @@ def extract_tie_points(
     ]
     hanning = cv2.createHanningWindow((window_size, window_size), cv2.CV_32F)
     worker_count = workers if workers > 0 else min(16, max(1, len(candidates) // 1000))
+    print(
+        f"tie-point candidates={len(candidates)} workers={worker_count} "
+        f"window={window_size}px spacing={grid_res}px",
+        flush=True,
+    )
 
     def evaluate(candidate: Candidate):
         return _window_candidate(
@@ -168,7 +173,18 @@ def extract_tie_points(
         )
 
     with ThreadPoolExecutor(max_workers=worker_count) as executor:
-        measured = [result for result in executor.map(evaluate, candidates, chunksize=64) if result]
+        measured = []
+        for index, result in enumerate(
+            executor.map(evaluate, candidates, chunksize=64), start=1
+        ):
+            if result:
+                measured.append(result)
+            if index % 10_000 == 0 or index == len(candidates):
+                print(
+                    f"tie-point progress={index}/{len(candidates)} "
+                    f"quality-passing={len(measured)}",
+                    flush=True,
+                )
     measured = [result for result in measured if result[4] >= min_reliability]
     if not measured:
         empty = np.array([], dtype=np.float64)

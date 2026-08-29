@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "promotedToMosaic": true,
+  "accuracyClass": "RESEARCH_ONLY",
+  "rigorousCameraModels": false,
+  "checks": {
+    "bundleInvariants": true,
+    "stableNmad": true,
+    "stableSupport": true,
+    "corridorSupport": true,
+    "measuredArea": true
+  },
+  "thresholds": {
+    "maxStableNmadM": 6.0,
+    "minStableTiePoints": 100,
+    "minCorridorTiePoints": 100,
+    "minSupportedAreaKm2": 0.05
+  },
+  "observed": {
+    "stableNmadM": 4.323690259986187,
+    "stableTiePoints": 3887,
+    "corridorTiePoints": 1252,
+    "supportedAreaKm2": 1.282048
+  },
+  "interpretation": "Promotion permits inclusion in the uncertainty-weighted research mosaic; it does not establish debris depth, burial, or operational accuracy."
+}
