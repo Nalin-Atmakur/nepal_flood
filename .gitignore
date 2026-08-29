@@ -45,3 +45,14 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
+
+# Topographic-change automation: local secrets, browser state, caches, and bulk products
+.firecrawl/
+topographic_change_map/.work/
+topographic_change_map/private/
+topographic_change_map/node_modules/
+topographic_change_map/dist/
+topographic_change_map/downloads/
+topographic_change_map/artifacts/
+topographic_change_map/automation-profile/
+topographic_change_map/reports/private/
