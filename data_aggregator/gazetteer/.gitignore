@@ -1,0 +1,8 @@
+# Cached network responses (NDRRMA + Nominatim) — rebuildable, never committed.
+.cache/
+__pycache__/
+.pytest_cache/
+
+# The repo-wide .gitignore blocks *.csv as a personal-data firewall. places.csv is a
+# reference gazetteer (settlements, camps, hospitals — no personal data) and is re-included here.
+!places.csv
