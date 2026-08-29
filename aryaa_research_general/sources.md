@@ -1,0 +1,145 @@
+# Sources
+
+*Used in sections 00–10 and the agent reports. Cross-checked 29 Aug 2026; conflicts flagged inline where they occur. Grouped, not exhaustive of every URL in the agent reports.*
+
+## Event and cause
+- Wikipedia — 2026 Nepal floods: https://en.wikipedia.org/wiki/2026_Nepal_floods
+- Al Jazeera — what happened, what caused them, who is missing: https://www.aljazeera.com/news/2026/8/27/nepal-tibet-floods-what-happened-what-caused-them-and-who-is-missing
+- Al Jazeera — is Nepal facing another flood from a new lake: https://www.aljazeera.com/news/2026/8/28/is-nepal-facing-another-devastating-flood-from-a-new-lake
+- EarthSky — glacier collapse analysis, Landsat 9: https://earthsky.org/earth/nepal-flash-flood-glacier-collapse-landslide-aug-26-2026/
+- Kathmandu Post — what triggered the flood: https://kathmandupost.com/national/2026/08/28/what-triggered-the-rasuwa-flood-scientists-piece-together-a-complex-chain-of-events
+- Kathmandu Post — 2025 Rasuwagadhi flood, data-sharing gaps: https://kathmandupost.com/climate-environment/2025/07/09/rasuwagadhi-flooding-exposes-gaps-in-neighbourly-data-sharing
+- Climate Change News — Nepal–China GLOF cooperation (Aug 2025): https://www.climatechangenews.com/2025/08/27/nepal-and-china-agree-to-cooperate-on-glacial-lake-flooding-as-warming-hikes-threat/
+- ICIMOD — press release: https://www.icimod.org/press-release/major-flash-flood-sweeps-through-nepals-rasuwa-district-raising-fears-of-further-downstream-flooding/
+- Global Times — barrier lake: https://www.globaltimes.cn/page/202608/1369273.shtml
+- CNN — secondary disaster, lake breach risk: https://www.cnn.com/2026/08/28/china/china-secondary-disaster-flood-lake-breach-intl-hnk
+- Onlinekhabar — new lake upstream: https://english.onlinekhabar.com/new-threat-rasuwa-lake-upstream.html
+
+## Rescue operations and casualties
+- Kathmandu Post — hundreds feared trapped in tunnels: https://kathmandupost.com/national/2026/08/29/hundreds-feared-trapped-in-hydropower-tunnels-after-bhotekoshi-flood
+- Kathmandu Post — washed-out bridges, chopper reliance: https://kathmandupost.com/national/2026/08/29/washed-out-bridges-force-flood-hit-communities-to-rely-on-choppers
+- Kathmandu Post — survivor accounts: https://kathmandupost.com/national/2026/08/28/they-watched-settlements-disappear-beneath-a-wall-of-water-and-mud-somehow-they-survived
+- Kathmandu Post — death toll 469, search widens: https://kathmandupost.com/national/2026/08/28/nepal-flood-death-toll-reaches-469-as-hundreds-remain-missing-and-search-widens-downstream
+- Kathmandu Post — Nepal declines foreign rescue teams: https://kathmandupost.com/national/2026/08/27/nepal-declines-foreign-rescue-teams-says-its-own-security-agencies-can-handle-operation
+- Onlinekhabar — Rasuwa cut off, shortages: https://english.onlinekhabar.com/rasuwa-cut-off-flood-shortage.html
+- Onlinekhabar — parts of Rasuwa and Nuwakot cut off: https://english.onlinekhabar.com/flood-rasuwa-and-nuwakot.html
+- Onlinekhabar — Timure airlift: https://english.onlinekhabar.com/rasuwa-flood-aug-26.html
+- Onlinekhabar — Army rescue operations: https://english.onlinekhabar.com/nepali-army-rescue-operations.html
+- Khabarhub — Upper Trishuli-3A operation: https://english.khabarhub.com/2026/29/565520/
+- Khabarhub — 403 tourists missing: https://english.khabarhub.com/2026/26/565012/
+- Khabarhub — Indian team lands at Syabrubesi: https://english.khabarhub.com/2026/29/565524/
+- Rising Nepal — Rasuwagadhi HEP: https://risingnepaldaily.com/news/85697
+- Rising Nepal — tunnel rescue unit: https://risingnepaldaily.com/news/85645
+- Radio Nepal — Army totals: https://radionepalonline.com/en/2026/08/29/434948.html
+- Radio Nepal — Dhunche walk-out: https://radionepalonline.com/en/2026/08/29/434969.html
+- Republica — security personnel missing: https://myrepublica.nagariknetwork.com/news/44-army-personnel-41-police-and-nine-apf-personnel-missing-in-rusuwa-flood-95-23.html
+- Nepalnews — 350 rescued from tunnel: https://english.nepalnews.com/s/nation/350-people-trapped-in-upper-trishuli-hydropower-tunnel-rescued-alive/
+- SCMP — Army races to rescue 100 in tunnel: https://www.scmp.com/news/asia/south-asia/article/3365555/nepal-army-races-rescue-100-trapped-hydropower-tunnel-after-flash-floods
+- CBS News — rescue efforts: https://www.cbsnews.com/news/nepal-flood-rescue-efforts-death-toll/
+- ABC News (US) — missing counts, Emergency Control Room: https://abcnews.com/International/hundreds-dead-1000-remain-missing-massive-nepal-tibet/story?id=136022919
+- ABC Australia — rescue challenges: https://www.abc.net.au/news/2026-08-29/nepal-tibet-flood-rescue-challenges/107089728
+- ABC Australia — missing-persons search: https://www.abc.net.au/news/2026-08-29/nepal-tibet-floods-missing-persons-search-intensifies/107092492
+- Reuters via Cyprus Mail — weather halts search: https://cyprus-mail.com/2026/08/29/nepal-wants-help-for-flood-billions-of-dollars-as-bad-weather-hampers-rescue
+- Korea Times — foreign minister on technical help: https://www.koreatimes.co.kr/world/20260829/nepal-needs-help-in-technical-areas-not-search-and-rescue-foreign-minister-says
+- Korea JoongAng Daily — ops halted, dam: https://www.koreajoongangdaily.com/korea/searchandrescue-operations-halted-as-another-dam-collapses-along-nepalchina-border/12849546
+- The Federal — India team, Nepal U-turn: https://thefederal.com/category/news/india-sends-11-member-rescue-team-nepal-does-u-turn-foreign-assistance-255073
+- Xinhua — China-side assets: https://english.news.cn/20260829/d711170c885442e7b50c7513afb17467/c.html
+- Xinhua — Gyirong evacuations: https://english.news.cn/20260829/3c732ff03b7547f097fc12b219f6c397/c.html
+- China Global South — Chinese rescue team at border: https://chinaglobalsouth.com/2026/08/29/chinese-rescue-team-nepal-china-border-himalayan-floods/
+- The National — tour operators' missing groups: https://www.thenationalnews.com/news/asia/2026/08/29/nepal-flood-deaths-tourists-missing-tour-operators/
+- Tourism Info Nepal — Gosaikunda pilgrims' bus: https://tourisminfonepal.com/gosaikunda-pilgrims-bus-goes-out-of-contact/
+- Tribune India — pilgrim group at Gyirong: https://www.tribuneindia.com/news/china/how-a-tea-break-saved-28-sadhgurus-isha-group-kailash-mansarovar-pilgrims-from-nepal-floods
+- Inquirer — foreign tourists missing: https://globalnation.inquirer.net/336015/the-foreign-tourists-missing-in-nepals-flash-floods
+- IANS — families searching: https://ianslive.in/havent-found-a-trace-families-search-for-missing-loved-ones-in-aftermath-of-nepal-floods--20260829122153
+- TrekLangtang — trail status: https://treklangtang.com/latest-langtang-trek-update/
+- Travel Himalaya Nepal — Gosaikunda status: https://travelhimalayanepal.com/news/gosaikunda-trek-2026-status-after-floods
+- Magical Nepal — Bhote Koshi flood, Tamang Heritage Trail: https://www.magicalnepal.com/blog/bhote-koshi-nepal-flood-august-2026/
+- Mappr — flood explainer, body recovery distribution: https://www.mappr.co/nepal-flash-flood-rasuwagadhi/
+- NxtImagine live tracker: https://nepaldisasterupdatelive.nxtimaginelabs.com/
+- ANI — NDRRMA figures 28 Aug: https://aninews.in/news/world/asia/death-toll-reaches-538-977-still-missing-as-rescue-teams-race-against-fresh-flood-threat-in-nepal20260828163314/
+- Sunday Guardian — helicopter sorties, personnel: https://sundayguardianlive.com/world/nepal-floods-latest-news-heavy-rain-swells-trishuli-river-rescue-ops-halted-evacuations-underway-272488/
+- Business Standard — DHM rain warning: https://www.business-standard.com/world-news/authorities-warn-of-fresh-rainfall-in-nepal-s-flood-affected-areas-126082900406_1.html
+- UN News — humanitarian response, UN-SPIDER: https://news.un.org/en/story/2026/08/1168213
+- ReliefWeb — disaster page: https://reliefweb.int/report/nepal/npl-flood-08-2026-rasuwa-flood-2026-08-26
+- MoFA — latest updates: https://mofa.gov.np/content/1863/latest-updates-on-flash-floods-27-august-2026/
+- Ratopati — Rasuwa DAO rescued list: https://english.ratopati.com/story/76788/rasuwa-district-administration-publishes-list-of-rescued-people
+
+## Telecoms, drones, technology in play
+- Onlinekhabar — NTC/Ncell tower status: https://english.onlinekhabar.com/ntc-ncell-telecom-flood-disrupt.html
+- Technology Khabar — Ncell free services: https://www.technologykhabar.com/2026/08/29/253011/
+- Kathmandu Post — Starlink not licensed: https://kathmandupost.com/science-technology/2026/06/02/starlink-seeks-nepal-entry-but-law-blocks-full-foreign-ownership
+- Kathmandu Post — drones deployed: https://kathmandupost.com/science-technology/2026/08/26/drones-deployed-to-search-for-survivors-and-assess-rasuwa-flood-damage
+- Onlinekhabar — NagarikAlert thermal drones: https://english.onlinekhabar.com/thermal-drones-rasuwa-flood.html
+- Khabarhub — APF drones and dogs: https://english.khabarhub.com/2026/27/565102/
+- Everest Chronicle — NDRRMA MoUs with airlines and drone association: https://everestchronicle.com/nepal-signs-disaster-response-rescue-pact-airlines-drones-rafting
+- Nepal Army Directorate of Disaster Management: https://disaster.nepalarmy.mil.np/
+- NDRF 2013: https://un.org.np/sites/default/files/doc_publication/2020-11/NDRF_English%20version_July-2013.pdf
+- Nepal drone regulations (CAAN): https://garudx.com/blog/nepal-drone-regulations-caan-2025
+
+## Satellite / geospatial activations and data
+- Copernicus EMS — EMSR927: https://mapping.emergency.copernicus.eu/activations/EMSR927/
+- EMSR927 grading — HDX: https://data.humdata.org/dataset/npl-flood-emsr927
+- International Charter — activation 1052: https://disasterscharter.org/activations/flood-in-nepal-activation-1052-
+- Sentinel Asia — Nepal EOR: https://sentinel-asia.org/EO/2026/article20260826NP.html
+- UNOSAT — Rasuwa mudflow extent: https://data.humdata.org/dataset/mudflow-rockflow-extent-as-of-26-27-august-2026-in-rasuwa-district-bagmati-province-nepal
+- UNOSAT — impact assessment: https://data.humdata.org/dataset/mudflow-rockflow-impact-assessment-in-rasuwa-nuwakot-districts-bagmati-province-nepal-as-o
+- Planet crisis data — source.coop: https://source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26
+- Vantor (Maxar) open data — STAC: https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/collection.json
+- HOT/OSM — Nepal Floods 2026 activation: https://wiki.openstreetmap.org/wiki/Organised_Editing/Activities/Nepal_Floods_2026
+- HDX — HOT Nepal flood dataset: https://data.humdata.org/dataset/hot_flood_npl
+- HDX — HOT fAIr damage scores: https://data.humdata.org/dataset/hot_flood_npl_buildings_damage
+- HDX — Microsoft AI for Good exposure: https://data.humdata.org/dataset/2026-nepal-flash-flood
+- NESRA FloodWatch: https://nesraspace.org/floodwatch/rasuwa-2026/
+- NESRA EO dashboard: https://npl-flood-dash-356251209726.europe-west1.run.app/
+- Disaster imagery viewer: https://cgiovando.github.io/disaster-imagery-viewer/nepal-floods-2026/
+- PMTiles corridor map: https://nepal-flood-map.pages.dev/
+- CNSA — satellite data pushed to responders: https://www.cnsa.gov.cn/n6758823/n6758838/c10771422/content.html
+- Global Times — PowerChina-1 SAR: https://www.globaltimes.cn/page/202608/1369215.shtml
+- CGTN — MNR 3D imagery: https://news.cgtn.com/news/2026-08-28/3D-imagery-reveals-path-and-causes-of-Xizang-s-Gyirong-mudslide-1PYNEvSLMUE/p.html
+- EU Space — CEMS image of the day: https://eu-space.europa.eu/components/earth-observation-copernicus/image-of-the-day/copernicus-emergency-management-service-maps-flood-damages-northern-nepal
+- BIPAD portal: https://bipadportal.gov.np/ (handbook: https://bipadportal.gov.np/media/bipad_user_handbook_P6ToNkB.pdf)
+- DHM River Watch: https://hydrology.gov.np/#/river_watch
+- Census 2021: https://censusnepal.cbs.gov.np/results
+- UN-SPIDER — SAR flood mapping practice: https://un-spider.org/advisory-support/recommended-practices/recommended-practice-flood-mapping-sentinel-1-and-sentinel-2
+- Nepal Hackathon: https://www.nepalhackathon.org/
+- flood-nepal tracker (JSON API): https://flood-nepal.rabigorkhali.com.np/
+
+## Precedents and ML literature
+- Ushahidi — Nepal Army and QuakeMap 2015: https://www.ushahidi.com/in-action/nepalese-army-and-disaster-management
+- KLL — earthquake relief, how maps help: http://blog.kathmandulivinglabs.org/earthquake-relief-in-nepal-how-can-maps-help/
+- Flowminder — Nepal 2015 lessons: https://www.flowminder.org/news/ten-years-after-the-nepal-earthquake-lessons-in-data-displacement-and-crisis-preparedness
+- Flowminder — Nepal 2015 paper: https://pmc.ncbi.nlm.nih.gov/articles/PMC4779046/
+- iRevolutions — humanitarian UAV missions Nepal 2015: https://irevolutions.org/2015/05/03/humanitarian-uav-missions-nepal/
+- GFDRR — Melamchi 2021 drone survey: https://www.gfdrr.org/en/publication/melamchi-flood-disaster-nepal-damage-and-risk-quantification-drone-survey-satellite
+- ICIMOD — Thame GLOF 2024: https://lib.icimod.org/records/8g9ze-1r153
+- Hugging Face — afetharita (Turkey 2023): https://github.com/huggingface/blog/blob/main/using-ml-for-disasters.md
+- DroneLife — Texas Hill Country thermal search 2025: https://dronelife.com/2025/07/30/thermal-drone-disaster-response-new-search-technique/
+- Robin Murphy — why AI drones couldn't find Texas victims: https://news4sanantonio.com/news/local/heres-why-ai-and-drones-cant-locate-missing-texas-hill-country-flooding-victims-locaql-news-near-me-crime-law-public-safety
+- ForestPersons dataset (2026): https://arxiv.org/html/2603.02541v1
+- ADIAT — TEXSAR drone image triage: https://github.com/crgrove/automated-drone-image-analysis-tool
+- SAHI: https://arxiv.org/abs/2202.06934
+- HERIDAL: https://arxiv.org/pdf/2111.09406
+- SARD: https://ieee-dataport.org/documents/search-and-rescue-image-dataset-person-detection-sard
+- WiSARD: https://sites.google.com/uw.edu/wisard/
+- NOMAD: https://github.com/ArtRuss/NOMAD
+- Aerial person detection survey: https://spj.science.org/doi/10.34133/remotesensing.0474
+- SAR drone tool comparison: https://www.eagleeyessearch.com/blog/comparison
+- SKAI: https://github.com/google-research/skai
+- Microsoft building damage assessment: https://github.com/microsoft/building-damage-assessment
+- xBD: https://ar5iv.labs.arxiv.org/html/1911.09296
+- Landslide4Sense: https://arxiv.org/abs/2206.00515
+- Prithvi Sen1Floods11: https://huggingface.co/ibm-nasa-geospatial/Prithvi-EO-1.0-100M-sen1floods11
+- GFM: https://global-flood.emergency.copernicus.eu/
+- LLM geolocation extraction (WWW 2026): https://arxiv.org/html/2602.08872v1 (code: https://github.com/jian01/llm-fair-geolocation-extraction-WWW2026)
+- HumAID / CrisisNLP: https://crisisnlp.qcri.org/
+- Google Person Finder: https://github.com/google/personfinder
+- ISRID / lost person behaviour: https://www.d4h.com/blog/dr-robert-koesters-lost-person-behavior-and-how-to-contribute-to-isrid
+- Evaluating LPB models: http://geoinf.psu.edu/publications/2015_TransGIS_Search_Sava.pdf
+- SARBayes: https://sarbayes.org/
+- Stone Soup Bayesian search: https://stonesoup.readthedocs.io/en/v1.8/auto_examples/sensormanagement/bayesian_search_example_1.html
+- Helene response (NC DPS): https://www.ncdps.gov/news/press-releases/2024/10/06/rescue-teams-continue-locate-survivors-communications-improve-and-more-military-assets-join-storm
+- Sikkim 2023 GLOF lessons: https://weadapt.org/knowledge-base/the-2023-south-lhonak-glacial-lake-outburst-flood-insights-lessons-and-recommendations/
+- Garmin inReach in Nepal 2015: https://www.garmin.com/en-US/blog/outdoor/inreach-real-stories-nepal-earthquake/
+- Lifeseeker: https://www.unmannedsystemstechnology.com/feature/lifeseeker-search-and-rescue-data/
+- Wolfhound-PRO: https://www.bvsystems.com/product/wolfhound-pro-cellular-search-and-rescue-kit/
+- SARDO: https://ieeexplore.ieee.org/document/9321707/
