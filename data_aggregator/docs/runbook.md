@@ -1,37 +1,38 @@
 # Runbook
 
-How the system is kept running: cron, secrets, moving off the laptop, backups, what to do when something breaks, and a 60-second health check. The site is volunteer-run and not an official source; when in doubt, keep the official-channels bar visible and the stale banner honest rather than hide a problem.
+How the system is kept running: the schedule, secrets, moving off the laptop, backups, what to do when something breaks, and a 60-second health check. The site is volunteer-run and not an official source; when in doubt, keep the official-channels bar visible and the stale banner honest rather than hide a problem.
 
-## 1. Cron
+## 1. Schedule
 
-The two scripts run from one crontab line on whichever machine holds `pipeline/.env`.
+The two scripts run on a timer on whichever machine holds `pipeline/.env`. On the Mac that is a **launchd agent** (survives logout, runs a missed job on wake, and the installer also pins the machine awake); on a Linux VM it is a crontab line. Both call the same `pipeline/run.sh`.
 
 ```
-   crontab                              pipeline/run.sh
-   ───────────────────────────────      ─────────────────────────────────────────────
-   0 */4 * * *  cd …/pipeline &&        source .venv/bin/activate
-                ./run.sh >> run.log     python pull_external_data.py   (external → RAW)
-                2>&1                    python process_data.py         (RAW + ARCHIVE → DERIVED)
-                                        exit code = first failure
+   launchd agent (Mac)  ─┐                        pipeline/run.sh
+   com.nepalfloodtracker  │   every N minutes      ─────────────────────────────────────────────
+   .pipeline              ├──────────────────────► .venv/bin/python pull_external_data.py   (external → RAW)
+   crontab line (VM)     ─┘                        .venv/bin/python process_data.py         (RAW + ARCHIVE → DERIVED)
+                                                   exit code = first crash (per-source failures are logged, not fatal)
 ```
 
-| Phase | Line | Why |
-|---|---|---|
-| tonight (29→30 Aug) | `0 */4 * * * cd /Users/aryaask/Desktop/flood_rescue/nepal_flood/data_aggregator/pipeline && ./run.sh >> run.log 2>&1` | every 4 h; nobody is distributing yet |
-| live phase | `*/15 * * * * cd /Users/aryaask/Desktop/flood_rescue/nepal_flood/data_aggregator/pipeline && ./run.sh >> run.log 2>&1` | every 15 min; the site's copy promises this |
+Install / change / remove on the Mac — numbered:
 
-Switching cadence — three edits, one commit, one deploy:
+1. `scripts/install_schedule.sh` — installs the agent at **240 min** (tonight's cadence), writes `~/Library/LaunchAgents/com.nepalfloodtracker.pipeline.plist`, runs once immediately, and starts a detached `caffeinate -s -i` so the laptop does not sleep on mains power.
+2. `scripts/install_schedule.sh 15` — switch to the live-phase cadence (re-installs the agent).
+3. `scripts/install_schedule.sh --remove` — uninstall and stop caffeinate.
+4. Check: `launchctl print gui/$(id -u)/com.nepalfloodtracker.pipeline | grep -E 'state|interval'` and `tail -n 40 pipeline/run.log` shows two consecutive runs with exit 0. `make health` summarises the live state.
 
-1. `crontab -e` — replace the schedule field.
+On a Linux VM instead: `crontab -e` and add `*/15 * * * * cd /path/to/data_aggregator/pipeline && ./run.sh >> run.log 2>&1` (cron uses UTC; the scripts write UTC timestamps, so nothing else changes).
+
+Switching cadence — four coupled edits, one commit, one deploy:
+
+1. The schedule: `scripts/install_schedule.sh 15` (Mac) or the crontab field (VM).
 2. `pipeline/lib/config.py` — `PULL_INTERVAL_MINUTES = 15` (was 240). The scheduler uses it as the floor for every source's cadence and for the "unchanged" skip window.
-3. `web/lib/config.ts` — `PULL_INTERVAL_MINUTES = 15`. Drives the scoreboard line "AUTO-REFRESH EVERY N MIN" and the stale-banner threshold (by convention 3 × the interval, i.e. 45 min at 15-min cadence), so the site never promises a cadence the cron does not keep.
+3. `web/lib/config.ts` — `PULL_INTERVAL_MINUTES = 15`. Drives the scoreboard line "AUTO-REFRESH EVERY N MIN" and the stale-banner threshold (1.5 × the interval), so the site never promises a cadence the schedule does not keep.
 4. `cd web && vercel --prod --yes` — the constant is baked at build time.
 
-The two constants must always be equal; `web/tests` has a parity check that reads both files.
+The two constants must always be equal.
 
-macOS specifics: cron only runs while the laptop is awake (System Settings → Battery → Options → "Prevent automatic sleeping on power adapter", lid open, plugged in); and cron needs Full Disk Access to read files under `~/Desktop` (System Settings → Privacy & Security → Full Disk Access → add `/usr/sbin/cron`), otherwise `run.log` shows `Operation not permitted`.
-
-Check it is running: `crontab -l` shows the line; `tail -n 40 pipeline/run.log` shows two consecutive runs with exit 0.
+macOS specifics: launchd agents only fire while the machine is awake — the installer's `caffeinate -s -i` prevents idle sleep on AC power, but a closed lid on battery still sleeps (System Settings → Battery → Options → "Prevent automatic sleeping on power adapter", and keep it plugged in). If `run.log` shows `Operation not permitted`, grant Full Disk Access to `/bin/bash` (System Settings → Privacy & Security → Full Disk Access) because the repo lives under `~/Desktop`.
 
 ## 2. Secrets
 
@@ -63,7 +64,7 @@ Any Linux box with Python 3.11+ and outbound HTTPS runs the pipeline; the interf
 3. `scp` the laptop's `pipeline/.env` **and** `pipeline/_state.json` to the same paths (the state file carries per-source last-fetched times, ETags and the OpenAI spend counter — without it the budget guard restarts from zero).
 4. `./run.sh` once by hand; confirm exit 0 and new rows (section 6).
 5. `crontab -e` on the VM with the live-phase line (paths adjusted). Cron on Linux uses UTC; the scripts write UTC timestamps, so nothing else changes.
-6. On the laptop, `crontab -e` and delete the line. Two writers would not corrupt anything (upserts), but they would double the OpenAI spend.
+6. On the laptop, `scripts/install_schedule.sh --remove`. Two writers would not corrupt anything (upserts), but they would double the OpenAI spend.
 7. For `db/apply.py` on the VM export `SUPABASE_ACCESS_TOKEN` (the keychain path is macOS-only).
 8. Record the handoff in `docs/decisions-log.md` with the VM's name and who holds its SSH key.
 
@@ -88,10 +89,10 @@ The dump contains ARCHIVE data (names, phones). Keep it encrypted, off the repo,
 | Realtime connection cap hit (200) | scoreboard's "people here now" disappears; browser console shows channel error | Presence is dropped first by design; contribution counters fall back to polling `v_live_counts` | nothing; or upgrade the plan. Do not add Realtime to more tables |
 | Vercel build fails | `vercel --prod` output; the previous deployment keeps serving | usually a type error or a message-key parity failure | `cd web && npm run lint && npm run build && npm test` locally; fix; redeploy. The DB is unaffected |
 | migrations conflict | `apply.py`: `! 00N_x.sql changed since it was applied` | an applied file was edited | `git checkout` the file; put the change in a new `006_…sql` (`db/docs/07-applying-migrations.md`) |
-| cron silent | `run.log` not growing; scoreboard "minutes since last pull" climbing; stale banner | laptop asleep, or cron lacks Full Disk Access | section 1; `./run.sh` by hand to confirm |
+| schedule silent | `run.log` not growing; scoreboard "minutes since last pull" climbing; stale banner | laptop asleep (lid closed on battery), agent not loaded, or bash lacks Full Disk Access | section 1: `launchctl print …`, re-run `scripts/install_schedule.sh`; `./run.sh` by hand to confirm |
 | form submissions fail | browser: `new row violates row-level security policy` or `401` | anonymous sign-ins disabled, or the insert violates `reports_own_insert` | `python -c "import mgmt; mgmt.set_anonymous_signins(True)"` from `db/`; check the insert sets `status='received'` and no `anonymised_at` |
-| numbers look stale but cron ran | `v_live_counts.last_processed_at` old, `last_pull_at` fresh | `process_data` failed after `pull_external_data` succeeded | `tail run.log`; run `python process_data.py` by hand and read the traceback |
-| Supabase paused | dashboard banner; site shows empty states | free projects pause after 7 days without activity — impossible while cron runs | restore from the dashboard; check cron |
+| numbers look stale but the schedule ran | `v_live_counts.last_processed_at` old, `last_pull_at` fresh | `process_data` failed after `pull_external_data` succeeded | `tail run.log`; run `python process_data.py` by hand and read the traceback |
+| Supabase paused | dashboard banner; site shows empty states | free projects pause after 7 days without activity — impossible while the schedule runs | restore from the dashboard; check the schedule |
 | disk filling on the cron machine | `df -h` | `pipeline/snapshots/` (gitignored local copies of pulls) | delete old snapshots; the truth is in `raw_pulls` |
 
 ## 6. Is it healthy? — 60 seconds
@@ -125,7 +126,7 @@ Then:
 ```
 curl -sI https://nepalfloodtracker.com/en | head -1        # HTTP/2 200
 curl -s -o /dev/null -w '%{content_type}\n' https://nepalfloodtracker.com/api/og?lang=ne   # image/png
-crontab -l | grep run.sh
+launchctl print gui/$(id -u)/com.nepalfloodtracker.pipeline | grep -E "state|interval"   # or: crontab -l | grep run.sh
 tail -n 5 pipeline/run.log
 ```
 
