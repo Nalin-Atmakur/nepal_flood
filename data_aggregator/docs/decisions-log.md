@@ -42,3 +42,5 @@ Sources for the seed entries: `PLAN.md` (§0 principles, §2 zones, §12 open it
 - §12.3 review tool for `dedup_queue` (D-011).
 - Named Nepal-side co-owner with access to DERIVED and `findings` (`PLAN.md` §9 handoff) — record the name here when agreed.
 - Wave-2 sources (tag pages, live blogs, Chinese search APIs, Wikipedia revisions, GDELT, geospatial catalogues, Setu, Police UDB, DAO lists) — each becomes a normaliser and a line here when it lands.
+
+- **2026-08-30 01:30** — Deployed the full site to production (Vercel). Apex DNS for nepalfloodtracker.com still points at Squarespace parking; `www.` serves the site. Alternative considered: none available from this machine — registrar DNS requires the owner's Squarespace login (see runbook §7.0).
