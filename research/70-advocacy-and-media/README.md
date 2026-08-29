@@ -4,6 +4,9 @@
 
 **Question:** Where would public attention or policy pressure actually change outcomes (resources, coordination, early-warning investment), and what is the responsible way to apply it during a live response?
 
-**Contents:** `advocacy-note.md` — audiences, messages, what we must *not* do (publish casualty claims, amplify unverified imagery, second-guess operational decisions in public).
+**Contents:**
+
+- `advocacy-note.md` — audiences, messages, what we must *not* do (publish casualty claims, amplify unverified imagery, second-guess operational decisions in public).
+- `../10-actors/influencer-outreach-shortlist-2026-08-29.md` — named, directly messageable outreach candidates and the gates before any sensitive-intake link is amplified.
 
 **Hard rule:** we never publish anything that could be mistaken for an authoritative casualty source, and we verify imagery before amplifying it — this event already has documented AI-generated fake footage circulating.

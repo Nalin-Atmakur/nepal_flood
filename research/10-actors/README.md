@@ -9,5 +9,6 @@
 - `actors.md` — government, security services, international, volunteer-technical, private
 - `our-channels.md` — which of these we can actually reach, via whom
 - `contact-directory.md` — verified public contact routes, current roles, status and a specific useful ask for each
+- `influencer-outreach-shortlist-2026-08-29.md` — named, directly messageable outreach prospects, including a local Nepali micro-creator bench and campaign safety gates
 
 **Status:** populated 2026-08-29. Biggest unknown: whether we have any direct line to NDRRMA, Nepali Army, or a district EOC — see `docs/OPEN_QUESTIONS.md` Q1.
