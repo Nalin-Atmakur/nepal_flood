@@ -21,11 +21,12 @@
 
 ## Known blockers (check FIRST, in this order)
 
-1. ⚠️ **Stereo availability unconfirmed** — nobody has verified that any open Vantor/Planet scene for this event is a true stereo pair rather than mono. If none are, this plan needs tasked stereo (Charter/authority request) or dies. *Check before any other work.*
+1. ✅ **Stereo availability — checked 2026-08-29**, see [stereo-availability-findings.md](stereo-availability-findings.md). **No genuine pre-event stereo pair found** in any open catalog (Vantor, Planet, Sentinel-2 all single-angle pre-event; JAXA ALOS PRISM ruled out by mission dates). Post-event *does* have real stereo (Vantor, two same-pass multi-angle sets) but see blocker 2. A candidate cross-source heterogeneous pair (Vantor 2021-10-16 + Planet PlanetScope 2026-05-27) was identified but not yet tested. Two Planet post-event PlanetScope collections and Esri Wayback remain unchecked.
 2. Post-event cloud (71–81% on Vantor) may block stereo matching exactly where we need it.
 3. Vantor/Planet licences are CC-BY-NC — fine for humanitarian use, flag for anything commercial.
 4. Output is an **estimate for triage, not a survey** — never present it as engineering or legal fact.
+5. **No true "before" stereo means step 1 of the pipeline as specced doesn't currently have an input.** Until the cross-source candidate is tested or tasked stereo is requested, "before" elevation is only available via the 30m global DEM baseline (Copernicus GLO-30: 1822.6m at the post; Open-Meteo: 1819.0m) — a coarse stand-in, not a photogrammetric surface, and its own acquisition-date vs. the Dec 2014 border-post construction is unresolved.
 
 ## Status
 
-Not started. First action: enumerate `view:sun_azimuth`/off-nadir metadata across the 13 Vantor items + 24 Planet scenes and answer blocker 1. `[OWNER: unassigned]`
+Blocker 1 answered 2026-08-29 — see [stereo-availability-findings.md](stereo-availability-findings.md) for full per-source findings, [gyirong-imagery-inventory.json](gyirong-imagery-inventory.json) for per-scene data. Outcome: pipeline as specced (steps 1–2) cannot currently produce a true before/after stereo DSM pair — no pre-event stereo exists in any open catalog checked so far. Next: test the cross-source candidate, finish the two unchecked Planet collections and Esri Wayback, then decide between tasked-stereo request vs. DEM-baseline fallback. `[OWNER: unassigned]`

@@ -1,0 +1,106 @@
+{
+  "investigation": "Gyirong / Rasuwagadhi border post pre/post-incident elevation change",
+  "target_coordinates": { "lat": 28.279672, "lon": 85.377744 },
+  "incident_datetime_utc": "2026-08-26T02:52:00Z",
+  "incident_datetime_npt": "2026-08-26T08:37:00+05:45",
+  "incident_description": "Glacier collapse debris flow / flash flood, Bhote Koshi-Trishuli corridor, Nepal-China border",
+  "notes": [
+    "class = 'before' if capture predates incident cutoff, 'after' if it postdates it",
+    "covers_site = true if the scene footprint bbox contains the target coordinates",
+    "stereo_status values: 'candidate' = genuine same-pass multi-angle geometry confirmed usable; 'no' = single-angle/strip, confirmed not stereo-capable; 'weak' = convergence angle too small or pairing incomplete; 'unchecked' = item metadata not yet inspected",
+    "off_nadir_deg and azimuth_deg are the raw view:off_nadir / view:azimuth (or view:incidence_angle for Sentinel-2) STAC properties",
+    "cloud_pct is eo:cloud_cover from STAC metadata, tile/scene-wide (not necessarily the value directly over the small border-post footprint)",
+    "gsd_m is ground sample distance in meters where published; null if not present in metadata",
+    "link is a direct URL to the item's STAC JSON where one was recorded; null if not individually fetched"
+  ],
+  "cross_source_stereo_candidate": {
+    "description": "Vantor 2021-10-16 and Planet PlanetScope 2026-05-27 share near-identical azimuth (~274.5 deg vs ~277 deg) but differ ~22.7 deg in off-nadir angle, enough convergence to test as a heterogeneous stereo pair despite a ~4.5-year gap and ~8-10x resolution mismatch (sub-meter Vantor vs 3.7m PlanetScope).",
+    "scene_ids": ["10300100C86CED00", "20260527_053219_95_254a"]
+  },
+  "sources_checked": [
+    {
+      "name": "Vantor (Maxar-heritage) Open Data",
+      "catalog": "Nepal-Flooding-Aug-2026",
+      "access_method": "Public STAC JSON, no auth",
+      "status": "Fully checked — all 13 items"
+    },
+    {
+      "name": "Planet Labs disaster catalog",
+      "catalog": "nepal-flash-flood-2026-08-26",
+      "access_method": "Public STAC JSON via source.coop, no auth",
+      "status": "Mostly checked — 2 of 4 post-event PlanetScope collections not yet inspected at item level"
+    },
+    {
+      "name": "JAXA ALOS PRISM",
+      "access_method": "G-Portal registration required",
+      "status": "Ruled out by mission dates (PRISM operated 2006-2011; current border post structures date from Dec 2014 inauguration) — never queried"
+    },
+    {
+      "name": "Maxar/Vantor general commercial archive",
+      "access_method": "eAPI/Discovery/SecureWatch, commercial account required",
+      "status": "Not checked — no confirmed free tier"
+    },
+    {
+      "name": "Google Earth historical imagery",
+      "access_method": "Manual browser only, no public API",
+      "status": "Automated check failed (WebGL); user manually found a 2026-07-01 frame, provider unconfirmed"
+    },
+    {
+      "name": "Esri World Imagery Wayback",
+      "access_method": "wayback-core JS library / REST",
+      "status": "API pattern confirmed, coverage from Feb 2014 confirmed, but never actually queried for this coordinate"
+    },
+    {
+      "name": "Copernicus Data Space (Sentinel-2 L2A)",
+      "access_method": "Public STAC JSON, no auth",
+      "status": "Fully checked — ~100 pre-event revisits + 1 post-event scene queried directly"
+    },
+    {
+      "name": "Copernicus GLO-30 DEM (AWS Open Data)",
+      "access_method": "Public S3, no auth",
+      "status": "Tile pulled and sampled directly — 1822.6m at target coordinate, cross-checked against Open-Meteo (1819.0m)"
+    }
+  ],
+  "scenes": [
+    {"date":"2021-10-16","class":"before","source":"Vantor","sensor":"WV/GE","scene_id":"10300100C86CED00","off_nadir_deg":27.47,"azimuth_deg":274.52,"sun_elevation_deg":51.23,"cloud_pct":22,"gsd_m":null,"covers_site":true,"stereo_status":"no","stereo_note":"Only before scene at site — single angle","cross_source_candidate":true,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/10300100C86CED00.json"},
+    {"date":"2024-05-29","class":"before","source":"Vantor","sensor":"WV/GE","scene_id":"10300100FCB83600","off_nadir_deg":27.53,"azimuth_deg":154.40,"sun_elevation_deg":74.10,"cloud_pct":15,"gsd_m":null,"covers_site":false,"stereo_status":"no","stereo_note":"Footprint misses site","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/10300100FCB83600.json"},
+    {"date":"2023-09-17","class":"before","source":"Vantor","sensor":"WV/GE","scene_id":"10500100364E8400","off_nadir_deg":11.84,"azimuth_deg":270.25,"sun_elevation_deg":59.94,"cloud_pct":46,"gsd_m":null,"covers_site":false,"stereo_status":"no","stereo_note":"Footprint misses site","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/10500100364E8400.json"},
+    {"date":"2026-02-05","class":"before","source":"Vantor","sensor":"WV/GE","scene_id":"B160001100CDB210","off_nadir_deg":15.61,"azimuth_deg":269.11,"sun_elevation_deg":39.98,"cloud_pct":0,"gsd_m":null,"covers_site":false,"stereo_status":"no","stereo_note":"Footprint misses site","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B160001100CDB210.json"},
+    {"date":"2026-08-27","class":"after","source":"Vantor","sensor":"multi-angle set A","scene_id":"B040001100881410","off_nadir_deg":21.72,"azimuth_deg":14.29,"sun_elevation_deg":64.64,"cloud_pct":73,"gsd_m":null,"covers_site":true,"stereo_status":"candidate","stereo_note":"Same-pass multi-angle set","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B040001100881410.json"},
+    {"date":"2026-08-27","class":"after","source":"Vantor","sensor":"multi-angle set A","scene_id":"B040001100881610","off_nadir_deg":9.13,"azimuth_deg":17.54,"sun_elevation_deg":64.70,"cloud_pct":71,"gsd_m":null,"covers_site":true,"stereo_status":"candidate","stereo_note":"Same-pass multi-angle set","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B040001100881610.json"},
+    {"date":"2026-08-27","class":"after","source":"Vantor","sensor":"multi-angle set A","scene_id":"B040001100881710","off_nadir_deg":26.56,"azimuth_deg":190.45,"sun_elevation_deg":64.90,"cloud_pct":72,"gsd_m":null,"covers_site":false,"stereo_status":"candidate","stereo_note":"Same-pass, but misses site","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B040001100881710.json"},
+    {"date":"2026-08-27","class":"after","source":"Vantor","sensor":"multi-angle set A","scene_id":"B040001100882F10","off_nadir_deg":12.34,"azimuth_deg":184.19,"sun_elevation_deg":64.61,"cloud_pct":79,"gsd_m":null,"covers_site":true,"stereo_status":"candidate","stereo_note":"Same-pass multi-angle set","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B040001100882F10.json"},
+    {"date":"2026-08-28","class":"after","source":"Vantor","sensor":"multi-angle set B","scene_id":"B030001100CF1110","off_nadir_deg":25.06,"azimuth_deg":347.97,"sun_elevation_deg":64.85,"cloud_pct":81,"gsd_m":null,"covers_site":true,"stereo_status":"candidate","stereo_note":"Same-pass multi-angle set","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B030001100CF1110.json"},
+    {"date":"2026-08-28","class":"after","source":"Vantor","sensor":"multi-angle set B","scene_id":"B030001100CF1210","off_nadir_deg":15.42,"azimuth_deg":331.16,"sun_elevation_deg":65.00,"cloud_pct":74,"gsd_m":null,"covers_site":false,"stereo_status":"candidate","stereo_note":"Same-pass, but misses site","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B030001100CF1210.json"},
+    {"date":"2026-08-28","class":"after","source":"Vantor","sensor":"multi-angle set B","scene_id":"B030001100CF1310","off_nadir_deg":21.53,"azimuth_deg":342.80,"sun_elevation_deg":64.87,"cloud_pct":78,"gsd_m":null,"covers_site":true,"stereo_status":"candidate","stereo_note":"Same-pass multi-angle set","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B030001100CF1310.json"},
+    {"date":"2026-08-28","class":"after","source":"Vantor","sensor":"multi-angle set B","scene_id":"B030001100CF1610","off_nadir_deg":12.23,"azimuth_deg":302.90,"sun_elevation_deg":64.95,"cloud_pct":79,"gsd_m":null,"covers_site":true,"stereo_status":"candidate","stereo_note":"Same-pass multi-angle set","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B030001100CF1610.json"},
+    {"date":"2026-08-28","class":"after","source":"Vantor","sensor":"standalone","scene_id":"B110001101165110","off_nadir_deg":19.45,"azimuth_deg":230.90,"sun_elevation_deg":67.30,"cloud_pct":78,"gsd_m":null,"covers_site":true,"stereo_status":"weak","stereo_note":"No matching pair; possible extra look, ~15min after set B","cross_source_candidate":false,"link":"https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B110001101165110.json"},
+
+    {"date":"2026-05-27","class":"before","source":"Planet","sensor":"PlanetScope (pre)","scene_id":"20260527_053217_72_254a","off_nadir_deg":4.9,"azimuth_deg":276.8,"sun_elevation_deg":77.5,"cloud_pct":41,"gsd_m":3.7,"covers_site":false,"stereo_status":"no","stereo_note":"Single strip, near-identical angle","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/pre-event/planetscope-2026-05-27/items/20260527_053217_72_254a/20260527_053217_72_254a.json"},
+    {"date":"2026-05-27","class":"before","source":"Planet","sensor":"PlanetScope (pre)","scene_id":"20260527_053219_95_254a","off_nadir_deg":4.8,"azimuth_deg":276.9,"sun_elevation_deg":77.5,"cloud_pct":43,"gsd_m":3.7,"covers_site":true,"stereo_status":"no","stereo_note":"Single strip, near-identical angle","cross_source_candidate":true,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/pre-event/planetscope-2026-05-27/items/20260527_053219_95_254a/20260527_053219_95_254a.json"},
+    {"date":"2026-05-27","class":"before","source":"Planet","sensor":"PlanetScope (pre)","scene_id":"20260527_053221_96_254a","off_nadir_deg":4.9,"azimuth_deg":276.8,"sun_elevation_deg":77.6,"cloud_pct":52,"gsd_m":3.7,"covers_site":true,"stereo_status":"no","stereo_note":"Single strip, near-identical angle","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/pre-event/planetscope-2026-05-27/items/20260527_053221_96_254a/20260527_053221_96_254a.json"},
+    {"date":"2026-05-27","class":"before","source":"Planet","sensor":"PlanetScope (pre)","scene_id":"20260527_053224_18_254a","off_nadir_deg":4.8,"azimuth_deg":276.8,"sun_elevation_deg":77.6,"cloud_pct":48,"gsd_m":3.7,"covers_site":false,"stereo_status":"no","stereo_note":"Single strip, near-identical angle","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/pre-event/planetscope-2026-05-27/items/20260527_053224_18_254a/20260527_053224_18_254a.json"},
+    {"date":"2026-05-27","class":"before","source":"Planet","sensor":"PlanetScope (pre)","scene_id":"20260527_053226_41_254a","off_nadir_deg":4.9,"azimuth_deg":276.8,"sun_elevation_deg":77.7,"cloud_pct":5,"gsd_m":3.7,"covers_site":false,"stereo_status":"no","stereo_note":"Single strip, near-identical angle","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/pre-event/planetscope-2026-05-27/items/20260527_053226_41_254a/20260527_053226_41_254a.json"},
+
+    {"date":"2026-08-27","class":"after","source":"Planet","sensor":"Pelican (post)","scene_id":"20260827_060956_98_3009","off_nadir_deg":3.8,"azimuth_deg":255.9,"sun_elevation_deg":71.6,"cloud_pct":85,"gsd_m":0.55,"covers_site":true,"stereo_status":"no","stereo_note":"Single strip, near-identical angle","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/post-event/pelican-2026-08-27/items/20260827_060956_98_3009/20260827_060956_98_3009.json"},
+    {"date":"2026-08-27","class":"after","source":"Planet","sensor":"Pelican (post)","scene_id":"20260827_060958_31_3009","off_nadir_deg":3.8,"azimuth_deg":256.0,"sun_elevation_deg":71.7,"cloud_pct":83,"gsd_m":0.55,"covers_site":false,"stereo_status":"no","stereo_note":"Single strip, near-identical angle","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/post-event/pelican-2026-08-27/items/20260827_060958_31_3009/20260827_060958_31_3009.json"},
+    {"date":"2026-08-27","class":"after","source":"Planet","sensor":"Pelican (post)","scene_id":"20260827_060959_65_3009","off_nadir_deg":3.8,"azimuth_deg":256.1,"sun_elevation_deg":71.8,"cloud_pct":85,"gsd_m":0.55,"covers_site":false,"stereo_status":"no","stereo_note":"Single strip, near-identical angle","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/post-event/pelican-2026-08-27/items/20260827_060959_65_3009/20260827_060959_65_3009.json"},
+
+    {"date":"2026-08-27","class":"after","source":"Planet","sensor":"SkySat (post)","scene_id":"20260827_020055_ssc1_u0001","off_nadir_deg":28.9,"azimuth_deg":3.7,"sun_elevation_deg":26.9,"cloud_pct":50,"gsd_m":0.81,"covers_site":true,"stereo_status":"weak","stereo_note":"Only 0.7 deg from its pair — too weak","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/post-event/skysat-2026-08-27/items/20260827_020055_ssc1_u0001/20260827_020055_ssc1_u0001.json"},
+    {"date":"2026-08-27","class":"after","source":"Planet","sensor":"SkySat (post)","scene_id":"20260827_020055_ssc1_u0002","off_nadir_deg":28.2,"azimuth_deg":3.7,"sun_elevation_deg":26.9,"cloud_pct":50,"gsd_m":0.79,"covers_site":false,"stereo_status":"weak","stereo_note":"Misses site anyway","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/post-event/skysat-2026-08-27/items/20260827_020055_ssc1_u0002/20260827_020055_ssc1_u0002.json"},
+
+    {"date":"2026-08-26","class":"after","source":"Planet","sensor":"PlanetScope (post, 9 scenes, collection-level only)","scene_id":"planetscope-2026-08-26","off_nadir_deg":null,"azimuth_deg":null,"sun_elevation_deg":null,"cloud_pct":null,"gsd_m":3.7,"covers_site":null,"stereo_status":"unchecked","stereo_note":"Not yet inspected at item level","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/post-event/planetscope-2026-08-26/collection.json"},
+    {"date":"2026-08-28","class":"after","source":"Planet","sensor":"PlanetScope (post, 5 scenes, collection-level only)","scene_id":"planetscope-2026-08-28","off_nadir_deg":null,"azimuth_deg":null,"sun_elevation_deg":null,"cloud_pct":null,"gsd_m":3.7,"covers_site":null,"stereo_status":"unchecked","stereo_note":"Not yet inspected at item level","cross_source_candidate":false,"link":"https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/post-event/planetscope-2026-08-28/collection.json"},
+
+    {"date":"2026-01-14","class":"before","source":"Sentinel-2","sensor":"S2C, relative orbit 119","scene_id":"S2C_MSIL2A_20260114T050151","off_nadir_deg":null,"incidence_angle_deg":7.83,"azimuth_deg":null,"sun_elevation_deg":null,"cloud_pct":0,"gsd_m":10,"covers_site":true,"stereo_status":"no","stereo_note":"Near-nadir, not stereo-capable; representative of ~100 pre-event revisits","cross_source_candidate":false,"link":"https://stac.dataspace.copernicus.eu/v1/collections/sentinel-2-l2a/items/S2C_MSIL2A_20260114T050151_N0511_R119_T45RUM_20260114T091743"},
+    {"date":"2025-12-10","class":"before","source":"Sentinel-2","sensor":"S2B, relative orbit 119","scene_id":"S2B_MSIL2A_20251210T050119","off_nadir_deg":null,"incidence_angle_deg":7.8,"azimuth_deg":null,"sun_elevation_deg":null,"cloud_pct":0,"gsd_m":10,"covers_site":true,"stereo_status":"no","stereo_note":"Near-nadir, not stereo-capable","cross_source_candidate":false,"link":null},
+    {"date":"2025-11-12","class":"before","source":"Sentinel-2","sensor":"S2C, relative orbit 76","scene_id":"S2C_MSIL2A_20251112T045051","off_nadir_deg":null,"incidence_angle_deg":9.34,"azimuth_deg":null,"sun_elevation_deg":null,"cloud_pct":0.1,"gsd_m":10,"covers_site":true,"stereo_status":"no","stereo_note":"Near-nadir, not stereo-capable; ~1.5 deg from orbit 119 — insufficient for stereo","cross_source_candidate":false,"link":null},
+    {"date":"2026-08-27","class":"after","source":"Sentinel-2","sensor":"S2B, relative orbit 119","scene_id":"S2B_MSIL2A_20260827T045659","off_nadir_deg":null,"incidence_angle_deg":7.82,"azimuth_deg":null,"sun_elevation_deg":null,"cloud_pct":78.5,"gsd_m":10,"covers_site":true,"stereo_status":"no","stereo_note":"Only post-event Sentinel-2 scene found so far; near-nadir","cross_source_candidate":false,"link":"https://stac.dataspace.copernicus.eu/v1/collections/sentinel-2-l2a/items/S2B_MSIL2A_20260827T045659_N0512_R119_T45RUM_20260827T084453"},
+
+    {"date":"2026-07-01","class":"before","source":"Google Earth","sensor":"historical imagery slider (provider unconfirmed)","scene_id":"historical slider frame","off_nadir_deg":null,"azimuth_deg":null,"sun_elevation_deg":null,"cloud_pct":null,"gsd_m":null,"covers_site":true,"stereo_status":"no","stereo_note":"No RPC/angle metadata exposed by Google Earth by design — mono visual cross-check only","cross_source_candidate":false,"link":null}
+  ],
+  "elevation_reference_points": [
+    {"source":"Open-Meteo elevation API","value_m":1819.0,"note":"Coarse global-DEM-derived point value; Open-Elevation timed out on the same query"},
+    {"source":"Copernicus GLO-30 (AWS Open Data, tile Copernicus_DSM_COG_10_N28_00_E085_00_DEM)","value_m":1822.6,"note":"Cross-validates against Open-Meteo (~3.5m apart). Local 2km window ranges 1738-2737m (steep gorge terrain). No embedded acquisition date; source TanDEM-X passes collected circa 2010-2015, straddling the Dec 2014 border-post inauguration date, so it is uncertain whether this tile predates current structures."}
+  ]
+}
