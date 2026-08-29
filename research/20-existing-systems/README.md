@@ -16,3 +16,5 @@ VERDICT: INTEGRATE | EXTEND | AVOID | IRRELEVANT — one sentence of reasoning
 - **IRRELEVANT** — not applicable to this event/need
 
 **Status:** initial scan 2026-08-29 from prior knowledge + web research. Activity-in-this-response claims marked `EVIDENCED` (with source) or `[UNVERIFIED]`.
+
+Current event-specific additions include `active-channels-2026-08-29.md` and `hot-drone-field-tasking.md`; check these before proposing a new map, drone workflow or field tasking app.

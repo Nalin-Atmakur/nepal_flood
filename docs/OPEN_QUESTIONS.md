@@ -16,6 +16,10 @@
 | 10 | **Recurring:** is the "second, larger upstream blockage" (single-source 29 Aug) corroborated by an A/B source yet? | Highest-stakes situational fact; re-verify FIRST in every session | whoever updates 00-event | for situational accuracy |
 | 11 | The team Google Drive folder (1EsdlN…) returned empty via connector — wrong sharing, or empty? | May hold field notes we haven't ingested | Nalin | no |
 | 12 | Who would be the accountable data controller if any person-adjacent work is ever invited? (see 50-ethics) | Precondition for the invite-only reconciliation variant | deferred until invited | only then |
+| 13 | **Does every tunnel-rescue lead already have a current, georeferenced, offline as-built plan with portal/adit coordinates and a dated access sheet?** | Kills or validates the top worksite-pack candidate; public plans contain moved/cancelled features and cannot be trusted without operator sign-off | Army/plant operator via team channel | YES — for worksite pack |
+| 14 | **What happens after an image reaches the NDRRMA drone Google Form, and which step is actually backlogged?** | Kills or scopes the ingestion/QA adapter; avoids duplicating NAXA/YIL/DroneTM/OAM plumbing | NDRRMA intake owner or NAXA/YIL | YES — for drone adapter |
+| 15 | Who owns the shift-to-shift road/bridge/landing-status ledger, and which downstream user misses its updates? | Kills or validates an offline access-delta pack; no owner means dangerous staleness | district EOC / DoR / aviation cell | YES — for access pack |
+| 16 | Are HOT/NAXA DroneTM or Field-TM deployed for this response, or is the public Google Form/Tasking Manager the whole workflow? | Determines whether any contribution is configuration, an adapter or unnecessary | HOT/NAXA contact | YES — for tasking/ingest work |
 
 ## Questions back to the convener (bootstrap §8.4 — ask before deeper research)
 

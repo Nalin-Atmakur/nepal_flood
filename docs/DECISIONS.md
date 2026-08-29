@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-08-29 — D4: Demote the heatmap; validate a narrow operations sidecar before code
+
+**Question:** After refreshing the day-four operational evidence, what should replace the collaborative heatmap as the default product direction?
+
+**Context.** The response already has a strong shared-map surface: HOT/NAXA tasking and data exports, a multi-source imagery viewer, CEMS/UNOSAT products and AI-assisted damage work. HOT/NAXA also already have drone- and field-tasking products. Meanwhile, direct reporting shows physical rescue bottlenecks at mud-filled tunnel worksites, very limited landing options, rapidly changing road/telecom access, a newly centralised drone intake and a severe official DVI record backlog (→ research/30-user-needs/gap-analysis-2026-08-29.md).
+
+**Decision.** Do not build a public/shared heatmap or another destination dashboard. Run the 72-hour validation sprint in the gap analysis. The ranked discovery targets are:
+
+1. a private, operator-verified **Tunnel Rescue Worksite Pack**;
+2. an **NDRRMA/HOT/NAXA drone-intake QA and packaging adapter**;
+3. an **offline access-status delta pack** with an accountable refresh owner.
+
+No candidate proceeds past a manual example without a named owner, representative non-sensitive sample and daily user. HOT validation/data QA remains the default contribution while validation runs. Person reconciliation and DVI tooling remain official-invitation-only.
+
+**Supersedes:** D3's fusion heatmap (wedge 2) and volunteer barrier-lake watcher (wedge 3) as default builds. Either may return only if an operational owner explicitly requests it.
+
+---
+
 ## 2026-08-29 — D3: The candidate wedges (answer to bootstrap §8.3)
 
 **Question:** Given what already exists, what is the strongest gap a small team could fill in days — and what would make it not worth filling?

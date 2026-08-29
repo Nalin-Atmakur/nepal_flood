@@ -20,5 +20,6 @@
 
 - `needs-hypotheses.md` — the needs register, per user class
 - `priority-map-concept.md` — the team's initial three-layer priority-map idea, treated as a **hypothesis to test**, not a committed product. The gap analysis in `docs/DECISIONS.md` weighs it against alternatives (comms/coordination platforms, joining existing pipelines, advocacy).
+- `gap-analysis-2026-08-29.md` — current, source-backed ranking of narrow responder-side opportunities, kill conditions, and the 72-hour validation sprint. This supersedes the heatmap as the default product direction.
 
-**Status:** seeded 2026-08-29. Nothing in here is validated with an actual rescuer yet — that is Open Question #1.
+**Status:** updated 2026-08-29. Operational pains are evidenced, but no proposed product has been validated with an actual rescuer yet — that is Open Question #1.

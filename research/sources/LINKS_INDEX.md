@@ -30,7 +30,7 @@ ICIMOD press release · NDRRMA figures via ANI · Kathmandu Post (trigger / barr
 
 ## Gap-analysis additions (ingested)
 
-nepalhackathon.org (⚠️ provenance unverified, kickoff 30 Aug) · NESRA FloodWatch · Khabarhub drone-form article · consolidated missing-lists fragmentation evidence file — see individual files. **Deliberately NOT linked/ingested: private missing-persons tables with PII (eTurboNews table, found.kachhuwa.com, rescuenepal.info case data) — metadata noted in the fragmentation evidence file only.**
+nepalhackathon.org (⚠️ provenance unverified, kickoff 30 Aug) · NESRA FloodWatch · Khabarhub drone-form article · consolidated missing-lists fragmentation evidence file · AP day-four rescue report · Kathmandu Post DVI/morgue backlog · Radio Nepal restoration update · government UT-1 SEIA/layout · HOT DroneTM · HOT Field-TM — see individual files. **Deliberately NOT linked/ingested: private missing-persons tables with PII (eTurboNews table, found.kachhuwa.com, rescuenepal.info case data) — metadata noted in the fragmentation evidence file only.**
 
 ## Noted, not yet ingested (candidates)
 

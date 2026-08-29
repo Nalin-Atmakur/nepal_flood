@@ -35,4 +35,4 @@ Establishing which is true here is the point of this research phase. See [docs/D
 
 ## Status
 
-As of **2026-08-29**: response active and ongoing; secondary outburst-flood risk from upstream barrier lakes is live. Casualty figures in this repo are always written as `as of <date>, <source> reported ~N` — never trust a bare number, including ours.
+As of **2026-08-29**: response active and ongoing; secondary outburst-flood risk from upstream barrier lakes is live. The latest product recommendation is **not** a collaborative heatmap: see the [responder gap analysis](research/30-user-needs/gap-analysis-2026-08-29.md) and decision D4. Casualty figures in this repo are always written as `as of <date>, <source> reported ~N` — never trust a bare number, including ours.
