@@ -1,6 +1,6 @@
 # Runbook
 
-How the system is kept running: the schedule, secrets, moving off the laptop, backups, what to do when something breaks, and a 60-second health check. The site is volunteer-run and not an official source; when in doubt, keep the official-channels bar visible and the stale banner honest rather than hide a problem.
+How the system is kept running: the schedule, secrets, moving off the laptop, backups, what to do when something breaks, and a 60-second health check (`make health`). The site is volunteer-run and not an official source; when in doubt, keep the official-channels bar visible and the stale banner honest rather than hide a problem.
 
 ## 1. Schedule
 
@@ -52,7 +52,8 @@ Rules: `.env*` is gitignored repo-wide; never paste a key into a doc, a commit, 
 
 Rotation:
 
-1. **OpenAI key — rotate after the event.** platform.openai.com → API keys → revoke → create → paste into `pipeline/.env`. Delete the `openai_spend` entry in `pipeline/_state.json` only if the new key has a fresh budget; otherwise leave it so the $20 guard keeps counting.
+0. **Morning of 30 Aug 2026 — rotate both keys first** (`decisions-log.md` 02:30 entry): a `vercel --prod` run from the wrong cwd uploaded the `pipeline/` folder to a throw-away Vercel project for ~10 minutes before it was deleted. `.env` is gitignored and the CLI honours `.gitignore`, so the keys should not have left the machine, but that cannot be proven after deletion. Rotate the OpenAI key (step 1) and the Supabase service-role key (step 2), paste both into `pipeline/.env`, run `./run.sh` once by hand. The anon key needs no change unless the rotation regenerated it. Guard since then: `.vercelignore` with `*` in `data_aggregator/`, `db/`, `pipeline/`.
+1. **OpenAI key.** platform.openai.com → API keys → revoke → create → paste into `pipeline/.env`. Delete the `openai_spend` entry in `pipeline/_state.json` only if the new key has a fresh budget; otherwise leave it so the $20 guard keeps counting.
 2. **Service-role key** (if it ever leaves the cron machine): Supabase dashboard → Project Settings → API → rotate. Depending on the project's key type this may regenerate the anon key too; if it does, update `web/.env.local` and the Vercel env, then redeploy.
 3. **Management API token**: dashboard → Account → Access tokens → revoke; `supabase login` again on the laptop or set a new `SUPABASE_ACCESS_TOKEN` on the VM.
 
@@ -90,7 +91,13 @@ The dump contains ARCHIVE data (names, phones). Keep it encrypted, off the repo,
 | Realtime connection cap hit (200) | scoreboard's "people here now" disappears; browser console shows channel error | Presence is dropped first by design; contribution counters fall back to polling `v_live_counts` | nothing; or upgrade the plan. Do not add Realtime to more tables |
 | Vercel build fails | `vercel --prod` output; the previous deployment keeps serving | usually a type error or a message-key parity failure | `cd web && npm run lint && npm run build && npm test` locally; fix; redeploy. The DB is unaffected |
 | migrations conflict | `apply.py`: `! 00N_x.sql changed since it was applied` | an applied file was edited | `git checkout` the file; put the change in a new `006_…sql` (`db/docs/07-applying-migrations.md`) |
-| schedule silent | `run.log` not growing; scoreboard "minutes since last pull" climbing; stale banner | laptop asleep (lid closed on battery), agent not loaded, or bash lacks Full Disk Access | section 1: `launchctl print …`, re-run `scripts/install_schedule.sh`; `./run.sh` by hand to confirm |
+| schedule silent | `run.log` not growing; scoreboard "minutes since last pull" climbing; stale banner | laptop asleep (lid closed on battery), loop process gone (`pipeline/.scheduler.pid` stale), launchd blocked by TCC (`EX_CONFIG`) | `scripts/install_schedule.sh --status`; re-run `scripts/install_schedule.sh [minutes]`; `./run.sh` by hand to confirm |
+| tick skipped: "another tick is running" | `run.log` line `skipped: another tick is running` on every tick | `pipeline/.run.lock` left by a crashed tick; `run.sh` ignores it only after 3 h | `rm -r pipeline/.run.lock` once the previous tick is really gone (`pgrep -f process_data`) |
+| irrelevant headline on the site | Latest block / digest shows an off-topic story (robots, exchange rates, "what's on in Kathmandu") | the relevance gate `pipeline/normalisers/_rss.is_relevant` let it through: a corridor place alias or keyword matched | add the word/place to the gate's exclusions (`GENERIC_PLACE_IDS`, district rule) with a test in `pipeline/tests`; run `process_data.py --purge-irrelevant` to drop stored rows; the digest picks it up on the next tick |
+| gauge tile shows "no data yet" | River & weather §06 | the station name pattern in `web/lib/config.ts` `GAUGE_STATIONS` no longer matches the DHM/BIPAD spelling, or the station really stopped reporting (`v_gauges_latest.alive = false` is shown as dead, not empty) | `select station_name, observed_at from v_gauges_latest`; fix the regex; redeploy |
+| "What changed today" is stale or empty | digest card under the scoreboard shows yesterday's date or nothing | `process_data` ⑦ did not run (crash logged in `run.log`), or the OpenAI budget is exhausted (the digest falls back to figure/gauge bullets without prose) | `tail run.log`; `process_data.py --step 7` by hand; check `digest` has today's NPT day for all three langs |
+| budget guard tripped | `run.log`: `llm … budget exhausted`; `_state.json` `openai_spend` ≥ `OPENAI_BUDGET_USD` | model calls stop; anonymisation, place fallback and digest prose pause; everything else continues | raise `OPENAI_BUDGET_USD` in `pipeline/.env` (and top up); or leave it |
+| side-by-side column shows "—" although the figure exists | home §03 | the publisher spelling in `figures_latest` is not listed in `web/lib/config.ts` `AGENCIES[].publishers` (e.g. a new `… (via press)` publisher) | add the spelling to the column's list; `npm test`; redeploy |
 | form submissions fail | browser: `new row violates row-level security policy` or `401` | anonymous sign-ins disabled, or the insert violates `reports_own_insert` | `python -c "import mgmt; mgmt.set_anonymous_signins(True)"` from `db/`; check the insert sets `status='received'` and no `anonymised_at` |
 | numbers look stale but the schedule ran | `v_live_counts.last_processed_at` old, `last_pull_at` fresh | `process_data` failed after `pull_external_data` succeeded | `tail run.log`; run `python process_data.py` by hand and read the traceback |
 | Supabase paused | dashboard banner; site shows empty states | free projects pause after 7 days without activity — impossible while the schedule runs | restore from the dashboard; check the schedule |
@@ -98,7 +105,7 @@ The dump contains ARCHIVE data (names, phones). Keep it encrypted, off the repo,
 
 ## 6. Is it healthy? — 60 seconds
 
-Run from `data_aggregator/` (uses the Management API through `db/mgmt.py`):
+`make health` from `data_aggregator/` runs `scripts/health.py` (live counters, headline figures per publisher, gauges, failing sources, row counts; exit 1 when the last pull is older than 2 × `PULL_INTERVAL_MINUTES`). The manual equivalent, through the Management API (`db/mgmt.py`):
 
 ```
 pipeline/.venv/bin/python - <<'EOF'
@@ -117,7 +124,7 @@ What good looks like:
 | Query | Healthy |
 |---|---|
 | `v_live_counts` | `last_pull_at` and `last_processed_at` within one cadence (+ a few minutes) of now; `submissions_total` not decreasing |
-| `figures_latest` | rows for NDRRMA, Nepal Police, MoFA, OPMCM at least; `as_of` today or yesterday |
+| `figures_latest` | rows for `NDRRMA`, `Nepal Police (via press)`, `MoFA`, `OPMCM portal`, `Setu (NDRRMA)` at least (17 publishers on 30 Aug); `as_of` today or yesterday |
 | `v_gauges_latest` | Galchhi (5705) `alive = true`; Rasuwagadhi (4913) `alive = false` is expected (destroyed); no station with `observed_at` older than the DHM feed's last update |
 | `reports_archive` by status | no `received` rows older than one cadence unless the OpenAI budget is exhausted |
 | `v_sources_status` failures | a handful of `html`/`browser_ua` sources failing is normal; a `json_api` government source failing for > 2 h is worth a look |
@@ -127,7 +134,7 @@ Then:
 ```
 curl -sI https://nepalfloodtracker.com/en | head -1        # HTTP/2 200
 curl -s -o /dev/null -w '%{content_type}\n' https://nepalfloodtracker.com/api/og?lang=ne   # image/png
-launchctl print gui/$(id -u)/com.nepalfloodtracker.pipeline | grep -E "state|interval"   # or: crontab -l | grep run.sh
+scripts/install_schedule.sh --status      # loop pid · launchd state · last three run headers (or: crontab -l | grep run.sh on a VM)
 tail -n 5 pipeline/run.log
 ```
 
@@ -139,9 +146,11 @@ tail -n 5 pipeline/run.log
 
 
 
-Only when code changes (data changes need no deploy — ISR re-renders every 5 min and the scoreboard is live).
+### 7.1 Deploy
 
-1. `cd web && npm run lint && npm run build && npm test`.
-2. `vercel --prod --yes`.
+Only when code changes (data changes need no deploy — ISR re-renders every 5 min and the scoreboard is live). **Run `vercel` only with the shell in `web/`** — the CLI creates a new project named after whatever folder it is run from (the 30 Aug incident); `.vercelignore` files with `*` in `data_aggregator/`, `db/` and `pipeline/` now make such a run upload nothing, but the guard is the cwd.
+
+1. `cd web && npm run lint && npm run i18n:check && npm test && npm run build && npm run e2e`.
+2. `vercel --prod --yes` (project `aryaasks-projects/nepalfloodtracker`; `make deploy` from `data_aggregator/` runs the same command in `web/`).
 3. `curl -sI https://nepalfloodtracker.com/en` → 200; open `/en`, `/ne`, `/hi` once; paste the URL into an OG debugger to confirm the share card.
 4. Commit and push (`CONTRIBUTING.md`, "Commit and push").

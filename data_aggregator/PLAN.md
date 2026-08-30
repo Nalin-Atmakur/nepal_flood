@@ -151,7 +151,8 @@ Supabase is **database only**: Postgres + RLS + Storage for PDFs/photos. No edge
 ```
 
 - **Wave 1 (day one):** `opmcm_stats`, `opmcm_person_reports` (counts + anonymised place/status only; images stripped at fetch), `ndrrma_rescues` (locations, counts), `ndrrma_publications` (sitrep PDFs → text → district/category tables), `bipad_river_stations`, `mofa_flashflood`, `dhm_weather`, `openmeteo_corridor`, `usgs_fdsn`, `gdacs_event`, `hot_bridge_damage`, `reliefweb_rss`, `outlet_rss_set`.
-- **Wave 2:** tag pages, live blogs, ekantipur live page, Chinese search APIs, Wikipedia revisions, GDELT, geospatial catalogues (HDX/EMSR927/NESRA/STAC/OAM), Setu, Police UDB counts, DAO lists (counts only).
+- **Wave 2 (built 30 Aug):** A — official registries: `setu_recordlist`, `police_udb`, `volunteer_bulletin_repo`, `heoc_sitreps`, `dao_nuwakot_rescued`, `dao_rasuwa_hub`, `ifrc_go`, `china_mwr`, `china_mfa_pressers`, `us_embassy_alerts`, `ndrrma_newsinfo`, `ndrrma_bulletins` (`pipeline/docs/pull_external_data/05a`); B — geospatial + text: `nesra_bucket`, `emsr927_dashboard`, `hot_tasking_manager`, `google_news_site_queries`, `ekantipur_live`, `live_blogs`, `china_search_apis`, `wikipedia_revisions`, `geofon_fdsn`, `dhm_riverwatch_post`, `ntc_restoration_articles`, `hdx_search`, `hot_s3_listing`, `oam_bbox` (`05b`). 39 of 51 sources have a normaliser; the remaining 12 (OPMCM help requests / government efforts, BIPAD series, NESRA + DoR bridges, UNOSAT extent, STAC catalogues, tag pages, GDELT) are wave 3.
+- **News relevance gate:** every RSS / search / live-blog item passes `normalisers/_rss.is_relevant` (flood keywords + a corridor-place alias; district names and generic places such as Kathmandu do not count alone) before it becomes an `articles` row.
 - External rows that carry PII (OPMCM person-reports, NDRRMA rescued-persons, DAO lists) are treated like form submissions: verbatim body in `raw_pulls` (ARCHIVE-grade, service-only), anonymised projection (place, status, nationality, age band, person_key from phone/name) into RAW tables.
 - Fails soft per source; idempotent; a `pulls` log row every run.
 
@@ -188,24 +189,35 @@ Supabase is **database only**: Postgres + RLS + Storage for PDFs/photos. No edge
         │   confirmed_reached= NDRRMA rescued-locations + stationed + rescuer reports (type C)
         │   unknown          = expected − confirmed
         │   last_contact_at, telecom_restored, access, hazard(below lakes / in channel)
+        │   phones / telecom_restored from NTC/Ncell restoration articles; last_contact_at is
+        │   the last *observed* contact (null when nothing dated exists); status_label
+        │   no_data | mostly_unknown | mostly_reached | district
+        ▼
+   ③b PRESS FIGURES      Police / Tourism / NTB counts quoted in articles → figures
+        │                 (publishers "Nepal Police (via press)", "NTB (via press)" …; --step 3.5)
         ▼
    ④ FIGURES_LATEST      one row per publisher × metric × scope, latest as_of
-        │                 (the side-by-side: NDRRMA · Police · MoFA · DoT · OPMCM · NEOC)
+        │                 (the side-by-side: NDRRMA · Police · MoFA · DoT · OPMCM; each column
+        │                  accepts several publisher spellings, web/lib/config.ts AGENCIES)
         ▼
-   ⑤ STATS               the striking numbers, recomputed each run:
-        │                 wave speed & time-to-port, rise at Galchhi, bodies-downstream km,
-        │                 personnel, helicopters, N reports last hour/day, places with
-        │                 unknown>0, gauges alive/dead, next flying window
+   ⑤ STATS               22 striking + live numbers, recomputed each run (ids in
+        │                 docs/data-model.md §4); report_counts
         ▼
-   ⑥ TRENDS (later)      OpenAI/agentic pass over the day's articles + reports_anon:
-        │                 what changed, where reports cluster, which places went quiet
+   ⑥ FINDINGS            name collisions (Bhotekoshi RM ≠ Bhote Koshi river), entries absent
+        │                 from Setu, duplicate rate, publisher divergence, unreached-by-record
+        │                 → private handoff table for list-holders
         ▼
-   ⑦ FINDINGS            duplicates across official lists, name collisions
-                          (Bhotekoshi RM ≠ Bhote Koshi river), private-list entries absent
-                          from Setu, stale lists → handoff table for list-holders
+   ⑦ DIGEST              per NPT day × EN/NE/HI: 5–8 "what changed" bullets from figure deltas,
+        │                 gauges, place changes and gated headlines (LLM prose, budget-guarded)
+        ▼
+   ⑧ TIMELINE            dated milestones from figures/articles appended to event_timeline
+        │                 (seeded with the reconstructed first hours of 26 Aug)
+        ▼
+   ⑨ TRENDS              figure_series: last value per publisher × metric × scope × NPT day
+                          (sparklines / "since yesterday" on the site)
 ```
 
-Everything writes to DERIVED. v1 runs as pandas on the laptop; moving ①–② to a cloud/agentic setup later changes nothing else because the interface is the database.
+Everything writes to DERIVED; one module per step under `pipeline/processing/` (`process_data.py --step N`, 3.5 = ③b). Each step catches its own errors, logs and returns; the next step still runs. Moving ①–② to a cloud/agentic setup later changes nothing else because the interface is the database.
 
 ---
 
@@ -347,15 +359,20 @@ Seed channels (from the crowd sweep): Telegram poshuknepal (4.3k Ukrainian famil
 ## 9. Operations
 
 ```
-   laptop (now)                              later: $5 VM, same crontab
-   ┌────────────────────────────────┐
-   │ */15 * * * *  pull_external_data.py && process_data.py  >> run.log │
-   │ .env: SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY OPENAI_API_KEY        │
-   └────────────────────────────────┘
-   vercel --prod   ← only when site code changes (design, new block, new field)
+   Mac (now)                                                     later: $5 VM, a crontab line
+   ┌──────────────────────────────────────────────────────────────┐
+   │ scripts/install_schedule.sh [minutes]   (240 tonight, 15 live)│
+   │   1. detached loop  ── every N min ──► pipeline/run.sh        │  run.sh = lock ─► pull_external_data ─► process_data
+   │      (pipeline/.scheduler.pid; works without Full Disk Access)│           (a tick that finds a lock < 3 h old exits 0)
+   │   2. launchd agent com.nepalfloodtracker.pipeline             │
+   │      (takes over once /bin/bash has Full Disk Access)         │
+   │ pipeline/.env: SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY OPENAI_API_KEY OPENAI_BUDGET_USD
+   └──────────────────────────────────────────────────────────────┘
+   cd web && vercel --prod --yes   ← only when site code changes; only from web/
 ```
 
-- **Secrets:** service-role + OpenAI on the laptop and in Vercel server env; anon key in the browser. Never in the repo (`.env*` gitignored repo-wide).
+- **Cadence:** `PULL_INTERVAL_MINUTES` (240 tonight) lives in `pipeline/lib/config.py` and `web/lib/config.ts` and must match the installed schedule; the site's "auto-refresh every N" line and stale threshold derive from it (`docs/runbook.md` §1).
+- **Secrets:** service-role + OpenAI only in `pipeline/.env` on the scheduler machine; Vercel holds only the anon key (the site has no server-side secret). Never in the repo (`.env*` gitignored repo-wide).
 - **Backups:** Supabase daily backups (Pro) or a nightly `pg_dump` from the laptop to a bucket.
 - **Failure modes:** a source goes down → pull skips it, page shows last-good with timestamp · OpenAI down → submission still archived; anonymisation retried by process_data · laptop closed → data stops updating, site stays up with stale timestamp (visible) · Vercel down → nothing lost, DB is truth.
 - **Handoff:** from day one, a named Nepal-side co-owner (NAXA / YIL / hackathon lead) with access to DERIVED and `findings`; the scripts run anywhere with the two keys.
@@ -371,11 +388,13 @@ data_aggregator/
 ├── README.md               ← start here: what this is, the one-screen diagram, links to everything below
 ├── PLAN.md                 ← this document (architecture + decisions); never stale — edit when reality changes
 ├── CONTRIBUTING.md         ← how to run locally, add a source, add a normaliser, add a language, add a home block, open a PR
+├── PROGRESS.md             ← overnight build log: status by phase, cycle log, queue
+├── Makefile · scripts/     ← make help; health.py; install_schedule.sh
 ├── docs/
-│   ├── architecture.md     ← the diagrams from §1–§8, kept in sync
 │   ├── data-model.md       ← every table: zone, columns, who writes, who reads, RLS policy
 │   ├── sources.md          ← generated from sources.yaml: one row per source with status
-│   └── runbook.md          ← cron, secrets, laptop → VM, backups, what to do when X breaks
+│   ├── decisions-log.md    ← dated, append-only
+│   └── runbook.md          ← schedule, secrets, laptop → VM, backups, what to do when X breaks
 │
 ├── sources.yaml            ← the source registry (the contract for pull_external_data)
 ├── gazetteer/
@@ -383,30 +402,35 @@ data_aggregator/
 │   └── README.md
 │
 ├── db/                     ← Supabase, database only
-│   ├── migrations/         ← 001_zones.sql 002_archive.sql 003_raw.sql 004_derived.sql 005_rls.sql 006_realtime.sql
-│   ├── seed/               ← sources + places seeds
+│   ├── migrations/         ← 001_archive 002_raw 003_derived 004_rls 005_realtime_storage 006_pipeline_additions 006_story_and_digest 007_series
+│   ├── seed/               ← sources.sql (gen_sources.py) · places.sql (gazetteer/to_sql.py) · event_timeline.sql
+│   ├── apply.py · mgmt.py  ← Management API: migrations + seeds with a _migrations ledger; query(); anonymous sign-ins
+│   ├── tests/ · docs/01–07
 │   └── README.md           ← how to apply, in order; how to reset
 │
 ├── pipeline/               ← the two scripts and nothing else runs from here
 │   ├── pull_external_data.py
 │   ├── process_data.py
-│   ├── run.sh              ← the cron target: pull && process
+│   ├── run.sh              ← the scheduler target: lock, pull, process
 │   ├── normalisers/        ← one file per source_id; def normalise(raw, fetched_at, source) -> rows
 │   │   └── README.md       ← the normaliser contract + a template
-│   ├── processing/         ← anonymise.py resolve_places.py dedup.py ledger.py stats.py findings.py
+│   ├── processing/         ← anonymise resolve_places dedup ledger press_figures figures_latest stats report_counts findings digest timeline trends (_series) purge_irrelevant
 │   │   └── README.md       ← one paragraph per step, inputs → outputs
-│   ├── lib/                ← db.py (supabase client), http.py (fetch with UA/retries), text.py (normalise/transliterate), llm.py (OpenAI wrapper)
+│   ├── docs/               ← pull_external_data/01–07 (+05a, 05b) · process_data/00–10 (+03b), numbers match the code
+│   ├── lib/                ← db.py (PostgREST client) · http.py · net.py (IPv4 forcing) · text.py · llm.py (budget guard) · places.py · state.py · log.py (PII redactor) · html.py/htmlx.py
 │   ├── tests/              ← a fixture per normaliser (a real saved response) + tests for dedup scoring
 │   ├── requirements.txt · .env.example · README.md
 │   └── snapshots/          ← gitignored local copies of raw pulls
 │
 └── web/                    ← Next.js app (Vercel)
-    ├── app/[lang]/         ← page.tsx report/ me/ places/ sources/ about/
-    ├── app/api/og/
-    ├── components/         ← blocks/ (one file per home block) · form/ · three/ (3D) · Share.tsx · LangToggle.tsx · LiveCounters.tsx
-    ├── lib/                ← supabase.ts · i18n.ts · queries.ts (every DB read in one file)
-    ├── messages/           ← en.json ne.json hi.json — identical key sets, CI-checked
-    ├── public/terrain/     ← pre-baked corridor mesh
+    ├── app/[lang]/         ← page.tsx report/ me/ places/ places/[id]/ sources/ about/ not-found
+    ├── app/api/og/         ← live OG card (node runtime)
+    ├── proxy.ts            ← locale redirect (Next 16 name for middleware)
+    ├── components/         ← ui/ · blocks/ (one file per home block) · form/ · me/ · three/ (3D corridor)
+    ├── lib/                ← supabase.ts · i18n.ts · queries.ts (every DB read in one file) · config.ts (PULL_INTERVAL_MINUTES, AGENCIES, STAT_CARDS, GAUGE_STATIONS) · …
+    ├── messages/           ← en.json ne.json hi.json — identical key sets (npm run i18n:check)
+    ├── public/             ← corridor-fallback.png (no DEM: the terrain is procedural)
+    ├── docs/01–14          ← architecture … deploy · 13 story & digest · 14 flood-sim spec
     ├── .env.example · README.md (dev · build · vercel link · vercel --prod · domain)
 ```
 

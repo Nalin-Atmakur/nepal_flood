@@ -1,4 +1,4 @@
-# 04 · DERIVED zone — `003_derived.sql`
+# 04 · DERIVED zone — `003_derived.sql`, `006_story_and_digest.sql`, `007_series.sql`
 
 What the website shows. Every table here is recomputed by `process_data`; nothing else writes it. Public tables are readable with the anon key; private tables are service-only. Columns: `docs/data-model.md` §4.
 
@@ -10,9 +10,13 @@ What the website shows. Every table here is recomputed by `process_data`; nothin
         ① resolve places   → articles.places, reports_anon.place_id (RAW)          [01-resolve-places.md]
         ② dedup            → entities · entity_events · dedup_queue   (PRIVATE)     [02-dedup.md]
         ③ ledger           → place_status · place_timeline            (public)      [03-ledger.md]
+        ③b press_figures   → figures (RAW; publishers "… (via press)")              [03b-press-figures.md]
         ④ figures_latest   → figures_latest                           (public)      [04-figures-latest.md]
         ⑤ stats            → stats · report_counts                    (public)      [05-stats.md]
         ⑥ findings         → findings                                 (PRIVATE)     [06-findings.md]
+        ⑦ digest           → digest                                   (public)      [07-digest.md]
+        ⑧ timeline         → event_timeline (append) · place_timeline (public)      [10-timeline-and-trends.md]
+        ⑨ trends           → figure_series                            (public)      [10-timeline-and-trends.md]
         ...and sets reports_archive.status → processed | matched      (ARCHIVE)
 ```
 
@@ -25,6 +29,9 @@ What the website shows. Every table here is recomputed by `process_data`; nothin
 | `place_timeline` | one line per place per day | place page "Status, day by day" |
 | `stats` | one row per striking number, keyed by `id` | What happened, in numbers (§02); River & weather counts |
 | `report_counts` | contributions per hour × respondent type × place | "N people have added what they know", `submissions_by_utm`-style analyses |
+| `event_timeline` | one dated milestone per row (seeded first hours + appended) | home block "The first hours" (§03), OG card context |
+| `digest` | one row per NPT day × language, `bullets` jsonb | "What changed today" card under the scoreboard |
+| `figure_series` | one value per publisher × metric × scope × NPT day | sparklines and "since yesterday" deltas |
 
 `place_status` keeps history on purpose: each run appends a row, so the ledger's arithmetic (`expected`, `confirmed_reached`, `unknown`) can be audited over time. `v_place_status_latest` picks the newest row per place and joins the gazetteer names so the site needs one query.
 
@@ -35,7 +42,7 @@ What the website shows. Every table here is recomputed by `process_data`; nothin
 | `entities` | resolved people: `person_key`, nationality, age band, status, probable place, `merged_from` provenance. No names — but a row per person is still too identifying to publish; counts flow to `place_status` instead |
 | `entity_events` | status timeline per entity |
 | `dedup_queue` | candidate merges scored 0.6–0.9 waiting for a human decision (`decision`, `decided_by`, `decided_at`); `model_view` holds the optional LLM adjudication |
-| `findings` | duplicates across official lists, name collisions (Bhotekoshi RM vs Bhote Koshi river), entries absent from Setu — handed to list-holders (`handed_to`, `handed_at`), never shown on the site |
+| `findings` | name collisions (Bhotekoshi RM vs Bhote Koshi river), entries absent from Setu, duplicate rate, publisher divergence, unreached-by-record — handed to list-holders (`handed_to`, `handed_at`), never shown on the site |
 
 ## Views
 

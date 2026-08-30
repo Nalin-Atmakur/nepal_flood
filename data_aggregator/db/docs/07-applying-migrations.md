@@ -36,7 +36,7 @@
    2. Otherwise the Supabase CLI's keychain entry on macOS: `security find-generic-password -s "Supabase CLI" -a supabase -w`. The CLI stores it as `go-keyring-base64:<base64>`; `mgmt.py` strips the prefix, pads and base64-decodes to the `sbp_…` token. This is why `supabase login` on the laptop is enough — nothing is copied into a file.
    3. Neither → exit with "run `supabase login`".
 
-   The token is sent as `Authorization: Bearer` to `https://api.supabase.com/v1`; requests time out after 120 s. The project ref comes from `SUPABASE_PROJECT_REF` in the environment, else from `pipeline/.env` (loaded with `setdefault`, so an exported variable wins).
+   The token is sent as `Authorization: Bearer` to `https://api.supabase.com/v1` with a browser-like `User-Agent` (Cloudflare answers `error code: 1010` to the default Python UA); requests time out after 120 s. A transient `SSL: UNEXPECTED_EOF_WHILE_READING` from the API is just that — re-run. The project ref comes from `SUPABASE_PROJECT_REF` in the environment, else from `pipeline/.env` (loaded with `setdefault`, so an exported variable wins).
 
 3. **Dry run first.**
    ```
@@ -47,9 +47,9 @@
 4. **Regenerate seeds** when their inputs changed:
    ```
    pipeline/.venv/bin/python db/seed/gen_sources.py      # sources.yaml   → db/seed/sources.sql
-   pipeline/.venv/bin/python db/seed/gen_places.py       # gazetteer/places.csv → db/seed/places.sql
+   pipeline/.venv/bin/python gazetteer/to_sql.py         # gazetteer/places.csv → db/seed/places.sql
    ```
-   Seed files are `insert … on conflict (id) do update`, so they are safe to run any number of times. `stats_static.sql` seeds the fixed striking numbers.
+   Seed files are `insert … on conflict (id) do update`, so they are safe to run any number of times. `event_timeline.sql` is hand-written (the reconstructed first hours of 26 Aug; `process_data` ⑧ appends later rows and never overwrites seeded ids). The striking numbers are not seeded: `process_data` ⑤ computes `stats` every run.
 
 5. **Apply.**
    ```
@@ -62,8 +62,12 @@
    → migrations/003_derived.sql (7,101 bytes)
    → migrations/004_rls.sql (4,588 bytes)
    → migrations/005_realtime_storage.sql (802 bytes)
-   → seed/sources.sql (13,730 bytes)
+   → migrations/006_pipeline_additions.sql (…)
+   → migrations/006_story_and_digest.sql (…)
+   → migrations/007_series.sql (…)
+   → seed/event_timeline.sql (…)
    → seed/places.sql (…)
+   → seed/sources.sql (…)
    done
    ```
    A second run prints `= 001_archive.sql already applied` for every unchanged file and exits 0.
@@ -90,7 +94,7 @@ The checksum is `sha256(file bytes)[:16]`. The ledger stores it with the filenam
 | Situation | What `apply.py` does | What you should do |
 |---|---|---|
 | file unchanged | skips it | nothing |
-| new file `006_x.sql` | runs it, records it | normal path for any schema change |
+| new file `008_x.sql` | runs it, records it | normal path for any schema change (`001`–`007` are applied; two files share the `006` prefix, which is fine — order is by full filename) |
 | applied migration edited (even whitespace) | refuses, exit 1 | revert the edit; put the change in a new numbered file |
 | applied migration edited and `--force` | re-runs the edited file, updates the checksum | almost never right: `create policy` and `alter publication add table` are not idempotent and will fail on a second run; use it only after making the file re-runnable (`drop … if exists` first) and knowing why |
 | seed file regenerated | re-runs it (no `--force` needed) | expected after editing `sources.yaml` or `places.csv` |
@@ -101,7 +105,7 @@ Why refuse edits: the ledger is the only record of what the live database looks 
 
 ## Adding a migration
 
-1. Create `db/migrations/006_<topic>.sql`. Use `create table if not exists`, `create or replace view`, `alter table … add column if not exists`, and `drop policy if exists … ; create policy …` so the file is re-runnable.
+1. Create `db/migrations/008_<topic>.sql` (next free number). Use `create table if not exists`, `create or replace view`, `alter table … add column if not exists`, and `drop policy if exists … ; create policy …` so the file is re-runnable. Precedents: `006_pipeline_additions.sql` (replace a function), `006_story_and_digest.sql` (two new public tables), `007_series.sql` (one table + policy).
 2. Enable RLS on every new table (`alter table … enable row level security`) and add its policies in the same file; revoke from `anon`/`authenticated` if it is private.
 3. If the table or view is public, add the `grant select` for views or the `_public` policy for tables.
 4. `python db/apply.py --dry-run`, then `python db/apply.py`.
@@ -120,7 +124,7 @@ There is no `apply.py --reset`; a reset is a deliberate act. To rebuild from scr
 | `No SUPABASE_ACCESS_TOKEN and no Supabase CLI keychain token` | not on the laptop that ran `supabase login`, or on Linux | export `SUPABASE_ACCESS_TOKEN=sbp_…` |
 | `query failed (401)` | token expired or revoked | new token; `supabase login` again |
 | `query failed (400): … already exists` | re-running a non-idempotent statement (policy, publication) | put the change in a new migration with `drop … if exists` first |
-| `! 004_rls.sql changed since it was applied` | an applied file was edited | `git checkout` the file; write `006_…sql` |
+| `! 004_rls.sql changed since it was applied` | an applied file was edited | `git checkout` the file; write `008_…sql` |
 | `query failed (404)` | wrong project ref | check `pipeline/.env` against the dashboard URL |
 
 Back to `db/README.md`.
