@@ -116,7 +116,7 @@ const CARRY_SECONDS = 1.8;
 const SINK_SECONDS = 0.9;
 const REACH_DEPTH = 0.2;
 const RUN_SECONDS = 34;
-const OBJECT_SCALE = 3;
+const OBJECT_SCALE = 2.2;
 const REAL_BRIDGE_SCALE = 2.1;
 /** Visual exaggeration of water depth (the terrain is already ×1.5); the sim itself is untouched. */
 const VIS_AMP = 1.5;
@@ -166,7 +166,14 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   for (let v = 0; v < pos.count; v++) vertCell[v] = cellIndex(GRID, pos.getX(v), pos.getZ(v));
   for (let v = 0; v < pos.count; v++) pos.setY(v, vertCell[v] >= 0 ? bed[vertCell[v]] : 0);
   geo.computeVertexNormals();
-  const terrainMat = new THREE.MeshStandardMaterial({ color: TER, flatShading: true, roughness: 1 });
+  // vertex colours so the wave leaves a mud stain where it passed (see updateStain)
+  const tcol = new THREE.BufferAttribute(new Float32Array(pos.count * 3), 3);
+  const TER_C = new THREE.Color(TER);
+  const STAIN_C = new THREE.Color(0x8a6a4a);
+  for (let v = 0; v < pos.count; v++) tcol.setXYZ(v, TER_C.r, TER_C.g, TER_C.b);
+  geo.setAttribute("color", tcol);
+  const stained = new Uint8Array(nx * nz);
+  const terrainMat = new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, flatShading: true, roughness: 1 });
   const terrain = new THREE.Mesh(geo, terrainMat);
   scene.add(terrain);
 
@@ -191,6 +198,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   water.frustumCulled = false;
   scene.add(water);
   const tmpC = new THREE.Color();
+  let stainDirty = false;
   const updateWater = () => {
     const d = sim.depth;
     const vx = sim.vx;
@@ -206,6 +214,11 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       if (dep > 0.05) {
         any = true;
         wetV[v] = 1;
+        if (dep > 0.25 && !stained[c]) {
+          stained[c] = 1;
+          tcol.setXYZ(v, STAIN_C.r, STAIN_C.g, STAIN_C.b);
+          stainDirty = true;
+        }
         wpos.setY(v, bed[c] + dep * VIS_AMP);
         const speed = Math.hypot(vx[c], vz[c]);
         tmpC.copy(MUD_SHALLOW).lerp(MUD_DEEP, Math.min(1, dep / 4));
@@ -222,6 +235,10 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       }
     }
     water.visible = any;
+    if (stainDirty) {
+      tcol.needsUpdate = true;
+      stainDirty = false;
+    }
     if (!any) return;
     let n = 0;
     for (let t = 0; t < fullIndex.length; t += 3) {
@@ -274,7 +291,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   const ROCK_FALL_SECONDS = 1.1;
   const ROCK_START_Y = 26;
   const updateRock = (t: number) => {
-    if (t > ROCK_FALL_SECONDS + 0.6) {
+    if (t > ROCK_FALL_SECONDS) {
       rock.visible = false;
       return;
     }
@@ -445,8 +462,10 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         if (isSwept(o.kind, dep, speed)) {
           o.state = "carried";
           o.age = 0;
-          if (o.real) sweptReal++;
-          else sweptTotal++;
+          if (o.real) {
+            sweptReal++;
+            shake = Math.max(shake, 0.6);
+          } else sweptTotal++;
           opts.onSwept?.(o.kind, sweptTotal, sweptReal);
         } else if (dep > 0.05) {
           // wobble as the water rises around it
@@ -501,26 +520,40 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   const target = new THREE.Vector3(0, 4, 0);
   const HOME = { target: new THREE.Vector3(0, 4, 0), rad: 62, pol: 0.98, az: -0.9 };
   // ride: above the channel, looking downstream from a little upstream of the front
-  const RIDE = { rad: 46, pol: 0.42, az: -1.3 };
-  let follow = true; // false once the visitor orbits or zooms
+  // ride: low and close, upstream of the front, looking down the channel
+  const RIDE = { rad: 32, pol: 0.72, az: -1.5 };
+  let userTookCamera = false; // true once the visitor orbits or zooms
+  let follow = true;
   const tmpT = new THREE.Vector3();
+  let shake = 0;
   // thinner marker stems while the camera rides (they crowd the view in front of the wave)
   let thinMarkers = false;
   const setThinMarkers = (thin: boolean) => {
     if (thin === thinMarkers) return;
     thinMarkers = thin;
-    for (const m of markers) if (m.geometry !== capGeo) m.scale.set(thin ? 0.5 : 1, 1, thin ? 0.5 : 1);
+    const seen = new Set<THREE.Material>();
+    for (const m of markers) {
+      if (m.geometry !== capGeo) m.scale.set(thin ? 0.5 : 1, 1, thin ? 0.5 : 1);
+      if (!seen.has(m.material)) {
+        seen.add(m.material);
+        m.material.transparent = thin;
+        m.material.opacity = thin ? 0.3 : 1;
+        m.material.needsUpdate = true;
+      }
+    }
   };
   const updateCamera = (dt: number) => {
+    follow = !userTookCamera && !armedKind;
     setThinMarkers(follow && runState === "running");
     if (!follow) return;
     const k = 1 - Math.pow(0.001, dt); // exponential ease, frame-rate independent
     if (runState === "running") {
       const fx = sim.frontX();
       if (Number.isFinite(fx)) {
-        const tx = Math.min(fx + 2, HOME.target.x + 40);
-        tmpT.set(tx, 3, meander(tx));
-        target.lerp(tmpT, k * 0.6);
+        const tx = Math.min(fx + 3, HOME.target.x + 40);
+        const bz = meander(tx);
+        tmpT.set(tx, bedH(tx, bz) + 1, bz);
+        target.lerp(tmpT, k * 0.7);
         rad += (RIDE.rad - rad) * k * 0.5;
         pol += (RIDE.pol - pol) * k * 0.5;
         az += (RIDE.az - az) * k * 0.5;
@@ -533,11 +566,21 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     }
   };
   const setCam = () => {
-    cam.position.set(
-      target.x + rad * Math.sin(pol) * Math.sin(az),
-      target.y + rad * Math.cos(pol),
-      target.z + rad * Math.sin(pol) * Math.cos(az),
-    );
+    let cx = target.x + rad * Math.sin(pol) * Math.sin(az);
+    let cy = target.y + rad * Math.cos(pol);
+    let cz = target.z + rad * Math.sin(pol) * Math.cos(az);
+    // never sink into the water or the bed: stay above the surface near the camera
+    const c = cellIndex(GRID, cx, cz);
+    if (c >= 0) {
+      const floor = bed[c] + sim.depth[c] * VIS_AMP + 6;
+      if (cy < floor) cy = floor;
+    }
+    if (shake > 0) {
+      cx += (Math.random() - 0.5) * shake;
+      cy += (Math.random() - 0.5) * shake;
+      cz += (Math.random() - 0.5) * shake;
+    }
+    cam.position.set(cx, cy, cz);
     cam.lookAt(target);
   };
 
@@ -582,7 +625,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     if (Math.abs(dx) + Math.abs(dy) > 4) {
       down.moved = true;
       drift = false;
-      follow = false;
+      userTookCamera = true;
     }
     az = down.az - dx * 0.005;
     pol = Math.min(1.35, Math.max(0.35, down.pol - dy * 0.005));
@@ -597,7 +640,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   const onWheel = (e: WheelEvent) => {
     e.preventDefault();
     drift = false;
-    follow = false;
+    userTookCamera = true;
     rad = Math.min(120, Math.max(28, rad + e.deltaY * 0.05));
   };
   canvas.addEventListener("pointerdown", onPointerDown);
@@ -655,6 +698,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     injectedFrac = Math.min(1, sim.injected() / total);
     lakes[0].scale.y = Math.max(0.08, 1 - injectedFrac);
     updateRock(runT);
+    if (runT >= ROCK_FALL_SECONDS && runT - dtReal < ROCK_FALL_SECONDS) shake = 0.9; // impact
     setPhase(runT < ROCK_FALL_SECONDS ? "collapse" : injectedFrac < 0.995 ? "breach" : runT < RUN_SECONDS ? "wave" : "after");
     // reached places
     for (const p of places) {
@@ -663,6 +707,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       if (c === undefined || c < 0) continue;
       if (sim.depth[c] > REACH_DEPTH) {
         reached.add(p.id);
+        if (p.reported <= 0) continue; // nothing to say about an empty place
         const m = markerFor(p);
         const s = screenOf(m.x, m.y + m.h + 1.2, m.z);
         opts.onReached?.(p, clockForFrontX(sim.frontX()), s.x, s.y);
@@ -681,8 +726,14 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     if (runT > RUN_SECONDS) setState("done");
   };
 
+  const clearStain = () => {
+    stained.fill(0);
+    for (let v = 0; v < pos.count; v++) tcol.setXYZ(v, TER_C.r, TER_C.g, TER_C.b);
+    tcol.needsUpdate = true;
+  };
   const play = () => {
     sim.reset();
+    clearStain();
     runT = 0;
     injectedFrac = 0;
     reached.clear();
@@ -693,11 +744,19 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     sweptReal = 0;
     lastClock = "";
     opts.onClock?.(clockForFrontX(-Infinity));
+    if (!userTookCamera) {
+      // open on the collapse: close on the lakes, looking downstream
+      target.set(lakes[0].position.x + 3, lakes[0].position.y, lakes[0].position.z);
+      rad = 26;
+      pol = 0.8;
+      az = -1.5;
+    }
     setPhase("collapse");
     setState("running");
   };
   const resetAll = () => {
     sim.reset();
+    clearStain();
     runT = 0;
     injectedFrac = 0;
     reached.clear();
@@ -705,6 +764,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     for (const o of objects.slice()) if (!o.real) removeObject(o);
     restoreObjects();
     sweptTotal = 0;
+    sweptReal = 0;
     lastClock = "";
     updateWater();
     rock.visible = false;
@@ -742,6 +802,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       }
     }
     if (drift) az += 0.0009;
+    if (shake > 0) shake = Math.max(0, shake - dtReal * 2.2);
     updateCamera(dtReal);
     setCam();
     renderer.render(scene, cam);

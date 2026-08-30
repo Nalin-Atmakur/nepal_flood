@@ -83,15 +83,13 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
   const onReached = useCallback(
     (place: CorridorPlace, clk: string, x: number, y: number) => {
       const key = ++popKey.current;
-      setPops((prev) => {
-        const kept = prev.slice(-(MAX_POPS - 1));
-        // stagger so two cards never sit on top of each other
-        const pos = clampToBox(x - 90, y - 70 - kept.length * 64, 190, 80);
-        return [...kept, { key, place, clock: clk, ...pos }];
-      });
+      // cards live in a fixed column (bottom-left) so they never cover the clock, the caption or each other
+      void x;
+      void y;
+      setPops((prev) => [...prev.slice(-(MAX_POPS - 1)), { key, place, clock: clk, x: 0, y: 0 }]);
       setTimeout(() => setPops((prev) => prev.filter((p) => p.key !== key)), POP_MS);
     },
-    [clampToBox],
+    [],
   );
 
   // Keep the scene's markers in sync with the ledger.
@@ -138,7 +136,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
         handleRef.current = h;
         if (window.location.search.includes("debug=1")) (window as unknown as { __corridor?: CorridorHandle }).__corridor = h;
         setMode("3d");
-        if (!reducedMotion()) autoplay = setTimeout(() => handleRef.current?.play(), 1400);
+        if (!reducedMotion()) autoplay = setTimeout(() => handleRef.current?.play(), 700);
       } catch {
         if (!cancelled) setMode("fallback");
       }
@@ -232,7 +230,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
               <span className="font-semibold text-[10px] opacity-80">{t(lang, "corridor.clock_label")}</span>
             </div>
             {phase !== "after" && !armed ? (
-              <div className="absolute top-2 right-2 z-10 bg-card b-ink-2 rounded-r2 px-[10px] py-[6px] font-bold text-[11.5px] md:text-[12px] shadow-hard-2 max-w-[62%] md:max-w-[52%] lh-body corridor-pop-hold" key={phase}>
+              <div className="absolute top-12 left-2 md:top-2 md:left-auto md:right-2 z-10 bg-card b-ink-2 rounded-r2 px-[10px] py-[6px] font-bold text-[11.5px] md:text-[12px] shadow-hard-2 max-w-[80%] md:max-w-[52%] lh-body corridor-pop-hold" key={phase}>
                 {t(lang, "corridor.phase_" + phase)}
               </div>
             ) : null}
@@ -244,12 +242,12 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
           </>
         ) : null}
 
-        {mode === "3d"
-          ? pops.map((p) => (
+        {mode === "3d" && pops.length ? (
+          <div className="absolute z-10 left-2 bottom-2 flex flex-col gap-[6px] pointer-events-none" aria-live="polite">
+            {pops.map((p) => (
               <div
                 key={p.key}
-                className="absolute z-10 min-w-[170px] bg-card b-ink-2 rounded-r2 shadow-hard-2 px-3 py-2 font-baloo text-[12px] text-ink lh-body pointer-events-none corridor-pop"
-                style={{ left: p.x, top: p.y }}
+                className="min-w-[170px] max-w-[70vw] md:max-w-[320px] bg-card b-ink-2 rounded-r2 shadow-hard-2 px-3 py-2 font-baloo text-[12px] text-ink lh-body corridor-pop"
                 role="status"
               >
                 <div className="font-extrabold text-[13px] leading-tight">
@@ -262,8 +260,9 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
                   </span>
                 </div>
               </div>
-            ))
-          : null}
+            ))}
+          </div>
+        ) : null}
 
         {mode === "3d" && pick ? (
           <div
@@ -360,7 +359,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
                 step={0.5}
                 value={scenario.lakeMm3}
                 onChange={(e) => setScenario((s) => ({ ...s, lakeMm3: Number(e.target.value) }))}
-                className="w-[120px] md:w-[160px] accent-ultra"
+                className="w-[120px] md:w-[160px] h-10 accent-ultra"
                 aria-valuetext={`${scenario.lakeMm3} Mm³`}
               />
               <span className="arcade text-[10px] num whitespace-nowrap">{scenario.lakeMm3.toFixed(1)} Mm³</span>
@@ -375,7 +374,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
                   aria-checked={scenario.breachSeconds === b.seconds}
                   onClick={() => setScenario((s) => ({ ...s, breachSeconds: b.seconds }))}
                   className={
-                    "min-h-[30px] px-[10px] rounded-pill b-ink-2 text-[12px] font-bold cursor-pointer " +
+                    "min-h-[40px] px-[12px] rounded-pill b-ink-2 text-[12px] font-bold cursor-pointer " +
                     (scenario.breachSeconds === b.seconds ? "bg-amber-fill text-ink" : "bg-card text-ink hover:bg-ground")
                   }
                 >
@@ -388,7 +387,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-[12px] mr-1">{t(lang, "corridor.drop")}</span>
             {OBJECT_KINDS.map((k) => (
-              <Chip key={k} active={armed === k} onClick={() => arm(k)} className="!min-h-[34px] !px-3 text-[12.5px]">
+              <Chip key={k} active={armed === k} onClick={() => arm(k)} className="!min-h-[40px] !px-3 text-[12.5px]">
                 {OBJECT_ICON[k]} {t(lang, "corridor.obj." + k)}
               </Chip>
             ))}

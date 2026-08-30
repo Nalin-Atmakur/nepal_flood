@@ -258,7 +258,7 @@ export const BREACH = { x: kmToX(LAKE_KMS[0]), z: meander(kmToX(LAKE_KMS[0])), r
 
 /** Owner-adjustable scenario. Lake volume in million m³ (China MWR quoted 2.0 for the first barrier lake). */
 export type Scenario = { lakeMm3: number; breachSeconds: number };
-export const DEFAULT_SCENARIO: Scenario = { lakeMm3: 2.0, breachSeconds: 6 };
+export const DEFAULT_SCENARIO: Scenario = { lakeMm3: 2.0, breachSeconds: 4 };
 export const LAKE_MM3_MIN = 0.5;
 export const LAKE_MM3_MAX = 20;
 /** Sim volume (cell units³) per million m³ — tuned so 2 Mm³ fills the gorge and 20 Mm³ drowns the plain. */
@@ -293,7 +293,8 @@ export function thresholdFor(kind: ObjectKind): { depth: number; speed: number }
     case "house":
       return { depth: 0.5, speed: 1.2 };
     case "bridge":
-      return { depth: 0.8, speed: 1.6 };
+      // a small lake should spare the bridges: this needs a real flood
+      return { depth: 0.9, speed: 2.5 };
   }
 }
 

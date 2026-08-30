@@ -78,7 +78,9 @@ export default function Corridor({
   );
 }
 
-/** Bridges with a chainage (one per place, washed-out first, at most 10) — the sim's pre-placed real objects. */
+const MIN_BRIDGE_GAP_KM = 3;
+
+/** Bridges with a chainage (one per place, washed-out first, ≥ 3 km apart, at most 10) — the sim's pre-placed real objects. */
 export function toRealBridges(lost: LostBridge[] | null | undefined, refs: PlaceRef[] | null | undefined): RealBridge[] {
   if (!lost?.length) return [];
   const km = new Map((refs ?? []).map((r) => [r.id, r.km]));
@@ -87,11 +89,13 @@ export function toRealBridges(lost: LostBridge[] | null | undefined, refs: Place
   for (const b of [...lost].sort((a, b) => (a.status === b.status ? 0 : a.status === "washed out" ? -1 : 1))) {
     const k = km.get(b.placeId);
     if (k === null || k === undefined || !Number.isFinite(k) || seen.has(b.placeId)) continue;
+    // keep them spread out (≥ 3 km apart) so the path does not read as a train of slabs
+    if (out.some((o) => Math.abs(o.km - k) < MIN_BRIDGE_GAP_KM)) continue;
     seen.add(b.placeId);
     out.push({ id: b.placeId, name: b.name, km: k, status: b.status });
     if (out.length >= 10) break;
   }
-  return out;
+  return out.sort((a, b) => a.km - b.km);
 }
 
 function Legend({ lang }: { lang: Lang }) {
