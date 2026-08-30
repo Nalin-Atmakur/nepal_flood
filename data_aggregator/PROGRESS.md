@@ -19,7 +19,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - ⚠️ Rotate the OpenAI key and the Supabase service-role key (decisions-log 02:30: `pipeline/` was briefly uploaded to a Vercel project that I deleted). Put them in `pipeline/.env`; nothing else holds them.
 - Grant `/bin/bash` Full Disk Access (System Settings → Privacy) so the launchd agent takes over from the detached loop (`scripts/install_schedule.sh --status`).
 - When distribution starts: `scripts/install_schedule.sh 30` (a full run is now ≈ 11 min — pull 60 sources ≈ 2 min + process ≈ 9 min — and costs ≈ $0.05 in model calls, so 30 min ≈ $2.40/day; 15 min is possible but tight), set `PULL_INTERVAL_MINUTES = 30` in `pipeline/lib/config.py` and `web/lib/config.ts`, `cd web && vercel --prod --yes`.
-- Skim `docs/audit-2026-08-30.md` (data-quality findings, once lane Q1 lands).
+- Read `docs/reports/2026-08-30-morning.md` (trends: deltas, hotspots, unknowns; regenerate any time with `make report`) and skim `docs/audit-2026-08-30.md` (data-quality findings).
 
 **Spend:** OpenAI ≈ $0.05 of the $20 cap (a full run with 80 places ≈ $0.02–0.05). Supabase free tier. Vercel hobby.
 
@@ -43,6 +43,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 06:52 BST — P7 landed (00f37c7; 281 tests): `make report` → `docs/reports/2026-08-30-morning.md` (headline deltas per publisher, where the unknowns are, help-request hotspots, rescue throughput, infrastructure, data quality). Flags: OPMCM open lost-person reports jumped 10,809 → 15,190 between pulls (lane P8 checking parser vs portal); no publisher has issued a new headline number today (24 h deltas ±0); 50 places with 1,553 people reported and no rescue/stationed record at all.
 - 06:45 BST — T1 landed + deployed (2a04a73): 41 NE / 34 HI strings made natural and consistent, glossary in web/docs/03-i18n.md. Five report/me strings that promised reports are "passed to the authorities" softened in all languages (8bd3d7c) — no export channel exists yet (owner's decision: none in this build).
 - 06:39 BST — Share text (WhatsApp/X/Telegram) now carries the hook and the ask in en/ne/hi (eeebb63, deployed). About page NE checked at 390 px. Launched T1: translation review of all 416 NE/HI strings for naturalness and consistent terms before distribution.
 - 06:33 BST — "Share this run" now links to `/{lang}/run?swept=N&bridges=M`, a tiny landing whose OG card reads "I watched N things and M real bridges go — play the breach yourself" (eb2fb13, deployed). W6 landed (bcf6962): About explains the animation, 60 sources, quoted figures and the now-line; `/sources` subtitle. Softened the design's "reports go to Police/MoFA" claim (no export tool exists yet — owner decision D: none in this build).
