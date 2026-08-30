@@ -27,12 +27,12 @@ const MORE: { key: string; path: string; label: string }[] = [
 /** Phone bottom bar: Home · Numbers · [＋ Add] · Places · Latest — "More" (Sources · About · Share) stays in the phone header. */
 const BOTTOM: Tab[] = [TABS[0], TABS[1], TABS[2], TABS[2], TABS[3]];
 
-function activeKey(rest: string): Tab["key"] {
+function activeKey(rest: string): Tab["key"] | "none" {
   if (rest === "/" || rest === "") return "home";
   if (rest.startsWith("/numbers")) return "numbers";
   if (rest.startsWith("/places")) return "places";
   if (rest.startsWith("/latest")) return "latest";
-  if (rest.startsWith("/report") || rest.startsWith("/run")) return "home";
+  if (rest.startsWith("/report") || rest.startsWith("/run")) return "none";
   return "more";
 }
 

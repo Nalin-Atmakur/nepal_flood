@@ -21,7 +21,7 @@ export default async function NumbersPage({ params }: { params: Promise<{ lang: 
   return (
     <main data-page="numbers" className="pt-2 md:pt-3 pb-[30px]">
       <h1 className="sr-only">{t(lang, "tabs.numbers")}</h1>
-      <YourPart lang={lang} live={live} />
+      <YourPart lang={lang} live={live} compact />
       <SideBySide lang={lang} figures={figures} lastAttempt={live?.last_pull_at ?? null} series={series} />
       <StrikingStats lang={lang} stats={stats} />
       <FirstHours lang={lang} events={events} />

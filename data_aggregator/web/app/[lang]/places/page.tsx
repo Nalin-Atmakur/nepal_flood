@@ -23,9 +23,10 @@ export default async function PlacesPage({ params }: { params: Promise<{ lang: s
   const { places: placeRows, districts } = splitDistricts(statuses);
   return (
     <main data-page="places" className="pt-2 md:pt-3 pb-[30px]">
-      <YourPart lang={lang} live={live} />
+      <YourPart lang={lang} live={live} compact />
       <div className="max-w-[1280px] mx-auto px-4 md:px-7 pt-[22px]">
       <SectionHead
+        as="h1"
         title={<span id="places-title">{t(lang, "sec.places")}</span>}
         sub={<span className="hidden md:inline">{updated ? t(lang, "sec.places_updated", { t: fmtDayTime(updated, lang) }) : t(lang, "sec.places_sub")}</span>}
         align="center"

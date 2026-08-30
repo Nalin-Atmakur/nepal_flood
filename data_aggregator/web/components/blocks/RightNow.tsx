@@ -10,6 +10,11 @@ import EmptyState from "@/components/ui/EmptyState";
  * numbers a carrier can repeat (NDRRMA dead · out of contact · rescued, with as-of), today's one-line headline from
  * the digest (→ /latest), two tiny live counters, and a plain-words link to add what you know. No jargon.
  */
+/** A digest headline that just restates the three numbers above it ("… 675 dead · 2,498 out of contact · 7,514 rescued") is noise here. */
+function recapsNumbers(headline: string): boolean {
+  return (headline.match(/\d[\d,]*/g) ?? []).length >= 3;
+}
+
 export default function RightNow({ lang, figures, digest, live }: { lang: Lang; figures: FigureLatest[] | null; digest: DigestRow | null; live: LiveCounts | null }) {
   const ndrrma = AGENCIES[0];
   const dead = pickFigure(figures, ndrrma.publishers, ndrrma.dead);
@@ -28,6 +33,7 @@ export default function RightNow({ lang, figures, digest, live }: { lang: Lang; 
             {t(lang, "live.right_now")}
           </span>
           <span className="font-semibold text-[11px] text-board-text num">{digest ? fmtDay(digest.day, lang) : asOf ? fmtDay(asOf, lang) : ""}</span>
+          <span className="basis-full md:basis-auto font-semibold text-[12px] text-white/90">{t(lang, "rightnow.event")}</span>
           <span className="ml-auto flex items-center gap-3 font-semibold text-[11px] text-board-text num">
             <span title={t(lang, "live.today")}>
               <span className="text-amber font-extrabold">{fmtInt(live?.submissions_today ?? 0)}</span> {t(lang, "live.today_m")}
@@ -66,13 +72,18 @@ export default function RightNow({ lang, figures, digest, live }: { lang: Lang; 
           </div>
         ) : null}
 
-        {digest?.headline ? (
+        {digest?.headline && !recapsNumbers(digest.headline) ? (
           <Link href={href(lang, "/latest")} className="block mt-3 no-underline text-white hover:text-white relative group">
             <span className="font-extrabold text-[16px] md:text-[19px] lh-tight [text-wrap:balance] group-hover:underline">{digest.headline}</span>
             <span className="block font-semibold text-[12px] text-footer-link mt-1">{t(lang, "rightnow.more")}</span>
           </Link>
         ) : null}
 
+        {digest?.headline && recapsNumbers(digest.headline) ? (
+          <Link href={href(lang, "/latest")} className="inline-block mt-3 font-semibold text-[12.5px] text-footer-link no-underline hover:underline relative">
+            {t(lang, "rightnow.more")}
+          </Link>
+        ) : null}
         <p className="m-0 mt-3 font-medium text-[12.5px] md:text-[13px] text-board-body lh-body relative">
           {t(lang, "rightnow.ask")}{" "}
           <Link href={href(lang, "/report")} className="font-bold text-amber hover:text-white">

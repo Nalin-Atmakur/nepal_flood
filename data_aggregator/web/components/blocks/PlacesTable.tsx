@@ -173,8 +173,9 @@ export default function PlacesTable({ lang, statuses, refs, placeholder, emptyRo
                 <Link href={href(lang, `/places/${r.id}`)} className="block bg-card b-ink rounded-r2 px-[14px] py-3 text-ink hover:text-ink no-underline press-0">
                   <div className="flex items-baseline gap-2">
                     <span className="font-extrabold text-[15px]">{r.name}</span>
-                    <span className="ml-auto">
+                    <span className="ml-auto text-right">
                       <UnknownBadge size="lg">{fmtInt(r.unknown)}</UnknownBadge>
+                      <span className="block font-semibold text-[10px] text-muted mt-[2px]">{t(lang, "word.unknown")}</span>
                     </span>
                   </div>
                   <div className="font-medium text-[12.5px] mt-[5px] num">

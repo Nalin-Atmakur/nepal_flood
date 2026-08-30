@@ -21,7 +21,7 @@ export default async function LatestPage({ params }: { params: Promise<{ lang: s
   return (
     <main data-page="latest" className="pt-2 md:pt-3 pb-[30px]">
       <h1 className="sr-only">{t(lang, "tabs.latest")}</h1>
-      <YourPart lang={lang} live={live} />
+      <YourPart lang={lang} live={live} compact />
       <Digest lang={lang} digest={digest} />
       <Latest lang={lang} articles={articles} lastAttempt={live?.last_pull_at ?? null} />
       <RiverWeather lang={lang} gauges={gauges} windows={windows} />

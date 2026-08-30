@@ -8,6 +8,7 @@ import { NumberBadge } from "./Badge";
 export default function SectionHead({
   n,
   title,
+  as: Tag = "h2",
   sub,
   children,
   align = "baseline",
@@ -15,6 +16,8 @@ export default function SectionHead({
 }: {
   n?: string;
   title: ReactNode;
+  /** heading element — `h1` on pages where this is the page title (default `h2`) */
+  as?: "h1" | "h2";
   sub?: ReactNode;
   children?: ReactNode;
   align?: "baseline" | "center";
@@ -27,7 +30,7 @@ export default function SectionHead({
           <NumberBadge n={n} />
         </span>
       ) : null}
-      <h2 className="font-extrabold text-[20px] md:text-[28px] lh-tight m-0">{title}</h2>
+      <Tag className="font-extrabold text-[20px] md:text-[28px] lh-tight m-0">{title}</Tag>
       {sub ? <span className="font-semibold text-[13px] text-muted lh-body">{sub}</span> : null}
       {children ? <div className="md:ml-auto flex items-center gap-[14px] w-full md:w-auto">{children}</div> : null}
     </div>
