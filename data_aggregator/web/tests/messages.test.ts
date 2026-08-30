@@ -12,6 +12,7 @@ const ARCADE_KEYS = [
   "me.privacy_label",
   "place.corridor_label",
   "about.agencies_label",
+  "digest.label",
 ];
 
 function placeholders(s: string): string[] {

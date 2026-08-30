@@ -2,7 +2,7 @@
 
 ```
   GET /api/og?lang=ne ──▶ app/api/og/route.tsx (Node runtime, next/og ImageResponse 1200×630)
-        ├─ getOgNumbers()  figures_latest: NDRRMA dead / missing|out_of_contact / rescued · Nepal Police missing · v_live_counts.submissions_total
+        ├─ getOgNumbers()  figures_latest: NDRRMA dead / missing|out_of_contact / rescued · Nepal Police missing · v_live_counts.submissions_total + last_processed_at
         ├─ fonts: Google Fonts CSS fetched with an old-browser UA → TTF (Baloo 2 800/600 incl. Devanagari, Press Start 2P) cached per isolate; renders without them if the fetch fails
         └─ Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600
 
@@ -14,7 +14,9 @@
 
 ## 1. The card (OG Card.dc.html)
 
-Logo circle + "Nepal Flood Tracker" + "Bhote Koshi · Trishuli — live picture, updated every {cadence}" + LIVE chip;
+Logo circle + "Nepal Flood Tracker" + "Bhote Koshi · Trishuli — live picture, updated every {cadence}" + a third
+header line "updated N min ago" (`fmtAgo(last_processed_at)`, green while fresher than `STALE_AFTER_MINUTES`, amber
+past it, "no processed data yet" when there has never been a processed run) + LIVE chip;
 three big cards — dead (white) · out of contact (amber, note "NDRRMA · Police says N — see both") · rescued (green digits) —
 each with "NDRRMA · as of {as_of}"; bottom row: "N people have added what they know" pill, the domain, and the language
 pill with the requested language dark. When all NDRRMA figures are absent the numbers show "—" and the caption

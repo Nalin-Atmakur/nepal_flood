@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { NumberBadge } from "./Badge";
 
 /**
- * Section head: numbered circle (01…07) + 28px title + optional muted subtitle + right-aligned slot.
+ * Section head: numbered circle (01…08) + 28px title + optional muted subtitle + right-aligned slot.
  * On mobile the number badge is hidden and the title drops to 20px, matching the mobile artboard.
  */
 export default function SectionHead({

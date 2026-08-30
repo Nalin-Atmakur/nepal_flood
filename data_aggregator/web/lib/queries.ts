@@ -8,13 +8,15 @@
  *
  * Public reads only: figures_latest, place_status (+ v_place_status_latest), stats, report_counts,
  * place_timeline, places, sources (+ v_sources_status), gauges (+ v_gauges_latest), v_live_counts,
- * v_articles_recent, submissions_log. Own-row reads: users, reports_archive. Nothing else, ever.
+ * v_articles_recent, submissions_log, event_timeline, digest. Own-row reads: users, reports_archive.
+ * Nothing else, ever.
  *
- * See web/docs/01-architecture.md and web/docs/05-home-blocks.md.
+ * See web/docs/01-architecture.md, web/docs/05-home-blocks.md and web/docs/13-story-and-digest.md.
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { serverClient } from "./supabase";
 import { FLYING_METRIC, STAT_CARDS } from "./config";
+import { normaliseBullets, pickDigest } from "./story";
 
 // ---------------------------------------------------------------------------
 // Row types
@@ -168,6 +170,39 @@ export type OwnReport = {
 
 export type OwnUser = { id: string; lang: string; contact: string | null; created_at: string };
 
+/** One reconstructed event from event_timeline (db/migrations/006_story_and_digest.sql), joined to places for the name. */
+export type EventTimelineRow = {
+  id: string;
+  at: string;
+  at_label: string;
+  place_id: string | null;
+  km: number | null;
+  what_en: string;
+  what_ne: string | null;
+  what_hi: string | null;
+  kind: string;
+  source: string | null;
+  source_url: string | null;
+  place_name_en: string | null;
+  place_name_ne: string | null;
+  place_name_hi: string | null;
+};
+
+export type DigestBullet = {
+  text: string;
+  kind: "figure" | "place" | "gauge" | "news";
+  source_url: string | null;
+};
+
+/** One digest row (day × lang) with bullets already normalised by lib/story.ts. */
+export type DigestRow = {
+  day: string;
+  lang: "en" | "ne" | "hi";
+  headline: string | null;
+  bullets: DigestBullet[];
+  computed_at: string;
+};
+
 // ---------------------------------------------------------------------------
 // Live counters
 // ---------------------------------------------------------------------------
@@ -320,6 +355,57 @@ export async function getArticlesForPlace(placeId: string, limit = 8): Promise<A
 }
 
 // ---------------------------------------------------------------------------
+// Story: event timeline (section 03) and daily digest (dark card under the scoreboard)
+// ---------------------------------------------------------------------------
+
+type EventTimelineRaw = Omit<EventTimelineRow, "place_name_en" | "place_name_ne" | "place_name_hi"> & {
+  places: { name_en: string; name_ne: string | null; name_hi: string | null } | null;
+};
+
+/** Every event, oldest first, with the place name in three languages (null when place_id is null). */
+export async function getEventTimeline(): Promise<EventTimelineRow[] | null> {
+  const sb = serverClient();
+  if (!sb) return null;
+  const { data, error } = await sb
+    .from("event_timeline")
+    .select("id, at, at_label, place_id, km, what_en, what_ne, what_hi, kind, source, source_url, places(name_en, name_ne, name_hi)")
+    .order("at", { ascending: true });
+  if (error) return null;
+  return (data as unknown as EventTimelineRaw[]).map(({ places, ...r }) => ({
+    ...r,
+    place_name_en: places?.name_en ?? null,
+    place_name_ne: places?.name_ne ?? null,
+    place_name_hi: places?.name_hi ?? null,
+  }));
+}
+
+/**
+ * The latest day's digest in `lang`, else that day's EN row, else null. Only the two candidate languages
+ * are fetched; the choice is made by lib/story.ts pickDigest so it can be unit-tested.
+ */
+export async function getDigest(lang: "en" | "ne" | "hi"): Promise<DigestRow | null> {
+  const sb = serverClient();
+  if (!sb) return null;
+  const langs = lang === "en" ? ["en"] : [lang, "en"];
+  const { data, error } = await sb
+    .from("digest")
+    .select("day, lang, headline, bullets, computed_at")
+    .in("lang", langs)
+    .order("day", { ascending: false })
+    .order("computed_at", { ascending: false })
+    .limit(langs.length * 2);
+  if (error || !data) return null;
+  const rows: DigestRow[] = (data as Record<string, unknown>[]).map((d) => ({
+    day: String(d.day),
+    lang: d.lang as DigestRow["lang"],
+    headline: (d.headline as string | null) ?? null,
+    bullets: normaliseBullets(d.bullets),
+    computed_at: String(d.computed_at),
+  }));
+  return pickDigest(rows, lang);
+}
+
+// ---------------------------------------------------------------------------
 // Sources (/sources)
 // ---------------------------------------------------------------------------
 
@@ -340,6 +426,8 @@ export type OgNumbers = {
   rescued: FigureLatest | null;
   policeMissing: FigureLatest | null;
   submissionsTotal: number;
+  /** v_live_counts.last_processed_at — the card's "updated N min ago" line; null = no processed run yet. */
+  lastProcessedAt: string | null;
 };
 
 export async function getOgNumbers(): Promise<OgNumbers> {
@@ -350,6 +438,7 @@ export async function getOgNumbers(): Promise<OgNumbers> {
     rescued: pickFigure(figures, "NDRRMA", ["rescued"]),
     policeMissing: pickFigure(figures, "Nepal Police", ["missing", "out_of_contact"]),
     submissionsTotal: live?.submissions_total ?? 0,
+    lastProcessedAt: live?.last_processed_at ?? null,
   };
 }
 

@@ -4,6 +4,8 @@
  * Reproduces design/Design form preferences/OG Card.dc.html with next/og (satori): ground #f2f3f6,
  * 3px ink borders, hard 6px shadows, quarter circles, logo circle, LIVE chip in Press Start 2P,
  * three big number cards, the "people have added what they know" pill, the domain and the language pill.
+ * Under the subtitle: "updated N min ago" from v_live_counts.last_processed_at (green while fresh, amber past
+ * STALE_AFTER_MINUTES, "no processed data yet" when null).
  *
  * Numbers come from lib/queries.getOgNumbers(); every failure degrades to "—" so the card always renders.
  * Fonts are fetched from Google Fonts once per isolate (module-level cached promise) with an old-browser
@@ -12,8 +14,8 @@
  */
 import { ImageResponse } from "next/og";
 import { LANGS, LANG_LABELS, asLang, t, type Lang } from "@/lib/i18n";
-import { SITE_HOST } from "@/lib/config";
-import { fmtCadence, fmtDayTime, fmtInt } from "@/lib/format";
+import { SITE_HOST, STALE_AFTER_MINUTES } from "@/lib/config";
+import { fmtAgo, fmtCadence, fmtDayTime, fmtInt, minutesSince } from "@/lib/format";
 import { colors } from "@/lib/tokens";
 import { getOgNumbers, type FigureLatest, type OgNumbers } from "@/lib/queries";
 
@@ -101,7 +103,7 @@ function loadFonts(): Promise<OgFont[]> {
 
 const BALOO = "Baloo 2";
 const ARCADE = "Press Start 2P";
-const EMPTY: OgNumbers = { dead: null, missing: null, rescued: null, policeMissing: null, submissionsTotal: 0 };
+const EMPTY: OgNumbers = { dead: null, missing: null, rescued: null, policeMissing: null, submissionsTotal: 0, lastProcessedAt: null };
 
 function asOfCaption(lang: Lang, fig: FigureLatest | null): string {
   const when = fig?.as_of ? t(lang, "time.as_of", { t: fmtDayTime(fig.as_of, lang) }) : t(lang, "time.as_of_unknown");
@@ -153,6 +155,9 @@ function Card({ lang, n }: { lang: Lang; n: OgNumbers }) {
     : n.policeMissing
       ? `NDRRMA · ${t(lang, "og.police_note", { n: fmtInt(n.policeMissing.value) })}`
       : asOfCaption(lang, n.missing);
+  const mins = minutesSince(n.lastProcessedAt);
+  const updated = n.lastProcessedAt ? t(lang, "og.updated", { ago: fmtAgo(n.lastProcessedAt, lang) }) : t(lang, "og.no_processed");
+  const updatedColor = mins === null ? colors.amberText : mins > STALE_AFTER_MINUTES ? colors.amberText : colors.confirmedText;
 
   return (
     <div
@@ -219,6 +224,10 @@ function Card({ lang, n }: { lang: Lang; n: OgNumbers }) {
           <div style={{ fontFamily: BALOO, fontWeight: 800, fontSize: 34, lineHeight: 1 }}>{t(lang, "site.name")}</div>
           <div style={{ fontFamily: BALOO, fontWeight: 600, fontSize: 17, lineHeight: 1.4, color: colors.muted }}>
             {t(lang, "site.og_sub", { cadence: fmtCadence(lang) })}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4, fontFamily: BALOO, fontWeight: 700, fontSize: 15, lineHeight: 1.3, color: updatedColor }}>
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: updatedColor }} />
+            <div>{updated}</div>
           </div>
         </div>
         <div

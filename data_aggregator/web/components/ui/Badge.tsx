@@ -6,7 +6,7 @@ import { gradeColors } from "@/lib/tokens";
  * reliability grade circles A–E, numbered item badges on My folder, status dots.
  */
 
-/** 31px ultramarine circle with "01" in Press Start 2P — section heads. */
+/** 31px ultramarine circle with "01" in Press Start 2P — section heads (01…08). */
 export function NumberBadge({ n, size = 31, className = "" }: { n: string; size?: number; className?: string }) {
   return (
     <span

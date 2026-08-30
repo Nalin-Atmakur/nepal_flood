@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const LANGS = ["en", "ne", "hi"] as const;
-const HOME_BLOCKS = ["scoreboard", "corridor", "stats", "side", "places", "add", "river", "latest", "share"] as const;
+const HOME_BLOCKS = ["scoreboard", "corridor", "stats", "first-hours", "side", "places", "add", "river", "latest", "share"] as const;
 const WAIT = { timeout: 15_000 };
 
 for (const lang of LANGS) {
@@ -12,11 +12,25 @@ for (const lang of LANGS) {
       for (const block of HOME_BLOCKS) {
         await expect(page.locator(`[data-block="${block}"]`).first(), block).toBeAttached(WAIT);
       }
-      for (const n of ["01", "02", "03", "04", "05", "06", "07"]) {
+      for (const n of ["01", "02", "03", "04", "05", "06", "07", "08"]) {
         await expect(page.locator(`[data-n="${n}"]`).first(), `section ${n}`).toBeAttached(WAIT);
       }
       await expect(page.locator('[data-block="scoreboard"]').first()).toBeVisible(WAIT);
       await expect(page.getByText("LIVE", { exact: true }).first()).toBeVisible(WAIT);
+    });
+
+    test("the first hours: section 03 lists at least 10 events with a dot, a time label and text", async ({ page }) => {
+      await page.goto(`/${lang}`);
+      const section = page.locator('[data-block="first-hours"][data-n="03"]').first();
+      await expect(section).toBeAttached(WAIT);
+      const events = section.locator("[data-event]");
+      await expect.poll(async () => events.count(), WAIT).toBeGreaterThanOrEqual(10);
+      const first = events.first();
+      await expect(first.locator('[role="img"]')).toBeAttached();
+      await expect(first.locator(".arcade")).toHaveText(/\S/);
+      await expect(first.locator("article p")).toHaveText(/\S/);
+      const kinds = await events.evaluateAll((els) => els.map((e) => e.getAttribute("data-kind")));
+      expect(kinds.every((k) => ["trigger", "wave", "gauge", "warning", "impact", "response"].includes(k ?? ""))).toBe(true);
     });
 
     test("report is one page: who-cards, the box and Send together; picking a card swaps the chips", async ({ page }) => {

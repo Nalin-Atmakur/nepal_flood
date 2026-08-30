@@ -51,6 +51,14 @@ function parts(iso: string | Date): Parts | null {
   };
 }
 
+/** "2026-08-26" — the Nepal-time calendar day of an instant (groups the event timeline by day). */
+export function nptDay(iso: string | Date | null | undefined): string | null {
+  if (!iso) return null;
+  const p = parts(iso);
+  if (!p) return null;
+  return `${p.year}-${String(p.month).padStart(2, "0")}-${String(p.day).padStart(2, "0")}`;
+}
+
 /** "29 Aug" */
 export function fmtDay(iso: string | Date | null | undefined, lang: Lang = "en"): string {
   if (!iso) return "—";

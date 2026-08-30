@@ -4,12 +4,12 @@ import type { ArticleRow } from "@/lib/queries";
 import EmptyState from "@/components/ui/EmptyState";
 import SectionHead from "@/components/ui/SectionHead";
 
-/** Section 07 — Latest: 12 headlines from v_articles_recent (time · title · source). */
+/** Section 08 — Latest: 12 headlines from v_articles_recent (time · title · source). */
 export default function Latest({ lang, articles, lastAttempt }: { lang: Lang; articles: ArticleRow[] | null; lastAttempt: string | null }) {
   const rows = (articles ?? []).filter((a) => a.title);
   return (
-    <section data-block="latest" data-n="07" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-latest">
-      <SectionHead n="07" title={<span id="sec-latest">{t(lang, "sec.latest")}</span>} />
+    <section data-block="latest" data-n="08" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-latest">
+      <SectionHead n="08" title={<span id="sec-latest">{t(lang, "sec.latest")}</span>} />
       {rows.length ? (
         <ul className="mt-[10px] md:mt-3 bg-card b-ink rounded-r2 overflow-hidden list-none m-0 p-0">
           {rows.map((a) => (

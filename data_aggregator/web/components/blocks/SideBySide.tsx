@@ -8,7 +8,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import { Table, TableBox, Td, Th, THead } from "@/components/ui/Table";
 
 /**
- * Section 03 — The numbers, side by side: figures_latest pivoted to
+ * Section 04 — The numbers, side by side: figures_latest pivoted to
  * columns NDRRMA · Nepal Police · MoFA · Dept of Tourism · OPMCM portal × rows Dead · Missing/out of contact · Rescued.
  * Each cell = value + note + as-of; "—" when absent. Mobile: horizontal scroll with a sticky first column.
  */
@@ -26,8 +26,8 @@ export default function SideBySide({ lang, figures, lastAttempt }: { lang: Lang;
   };
 
   return (
-    <section data-block="side" data-n="03" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-side">
-      <SectionHead n="03" title={<span id="sec-side">{t(lang, "sec.side")}</span>} sub={<span className="hidden md:inline">{t(lang, "sec.side_sub")}</span>} />
+    <section data-block="side" data-n="04" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-side">
+      <SectionHead n="04" title={<span id="sec-side">{t(lang, "sec.side")}</span>} sub={<span className="hidden md:inline">{t(lang, "sec.side_sub")}</span>} />
       {any ? (
         <TableBox className="mt-[14px]">
           <div className="scroll-x">

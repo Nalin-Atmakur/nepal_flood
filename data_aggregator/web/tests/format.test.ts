@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fmtDay, fmtDayTime, fmtInt, fmtSinceArcade, normaliseKey, prettySourceName } from "@/lib/format";
+import { fmtDay, fmtDayTime, fmtInt, fmtSinceArcade, normaliseKey, nptDay, prettySourceName } from "@/lib/format";
 
 describe("fmtInt()", () => {
   it("groups thousands with Latin digits", () => {
@@ -31,6 +31,16 @@ describe("fmtDayTime() / fmtDay()", () => {
   it("dashes out missing or invalid input", () => {
     expect(fmtDayTime(null)).toBe("—");
     expect(fmtDayTime("not a date")).toBe("—");
+  });
+});
+
+describe("nptDay()", () => {
+  it("returns the Nepal-time calendar day as YYYY-MM-DD", () => {
+    expect(nptDay("2026-08-26T02:52:00Z")).toBe("2026-08-26");
+    expect(nptDay("2026-08-26T18:30:00Z")).toBe("2026-08-27"); // 00:15 NPT
+    expect(nptDay("2026-08-26T18:14:00Z")).toBe("2026-08-26"); // 23:59 NPT
+    expect(nptDay(null)).toBeNull();
+    expect(nptDay("nope")).toBeNull();
   });
 });
 

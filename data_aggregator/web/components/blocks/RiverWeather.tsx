@@ -8,7 +8,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import SectionHead from "@/components/ui/SectionHead";
 
 /**
- * Section 06 — River & weather: seven gauge tiles (alive/dead dot, level or "—", note) matched by station-name
+ * Section 07 — River & weather: seven gauge tiles (alive/dead dot, level or "—", note) matched by station-name
  * substring from v_gauges_latest, and flying-window bars for Dhunche / Langtang from figures_latest
  * (metric flying_window_quality*, scope place:<id>…, value 0–1, note good|fair|poor, as_of = the day).
  */
@@ -29,8 +29,8 @@ export default function RiverWeather({ lang, gauges, windows }: { lang: Lang; ga
   const src = (windows ?? []).find((w) => w.url || w.publisher);
 
   return (
-    <section data-block="river" data-n="06" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-river">
-      <SectionHead n="06" title={<span id="sec-river">{t(lang, "sec.river")}</span>} />
+    <section data-block="river" data-n="07" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-river">
+      <SectionHead n="07" title={<span id="sec-river">{t(lang, "sec.river")}</span>} />
       <ul className="flex gap-2 md:gap-3 mt-[10px] md:mt-[14px] overflow-x-auto md:overflow-visible pb-[6px] md:pb-0 list-none m-0 p-0 scroll-x">
         {tiles.map(({ name, g }) => {
           const alive = !!g && g.alive !== false && g.level !== null;

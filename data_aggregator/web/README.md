@@ -11,7 +11,7 @@ no accounts, no names of affected people anywhere.
                        │                                                                 │
                        │  app/[lang]/layout.tsx   fonts · Header · OfficialChannels ·    │
                        │                          StaleBanner · Footer · AuthBootstrap   │
-                       │      ├─ page.tsx          home: Scoreboard 01 02 03 04 05 06 07 │
+                       │      ├─ page.tsx          home: Scoreboard · digest · 01 … 08   │
                        │      ├─ report/           WhoAreYou → TheBox → Understood       │
                        │      ├─ me/               My folder (own rows)                  │
                        │      ├─ places/ [id]/     table · place page                    │
@@ -39,7 +39,7 @@ no accounts, no names of affected people anywhere.
 
 1. `npm run lint` — ESLint (eslint-config-next, strict React hooks rules).
 2. `npm run i18n:check` — fails if `messages/{en,ne,hi}.json` differ in keys, placeholders or contain Devanagari digits.
-3. `npm test` — Vitest: i18n fallback, share links, message parity, config, formatting.
+3. `npm test` — Vitest: i18n fallback, share links, message parity, config, formatting, story helpers.
 4. `npm run build` — must be green with and without `.env.local`.
 5. `npm run e2e` — Playwright (chromium) against `npm run start`: home blocks in three languages, report flow,
    sources/about/places, `/api/og?lang=ne` → PNG, Accept-Language redirect.
@@ -62,7 +62,7 @@ no accounts, no names of affected people anywhere.
 | `components/form/` | WhoAreYou · TheBox · PlacePicker · Understood · ReportFlow |
 | `components/me/` | MyFolder |
 | `components/three/` | `corridor-3d.ts` (design script ported to three r160) · `CorridorScene.tsx` |
-| `lib/` | `queries.ts` (every read) · `reports.ts` (own writes) · `presence.ts` · `share.ts` · `i18n.ts` · `format.ts` · `config.ts` · `tokens.ts` · `corridor.ts` · `places-search.ts` · `metadata.ts` · `supabase.ts` |
+| `lib/` | `queries.ts` (every read) · `reports.ts` (own writes) · `presence.ts` · `share.ts` · `i18n.ts` · `format.ts` · `config.ts` · `tokens.ts` · `corridor.ts` · `story.ts` · `places-search.ts` · `metadata.ts` · `supabase.ts` |
 | `messages/` | `en.json` · `ne.json` · `hi.json` — identical keys, checked by `scripts/i18n-check.mjs` |
 | `tests/` | Vitest unit tests · `tests/e2e/` Playwright smoke |
 | `docs/` | numbered docs, one per concern (below) |
@@ -83,6 +83,7 @@ no accounts, no names of affected people anywhere.
 | 10 | [docs/10-3d-corridor.md](docs/10-3d-corridor.md) | the port, data shaping, fallback PNG |
 | 11 | [docs/11-og-and-share.md](docs/11-og-and-share.md) | OG route, fonts, share links, utm |
 | 12 | [docs/12-deploy.md](docs/12-deploy.md) | Vercel, env, domain, local gotchas |
+| 13 | [docs/13-story-and-digest.md](docs/13-story-and-digest.md) | "The first hours" timeline, "What changed today" digest, adding an event |
 
 ## 6. Rules that hold everywhere
 

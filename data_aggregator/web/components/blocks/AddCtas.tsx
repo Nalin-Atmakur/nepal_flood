@@ -4,11 +4,11 @@ import { href, t, type Lang } from "@/lib/i18n";
 import { ArrowCircle } from "@/components/ui/Badge";
 import SectionHead from "@/components/ui/SectionHead";
 
-/** Section 05 — Add what you know: four CTA cards → /[lang]/report?type=… with the design's colours. */
+/** Section 06 — Add what you know: four CTA cards → /[lang]/report?type=… with the design's colours. */
 export default function AddCtas({ lang }: { lang: Lang }) {
   return (
-    <section data-block="add" data-n="05" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-add">
-      <SectionHead n="05" title={<span id="sec-add">{t(lang, "sec.add")}</span>} />
+    <section data-block="add" data-n="06" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-add">
+      <SectionHead n="06" title={<span id="sec-add">{t(lang, "sec.add")}</span>} />
       <p className="hidden md:block font-medium text-[15px] mt-2 mb-0 max-w-[560px]">{t(lang, "sec.add_lead")}</p>
       <p className="md:hidden font-medium text-[13.5px] lh-body mt-[6px] mb-0">{t(lang, "sec.add_lead_m")}</p>
       <ul className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-[18px] mt-3 md:mt-4 list-none m-0 p-0">

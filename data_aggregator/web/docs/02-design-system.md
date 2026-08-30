@@ -19,10 +19,11 @@ the artboards are the spec; this document maps them to code.
 | card | `#ffffff` | `bg-card` | all surfaces |
 | ultramarine | `#2438e8` | `bg-ultra` `text-ultra` | CTAs, section badges, active toggle |
 | amber | `#ffb800` | `text-amber` | scoreboard digits, accents |
-| amber fill / text | `#ffe294` / `#8a3f06` | `bg-amber-fill` `text-amber-text` | unknown badges, stale banner |
+| amber fill / text | `#ffe294` / `#8a3f06` | `bg-amber-fill` `text-amber-text` | unknown badges, stale banner, impact dots |
 | confirmed | `#148a4e` (`#0f7a42` text, `#b9f0c9` fill) | `bg-confirmed` `text-confirmed-text` `bg-confirmed-fill` | reached counts, alive gauges, grade A/B |
 | scoreboard | `#141419` | `bg-board` | live strip, dark cards |
-| live red | `#e5484d` | `bg-live` `border-live` | LED dot + mic only |
+| live red | `#e5484d` | `bg-live` `border-live` | LED dot + mic, trigger dots on the timeline |
+| flood | `#ec3013` | `bg-flood` | flood path in the 3D scene, wave dots on the timeline |
 | dead | `#8a8a8a` (`#bdbdbd` dot) | `text-dead` | dead gauges |
 | rule / thead | `#e7e9f0` / `#e2e7ff` | `b-rule` `bg-thead` | dividers, table head |
 | muted | `#6b6f7c` (`#4a4e59`, `#3f434e`, `#8a8e99`) | `text-muted` `text-muted-2` `text-muted-3` `text-hint` | captions |
@@ -60,7 +61,7 @@ Stat cards tilt ±0.6deg (`Card tilt={…}`, values in `lib/config.ts` `STAT_CAR
 | `Pill.tsx` | `Pill` share / done / wait / matched / unknown / plain / dark / withdrawn; `UnknownBadge` |
 | `Chip.tsx` | `Chip` (tap-to-add, amber when inserted) |
 | `Card.tsx` | `Card` (tone card/amber/dark/ground/dashed, shadow, tilt, press, href); `Frame` |
-| `Badge.tsx` | `NumberBadge` 01…07, `GradeCircle` A–E, `ItemBadge`, `Dot`, `CheckCircle`, `ArrowCircle`, `StatusPill` |
+| `Badge.tsx` | `NumberBadge` 01…08, `GradeCircle` A–E, `ItemBadge`, `Dot`, `CheckCircle`, `ArrowCircle`, `StatusPill` |
 | `LiveChip.tsx` | `LiveChip`, `Led` |
 | `SectionHead.tsx` | numbered head with subtitle and right slot |
 | `StaleBanner.tsx` | amber banner |

@@ -31,7 +31,7 @@ report box). Nothing is computed on the server that the pipeline has not already
 | Zone | Tables / views the anon key may read | Writes allowed |
 |---|---|---|
 | Reference | `places`, `sources`, `v_sources_status` | none |
-| DERIVED (public) | `figures_latest`, `place_status` / `v_place_status_latest`, `place_timeline`, `stats`, `report_counts`, `v_gauges_latest`, `v_articles_recent`, `v_live_counts` | none |
+| DERIVED (public) | `figures_latest`, `place_status` / `v_place_status_latest`, `place_timeline`, `stats`, `report_counts`, `v_gauges_latest`, `v_articles_recent`, `v_live_counts`, `event_timeline`, `digest` | none |
 | ARCHIVE (own rows) | `users` (own), `reports_archive` (own) | insert own report; set `withdrawn_at`; update own `users.lang/contact`; insert `submissions_log` |
 
 Everything else (raw pulls, `reports_anon`, `entities`, `figures`, `articles` bodies) is service-role only and is
