@@ -33,7 +33,7 @@ Each block root carries `data-block="…"` (and `data-n="0N"` for numbered secti
 | — | Live counters (inside Your part; `blocks/Scoreboard.tsx` kept, unused) | `lib/use-live-counts.ts` (client hook) | `v_live_counts` initial; presence + realtime + 60 s poll (docs/09) | "—" digits; the "people here now" cell hides itself if presence fails |
 | — | Digest | `blocks/Digest.tsx` | `digest` — latest day, current lang else EN (docs/13) | **none** — the block renders nothing without a row |
 | 01 | Corridor | `blocks/Corridor.tsx` → `CorridorIsland` (client) | `v_place_status_latest` ⋈ `places.km/in_channel/aliases` via `lib/corridor.ts` | dashed panel "No places in the ledger yet…" inside the frame |
-| 02 | FloodVideos (Home, under the corridor) | `blocks/FloodVideos.tsx` → `VideoTile` (client, click-to-play) | `lib/videos.ts` (curated, in the repo) + `places` for the place chips (docs/18) | renders nothing when the list is empty |
+| — | FloodVideos (inside 01, under the controls) | `blocks/FloodVideos.tsx` → `VideoTile` (client, click-to-play) | `lib/videos.ts` `FEATURED_VIDEOS` (three, curated in the repo) + `places` for the place chips (docs/18) | renders nothing when the list is empty |
 | 02 | StrikingStats | `blocks/StrikingStats.tsx` | `stats` ids `wave_time_to_port, wave_speed, galchhi_rise, bodies_downstream_km, missing_counts_divergence, reports_total` | "No headline numbers yet… retrying every 4 hours" |
 | 03 | FirstHours | `blocks/FirstHours.tsx` | `event_timeline` ⋈ `places` (docs/13) | "The first hours have not been reconstructed yet… retrying every 4 hours" |
 | 04 | SideBySide | `blocks/SideBySide.tsx` | `figures_latest` where `scope='national'`, pivoted with `AGENCIES` (lib/config.ts) | "No official figures yet. Last attempt {t}…" |

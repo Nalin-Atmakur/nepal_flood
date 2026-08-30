@@ -75,6 +75,8 @@ export type CorridorHandle = {
   /** Place names on/off. */
   setLabels(on: boolean): void;
   labels(): boolean;
+  /** Cinematic: restart the run with the chase camera (opens on the lake, follows the front, eases back at the end). */
+  cinematic(): void;
   objectCount(): number;
   state(): RunState;
   swept(): { visitor: number; real: number };
@@ -92,6 +94,8 @@ export type CorridorHandle = {
     belowGround: number;
     xray: number;
     labels: boolean;
+    cameraMode: "overview" | "ride" | "user";
+    pixelRatio: number;
     /** objects currently carried whole by the flow */
     carried: number;
     /** the last visitor object: state and world position (tests trace the ride) */
@@ -124,7 +128,9 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     renderer.dispose();
     throw new Error("WebGL context unavailable");
   }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, opts.mobile ? 1.5 : 2));
+  // full device resolution everywhere (capped at 3×): the old mobile cap of 1.5 rendered a 3× phone at half its
+  // pixels and read as "low resolution" (D-063); the low-quality fallback trims effects, never resolution
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 3));
   renderer.setSize(W(), H());
   const canvas = renderer.domElement;
   // pan-y: a vertical swipe scrolls the page (the panel sits near the top on phones); horizontal drags orbit.
@@ -331,8 +337,8 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     }
     objects.update(dt); // pieces settle and placement markers pulse even when idle
     terrain.update(dt, runInfo());
-    camera.update(dt, runInfo(), false);
-    markers.setRide(false);
+    camera.update(dt, runInfo(), true);
+    markers.setRide(camera.mode() === "ride");
     markers.update(dt, camera.cam.position);
     // X-ray: on by default (owner likes seeing the flood through the mountain), stronger when tilted to the side
     const hx = Math.max(XRAY_DEFAULT, horizontality(currentPol()));
@@ -370,7 +376,12 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       objects.place(kind, x, z);
     },
     frame() {
+      camera.setCinematic(false);
       camera.fit(true);
+    },
+    cinematic() {
+      camera.setCinematic(true);
+      play();
     },
     setLabels(on) {
       labelsOn = on;
@@ -407,6 +418,8 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         belowGround: below,
         xray,
         labels: labelsOn,
+        cameraMode: camera.mode(),
+        pixelRatio: renderer.getPixelRatio(),
         carried: objects.list().filter((o) => o.state === "taken").length,
         last: (() => {
           const o = objects.last();

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const LANGS = ["en", "ne", "hi"] as const;
-const HOME_BLOCKS = ["right-now", "corridor", "videos", "yours"] as const;
+const HOME_BLOCKS = ["right-now", "corridor", "yours"] as const;
 const NUMBERS_BLOCKS = ["yours", "side", "stats", "first-hours"] as const;
 const LATEST_BLOCKS = ["yours", "digest", "latest", "river"] as const;
 const WAIT = { timeout: 15_000 };
@@ -21,13 +21,13 @@ for (const lang of LANGS) {
       await expect(page.locator('nav[aria-label] a[aria-current="page"]').first()).toBeAttached(WAIT);
     });
 
-    test("the footage block: nine click-to-play posters, no iframe until a tap", async ({ page }) => {
+    test("three real clips sit under the simulation as click-to-play posters, no iframe until a tap", async ({ page }) => {
       await page.goto(`/${lang}`);
-      const row = page.locator('[data-block="videos"] [data-testid="videos-row"]');
+      const row = page.locator('[data-block="corridor"] [data-testid="videos-row"]');
       await expect(row).toBeAttached(WAIT);
-      await expect(row.locator("[data-video]")).toHaveCount(9);
+      await expect(row.locator("[data-video]")).toHaveCount(3);
       await expect(row.locator("iframe")).toHaveCount(0);
-      await expect(page.locator('[data-block="videos"] [data-testid="videos-add"] a')).toHaveAttribute("href", new RegExp(`/${lang}/report`));
+      await expect(page.locator('[data-block="corridor"] [data-testid="videos-add"]')).toHaveAttribute("href", new RegExp(`/${lang}/report`));
     });
 
     test("numbers and latest-news tabs render their blocks, each headed by Your part", async ({ page }) => {
@@ -136,7 +136,12 @@ test("the corridor flood sim: controls render, a run advances the clock, an obje
   await expect.poll(async () => page.evaluate(() => (window as unknown as { __corridor?: { objectCount: () => number } }).__corridor?.objectCount() ?? 0)).toBeGreaterThan(10);
   // nothing is ever below the ground
   expect(await page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { belowGround: number } } }).__corridor?.debug().belowGround)).toBe(0);
+  // the breach defaults to "slow"; the cinematic button restarts the run with the chase camera
+  await expect(page.locator('[data-testid="corridor-controls"] [role="radio"][aria-checked="true"]')).toHaveText(/slow|बिस्तारै|धीरे/i);
+  await page.locator('[data-testid="corridor-cinematic"]').click();
+  await expect.poll(async () => page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { cameraMode: string } } }).__corridor?.debug().cameraMode), { timeout: 8000 }).toBe("ride");
   await page.locator('[data-testid="corridor-frame"]').click();
+  await expect.poll(async () => page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { cameraMode: string } } }).__corridor?.debug().cameraMode), { timeout: 8000 }).toBe("overview");
   // names toggle: off hides every place pill, on brings them back (persisted per device)
   const names = page.locator('[data-testid="corridor-names"]');
   await names.click();

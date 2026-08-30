@@ -5,7 +5,8 @@
  * travel. Every entry was verified through YouTube's oEmbed (title + channel) on the `checked` date; captions say
  * what the uploader's title says, nothing more.
  *
- * Rendering (components/blocks/FloodVideos.tsx): a thumbnail facade — the YouTube iframe loads only when tapped.
+ * Rendering (components/blocks/FloodVideos.tsx, directly under the simulation — owner, 30 Aug 13:40: "underneath the
+ * flood simulation, just 2/3"): a thumbnail facade — the YouTube iframe loads only when tapped.
  */
 export type VideoKind = "cctv" | "eyewitness" | "aerial" | "news";
 
@@ -26,6 +27,8 @@ export type FloodVideo = {
   lang: "en" | "ne" | "hi";
   /** vertical (Shorts) clip */
   short?: boolean;
+  /** shown under the simulation (three at most); the rest are kept for the place pages */
+  featured?: boolean;
   /** when the title/channel were verified via oEmbed (ISO date) */
   checked: string;
 };
@@ -33,6 +36,7 @@ export type FloodVideo = {
 export const FLOOD_VIDEOS: FloodVideo[] = [
   {
     id: "KH94sIuFWuE",
+    featured: true,
     kind: "cctv",
     caption: {
       en: "CCTV at the border: the wave arrives from the Tibet side",
@@ -48,6 +52,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
   },
   {
     id: "0bkCtUstxK8",
+    featured: true,
     kind: "eyewitness",
     caption: {
       en: "The last three minutes before the water reached Trishuli Bazar",
@@ -79,6 +84,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
   },
   {
     id: "oewbgPqndPw",
+    featured: true,
     kind: "eyewitness",
     caption: {
       en: "A bridge goes as the flood passes",
@@ -170,6 +176,8 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
     checked: "2026-08-30",
   },
 ];
+
+export const FEATURED_VIDEOS: FloodVideo[] = FLOOD_VIDEOS.filter((v) => v.featured).slice(0, 3);
 
 export const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/;
 

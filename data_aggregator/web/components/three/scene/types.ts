@@ -130,6 +130,9 @@ export interface CameraModule {
   fit(animate?: boolean): void;
   /** the run started: open close on the lakes */
   openOnLakes(lake: THREE.Vector3): void;
+  /** the Cinematic button: chase the front for this run (off again on any gesture, Overview, or the run's end) */
+  setCinematic(on: boolean): void;
+  cinematic(): boolean;
   /** per-frame easing; `frontX` drives the ride */
   update(dt: number, run: RunInfo, allowRide: boolean): void;
   shake(amount: number): void;

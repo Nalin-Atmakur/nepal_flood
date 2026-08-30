@@ -10,10 +10,12 @@ import { Frame } from "@/components/ui/Card";
 import EmptyState from "@/components/ui/EmptyState";
 import SectionHead from "@/components/ui/SectionHead";
 import CorridorIsland from "./CorridorIsland";
+import FloodVideos from "./FloodVideos";
 
 /**
  * Section 01 — The corridor. Server block: section head, legend, the framed 3D island (client, lazy) with the
- * flood simulation and its controls, caption, and on mobile the compact place list under the panel.
+ * flood simulation and its controls, caption, the three featured real clips (FloodVideos), and on mobile the compact
+ * place list under the panel.
  * See web/docs/10-3d-corridor.md and web/docs/14-flood-sim.md.
  */
 export default function Corridor({
@@ -54,6 +56,8 @@ export default function Corridor({
         </Frame>
       </div>
       <p className="font-medium text-[12px] text-muted mt-2 mb-0">{t(lang, "sec.corridor_caption")}</p>
+      {/* real footage of the day, directly under the simulation (docs/18) */}
+      <FloodVideos lang={lang} refs={refs} />
 
       {/* mobile: compact place list under the panel */}
       {compact.length ? (

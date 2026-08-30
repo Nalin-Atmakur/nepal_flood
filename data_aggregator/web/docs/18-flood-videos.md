@@ -7,8 +7,9 @@ increases the viral potential."* The simulation says what happened at scale; the
   lib/videos.ts  (FLOOD_VIDEOS — curated, reviewed, in the repo)
         │
         ▼
-  blocks/FloodVideos.tsx  (server)  ── section 02 under the corridor on Home
-        │   nine tiles: phones = scroll-snap row · desktop = 3 × 3 grid
+  blocks/FloodVideos.tsx  (server)  ── rendered by Corridor.tsx directly under the simulation's controls
+        │   the three `featured` clips: phones = scroll-snap row · desktop = three across
+        │   (owner, 13:40: "underneath the flood simulation, just 2/3"; the other six stay in the file for the place pages)
         ▼
   blocks/VideoTile.tsx  (client)
         poster = https://i.ytimg.com/vi/<id>/hqdefault.jpg  + ▶  + kind badge (+ "in Nepali")
@@ -36,7 +37,7 @@ attachments (private bucket, docs/06) and is looked at by a person before anythi
    (else `null`), `lang`, `short: true` for a vertical Short, `checked` = today.
 5. `npm run i18n:check && npx vitest run tests/videos.test.ts` — ids unique and well-formed, captions present,
    place ids exist in the gazetteer.
-6. `npm run build && npm run e2e` (the smoke test expects nine tiles: update the count when the list grows).
+6. `npm run build && npm run e2e` (the smoke test expects three `featured` tiles under the simulation; `FEATURED_VIDEOS` caps at three).
 7. Deploy (docs/12) and note it in `PROGRESS.md`.
 
 ## The fake checklist (all must pass)
@@ -53,14 +54,14 @@ attachments (private bucket, docs/06) and is looked at by a person before anythi
 - The upload date is on or after 26 Aug 2026 (a Short's date shows on its page).
 - The caption you write claims only what the title/upload says.
 
-## The nine clips at launch (verified via oEmbed, 30 Aug)
+## The clips at launch (verified via oEmbed, 30 Aug) — ★ = featured under the simulation
 
 | id | kind | credit | place |
 |---|---|---|---|
-| `KH94sIuFWuE` | CCTV | NepalWatch | Rasuwagadhi |
-| `0bkCtUstxK8` | eyewitness | NDTV | Trishuli Bazar |
+| ★ `KH94sIuFWuE` | CCTV | NepalWatch | Rasuwagadhi |
+| ★ `0bkCtUstxK8` | eyewitness | NDTV | Trishuli Bazar |
 | `k5OUDfPfDSo` | eyewitness (Short) | Touch The Himalaya Treks & Expedition | Timure |
-| `oewbgPqndPw` | eyewitness (Short) | CNA | — |
+| ★ `oewbgPqndPw` | eyewitness (Short) | CNA | — |
 | `HR7WeYBmIZQ` | aerial (Short) | NewsX World | — |
 | `SlyeTSk-pwk` | eyewitness | Shilapatra | — |
 | `AEIC1ujp3CU` | news | CNN-News18 | — |
@@ -72,7 +73,7 @@ Considered and left out: Times Now / Oneindia (sensational titles, same footage 
 
 ## Performance and privacy
 
-- No iframe, no YouTube script, no cookie until a tap; the posters are nine lazy `<img>`s (~15 KB each).
+- No iframe, no YouTube script, no cookie until a tap; the posters are three lazy `<img>`s (~15 KB each).
 - `youtube-nocookie.com` embeds; the tap itself is the consent.
 - The block adds nothing to the server render but nine URLs and the place names it already has.
 

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { FLOOD_VIDEOS, YOUTUBE_ID, videoEmbed, videoThumb, videoWatch } from "@/lib/videos";
+import { FEATURED_VIDEOS, FLOOD_VIDEOS, YOUTUBE_ID, videoEmbed, videoThumb, videoWatch } from "@/lib/videos";
 
 const gazetteerIds = new Set(
   readFileSync(join(__dirname, "..", "..", "gazetteer", "places.csv"), "utf8")
@@ -28,6 +28,10 @@ describe("curated flood videos", () => {
   });
   it("place ids point at the gazetteer", () => {
     for (const v of FLOOD_VIDEOS) if (v.placeId) expect(gazetteerIds.has(v.placeId), v.placeId).toBe(true);
+  });
+  it("features exactly three clips under the simulation", () => {
+    expect(FEATURED_VIDEOS).toHaveLength(3);
+    expect(FEATURED_VIDEOS.every((v) => v.featured)).toBe(true);
   });
   it("builds poster, embed and watch URLs", () => {
     expect(videoThumb("abc")).toBe("https://i.ytimg.com/vi/abc/hqdefault.jpg");

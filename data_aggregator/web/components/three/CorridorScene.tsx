@@ -74,7 +74,8 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
   const [names, setNames] = useState(true);
   const [feedCap, setFeedCap] = useState(FEED_MIN);
   const seedMm3 = lakeVolumeM3 && lakeVolumeM3 > 0 ? Math.min(LAKE_MM3_MAX, Math.max(LAKE_MM3_MIN, lakeVolumeM3 / 1e6)) : DEFAULT_SCENARIO.lakeMm3;
-  const [scenario, setScenario] = useState<Scenario>({ lakeMm3: seedMm3, breachSeconds: DEFAULT_SCENARIO.breachSeconds });
+  // the breach starts on "slow" (owner, 30 Aug 12:30): the wave builds instead of appearing
+  const [scenario, setScenario] = useState<Scenario>({ lakeMm3: seedMm3, breachSeconds: BREACH_OPTIONS[1].seconds });
 
   const push = useCallback((item: Omit<FeedItem, "key">) => {
     const key = ++seq.current;
@@ -230,6 +231,17 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     handleRef.current?.arm(null);
     handleRef.current?.play();
   };
+  /** Cinematic: same as play, but the camera opens on the lake and chases the front (docs/19 #5). */
+  const cinematic = () => {
+    showScene();
+    setPick(null);
+    setSwept(0);
+    setSweptReal(0);
+    setFeed([]);
+    setArmed(null);
+    handleRef.current?.arm(null);
+    handleRef.current?.cinematic();
+  };
   const reset = () => {
     setPick(null);
     setFeed([]);
@@ -324,15 +336,26 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
                 <span aria-hidden="true">{names ? "◉" : "○"}</span> {t(lang, "corridor.names")}
               </button>
             </div>
-            <button
-              type="button"
-              onClick={() => handleRef.current?.frame()}
-              className="absolute bottom-2 right-2 z-10 inline-flex items-center justify-center min-h-[40px] px-3 bg-card b-ink-2 rounded-r2 font-bold text-[12px] text-ink shadow-hard-2 cursor-pointer hover:bg-ground"
-              aria-label={t(lang, "corridor.frame")}
-              data-testid="corridor-frame"
-            >
-              ⌂ {t(lang, "corridor.frame")}
-            </button>
+            <div className="absolute bottom-2 right-2 z-10 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleRef.current?.frame()}
+                className="inline-flex items-center justify-center min-h-[40px] px-3 bg-card b-ink-2 rounded-r2 font-bold text-[12px] text-ink shadow-hard-2 cursor-pointer hover:bg-ground"
+                aria-label={t(lang, "corridor.frame")}
+                data-testid="corridor-frame"
+              >
+                ⌂ {t(lang, "corridor.frame")}
+              </button>
+              <button
+                type="button"
+                onClick={cinematic}
+                className="inline-flex items-center justify-center min-h-[40px] px-3 bg-board text-white b-ink-2 rounded-r2 font-bold text-[12px] shadow-hard-2 cursor-pointer hover:bg-ink"
+                aria-label={t(lang, "corridor.cinematic")}
+                data-testid="corridor-cinematic"
+              >
+                🎬 {t(lang, "corridor.cinematic")}
+              </button>
+            </div>
             {/* pops: SWEPT / PLACED, at the object's screen position */}
             {pops.map((p) => (
               <div key={p.key} className={"absolute z-20 pointer-events-none arcade text-[10px] md:text-[11px] px-2 py-1 b-ink-2 rounded-r2 shadow-hard-2 corridor-pop " + (p.tone === "red" ? "bg-live text-white" : "bg-ultra text-white")} style={{ left: p.x, top: p.y }} role="status">
@@ -412,13 +435,17 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <label className="flex items-center gap-2 font-semibold text-[12px]">
-                <span className="whitespace-nowrap">{t(lang, "corridor.lake_volume")}</span>
-                <input type="range" min={LAKE_MM3_MIN} max={LAKE_MM3_MAX} step={0.5} value={scenario.lakeMm3} onChange={(e) => setScenario((s) => ({ ...s, lakeMm3: Number(e.target.value) }))} className="w-[120px] md:w-[160px] h-10 accent-ultra" aria-valuetext={`${scenario.lakeMm3} Mm³`} />
-                <span className="arcade text-[10px] num whitespace-nowrap">{scenario.lakeMm3.toFixed(1)} Mm³</span>
-              </label>
-              <div className="flex items-center gap-[6px] font-semibold text-[12px]" role="radiogroup" aria-label={t(lang, "corridor.breach")}>
+            {/* row 1: the volume the wave carries (the barrier lake the avalanche breached) */}
+            <label className="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-[12px]">
+              <span className="whitespace-nowrap">{t(lang, "corridor.lake_volume")}</span>
+              <input type="range" min={LAKE_MM3_MIN} max={LAKE_MM3_MAX} step={0.5} value={scenario.lakeMm3} onChange={(e) => setScenario((s) => ({ ...s, lakeMm3: Number(e.target.value) }))} className="w-[140px] md:w-[180px] h-10 accent-ultra" aria-valuetext={`${scenario.lakeMm3} Mm³`} />
+              <span className="arcade text-[10px] num whitespace-nowrap">{scenario.lakeMm3.toFixed(1)} Mm³</span>
+              <span className="font-medium text-[11px] text-muted">· {t(lang, "corridor.lake_volume_sub")}</span>
+            </label>
+
+            {/* row 2: breach speed and the things to drop, on one line (wrapping on phones) */}
+            <div className="flex flex-wrap items-start gap-x-5 gap-y-2">
+              <div className="flex items-center gap-[6px] font-semibold text-[12px] min-h-[40px]" role="radiogroup" aria-label={t(lang, "corridor.breach")}>
                 <span>{t(lang, "corridor.breach")}</span>
                 {BREACH_OPTIONS.map((b) => (
                   <button key={b.key} type="button" role="radio" aria-checked={scenario.breachSeconds === b.seconds} onClick={() => setScenario((s) => ({ ...s, breachSeconds: b.seconds }))} className={"min-h-[40px] px-[12px] rounded-pill b-ink-2 text-[12px] font-bold cursor-pointer " + (scenario.breachSeconds === b.seconds ? "bg-amber-fill text-ink" : "bg-card text-ink hover:bg-ground")}>
@@ -426,28 +453,27 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
                   </button>
                 ))}
               </div>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-semibold text-[12px]">{t(lang, "corridor.drop")}</span>
-                {armed ? (
-                  <span className="inline-flex items-center gap-2 bg-amber-fill text-amber-text b-ink-2 rounded-r2 px-[10px] py-[4px] font-bold text-[11.5px]" data-testid="corridor-armed">
-                    {t(lang, "corridor.armed_hint", { obj: t(lang, "corridor.obj." + armed) })}
-                    <button type="button" onClick={disarm} className="inline-grid place-items-center w-6 h-6 rounded-full b-ink-2 bg-card font-extrabold cursor-pointer" aria-label={t(lang, "corridor.disarm")}>
-                      ×
-                    </button>
-                  </span>
-                ) : (
-                  <span className="font-medium text-[11.5px] text-muted">{t(lang, "corridor.drop_sub")}</span>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {CATALOGUE.map((c) => (
-                  <Chip key={c.kind} active={armed === c.kind} onClick={() => arm(c.kind)} className="!min-h-[40px] !px-3 text-[12.5px]" ariaLabel={t(lang, "corridor.obj." + c.kind)}>
-                    {c.emoji} {t(lang, "corridor.obj." + c.kind)}
-                  </Chip>
-                ))}
+              <div className="flex-1 min-w-[260px]">
+                <div className="flex items-center gap-2 flex-wrap min-h-[40px]">
+                  <span className="font-semibold text-[12px]">{t(lang, "corridor.drop")}</span>
+                  {armed ? (
+                    <span className="inline-flex items-center gap-2 bg-amber-fill text-amber-text b-ink-2 rounded-r2 px-[10px] py-[4px] font-bold text-[11.5px]" data-testid="corridor-armed">
+                      {t(lang, "corridor.armed_hint", { obj: t(lang, "corridor.obj." + armed) })}
+                      <button type="button" onClick={disarm} className="inline-grid place-items-center w-6 h-6 rounded-full b-ink-2 bg-card font-extrabold cursor-pointer" aria-label={t(lang, "corridor.disarm")}>
+                        ×
+                      </button>
+                    </span>
+                  ) : (
+                    <span className="font-medium text-[11.5px] text-muted">{t(lang, "corridor.drop_sub")}</span>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {CATALOGUE.map((c) => (
+                    <Chip key={c.kind} active={armed === c.kind} onClick={() => arm(c.kind)} className="!min-h-[40px] !px-3 text-[12.5px]" ariaLabel={t(lang, "corridor.obj." + c.kind)}>
+                      {c.emoji} {t(lang, "corridor.obj." + c.kind)}
+                    </Chip>
+                  ))}
+                </div>
               </div>
             </div>
 
