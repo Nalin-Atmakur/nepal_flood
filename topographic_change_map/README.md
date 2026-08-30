@@ -56,6 +56,8 @@ directions. GLO-30 supplies the pre-event terrain context.
 
 ## Start here
 
+- [COPY_PASTE_TO_NEW_AGENT.md](COPY_PASTE_TO_NEW_AGENT.md) — minimal meta-prompt for handing the project to a freshly cloned coding agent
+- [HANDOFF_TO_CODING_AGENT.md](HANDOFF_TO_CODING_AGENT.md) — comprehensive ingestion, scientific-context, verification, next-step, and team-question prompt
 - [PLAN.md](PLAN.md) — complete objective and execution contract
 - [SCALES_AND_AOI.md](SCALES_AND_AOI.md) — exact distinction between source pixels, measurements, and 1 km reporting bins
 - [STATUS.md](STATUS.md) — current evidence, work, and blockers
