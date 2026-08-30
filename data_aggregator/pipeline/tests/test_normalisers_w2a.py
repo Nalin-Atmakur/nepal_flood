@@ -1,3 +1,4 @@
+from pathlib import Path
 """Fixture-backed tests for the wave-2 official/government normalisers (docs/pull_external_data/05a-sources-wave2-official.md)."""
 from __future__ import annotations
 
@@ -196,6 +197,9 @@ def test_heoc_sitreps(w2a_ctx, now):
 # ── 5. dao nuwakot ───────────────────────────────────────────────────────────
 
 def test_dao_nuwakot_rescued(w2a_ctx, now):
+    # The XLSX fixture is local-only: the repo .gitignore blocks *.xlsx by design (PII firewall).
+    if not (Path(__file__).parent / "fixtures" / "w2a_dao_nuwakot_rescued.xlsx").exists():
+        pytest.skip("w2a_dao_nuwakot_rescued.xlsx not present (local-only fixture; rebuild with tests/fixtures/w2a_build.py)")
     r = _run("dao_nuwakot_rescued", w2a_ctx, now)
     got = {(f["metric"], f["scope"]): f["value"] for f in r.figures}
     assert got[("rescued", "national")] == 12 and got[("rescued_foreign", "national")] == 5
