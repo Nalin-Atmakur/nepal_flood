@@ -12,7 +12,7 @@ source of truth/updates**, **collect as much data as possible**.
 | First viewport must answer *what is this · what happened · what do I do* | header (what) → Right now strip (what happened) → Your part / the corridor (what do I do) |
 | One primary action per screen | Home: **Add what you know**. Numbers/Places/Latest: read. `/report`: Send. |
 | Progressive disclosure | Home shows the headline; every deeper view is one tap away in its own tab |
-| 5 ± 2 navigation items | Home · Numbers · Places · Latest · More (More = Sources, About, My folder, Share, language) |
+| 5 ± 2 navigation items | Home · Numbers · Places · Latest news · More (More = Sources, About, My folder, Share, language) |
 | Recognition over recall | tabs are nouns people already use ("Numbers", "Places", "Latest"), in the glossary's words (`03-i18n.md`) |
 | No jargon on Home | "ledger", "sitrep", "publisher" never appear on Home; the strip says "out of contact", "rescued", "as of" |
 | Thumb reach on phones | a fixed bottom tab bar (44 px targets, safe-area padding), the primary action in the strip's first viewport |
@@ -74,7 +74,7 @@ scrolling at 1280 × 900.
 
 | block | was | now |
 |---|---|---|
-| Scoreboard (people here now · contributions · since last pull) | Home top | Latest (top) · a two-number miniature in the Right-now strip |
+| Scoreboard (people here now · contributions · since last pull) | Home top | one slim counters row inside **Your part**, which heads every tab (Home · Numbers · Places · Latest news) — shared hook `lib/use-live-counts.ts`; a two-number miniature stays in the Right-now strip |
 | What changed today (digest card) | Home | Latest (full) · its headline in the Right-now strip |
 | The corridor | Home 01 | Home 2 (unchanged) |
 | What happened, in numbers (stat cards) | Home 02 | Numbers |
@@ -103,5 +103,13 @@ scrolling at 1280 × 900.
 ## 6. Verify
 
 `npm run e2e`: Home renders exactly `[data-block="right-now"]`, `[data-block="corridor"]`, `[data-block="yours"]` and
-no other `data-block`; `/numbers` renders side · stats · first-hours; `/latest` renders scoreboard · digest · latest · river;
+no other `data-block`; `/numbers` renders side · stats · first-hours; `/latest` ("Latest news") renders yours · digest · latest · river;
 the tab bar has five links with one `aria-current`. Screenshots at 390/1280 in the report.
+
+## Update 30 Aug 10:50 — Your part heads every tab
+
+Owner's request: the live scoreboard is merged into the "Your part" card (one slim row: ● people here now · added
+in 10 min · today · since data pull · AUTO-REFRESH), and that card is the first block on Home, Numbers, Places and
+Latest news (not on /places/{id}, /sources, /about, /report, /me). The tab formerly labelled "Latest" is
+"Latest news" (NE पछिल्ला समाचार · HI ताज़ा ख़बरें); the URL `/latest` is unchanged. The standalone `Scoreboard`
+block is no longer rendered anywhere; its logic lives in `lib/use-live-counts.ts`.

@@ -8,9 +8,9 @@ import { splitDistricts } from "@/lib/places-split";
 import { getDigest, getLakeVolumeM3, getLiveCounts, getLostBridges, getNationalFigures, getPlaces, getPlaceStatuses } from "@/lib/queries";
 
 /**
- * Home — three things and nothing else (web/docs/17-information-architecture.md): Right now (the headline numbers
- * and today's line) → the corridor simulation → Your part (the ask). Everything deeper lives in the tabs
- * (Numbers · Places · Latest · More). ISR every 5 minutes.
+ * Home — three things and nothing else (web/docs/17-information-architecture.md): Your part (the ask + the live
+ * counters; it heads every tab) → Right now (the headline numbers and today's line) → the corridor simulation.
+ * Everything deeper lives in the tabs (Numbers · Places · Latest news · More). ISR every 5 minutes.
  */
 export const revalidate = 300;
 
@@ -35,7 +35,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   return (
     <main>
       <h1 className="sr-only">{t(lang, "site.name")}</h1>
-      <YourPart lang={lang} />
+      <YourPart lang={lang} live={live} />
       <RightNow lang={lang} figures={figures} digest={digest} live={live} />
       <Corridor lang={lang} statuses={placeRows} refs={refs} lakeVolumeM3={lakeVolumeM3} lostBridges={lostBridges} />
     </main>

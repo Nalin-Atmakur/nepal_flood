@@ -29,7 +29,7 @@ Each block root carries `data-block="…"` (and `data-n="0N"` for numbered secti
 
 | # | Block | File | Reads | Empty state |
 |---|---|---|---|---|
-| — | Scoreboard | `blocks/Scoreboard.tsx` (client) | `v_live_counts` initial; presence + realtime + 60 s poll (docs/09) | "—" digits; the "people here now" cell hides itself if presence fails |
+| — | Live counters (inside Your part; `blocks/Scoreboard.tsx` kept, unused) | `lib/use-live-counts.ts` (client hook) | `v_live_counts` initial; presence + realtime + 60 s poll (docs/09) | "—" digits; the "people here now" cell hides itself if presence fails |
 | — | Digest | `blocks/Digest.tsx` | `digest` — latest day, current lang else EN (docs/13) | **none** — the block renders nothing without a row |
 | 01 | Corridor | `blocks/Corridor.tsx` → `CorridorIsland` (client) | `v_place_status_latest` ⋈ `places.km/in_channel/aliases` via `lib/corridor.ts` | dashed panel "No places in the ledger yet…" inside the frame |
 | 02 | StrikingStats | `blocks/StrikingStats.tsx` | `stats` ids `wave_time_to_port, wave_speed, galchhi_rise, bodies_downstream_km, missing_counts_divergence, reports_total` | "No headline numbers yet… retrying every 4 hours" |
@@ -122,7 +122,7 @@ title in the markup). `/sources`: sources whose `url` is "(derived …)" show "d
                                    │ If you know anything about anyone on the corridor …        │
                                    └────────────────────────────────────────────────────────────┘
 ```
-`components/blocks/YourPart.tsx` (client) is the first block on the home page: the device's own non-withdrawn
+`components/blocks/YourPart.tsx` (client) is the first block on Home, Numbers, Places and Latest news (30 Aug 10:50): it carries the live counters row (people here now · added in 10 min · today · since data pull · auto-refresh) via `lib/use-live-counts.ts`, and shows the device's own non-withdrawn
 report count from `reports_archive` (RLS; only if a session already exists — a fresh visitor is not signed in to
 count), worded as a prompt (amber) or a thank-you with "See what you added →" (green), with the big Add button.
 The header no longer carries "Add what you know"; it carries Sources · About · Share (`ShareMenu`).

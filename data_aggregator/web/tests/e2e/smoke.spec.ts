@@ -2,8 +2,8 @@ import { expect, test } from "@playwright/test";
 
 const LANGS = ["en", "ne", "hi"] as const;
 const HOME_BLOCKS = ["right-now", "corridor", "yours"] as const;
-const NUMBERS_BLOCKS = ["side", "stats", "first-hours"] as const;
-const LATEST_BLOCKS = ["scoreboard", "digest", "latest", "river"] as const;
+const NUMBERS_BLOCKS = ["yours", "side", "stats", "first-hours"] as const;
+const LATEST_BLOCKS = ["yours", "digest", "latest", "river"] as const;
 const WAIT = { timeout: 15_000 };
 
 for (const lang of LANGS) {
@@ -21,7 +21,7 @@ for (const lang of LANGS) {
       await expect(page.locator('nav[aria-label] a[aria-current="page"]').first()).toBeAttached(WAIT);
     });
 
-    test("numbers and latest tabs render their blocks", async ({ page }) => {
+    test("numbers and latest-news tabs render their blocks, each headed by Your part", async ({ page }) => {
       await page.goto(`/${lang}/numbers`);
       for (const block of NUMBERS_BLOCKS) await expect(page.locator(`[data-block="${block}"]`).first(), block).toBeAttached(WAIT);
       await page.goto(`/${lang}/latest`);

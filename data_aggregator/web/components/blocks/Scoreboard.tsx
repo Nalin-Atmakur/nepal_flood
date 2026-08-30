@@ -1,57 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { PULL_INTERVAL_MINUTES, SCOREBOARD_POLL_MS, STALE_AFTER_MINUTES, refreshLabel } from "@/lib/config";
+import { PULL_INTERVAL_MINUTES, STALE_AFTER_MINUTES, refreshLabel } from "@/lib/config";
 import { fmtInt, fmtSinceArcade, minutesSince } from "@/lib/format";
 import { t, type Lang } from "@/lib/i18n";
-import { joinPresence, watchSubmissions } from "@/lib/presence";
-import { getLiveCounts, type LiveCounts } from "@/lib/queries";
-import { browserClient, supabaseConfigured } from "@/lib/supabase";
+import type { LiveCounts } from "@/lib/queries";
+import { useLiveCounts } from "@/lib/use-live-counts";
 import { Led } from "@/components/ui/LiveChip";
 
 /**
- * Live scoreboard (Home v3): people here now · contributions last 10 min · today · minutes since last pull ·
- * "AUTO-REFRESH EVERY 4 H". Client island: Presence channel `site` (hidden if it errors), Realtime INSERTs on
- * submissions_log, v_live_counts polled every 60 s. Press Start 2P digits. See web/docs/09-live-scoreboard.md.
+ * The standalone live scoreboard (Home v3). Since 30 Aug the same counters live inside "Your part"
+ * (blocks/YourPart.tsx) on every tab, through the shared hook lib/use-live-counts.ts; this block is kept for
+ * pages that want the full dark strip. Press Start 2P digits. See web/docs/09-live-scoreboard.md.
  */
 export default function Scoreboard({ lang, initial }: { lang: Lang; initial: LiveCounts | null }) {
-  const [counts, setCounts] = useState<LiveCounts | null>(initial);
-  const [here, setHere] = useState<number | null>(null);
-  const [hereHidden, setHereHidden] = useState<boolean>(() => !supabaseConfigured);
-  const [now, setNow] = useState<number>(() => Date.now());
-  const local = useRef<number[]>([]); // timestamps of inserts seen since the last poll
-
-  useEffect(() => {
-    const sb = browserClient();
-    if (!sb) return;
-    const presence = joinPresence(
-      sb,
-      (n) => setHere(n),
-      () => setHereHidden(true),
-    );
-    const watcher = watchSubmissions(sb, () => {
-      local.current.push(Date.now());
-      setCounts((c) =>
-        c
-          ? { ...c, submissions_10m: c.submissions_10m + 1, submissions_today: c.submissions_today + 1, submissions_total: c.submissions_total + 1 }
-          : { submissions_10m: 1, submissions_today: 1, submissions_total: 1, last_pull_at: null, last_processed_at: null },
-      );
-    });
-    const poll = setInterval(async () => {
-      const fresh = await getLiveCounts(sb);
-      if (fresh) {
-        local.current = [];
-        setCounts(fresh);
-      }
-    }, SCOREBOARD_POLL_MS);
-    const tick = setInterval(() => setNow(Date.now()), 30000);
-    return () => {
-      presence.leave();
-      watcher.stop();
-      clearInterval(poll);
-      clearInterval(tick);
-    };
-  }, []);
+  const { counts, here, hereHidden, now } = useLiveCounts(initial);
 
   const lastPull = counts?.last_pull_at ?? null;
   // `now` is captured at render time, so the server's (ISR) label and the client's differ by design; the Cell

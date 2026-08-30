@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import FirstHours from "@/components/blocks/FirstHours";
 import SideBySide from "@/components/blocks/SideBySide";
 import StrikingStats from "@/components/blocks/StrikingStats";
+import YourPart from "@/components/blocks/YourPart";
 import { asLang, t } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getEventTimeline, getHeadlineSeries, getLiveCounts, getNationalFigures, getStats } from "@/lib/queries";
@@ -20,6 +21,7 @@ export default async function NumbersPage({ params }: { params: Promise<{ lang: 
   return (
     <main data-page="numbers" className="pt-2 md:pt-3 pb-[30px]">
       <h1 className="sr-only">{t(lang, "tabs.numbers")}</h1>
+      <YourPart lang={lang} live={live} />
       <SideBySide lang={lang} figures={figures} lastAttempt={live?.last_pull_at ?? null} series={series} />
       <StrikingStats lang={lang} stats={stats} />
       <FirstHours lang={lang} events={events} />

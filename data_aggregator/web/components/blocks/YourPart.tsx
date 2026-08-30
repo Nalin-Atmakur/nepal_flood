@@ -3,19 +3,25 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
-import { fmtCadence } from "@/lib/format";
+import { Led } from "@/components/ui/LiveChip";
+import { PULL_INTERVAL_MINUTES, STALE_AFTER_MINUTES, refreshLabel } from "@/lib/config";
+import { fmtCadence, fmtInt, fmtSinceArcade, minutesSince } from "@/lib/format";
 import { href, t, type Lang } from "@/lib/i18n";
-import { getOwnReports } from "@/lib/queries";
+import { getOwnReports, type LiveCounts } from "@/lib/queries";
 import { browserClient } from "@/lib/supabase";
+import { useLiveCounts } from "@/lib/use-live-counts";
 
 /**
- * "Your part" — the first thing under the header on the home page (owner's request, 30 Aug): this device's own
- * contribution count, worded to prompt the visitor, with the big "Add what you know" button beside it. Counts come
- * from the device's own rows (RLS) when a session already exists; a fresh visitor is not signed in just to count.
+ * "Your part" — the first block under the header on every tab (Home · Numbers · Places · Latest news; owner's
+ * request, 30 Aug): this device's own contribution count, worded to prompt the visitor, the big "Add what you
+ * know" button, and one slim row of the site's live counters (people here now · added in 10 min · today · since
+ * the last data pull · auto-refresh cadence) from lib/use-live-counts.ts. The own count comes from the device's
+ * rows (RLS) when a session already exists; a fresh visitor is not signed in just to count.
  * See web/docs/05-home-blocks.md.
  */
-export default function YourPart({ lang }: { lang: Lang }) {
+export default function YourPart({ lang, live = null }: { lang: Lang; live?: LiveCounts | null }) {
   const [count, setCount] = useState<number | null>(null); // null = unknown / not yet loaded → zero-state copy
+  const { counts, here, hereHidden, now } = useLiveCounts(live);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,10 +47,14 @@ export default function YourPart({ lang }: { lang: Lang }) {
 
   const n = count ?? 0;
   const has = n > 0;
+  const lastPull = counts?.last_pull_at ?? null;
+  const mins = minutesSince(lastPull, new Date(now));
+  const since = lastPull ? fmtSinceArcade(lastPull, new Date(now)) : "—";
+  const sinceColor = mins === null ? "text-muted" : mins > STALE_AFTER_MINUTES ? "text-amber-text" : "text-confirmed-text";
 
   return (
     <section data-block="yours" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-4 md:mt-5" aria-labelledby="sec-yours">
-      <div className={["b-ink rounded-r2 shadow-hard-3 md:shadow-hard-4 px-4 py-4 md:px-6 md:py-5 flex flex-col md:flex-row md:items-center gap-3 md:gap-6", has ? "bg-confirmed-fill" : "bg-amber-fill"].join(" ")}>
+      <div className={["b-ink rounded-r2 shadow-hard-3 md:shadow-hard-4 px-4 py-4 md:px-6 md:py-5 flex flex-col md:flex-row md:flex-wrap md:items-center gap-3 md:gap-x-6 md:gap-y-0", has ? "bg-confirmed-fill" : "bg-amber-fill"].join(" ")}>
         <div className="flex-1 min-w-0">
           <div className="arcade text-[8px] md:text-[9px] tracking-wide text-amber-text mb-1">{t(lang, "yours.label")}</div>
           <h2 id="sec-yours" className="font-extrabold text-[18px] md:text-[22px] lh-tight m-0 num" data-testid="yours-title">
@@ -61,6 +71,39 @@ export default function YourPart({ lang }: { lang: Lang }) {
               {t(lang, "yours.see")}
             </Link>
           ) : null}
+        </div>
+        {/* the site's live counters — one slim row, Press Start 2P digits (docs/09) */}
+        <div className="md:basis-full border-t-[2px] border-ink/25 pt-[10px] md:pt-3 flex flex-wrap items-center gap-x-[14px] gap-y-[6px] font-semibold text-[11.5px] md:text-[12px] text-ink/80" data-testid="yours-live" aria-label={t(lang, "live.right_now")}>
+          <Led size={9} />
+          {!hereHidden ? (
+            <span className="inline-flex items-baseline gap-[6px] whitespace-nowrap">
+              <span className="arcade text-[11px] num" suppressHydrationWarning>
+                {here === null ? "—" : fmtInt(here)}
+              </span>
+              {t(lang, "live.here_now")}
+            </span>
+          ) : null}
+          <span className="inline-flex items-baseline gap-[6px] whitespace-nowrap">
+            <span className="arcade text-[11px] num" suppressHydrationWarning>
+              {counts ? fmtInt(counts.submissions_10m) : "—"}
+            </span>
+            {t(lang, "live.last_10_m")}
+          </span>
+          <span className="inline-flex items-baseline gap-[6px] whitespace-nowrap">
+            <span className="arcade text-[11px] num" suppressHydrationWarning>
+              {counts ? fmtInt(counts.submissions_today) : "—"}
+            </span>
+            {t(lang, "live.today_m")}
+          </span>
+          <span className="inline-flex items-baseline gap-[6px] whitespace-nowrap">
+            <span className={["arcade text-[11px] num", sinceColor].join(" ")} suppressHydrationWarning>
+              {since}
+            </span>
+            {lastPull ? t(lang, "live.since_pull_m") : t(lang, "live.no_pull")}
+          </span>
+          <span className="arcade text-[8px] text-muted whitespace-nowrap ml-auto" aria-label={`Auto-refresh ${refreshLabel(PULL_INTERVAL_MINUTES)}`}>
+            AUTO-REFRESH {refreshLabel(PULL_INTERVAL_MINUTES)}
+          </span>
         </div>
       </div>
     </section>
