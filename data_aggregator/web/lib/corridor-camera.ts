@@ -84,7 +84,8 @@ export function boxFits(o: Orbit, aspect: number, margin = 0.06): boolean {
 
 /**
  * Frame the corridor for the panel's aspect. Landscape: the corridor runs left → right (west → east) seen from
- * the south-west and above. Portrait: turn the azimuth so the corridor runs diagonally top-left → bottom-right.
+ * the south-west and above. Portrait: look along the corridor from the east so it runs top → bottom and fills the
+ * tall panel.
  * The radius is found by projection: start close and pull back until every corner of the corridor box is inside
  * the frustum (exact for the pinhole model, so the test and the scene agree).
  */
@@ -95,7 +96,7 @@ export function fitCamera(aspect: number, margin = 0.0): Orbit {
     target: { x: (b.minX + b.maxX) / 2, y: (b.minY + b.maxY) / 2, z: (b.minZ + b.maxZ) / 2 },
     rad: RAD_MIN,
     pol: portrait ? 0.42 : 0.5,
-    az: portrait ? -0.62 : -0.75,
+    az: portrait ? -1.5 : -0.75,
   };
   while (o.rad < RAD_MAX && !boxFits(o, aspect, margin)) o.rad *= 1.03;
   o.rad = Math.min(RAD_MAX, o.rad);
