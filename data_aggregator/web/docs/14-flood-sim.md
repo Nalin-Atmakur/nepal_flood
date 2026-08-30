@@ -105,12 +105,12 @@ viral surface. Shipped 30 Aug 04:05 BST (pass 2 04:40); this file is the referen
 | `SIM_UNITS_PER_MM3` | flood-sim.ts | 260 | wave depth; 2 Mm³ → ~9 units at the lake, 2–3 in the mid-gorge |
 | `BREACH.radius` | flood-sim.ts | 3.6 | source footprint; smaller ponds a tall column at the lake |
 | `g` / `friction` | createSim | 9.8 / 0.9 | front speed: Syabrubesi ≈ 4 s, Betrawati ≈ 11 s, Galchhi ≈ 18 s, Devghat ≈ 24 s |
-| `DEFAULT_SCENARIO.breachSeconds` | flood-sim.ts | 6 (UI: 4 / 12) | how fast the lake empties |
+| `DEFAULT_SCENARIO.breachSeconds` | flood-sim.ts | 4 (UI: 4 "sudden" / 12 "slow") | how fast the lake empties |
 | `VIS_AMP` | corridor-3d.ts | 1.5 | visual-only depth exaggeration |
-| `RIDE` | corridor-3d.ts | rad 46 · pol 0.42 · az −1.3 | ride camera: above and a little upstream, looking downstream |
-| `OBJECT_SCALE`, `CARRY_SECONDS`, `SINK_SECONDS` | corridor-3d.ts | 3 · 1.8 · 0.9 | object readability and destruction timing |
+| `RIDE` | corridor-3d.ts | rad 40 · pol 0.42 · az −1.5 | chase camera: above and upstream of the front (+3), looking down the channel; a per-frame floor keeps it above the water surface; the run opens close on the lakes |
+| `OBJECT_SCALE` / `REAL_BRIDGE_SCALE`, `CARRY_SECONDS`, `SINK_SECONDS` | corridor-3d.ts | 2.2 / 2.1 · 1.8 · 0.9 | object readability and destruction timing |
 | `REACH_DEPTH` | corridor-3d.ts | 0.2 | when a place counts as reached |
-| `thresholdFor` | flood-sim.ts | camp 0.1/0.4 … bridge 0.8/1.6 | depth / speed an object survives (the sim's front runs at 20–30) |
+| `thresholdFor` | flood-sim.ts | camp 0.1/0.4 · bus 0.3/0.9 · house 0.5/1.2 · bridge 0.9/2.5 | depth / speed an object survives; the default 2 Mm³ run takes ~7 of the 10 real bridges, 0.5 Mm³ spares most |
 
 Re-tune with `npx vitest run tests/flood-sim.test.ts` (front ordering must hold) and the screenshot loop in §5.
 
@@ -132,6 +132,15 @@ Re-tune with `npx vitest run tests/flood-sim.test.ts` (front ordering must hold)
    `swept ≥ 1` after `drop("house", -10, 0); play()`. Screenshot the block at 2 / 6 / 12 / 22 s and look at them.
 3. `npm run e2e` — "the corridor flood sim" test (skips itself where WebGL is unavailable).
 4. On the live site: the run starts by itself, the clock moves, cards pop, ▶ Replay works, a dropped house is swept.
+
+## 5b. Pass 3 (after the independent QA in lane V2, 06:20 BST)
+
+Chase camera along the channel with a water-surface floor and an opening shot on the lakes; pop cards in a fixed
+bottom-left column and only for places with people (`reported > 0`); arming a chip pauses the ride (`follow` =
+not dragged and not armed); real bridges ≥ 3 km apart; the wave leaves a mud stain on the terrain (vertex colours,
+cleared on Replay/Reset); camera shake on the rock impact and on every real-bridge loss; markers thin and translucent
+while riding; 40 px tap targets; the rock hides at impact. Known limits: the gorge walls still fill the frame edges
+at the chase distance; whitecap particles and the "your run" OG card remain queued.
 
 ## 6. Non-goals (do not over-engineer)
 

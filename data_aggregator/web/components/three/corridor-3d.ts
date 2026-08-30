@@ -521,7 +521,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   const HOME = { target: new THREE.Vector3(0, 4, 0), rad: 62, pol: 0.98, az: -0.9 };
   // ride: above the channel, looking downstream from a little upstream of the front
   // ride: low and close, upstream of the front, looking down the channel
-  const RIDE = { rad: 32, pol: 0.72, az: -1.5 };
+  const RIDE = { rad: 40, pol: 0.42, az: -1.5 };
   let userTookCamera = false; // true once the visitor orbits or zooms
   let follow = true;
   const tmpT = new THREE.Vector3();
