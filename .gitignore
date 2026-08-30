@@ -81,3 +81,5 @@ data_aggregator/design/*.zip
 __pycache__/
 .pytest_cache/
 .DS_Store
+
+data_aggregator/pipeline/.scheduler.pid

@@ -16,10 +16,11 @@ The two scripts run on a timer on whichever machine holds `pipeline/.env`. On th
 
 Install / change / remove on the Mac — numbered:
 
-1. `scripts/install_schedule.sh` — installs the agent at **240 min** (tonight's cadence), writes `~/Library/LaunchAgents/com.nepalfloodtracker.pipeline.plist`, runs once immediately, and starts a detached `caffeinate -s -i` so the laptop does not sleep on mains power.
-2. `scripts/install_schedule.sh 15` — switch to the live-phase cadence (re-installs the agent).
-3. `scripts/install_schedule.sh --remove` — uninstall and stop caffeinate.
-4. Check: `launchctl print gui/$(id -u)/com.nepalfloodtracker.pipeline | grep -E 'state|interval'` and `tail -n 40 pipeline/run.log` shows two consecutive runs with exit 0. `make health` summarises the live state.
+1. `scripts/install_schedule.sh` — installs BOTH mechanisms at **240 min** (tonight's cadence): a detached loop process (`pipeline/.scheduler.pid`) that runs immediately and then every N minutes, and a launchd agent (`~/Library/LaunchAgents/com.nepalfloodtracker.pipeline.plist`). It also starts `caffeinate -s -i` unless a caffeinate is already running.
+2. Why two: macOS TCC blocks a launchd-spawned `/bin/bash` from reading a repo under `~/Desktop` until Full Disk Access is granted — launchd then shows `last exit code = 78: EX_CONFIG` and never runs. The loop, started from a terminal, inherits the terminal's Desktop access and works at once; the launchd agent takes over (surviving logout) once you grant **System Settings → Privacy & Security → Full Disk Access → `/bin/bash`**. Overlap is harmless (idempotent upserts).
+3. `scripts/install_schedule.sh 15` — switch to the live-phase cadence (re-installs both).
+4. `scripts/install_schedule.sh --status` — loop pid, launchd state, last three run headers. `scripts/install_schedule.sh --remove` — uninstall both and stop caffeinate.
+5. Check: `tail -n 40 pipeline/run.log` shows `== … pull_external_data` … `== … done pull=0 process=0`; `make health` summarises the live state.
 
 On a Linux VM instead: `crontab -e` and add `*/15 * * * * cd /path/to/data_aggregator/pipeline && ./run.sh >> run.log 2>&1` (cron uses UTC; the scripts write UTC timestamps, so nothing else changes).
 
