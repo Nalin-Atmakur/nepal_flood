@@ -7,7 +7,7 @@ Live: https://www.nepalfloodtracker.com (apex redirects to `www`). Tonight's bui
 ## The system on one screen
 
 ```
-   EXTERNAL SOURCES (51 in sources.yaml; 39 have a normaliser)        PEOPLE
+   EXTERNAL SOURCES (60 in sources.yaml; 55 have a normaliser)        PEOPLE
    govt registries · UN/humanitarian · gauges & weather ·             families · survivors · rescuers · agencies
    geospatial · news RSS / live blogs · seismic · Chinese side        on WhatsApp, X, LinkedIn, Telegram …
               │                                                                    │
