@@ -23,6 +23,8 @@ export type PlacesTableProps = {
   emptyRow?: boolean;
   /** hide the search box (used when the parent renders its own head) */
   search?: boolean;
+  /** show only the first N rows (by unknown) until a search is typed; a "show all" link points to /places */
+  limit?: number;
 };
 
 type Row = {
@@ -58,7 +60,7 @@ function phonesText(lang: Lang, v: string | null): string {
   return v;
 }
 
-export default function PlacesTable({ lang, statuses, refs, placeholder, emptyRow = false, search = true }: PlacesTableProps) {
+export default function PlacesTable({ lang, statuses, refs, placeholder, emptyRow = false, search = true, limit }: PlacesTableProps) {
   const [q, setQ] = useState("");
   const inputId = useId();
 
@@ -86,7 +88,10 @@ export default function PlacesTable({ lang, statuses, refs, placeholder, emptyRo
       .sort((a, b) => b.unknown - a.unknown);
   }, [statuses, refs, lang]);
 
-  const visible = rows.filter((r) => placeMatches(r.keys, q));
+  const matching = rows.filter((r) => placeMatches(r.keys, q));
+  // the home block shows the top `limit` places (by unknown) until the visitor searches; /places shows all
+  const capped = limit !== undefined && !q.trim() && matching.length > limit;
+  const visible = capped ? matching.slice(0, limit) : matching;
   const none = rows.length === 0;
 
   return (
@@ -188,6 +193,13 @@ export default function PlacesTable({ lang, statuses, refs, placeholder, emptyRo
               </li>
             ) : null}
           </ul>
+        {capped ? (
+            <div className="mt-3">
+              <Link href={href(lang, "/places")} className="inline-flex items-center min-h-[44px] px-4 rounded-r2 b-ink-2 bg-card font-bold text-[14px] text-ink hover:bg-ground no-underline">
+                {t(lang, "sec.places_show_all", { n: String(matching.length) })}
+              </Link>
+            </div>
+          ) : null}
         </>
       )}
 

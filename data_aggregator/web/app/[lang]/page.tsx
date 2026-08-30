@@ -59,7 +59,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <SideBySide lang={lang} figures={figures} lastAttempt={lastAttempt} series={series} />
       <section data-block="places" data-n="05" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-places">
         <SectionHead n="05" title={<span id="sec-places">{t(lang, "sec.places")}</span>} sub={<span className="hidden md:inline">{t(lang, "sec.places_sub")}</span>} align="center" />
-        <PlacesTable lang={lang} statuses={placeRows} refs={refs} />
+        <PlacesTable lang={lang} statuses={placeRows} refs={refs} limit={12} />
       </section>
       <AddCtas lang={lang} />
       <RiverWeather lang={lang} gauges={gauges} windows={windows} />

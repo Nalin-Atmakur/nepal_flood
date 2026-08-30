@@ -414,5 +414,6 @@
   "about.sim_body": "The 3D corridor on the home page replays the breach as an illustration, not a hydraulic model. Its clock follows the front as it was actually recorded (DHM river watch, USGS, ICIMOD): collapse 08:37, Timure 08:45, Betrawati 09:20, Galchhi 10:28, Devghat 13:00. The starting lake volume is the figure China’s Ministry of Water Resources published (2.0 million m³); the bridges on the path are the ones the HOT OSM damage survey recorded as washed out or damaged. The houses, buses and camps you can drop in are a toy to make the scale felt. Nothing in it is a forecast.",
   "about.sim_link": "Where the numbers come from →",
   "about.handling_5": "Sixty registered sources — government, UN/humanitarian, geospatial, signals, news and community — each shown with a reliability grade and its last fetch time. Figures that a report merely quotes from someone else are labelled as quotations and never used as headline numbers.",
-  "about.handling_6": "The per-place “What is happening now” line is written from counts, publisher names and headline titles only; no name, phone number or free text from a report ever reaches the model."
+  "about.handling_6": "The per-place “What is happening now” line is written from counts, publisher names and headline titles only; no name, phone number or free text from a report ever reaches the model.",
+  "sec.places_show_all": "Show all {n} places →"
 }
