@@ -18,7 +18,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 **Do in the morning (5 minutes)**
 - ⚠️ Rotate the OpenAI key and the Supabase service-role key (decisions-log 02:30: `pipeline/` was briefly uploaded to a Vercel project that I deleted). Put them in `pipeline/.env`; nothing else holds them.
 - Grant `/bin/bash` Full Disk Access (System Settings → Privacy) so the launchd agent takes over from the detached loop (`scripts/install_schedule.sh --status`).
-- When distribution starts: `scripts/install_schedule.sh 15`, set `PULL_INTERVAL_MINUTES = 15` in `pipeline/lib/config.py` and `web/lib/config.ts`, `cd web && vercel --prod --yes`.
+- When distribution starts: `scripts/install_schedule.sh 30` (a full run is now ≈ 11 min — pull 60 sources ≈ 2 min + process ≈ 9 min — and costs ≈ $0.05 in model calls, so 30 min ≈ $2.40/day; 15 min is possible but tight), set `PULL_INTERVAL_MINUTES = 30` in `pipeline/lib/config.py` and `web/lib/config.ts`, `cd web && vercel --prod --yes`.
 - Skim `docs/audit-2026-08-30.md` (data-quality findings, once lane Q1 lands).
 
 **Spend:** OpenAI ≈ $0.05 of the $20 cap (a full run with 80 places ≈ $0.02–0.05). Supabase free tier. Vercel hobby.
@@ -43,7 +43,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
-- 06:55 BST — "Share this run" now links to `/{lang}/run?swept=N&bridges=M`, a tiny landing whose OG card reads "I watched N things and M real bridges go — play the breach yourself" (eb2fb13, deployed). W6 landed (bcf6962): About explains the animation, 60 sources, quoted figures and the now-line; `/sources` subtitle. Softened the design's "reports go to Police/MoFA" claim (no export tool exists yet — owner decision D: none in this build).
+- 06:33 BST — "Share this run" now links to `/{lang}/run?swept=N&bridges=M`, a tiny landing whose OG card reads "I watched N things and M real bridges go — play the breach yourself" (eb2fb13, deployed). W6 landed (bcf6962): About explains the animation, 60 sources, quoted figures and the now-line; `/sources` subtitle. Softened the design's "reports go to Police/MoFA" claim (no export tool exists yet — owner decision D: none in this build).
 - 06:28 BST — Chase camera settled (steeper, above the gorge walls; 45de82b) + doc 14 pass-3 notes. robots.txt + sitemap.xml (285 URLs) added (fa953bb). Launched W6: About page section on the simulation + data handling copy for 60 sources.
 - 06:22 BST — V2's independent sim review (10 ranked defects) → pass 3 shipped + deployed (8913503): chase camera along the channel with a water-surface floor, opens on the collapse; fixed pop-card column, no cards for empty places; arming pauses the ride; breach defaults "sudden"; bridges need a real flood (default 2 Mm³ still takes 7/10 real bridges, 0.5 Mm³ spares most); real bridges ≥ 3 km apart; mud stain persists on the terrain; camera shake; translucent markers while riding; 40 px tap targets; reset counter bug. 90 web unit tests, 15 e2e.
 - 06:20 BST — X1 PII/secrets sweep: no secrets in HEAD or in tonight's 87 commits; no .env/snapshots/xlsx ever tracked; ignore rules + .vercelignore verified; two ReliefWeb fixtures scrubbed of press-office emails/phone (76c4790). Owner action: none beyond the scheduled key rotation.
