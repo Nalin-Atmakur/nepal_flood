@@ -504,7 +504,15 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   const RIDE = { rad: 46, pol: 0.42, az: -1.3 };
   let follow = true; // false once the visitor orbits or zooms
   const tmpT = new THREE.Vector3();
+  // thinner marker stems while the camera rides (they crowd the view in front of the wave)
+  let thinMarkers = false;
+  const setThinMarkers = (thin: boolean) => {
+    if (thin === thinMarkers) return;
+    thinMarkers = thin;
+    for (const m of markers) if (m.geometry !== capGeo) m.scale.set(thin ? 0.5 : 1, 1, thin ? 0.5 : 1);
+  };
   const updateCamera = (dt: number) => {
+    setThinMarkers(follow && runState === "running");
     if (!follow) return;
     const k = 1 - Math.pow(0.001, dt); // exponential ease, frame-rate independent
     if (runState === "running") {

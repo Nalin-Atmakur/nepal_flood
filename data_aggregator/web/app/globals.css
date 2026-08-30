@@ -202,6 +202,6 @@ html:lang(ne), html:lang(hi) {
   100% { opacity: 0; }
 }
 .corridor-pop { animation: corridor-pop 2.6s ease-out forwards; }
-.corridor-pop-hold { animation: corridor-pop 2.6s ease-out forwards; animation-fill-mode: both; animation-iteration-count: 1; animation-name: corridor-pop-in; }
+.corridor-pop-hold { animation: corridor-pop-in 0.35s ease-out both; }
 @keyframes corridor-pop-in { 0% { transform: translateY(6px) scale(0.92); opacity: 0; } 100% { transform: none; opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .corridor-pop { animation: none; } }
