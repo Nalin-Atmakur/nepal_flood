@@ -31,10 +31,6 @@ export default function OfficialChannels({ lang }: { lang: Lang }) {
           <strong>{mofa.label}</strong>{" "}
           <a href={`tel:${mofa.tel}`} className="text-ink hover:text-ink no-underline">
             {mofa.number}
-          </a>{" "}
-          ·{" "}
-          <a href={`mailto:${mofa.email}`} className="text-ink hover:text-ink no-underline">
-            {mofa.email}
           </a>
         </span>
         <span>
@@ -51,7 +47,7 @@ export default function OfficialChannels({ lang }: { lang: Lang }) {
             </a>
           </strong>
         </span>
-        <span className="text-muted ml-auto">{t(lang, "official.not_substitute")}</span>
+        <span className="text-muted">· {t(lang, "official.not_substitute_short")}</span>
       </div>
       {/* mobile */}
       <div className="md:hidden px-4 py-2 font-medium text-[11px] lh-loose">

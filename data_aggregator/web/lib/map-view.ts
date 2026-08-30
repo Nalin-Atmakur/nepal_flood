@@ -3,14 +3,14 @@
 import type { MapView } from "./map-projection";
 
 export const CORRIDOR_VIEW: MapView = {
-  zoom: 11,
-  tileX0: 1503,
-  tileY0: 855,
-  tilesX: 9,
-  tilesY: 6,
-  width: 2304,
-  height: 1536,
+  zoom: 12,
+  tileX0: 3008,
+  tileY0: 1710,
+  tilesX: 15,
+  tilesY: 12,
+  width: 3840,
+  height: 3072,
 };
 
 /** The bbox the image was cut to (degrees) — for tests and for deciding which places are plottable. */
-export const CORRIDOR_BBOX = { north: 28.45, south: 27.55, west: 84.3, east: 85.65 };
+export const CORRIDOR_BBOX = { north: 28.44, south: 27.58, west: 84.38, east: 85.62 };

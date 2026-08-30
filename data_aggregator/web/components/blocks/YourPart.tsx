@@ -106,8 +106,8 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
           <p className={["m-0 flex flex-wrap items-center gap-x-2 gap-y-1 font-bold text-[12.5px] md:text-[13px] text-live", compact ? "mt-1" : "mt-2"].join(" ")} data-testid="yours-urgent" suppressHydrationWarning>
             <Led size={9} />
             <span suppressHydrationWarning>{numbers?.missing !== null && numbers?.missing !== undefined ? t(lang, "yours.urgent_missing", { n: fmtInt(numbers.missing) }) : t(lang, "yours.urgent_nonum")}</span>
-            <span className="text-ink/70 font-semibold" suppressHydrationWarning>
-              · {t(lang, "yours.urgent_since", { d: String(sinceD), h: String(sinceH), m: String(sinceM) })}
+            <span className="text-ink/70 font-semibold whitespace-nowrap" suppressHydrationWarning>
+              {t(lang, "yours.urgent_since", { d: String(sinceD), h: String(sinceH), m: String(sinceM) })}
             </span>
             <span className="text-ink font-extrabold">{t(lang, "yours.urgent_every")}</span>
           </p>
@@ -133,12 +133,14 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
               {t(lang, "live.here_now")}
             </span>
           ) : null}
-          <span className="inline-flex items-baseline gap-[6px] whitespace-nowrap">
-            <span className="arcade text-[11px] num" suppressHydrationWarning>
-              {counts ? fmtInt(counts.submissions_10m) : "—"}
+          {counts && counts.submissions_10m > 0 ? (
+            <span className="inline-flex items-baseline gap-[6px] whitespace-nowrap">
+              <span className="arcade text-[11px] num" suppressHydrationWarning>
+                {fmtInt(counts.submissions_10m)}
+              </span>
+              {t(lang, "live.last_10_m")}
             </span>
-            {t(lang, "live.last_10_m")}
-          </span>
+          ) : null}
           <span className="inline-flex items-baseline gap-[6px] whitespace-nowrap">
             <span className="arcade text-[11px] num" suppressHydrationWarning>
               {counts ? fmtInt(counts.submissions_today) : "—"}
@@ -149,11 +151,9 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
             <span className={["arcade text-[11px] num", sinceColor].join(" ")} suppressHydrationWarning>
               {since}
             </span>
-            {lastPull ? t(lang, "live.since_pull_m") : t(lang, "live.no_pull")}
+            <span title={`Auto-refresh ${refreshLabel(PULL_INTERVAL_MINUTES)}`}>{lastPull ? t(lang, "live.since_pull_m") : t(lang, "live.no_pull")}</span>
           </span>
-          <span className="arcade text-[8px] text-muted whitespace-nowrap ml-auto" aria-label={`Auto-refresh ${refreshLabel(PULL_INTERVAL_MINUTES)}`}>
-            AUTO-REFRESH {refreshLabel(PULL_INTERVAL_MINUTES)}
-          </span>
+
         </div>
       </div>
 

@@ -51,6 +51,7 @@ export default function PlacesMap({ lang, refs, statuses }: { lang: Lang; refs: 
   const [box, setBox] = useState<Size>({ w: 0, h: 0 });
   const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
   const [selected, setSelected] = useState<string | null>(null);
+  const [hint, setHint] = useState(false);
   const fitted = useRef(false);
 
   const { pins, offMap } = useMemo(() => {
@@ -104,6 +105,8 @@ export default function PlacesMap({ lang, refs, statuses }: { lang: Lang; refs: 
   }, [pins]);
 
   const content = useMemo(() => coverSize(IMG_SIZE, box), [box]);
+  /** one image pixel per CSS pixel is as far as a raster basemap can honestly go */
+  const maxZoom = useMemo(() => Math.max(1.5, Math.min(6, IMG_SIZE.w / Math.max(1, content.w))), [content]);
 
   const fit = useCallback(() => {
     const b = corridorBounds(pins);
@@ -114,9 +117,9 @@ export default function PlacesMap({ lang, refs, statuses }: { lang: Lang; refs: 
   const zoomBy = useCallback(
     (factor: number, px?: number, py?: number) => {
       if (!box.w) return;
-      setView((v) => zoomAbout(v, px ?? box.w / 2, py ?? box.h / 2, factor, content, box));
+      setView((v) => zoomAbout(v, px ?? box.w / 2, py ?? box.h / 2, factor, content, box, maxZoom));
     },
-    [box, content],
+    [box, content, maxZoom],
   );
 
   // ---- pointer: drag to pan, two fingers to pinch, wheel to zoom ------------------------------------------
@@ -145,7 +148,7 @@ export default function PlacesMap({ lang, refs, statuses }: { lang: Lang; refs: 
       const mx = (a.x + b.x) / 2 - rect.left;
       const my = (a.y + b.y) / 2 - rect.top;
       const target = (pinchStart.current.scale * dist) / pinchStart.current.dist;
-      setView((v) => zoomAbout(v, mx, my, target / v.scale, content, box));
+      setView((v) => zoomAbout(v, mx, my, target / v.scale, content, box, maxZoom));
       return;
     }
     const d = drag.current;
@@ -157,12 +160,32 @@ export default function PlacesMap({ lang, refs, statuses }: { lang: Lang; refs: 
     if (pinch.current.size < 2) pinchStart.current = null;
     if (drag.current?.id === e.pointerId) drag.current = null;
   };
-  const onWheel = (e: React.WheelEvent) => {
-    if (!box.w) return;
-    e.preventDefault();
-    const rect = boxRef.current?.getBoundingClientRect();
-    setView((v) => zoomAbout(v, e.clientX - (rect?.left ?? 0), e.clientY - (rect?.top ?? 0), 1 - e.deltaY * 0.0015, content, box));
-  };
+  // React attaches wheel listeners passively, so preventDefault there is ignored and the page scrolled *and* the
+  // map zoomed. A non-passive listener fixes that — and plain scrolling stays the page's, so the map can never
+  // trap the reader: ⌘/ctrl + scroll zooms, a plain scroll shows a hint and scrolls on (owner, 30 Aug).
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (!box.w) return;
+      if (!(e.ctrlKey || e.metaKey)) {
+        setHint(true);
+        return;
+      }
+      e.preventDefault();
+      const rect = el.getBoundingClientRect();
+      setView((v) => zoomAbout(v, e.clientX - rect.left, e.clientY - rect.top, 1 - e.deltaY * 0.002, content, box, maxZoom));
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [box, content, maxZoom]);
+
+  // the hint fades on its own
+  useEffect(() => {
+    if (!hint) return;
+    const id = setTimeout(() => setHint(false), 2200);
+    return () => clearTimeout(id);
+  }, [hint]);
 
   const chosen = selected ? (pins.find((p) => p.id === selected) ?? null) : null;
   const cardPos = chosen && box.w ? { left: Math.max(8, Math.min(chosen.f.x * content.w * view.scale + view.tx - 110, box.w - 236)), top: Math.max(8, Math.min(chosen.f.y * content.h * view.scale + view.ty + 14, box.h - 150)) } : null;
@@ -171,12 +194,11 @@ export default function PlacesMap({ lang, refs, statuses }: { lang: Lang; refs: 
     <div className="mt-3" data-block="places-map">
       <div
         ref={boxRef}
-        className="relative w-full h-[58vh] min-h-[320px] max-h-[560px] md:h-[520px] b-ink rounded-r2 shadow-hard-3 overflow-hidden bg-ground touch-none select-none cursor-grab active:cursor-grabbing"
+        className="relative w-full h-[58vh] min-h-[320px] max-h-[560px] md:h-[520px] b-ink rounded-r2 shadow-hard-3 overflow-hidden bg-ground touch-pan-y select-none cursor-grab active:cursor-grabbing"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        onWheel={onWheel}
         data-testid="places-map"
       >
         <div className="absolute top-0 left-0 origin-top-left will-change-transform" style={{ width: content.w, height: content.h, transform: `translate(${view.tx}px, ${view.ty}px) scale(${view.scale})` }}>
@@ -267,6 +289,11 @@ export default function PlacesMap({ lang, refs, statuses }: { lang: Lang; refs: 
             ⌂
           </button>
         </div>
+        {hint ? (
+          <div className="absolute inset-0 z-20 grid place-items-center bg-ink/45 pointer-events-none" role="status">
+            <span className="bg-card b-ink-2 rounded-r2 px-3 py-2 font-bold text-[13px] text-ink shadow-hard-2">{t(lang, "map.wheel_hint")}</span>
+          </div>
+        ) : null}
         <div className="absolute bottom-0 left-0 z-10 bg-card/85 px-2 py-[3px] rounded-tr-r2 font-medium text-[10px] text-muted pointer-events-none">{t(lang, "map.attribution")}</div>
       </div>
 

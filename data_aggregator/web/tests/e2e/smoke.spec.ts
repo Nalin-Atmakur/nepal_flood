@@ -1,14 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 const LANGS = ["en", "ne", "hi", "zh"] as const;
-const HOME_BLOCKS = ["right-now", "corridor", "yours"] as const;
+const HOME_BLOCKS = ["hero", "spread", "corridor", "yours"] as const;
 const NUMBERS_BLOCKS = ["yours", "side", "stats", "first-hours"] as const;
 const LATEST_BLOCKS = ["yours", "digest", "latest", "river"] as const;
 const WAIT = { timeout: 15_000 };
 
 for (const lang of LANGS) {
   test.describe(`/${lang}`, () => {
-    test("home is three things (right now · corridor · your part) with the tabs and the LIVE chip", async ({ page }) => {
+    test("home leads with the event, then the share ask, the corridor and your part", async ({ page }) => {
       const res = await page.goto(`/${lang}`);
       expect(res?.status()).toBe(200);
       for (const block of HOME_BLOCKS) {
@@ -16,7 +16,7 @@ for (const lang of LANGS) {
       }
       const blocks = await page.locator("main [data-block]").evaluateAll((els) => els.map((e) => e.getAttribute("data-block")));
       expect(blocks.filter((b) => !HOME_BLOCKS.includes(b as (typeof HOME_BLOCKS)[number]))).toEqual([]);
-      await expect(page.locator('[data-block="right-now"]').first()).toBeVisible(WAIT);
+      await expect(page.locator('[data-block="hero"] [data-testid="hero-figures"]').first()).toBeVisible(WAIT);
       await expect(page.getByText("LIVE", { exact: true }).first()).toBeVisible(WAIT);
       await expect(page.locator('nav[aria-label] a[aria-current="page"]').first()).toBeAttached(WAIT);
     });

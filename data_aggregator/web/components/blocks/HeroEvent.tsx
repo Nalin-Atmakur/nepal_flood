@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AGENCIES } from "@/lib/config";
 import { fmtAsOf, fmtInt } from "@/lib/format";
 import { href, t, type Lang } from "@/lib/i18n";
-import { pickFigure, type FigureLatest } from "@/lib/queries";
+import { pickFigure, type DigestRow, type FigureLatest } from "@/lib/queries";
 import SinceWave from "./SinceWave";
 
 /**
@@ -16,7 +16,12 @@ import SinceWave from "./SinceWave";
  *   [ 675 dead ] [ 2,498 out of contact ] [ 7,514 rescued ]      NDRRMA · as of … ↗ · why they differ →
  *   ● 4 d 14 h since the wave · Every hour matters.
  */
-export default function HeroEvent({ lang, figures }: { lang: Lang; figures: FigureLatest[] | null }) {
+/** A digest headline that just restates the three numbers above it is noise here. */
+function recapsNumbers(headline: string): boolean {
+  return (headline.match(/\d[\d,]*/g) ?? []).length >= 3;
+}
+
+export default function HeroEvent({ lang, figures, digest }: { lang: Lang; figures: FigureLatest[] | null; digest?: DigestRow | null }) {
   const ndrrma = AGENCIES[0];
   const dead = pickFigure(figures, ndrrma.publishers, ndrrma.dead);
   const missing = pickFigure(figures, ndrrma.publishers, ndrrma.missing);
@@ -57,6 +62,13 @@ export default function HeroEvent({ lang, figures }: { lang: Lang; figures: Figu
               {t(lang, "hero.why")}
             </Link>
           </div>
+
+          {digest?.headline && !recapsNumbers(digest.headline) ? (
+            <Link href={href(lang, "/latest")} className="block mt-3 pt-3 border-t-[2px] border-rule no-underline text-ink hover:text-ink group">
+              <span className="font-extrabold text-[15px] md:text-[18px] lh-tight [text-wrap:balance] group-hover:underline">{digest.headline}</span>
+              <span className="block font-semibold text-[12px] text-ultra mt-[2px]">{t(lang, "rightnow.more")}</span>
+            </Link>
+          ) : null}
 
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 m-0 mt-3 pt-3 border-t-[2px] border-rule font-bold text-[12.5px] md:text-[13.5px] text-live">
             <span className="inline-block w-[9px] h-[9px] rounded-full bg-live animate-pulse" aria-hidden="true" />

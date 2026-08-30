@@ -527,5 +527,6 @@
   "hero.path_title": "Follow the flood's path",
   "hero.path_sub": "what the wave did, minute by minute — and the places it reached",
   "spread.title": "Know anyone with family in Rasuwa, Nuwakot or Dhading?",
-  "spread.body": "Send them this page. Most people searching do not know these numbers exist, and the one person who remembers where someone was may be two forwards away."
+  "spread.body": "Send them this page. Most people searching do not know these numbers exist, and the one person who remembers where someone was may be two forwards away.",
+  "map.wheel_hint": "Hold ⌘ or Ctrl and scroll to zoom · or use + and −"
 }
