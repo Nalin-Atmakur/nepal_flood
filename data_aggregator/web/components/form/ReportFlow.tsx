@@ -56,7 +56,7 @@ export default function ReportFlow({ lang, places, initialType, initialPlaceId, 
   return (
     <main className="max-w-[1280px] mx-auto px-4 md:px-12 py-5 md:py-10" data-page="report">
       {step === "box" ? (
-        <div className="flex flex-col gap-5 md:gap-7">
+        <div className="flex flex-col gap-5 md:gap-7 max-w-[880px] mx-auto">
           {/* how it works — one slim line, away from the inputs */}
           <p className="m-0 bg-board text-white b-ink-2 rounded-r2 px-3 py-2 md:px-4 font-medium text-[12.5px] md:text-[13px] lh-body">
             <span className="arcade text-amber mr-2" style={{ fontSize: 8 }}>

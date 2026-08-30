@@ -307,7 +307,7 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
   const micDisabled = micSupported === false;
 
   return (
-    <form onSubmit={onSubmit} noValidate data-step="box" className="flex flex-col max-w-[820px]">
+    <form onSubmit={onSubmit} noValidate data-step="box" className="flex flex-col">
       <div className="flex items-center gap-[10px]">
         {onBack ? (
           <button
