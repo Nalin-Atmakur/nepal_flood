@@ -113,3 +113,22 @@ in 10 min · today · since data pull · AUTO-REFRESH), and that card is the fir
 Latest news (not on /places/{id}, /sources, /about, /report, /me). The tab formerly labelled "Latest" is
 "Latest news" (NE पछिल्ला समाचार · HI ताज़ा ख़बरें); the URL `/latest` is unchanged. The standalone `Scoreboard`
 block is no longer rendered anywhere; its logic lives in `lib/use-live-counts.ts`.
+
+## First-visit walkthrough (30 Aug, lane V3)
+
+Captured every tab on phone (EN/NE) and laptop (EN) with a Playwright walk; no horizontal overflow anywhere,
+all tap targets ≥ 44 px. Fixed in `9efd2c5`:
+
+| Page | Stumble | Fix |
+|---|---|---|
+| Home | first viewport never names the event | `RightNow` header line: "Bhote Koshi–Trishuli flood · 26 August 2026 · Rasuwa → Chitwan" (`rightnow.event`) |
+| Home | digest headline repeats the three numbers directly above it | headline hidden when it carries ≥ 3 numbers; "What changed today →" link stays |
+| Numbers / Places / Latest news | the tall "Your part" card repeats on every tab | `<YourPart compact />` — title + button + counters, no sub-copy |
+| Places (phone) | amber pill on each card has no label | "unknown" caption under the pill |
+| Places / Sources | no `<h1>` | `SectionHead as="h1"` |
+| Report (phone) | bottom bar highlights Home | `/report`, `/run` highlight nothing (the ＋ is the action) |
+| All | "it takes five minutes" contradicts "one message is enough"; "since data pull" / "no pull yet" is pipeline jargon | "one message is enough", "since last update", "not updated yet" (en/ne/hi) |
+
+Left for the corridor lane (files not owned here): the empty story-feed box under the canvas is a blank
+bordered rectangle on phones before the first event; "The corridor" heading has no one-line explainer for a
+first-time viewer. Not fixed, cosmetic: `/sources` table cells clip mid-word on phones (the table scrolls).
