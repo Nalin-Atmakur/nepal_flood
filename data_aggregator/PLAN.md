@@ -244,7 +244,7 @@ Everything writes to DERIVED; one module per step under `pipeline/processing/` (
  │ [EN] [नेपाली] [हिन्दी]                                    Add what you know ▸ │
  ├──────────────────────────────────────────────────────────────────────────┤
  │ Police 1155 · Tourist Police 1144 · MoFA ECR +977-9744441227 ·           │
- │ Red Cross 1130 · NEOC 1149 — not a substitute for official reporting     │
+ │ Red Cross 1130 · Disaster hotline 1234 (NEOC) — not a substitute for official reporting     │
  ├──────────────────────────────────────────────────────────────────────────┤
  │ ▓▓▓ 3D CORRIDOR ▓▓▓  Gyirong → Bharatpur terrain, flood path draped,     │
  │      places as markers coloured by status, the two barrier lakes         │

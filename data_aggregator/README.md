@@ -1,6 +1,6 @@
 # nepalfloodtracker.com — data_aggregator
 
-Live aggregation site and questionnaire for the 26 August 2026 Bhote Koshi / Trishuli flood (Rasuwa → Nuwakot → Dhading → Chitwan). Volunteer-run. **Not an official source**: it collects what public registries, feeds and people already say, reconciles it, and shows it with its source and time; it does not replace reporting to Police 1155 · Tourist Police 1144 · MoFA ECR +977-9744441227 · Red Cross 1130 · NEOC 1149.
+Live aggregation site and questionnaire for the 26 August 2026 Bhote Koshi / Trishuli flood (Rasuwa → Nuwakot → Dhading → Chitwan). Volunteer-run. **Not an official source**: it collects what public registries, feeds and people already say, reconciles it, and shows it with its source and time; it does not replace reporting to Police 1155 · Tourist Police 1144 · MoFA ECR +977-9744441227 · Red Cross 1130 · Disaster hotline 1234 (NEOC).
 
 Live: https://www.nepalfloodtracker.com (apex redirects to `www`). Tonight's build log and queue: `PROGRESS.md`.
 

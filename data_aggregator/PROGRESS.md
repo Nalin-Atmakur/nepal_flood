@@ -135,3 +135,4 @@ Priority order (value ÷ effort), each = sources.yaml entry (if missing) + `norm
 
 ## Test data in the live DB
 - reports_archive: RLS probe row (withdrawn) from db/tests; web e2e "TEST REPORT — please ignore" (withdrawn); pipeline lane will add one synthetic row (withdrawn after).
+- 11:25 BST 30 Aug · Hotline verified and changed: 1149 → **1234** (MoHA disaster helpline, July 2026; D-057). config.ts + README/CONTRIBUTING/PLAN; lint/113 unit/build/23 e2e green; deployed; live page shows "Disaster hotline (NEOC) 1234", zero 1149 hits.

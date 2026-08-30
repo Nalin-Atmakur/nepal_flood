@@ -49,7 +49,7 @@ export const OFFICIAL_CHANNELS: OfficialChannel[] = [
     short: "MoFA ECR",
   },
   { id: "red_cross", label: "Nepal Red Cross", number: "1130", tel: "1130", short: "Red Cross 1130" },
-  { id: "neoc", label: "NEOC", number: "1149", tel: "1149", short: "NEOC 1149" },
+  { id: "neoc", label: "Disaster hotline (NEOC)", number: "1234", tel: "1234", short: "Disaster line 1234" },
 ];
 
 /** Section 03 columns, in design order, mapped to `figures_latest.publisher`. */

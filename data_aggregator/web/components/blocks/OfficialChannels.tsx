@@ -4,7 +4,7 @@ import { t, type Lang } from "@/lib/i18n";
 /**
  * The official-channels bar under the header (Home v3): exact text from the design.
  * Desktop: "Police 1155 · Tourist Police 1144 · MoFA Emergency Control Room +977-9744441227 · emergency@mofa.gov.np ·
- * Nepal Red Cross 1130 · NEOC 1149 — This page is not a substitute for official reporting."
+ * Nepal Red Cross 1130 · Disaster hotline 1234 (NEOC) — This page is not a substitute for official reporting."
  * Mobile: short labels on one line, then the disclaimer.
  */
 export default function OfficialChannels({ lang }: { lang: Lang }) {

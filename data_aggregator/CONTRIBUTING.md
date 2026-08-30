@@ -102,7 +102,7 @@ Names, phone numbers, passport numbers, photos and reporter contact details exis
 
 If you are unsure whether a value is personal data, treat it as if it is. Suspected leak: stop, note the rows, tell the maintainer (`contact@nepalfloodtracker.com`), fix forward with a migration or a code change, and record it in `docs/decisions-log.md`.
 
-The site is volunteer-run and not an official source. Every page carries the official channels (Police 1155 · Tourist Police 1144 · MoFA ECR · Red Cross 1130 · NEOC 1149); nothing we build replaces reporting to them.
+The site is volunteer-run and not an official source. Every page carries the official channels (Police 1155 · Tourist Police 1144 · MoFA ECR · Red Cross 1130 · Disaster hotline 1234 (NEOC)); nothing we build replaces reporting to them.
 
 ## 9. Where docs live
 
