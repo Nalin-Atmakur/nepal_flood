@@ -1,0 +1,47 @@
+[
+ {
+  "url": "https://english.khabarhub.com/2026/29/565536/",
+  "title": "NTC restores tower near Trishuli-3A; Betrawati and parts of Kalikasthan back on network",
+  "body": "Nepal Telecom said 80 of 120 affected sites have been restored. The Tupche BTS resumed on Saturday with a generator flown in by helicopter.",
+  "published_at": "2026-08-29T06:00:00+00:00",
+  "places": []
+ },
+ {
+  "url": "https://ictframe.com/ntc-restores-mobile-network/",
+  "title": "NTC restores mobile network in Dhunche and Syabrubesi",
+  "body": "Goljung tower back on air; Timure hill site still pending.",
+  "published_at": "2026-08-28T09:00:00+00:00",
+  "places": [
+   "dhunche",
+   "syabrubesi",
+   "goljung",
+   "timure"
+  ]
+ },
+ {
+  "url": "https://example.org/outage",
+  "title": "रसुवाका गाउँहरू अझै सञ्चारविहीन, टिमुरे हिलको टावर बन्द",
+  "body": "",
+  "published_at": "2026-08-28T06:00:00+00:00",
+  "places": [
+   "timure",
+   "rasuwa"
+  ]
+ },
+ {
+  "url": "https://example.org/old",
+  "title": "NTC restores tower at Langtang",
+  "body": "",
+  "published_at": "2026-08-20T06:00:00+00:00",
+  "places": [
+   "langtang_village"
+  ]
+ },
+ {
+  "url": "https://example.org/offtopic",
+  "title": "Stock market closes higher",
+  "body": "",
+  "published_at": "2026-08-29T06:00:00+00:00",
+  "places": []
+ }
+]

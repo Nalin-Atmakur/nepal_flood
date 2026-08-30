@@ -1,0 +1,2 @@
+#EventID|Time|Latitude|Longitude|Depth/km|Author|Catalog|Contributor|ContributorID|MagType|Magnitude|MagAuthor|EventLocationName|EventType
+gfz2026qrfy|2026-08-26T02:52:23.17|28.3|85.5|0.0|||GFZ|gfz2026qrfy|Mw|5.69||Nepal|landslide

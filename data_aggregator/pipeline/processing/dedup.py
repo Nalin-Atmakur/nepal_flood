@@ -17,11 +17,19 @@ Scoring `score(a, b)` (pure, unit-tested):
 Thresholds: ≥ 0.9 merge · 0.6–0.9 → dedup_queue · < 0.6 distinct.
 Output: entities (one per cluster, status = most recent/strongest event: rescued > deceased > reported_safe >
 seen > missing > unknown), entity_events (one per source record), dedup_queue rows for the grey zone.
-Idempotent: entities are keyed by person_key (upsert), events are re-created per run for that entity.
+Idempotent: entities are keyed by person_key (upsert), events are re-created per run for that entity, `merged_from`
+is rebuilt from the cluster every run (never appended), grey pairs are only queued once while open.
+Skip guard: `input_hash(records)` (sha256 over every record's source, external_id, status, place_id, person_key)
+is stored in _state.json["dedup"]; when the hash is unchanged since the last written run and `entities` is
+non-empty, ② skips the pairwise pass and the writes (DEDUP_FORCE=1 in the environment overrides).
+Measurement: `merge_stats(ctx)` → {entities, merged, merge_rate, queue_open, by_source_pair} (cached per run in
+ctx.cache["dedup_stats"]; ⑤ stats and ⑥ findings read it).
 """
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 from collections import defaultdict
 from datetime import datetime
 from typing import Any
@@ -216,9 +224,46 @@ def ndrrma_records(ctx: ProcCtx) -> list[dict[str, Any]]:
     return out
 
 
+def input_hash(records: list[dict[str, Any]]) -> str:
+    """Pure, order-insensitive: the same records (id, status, place, key) → the same hash."""
+    keys = sorted(f"{r.get('source')}|{r.get('external_id')}|{r.get('status')}|{r.get('place_id')}|{r.get('person_key')}" for r in records)
+    return hashlib.sha256("\n".join(keys).encode("utf-8")).hexdigest()[:24]
+
+
+def merge_stats_from(entities: list[dict[str, Any]], open_queue: int = 0) -> dict[str, Any]:
+    """Pure: entities rows (id, merged_from) → the dedup measurement."""
+    merged = [e for e in entities if len(e.get("merged_from") or []) > 1]
+    pairs: dict[str, int] = defaultdict(int)
+    for e in merged:
+        srcs = sorted({m.get("source") or "?" for m in e["merged_from"]})
+        pairs["+".join(srcs)] += 1
+    n = len(entities)
+    return {"entities": n, "merged": len(merged), "merge_rate": round(len(merged) / n, 4) if n else 0.0,
+            "cross_source": sum(v for k, v in pairs.items() if "+" in k), "by_source_pair": dict(sorted(pairs.items())),
+            "queue_open": int(open_queue)}
+
+
+def merge_stats(ctx: ProcCtx) -> dict[str, Any]:
+    """The measurement for this run — computed once (after ② wrote) and memoised in ctx.cache."""
+    if "dedup_stats" in ctx.cache:
+        return ctx.cache["dedup_stats"]
+    ents = ctx.db.select_all("entities", {"select": "id,merged_from"})
+    q = ctx.db.count("dedup_queue", {"decision": "is.null"})
+    ctx.cache["entities_merged_from"] = ents          # ⑥ findings reuses the rows instead of re-reading 10k entities
+    ctx.cache["dedup_stats"] = merge_stats_from(ents, q)
+    return ctx.cache["dedup_stats"]
+
+
 def run(ctx: ProcCtx) -> dict[str, Any]:
+    ctx.cache.pop("dedup_stats", None)
     try:
         records = form_records(ctx) + opmcm_records(ctx) + ndrrma_records(ctx)
+        h = input_hash(records)
+        prev = (ctx.state.data.get("dedup") or {}).get("input_hash")
+        if h == prev and not os.environ.get("DEDUP_FORCE") and not ctx.dry_run and ctx.db.count("entities") > 0:
+            ms = merge_stats(ctx)
+            log.info("dedup.unchanged", records=len(records), input_hash=h, entities=ms["entities"])
+            return {"records": len(records), "skipped": "input unchanged since last run", "input_hash": h, "stats": ms}
         clusters, queue = cluster(records)
         multi = [c for c in clusters if len(c) > 1]
         keyed = [c for c in clusters if any(r.get("person_key") for r in c)]
@@ -280,7 +325,11 @@ def run(ctx: ProcCtx) -> dict[str, Any]:
         matched_ids = [r["external_id"] for c in multi for r in c if r["source"] == "form" and len({x["source"] for x in c}) > 1]
         for rid in matched_ids:
             db.update("reports_archive", {"id": f"eq.{rid}", "status": "in.(anonymised,processed)"}, {"status": "matched"})
-        return {"records": len(records), "clusters": len(clusters), "entities": len(rows), "events": len(ev), "queued": len(q), "matched_reports": len(matched_ids)}
+        ms = merge_stats(ctx)
+        ctx.state.data["dedup"] = {"input_hash": h, "records": len(records), "at": ctx.now.isoformat()}
+        log.info("dedup.measured", **{k: v for k, v in ms.items() if k != "by_source_pair"})
+        return {"records": len(records), "clusters": len(clusters), "entities": len(rows), "events": len(ev), "queued": len(q),
+                "matched_reports": len(matched_ids), "stats": ms}
     except Exception as e:  # noqa: BLE001
         log.error("dedup.failed", error=f"{type(e).__name__}: {str(e)[:200]}")
         return {"error": f"{type(e).__name__}: {str(e)[:120]}"}

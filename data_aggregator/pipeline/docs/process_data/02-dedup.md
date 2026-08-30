@@ -57,6 +57,34 @@ evidence available once names are hashed; conflicting sex still pulls it to 0.4 
 |---|---|---|
 | `reports_anon`, `raw_pulls` (OPMCM + NDRRMA projections), `places` | `entities` (upsert), `entity_events` (replace per entity), `dedup_queue` (insert new), `reports_archive.status='matched'` | `dedup.clustered` (records, clusters, merged, queued) |
 
+## Skip guard (the scheduler runs ② every 4 h; ~13k records take a few minutes)
+
+`input_hash(records)` — sha256 over every input record's `source | external_id | status | place_id | person_key`,
+order-insensitive — is stored in `_state.json["dedup"]` after a written run. On the next run, when the hash is
+identical **and** `entities` is non-empty, ② logs `dedup.unchanged` and returns `{"skipped": …, "stats": …}` without
+the pairwise pass or any write (③ reads the previous entities, which are by definition still right). A new report, a
+new OPMCM/NDRRMA pull, a status or place change all change the hash. `DEDUP_FORCE=1` in the environment forces a
+full pass; `--dry-run` never records a hash.
+
+## Measurement (`merge_stats`)
+
+After writing, ② measures itself and memoises the result in `ctx.cache["dedup_stats"]` (⑤ `duplicates_merged`
+and ⑥ `duplicate_rate` read it; the step result carries it as `stats`):
+
+| field | meaning |
+|---|---|
+| `entities` | rows in `entities` |
+| `merged` | entities whose `merged_from` holds > 1 record (the same person on several lists or several reports) |
+| `merge_rate` | `merged / entities` |
+| `cross_source` | merged entities whose records come from ≥ 2 different sources (form / opmcm / ndrrma) |
+| `by_source_pair` | `{"ndrrma+opmcm": n, "form+opmcm": n, "opmcm": n, …}` |
+| `queue_open` | `dedup_queue` rows with no decision yet |
+
+**Why re-runs never double-count.** `merged_from` is rebuilt from the cluster on every run (never appended);
+`entity_events` for a touched entity are deleted and re-created; grey pairs are only queued while no open
+identical pair exists; entities are found by `(person_key, sex, age_band)` before insert. `merge_stats_from`
+is pure and `tests/test_dedup.py::test_merge_stats_and_idempotent_rebuild` pins the rebuild.
+
 ## Failure behaviour
 
 The whole step is one try/except (`dedup.failed`), returning `{"error"}` — ③ then runs on the

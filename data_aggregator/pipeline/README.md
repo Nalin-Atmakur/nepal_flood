@@ -24,9 +24,13 @@ to the Supabase project (PostgREST + Storage + Auth admin over HTTPS) and never 
    │  ① resolve_places articles.places · reports_anon.place_id                   │
    │  ② dedup          entities · entity_events · dedup_queue                    │
    │  ③ ledger         place_status · place_timeline                             │
+   │  ③b press_figures Police / Tourism counts quoted in articles ─▶ figures     │
    │  ④ figures_latest latest per publisher × metric × scope                     │
    │  ⑤ stats          stats · report_counts                                     │
    │  ⑥ findings       findings                                                  │
+   │  ⑦ digest         digest (day × en/ne/hi)                                   │
+   │  ⑧ timeline       event_timeline (dated milestones)                         │
+   │  ⑨ trends         figure_series (publisher × metric × day)                  │
    └──────────────────────────────────────────────────────────────────────────────┘
                         │
                         ▼
@@ -53,7 +57,7 @@ the OpenAI cost ledger. `run.log` is the structured log (no PII, secrets redacte
 3. **First run**
    ```
    .venv/bin/python pull_external_data.py --force      # all 51 sources, ignore cadence/hashes (~5 min)
-   .venv/bin/python process_data.py                    # steps ⓪–⑥
+   .venv/bin/python process_data.py                    # steps ⓪–⑨
    ```
    Expect: a `pulls` row per source, `raw_pulls` bodies, ≥ 5 publishers in `figures`, ~280 gauge
    stations, > 50 articles, then `figures_latest`, `place_status`, `place_timeline`, `stats`
@@ -107,7 +111,7 @@ pipeline/
 ├── pull_external_data.py  process_data.py  run.sh  requirements.txt  .env(.example)
 ├── lib/          config · net · http · db · state · log · text · places · llm      (lib/README.md)
 ├── normalisers/  one module per wave-1 source + _common, _rss                       (normalisers/README.md)
-├── processing/   anonymise · resolve_places · dedup · ledger · figures_latest · stats · report_counts · findings
+├── processing/   anonymise · resolve_places · dedup · ledger · press_figures · figures_latest · stats · report_counts · findings · digest · timeline · trends
 ├── tests/        pytest + fixtures/ (anonymised captures) + build_fixtures.py
 ├── docs/         README.md · pull_external_data/01–07 · process_data/00–08
 ├── snapshots/    gitignored (local-only mode, place_hints.jsonl)
@@ -131,7 +135,9 @@ pipeline/
   [05-stats](docs/process_data/05-stats.md) · [06-findings](docs/process_data/06-findings.md) ·
   [07-digest](docs/process_data/07-digest.md) ·
   [08-llm-budget](docs/process_data/08-llm-budget.md) ·
-  [09-failure-modes](docs/process_data/09-failure-modes.md)
+  [09-failure-modes](docs/process_data/09-failure-modes.md) ·
+  [10-timeline-and-trends](docs/process_data/10-timeline-and-trends.md) ·
+  [03b-press-figures](docs/process_data/03b-press-figures.md)
 - [lib/README.md](lib/README.md) · [normalisers/README.md](normalisers/README.md) ·
   [processing/README.md](processing/README.md)
 

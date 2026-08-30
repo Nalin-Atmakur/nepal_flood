@@ -7,13 +7,16 @@ Docs: docs/process_data/00-anonymise.md … 07-digest.md, then 08-llm-budget.md,
     ① resolve_places   articles.places, reports_anon.place_id                    processing/resolve_places.py
     ② dedup            entities / entity_events / dedup_queue                   processing/dedup.py
     ③ ledger           place_status / place_timeline                            processing/ledger.py
+    ③b press_figures   Police / Tourism counts quoted in articles → figures     processing/press_figures.py  (--step 3.5)
     ④ figures_latest   latest per publisher × metric × scope                    processing/figures_latest.py
     ⑤ stats            striking + live numbers, report_counts                   processing/stats.py
     ⑥ findings         data-quality findings                                    processing/findings.py
-    ⑦ digest           daily "what changed" bullets (EN/NE/HI) + event_timeline  processing/digest.py
+    ⑦ digest           daily "what changed" bullets (EN/NE/HI)                  processing/digest.py
+    ⑧ timeline         dated milestones appended to event_timeline              processing/timeline.py
+    ⑨ trends           figure_series: one value per publisher × metric × day    processing/trends.py
     then reports_archive.status anonymised → processed (matched rows keep 'matched')
 
-Flags: --step N (repeatable; default all) · --dry-run (compute, write nothing) · --verbose ·
+Flags: --step N (repeatable; default all; 3.5 = ③b) · --dry-run (compute, write nothing) · --verbose ·
 --purge-irrelevant (one-off maintenance: drop stored articles that fail the relevance gate).
 Needs SUPABASE_URL (the DERIVED zone lives only in the DB); exits 2 without it.
 A step that fails logs and returns {"error"}; the next step still runs; exit code stays 0.
@@ -34,17 +37,21 @@ from lib.llm import LLM  # noqa: E402
 from lib.places import Gazetteer  # noqa: E402
 from lib.state import State, utcnow  # noqa: E402
 from processing import ProcCtx  # noqa: E402
-from processing import anonymise, dedup, digest, figures_latest, findings, ledger, purge_irrelevant, resolve_places, stats  # noqa: E402
+from processing import (anonymise, dedup, digest, figures_latest, findings, ledger, press_figures, purge_irrelevant,  # noqa: E402
+                        resolve_places, stats, timeline, trends)
 
 STEPS = [
     (0, "anonymise", anonymise.run),
     (1, "resolve_places", resolve_places.run),
     (2, "dedup", dedup.run),
     (3, "ledger", ledger.run),
+    (3.5, "press_figures", press_figures.run),     # ③b — before ④ so figures_latest picks the press figures up
     (4, "figures_latest", figures_latest.run),
     (5, "stats", stats.run),
     (6, "findings", findings.run),
     (7, "digest", digest.run),
+    (8, "timeline", timeline.run),
+    (9, "trends", trends.run),
 ]
 
 
@@ -59,7 +66,7 @@ def finalise_statuses(ctx: ProcCtx) -> dict[str, int]:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
-    ap.add_argument("--step", action="append", type=int, default=[], help="run only this step number (repeatable)")
+    ap.add_argument("--step", action="append", type=float, default=[], help="run only this step number (repeatable; 3.5 = press_figures)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--purge-irrelevant", action="store_true", help="one-off: delete stored articles that fail the relevance gate, then exit")
     ap.add_argument("--verbose", action="store_true")
@@ -93,7 +100,7 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as e:  # noqa: BLE001 — belt and braces; steps catch their own errors
             log.error("process.step_crashed", step=n, name=name, error=f"{type(e).__name__}: {str(e)[:200]}")
             res = {"error": type(e).__name__}
-        summary[f"{n}-{name}"] = res
+        summary[f"{n:g}-{name}"] = res
         log.info("process.step", step=n, name=name, seconds=round(time.monotonic() - ts, 1), result=res)
     if not args.step or max(args.step) >= 7:
         summary["finalise"] = finalise_statuses(ctx)

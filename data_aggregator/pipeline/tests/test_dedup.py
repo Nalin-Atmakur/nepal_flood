@@ -80,3 +80,28 @@ def test_clustering_is_deterministic():
     assert queue == []
     again, _ = D.cluster(list(records))
     assert sorted(len(c) for c in again) == sizes
+
+
+def test_merge_stats_and_idempotent_rebuild():
+    pk = person_key(phone="9841234567")
+    records = [
+        rec(external_id="r1", person_key=pk, key_strength="phone", status="missing", at="2026-08-27T10:00:00+05:45"),
+        rec(source="opmcm", external_id="o1", person_key=pk, key_strength="phone", status="lost", at="2026-08-28T10:00:00+05:45"),
+        rec(source="opmcm", external_id="o2", person_key=person_key(name="A B", age=30, nationality="Nepali"), key_strength="name", status="lost"),
+    ]
+    ents = [D.entity_from_cluster(c) for c, in [(c,) for c in D.cluster(records)[0]] if any(r.get("person_key") for r in c)]
+    ms = D.merge_stats_from(ents, open_queue=2)
+    assert ms == {"entities": 2, "merged": 1, "merge_rate": 0.5, "cross_source": 1, "by_source_pair": {"form+opmcm": 1}, "queue_open": 2}
+    # a second pass over the same records rebuilds merged_from from scratch — nothing accumulates
+    again = [D.entity_from_cluster(c) for c in D.cluster(records)[0] if any(r.get("person_key") for r in c)]
+    assert sorted(len(e["merged_from"]) for e in again) == sorted(len(e["merged_from"]) for e in ents) == [1, 2]
+    assert D.merge_stats_from(again) == {**ms, "queue_open": 0}
+    assert D.merge_stats_from([]) == {"entities": 0, "merged": 0, "merge_rate": 0.0, "cross_source": 0, "by_source_pair": {}, "queue_open": 0}
+
+
+def test_input_hash_is_order_insensitive_and_status_sensitive():
+    a = rec(external_id="r1", person_key="k1", status="missing", place_id="timure")
+    b = rec(source="opmcm", external_id="o1", person_key="k2", status="lost")
+    h = D.input_hash([a, b])
+    assert h == D.input_hash([b, a]) and len(h) == 24
+    assert h != D.input_hash([a, dict(b, status="rescued")]) and h != D.input_hash([a]) and h != D.input_hash([a, dict(b, place_id="dhunche")])

@@ -64,3 +64,34 @@ gazetteer id are ignored until the gazetteer grows.
 
 One try/except (`ledger.failed`); the site keeps showing the previous `place_status` rows
 (`v_place_status_latest` takes the newest `as_of` per place).
+
+## phones (the telecom hook) and "last observed contact"
+
+```
+   articles (① places, last 3 d) ─▶ normalisers/ntc_restoration_articles.scan_articles ─▶ figures 'NTC/Ncell via press'
+                                                                                         telecom_restored / telecom_outage
+                                                                                         scope place:<id> · as_of = article date
+                                                  ┌──────────────────────────────────────────────┘ (upserted, then read back)
+                                                  ▼
+   phones_status(telecom figures for the place, telecom articles mentioning the place)
+        newest dated signal wins (a figure beats an article on the same instant):
+        restored → telecom_restored = true,  phones = "yes (since <d Mon>)"     e.g. Betrawati 29 Aug
+        outage   → telecom_restored = false, phones = "no"
+        nothing  → null / null   (undated restoration articles still give "yes")
+```
+
+- `TELECOM_RE`, `RESTORED_RE`, `OUTAGE_RE` are defined once in `normalisers/ntc_restoration_articles.py`
+  (docs/pull_external_data/05b-sources-wave2-geospatial-text.md §ntc_restoration_articles) and imported
+  here; `phones_from_articles()` is kept as the fallback for undated articles.
+- Timeline dots: `telecom_restored` (live) / `telecom_outage` (unknown) per dated figure, templates in `T`.
+- `last_contact_at` is the **last observed contact from the place** — `last_contact()` takes the max of
+  `reports_anon.event_time` placed here, NDRRMA `rescued`/`stationed` figure `as_of` here (skipped when `as_of` is
+  just the fetch time — `is_observed()`), the
+  `telecom_restored` instant, and `event_timeline` rows of kind `gauge` / `wave` / `impact` for the place
+  (Timure 26 Aug 08:45 NPT); futures (> now + 1 h) are dropped and **nothing is ever filled from a fetch
+  or compute time** — the column is NULL when no observation exists and the site shows "—".
+- `status_label = 'district'` for `places.kind = 'district'` and the `DISTRICT_LIKE` ids (`kathmandu`,
+  `bhotekoshi_rm_sindhupalchok`): their counts are still computed (the OPMCM projection lands there) but
+  the label lets the web split them out of the per-place table.
+
+Tests: `tests/test_ledger_phones.py`.

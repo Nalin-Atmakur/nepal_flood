@@ -10,16 +10,21 @@ day-by-day place_timeline rows. All arithmetic is in pure functions so tests can
                         + Σ subject_count of rescuer/agency reports here with status rescued|reported_safe
     unknown           = max(expected − confirmed_reached, 0)
     reports_count     = number of reports_anon rows placed here (withdrawn ones are never in reports_anon)
-    last_contact_at   = max(report event_time, entity last_contact_at, place-scoped figure as_of,
-                            article published_at mentioning the place, gauge observed_at)
-    telecom_restored / phones  from telecom articles (NTC|Ncell|tower|टावर|सञ्चार) that mention the place:
-                        'yes (since <d Mon>)' when restoration wording, 'no' when outage wording, else null
+    last_contact_at   = the last OBSERVED contact from the place: max(reports_anon.event_time placed here,
+                            NDRRMA rescued/stationed figure as_of here (only when as_of is not the fetch time), telecom_restored figure as_of here,
+                            event_timeline gauge/wave/impact events here) — never a fetch/compute time; NULL when none
+    telecom_restored / phones  "phones hook": the newest telecom signal for the place wins —
+                        figures 'NTC/Ncell via press' telecom_restored / telecom_outage (normalisers/ntc_restoration_articles,
+                        computed here from the last 3 days of place-resolved articles and upserted) and, as a fallback,
+                        telecom articles (TELECOM_RE) with RESTORED_RE / OUTAGE_RE wording:
+                        'yes (since <d Mon>)' · 'no' · null
     access            observed: HOT bridge 'Washed out' here → road_partial; helipad kind → helicopter_only;
                         Sitrep #8 road bullets (ACCESS_OBSERVED, dated 29 Aug) override; else 'unknown'
     hazard            places.below_barrier_lakes → 'below_barrier_lakes' else in_channel → 'in_channel' else null
     nearest_gauge     corridor gauge closest by km chainage: 'Galchhi — alive' / 'Rasuwagadhi — dead since 26 Aug 08:40'
     shelter           NDRRMA stationed count at a shelter/hospital in the same district, else sitrep shelter_people
-    status_label      no_data | mostly_unknown (unknown > expected/2) | mostly_reached
+    status_label      district (places.kind = 'district', plus the DISTRICT_LIKE ids the OPMCM projection swamps) |
+                        no_data | mostly_unknown (unknown > expected/2) | mostly_reached
     note              bridge/helipad facts + first line of the place's `notes`
 
 Timeline dots: confirmed (rescued/stationed figures, rescuer reports), unknown (lost/missing reports),
@@ -34,12 +39,16 @@ from datetime import datetime, timedelta
 from typing import Any
 
 from lib import config, log
+from normalisers.ntc_restoration_articles import LOOKBACK_DAYS as TELECOM_LOOKBACK_DAYS
+from normalisers.ntc_restoration_articles import OUTAGE_RE, RESTORED_RE, TELECOM_RE
+from normalisers.ntc_restoration_articles import PUBLISHER as TELECOM_PUBLISHER
+from normalisers.ntc_restoration_articles import scan_articles
 from processing import ProcCtx
 
 STEP = "03-ledger"
-TELECOM_RE = re.compile(r"\bNTC\b|Ncell|tower|BTS|telecom|mobile network|phone service|टावर|सञ्चार|मोबाइल|दूरसञ्चार|एनसेल|टेलिकम", re.I)
-RESTORED_RE = re.compile(r"restor|resum|back (?:up|on)|reconnect|operational|मर्मत|सञ्चालनमा|पुनः|सुचारु|फर्क", re.I)
-OUTAGE_RE = re.compile(r"still (?:down|out|cut)|without (?:communication|network|phone)|no (?:network|signal|communication)|cut off|सञ्चारविहीन|सम्पर्कविहीन|बन्द|अवरुद्ध|ठप्प", re.I)
+# TELECOM_RE / RESTORED_RE / OUTAGE_RE live in normalisers/ntc_restoration_articles (one definition for both lanes).
+DISTRICT_LIKE = {"kathmandu", "bhotekoshi_rm_sindhupalchok"}     # settlement-kind ids that behave like districts on the site
+CONTACT_TIMELINE_KINDS = {"gauge", "wave", "impact"}
 # Sitrep #8 (29 Aug 18:30 NPT) road status bullets + HOT survey — the only observed access facts so far.
 ACCESS_OBSERVED = {
     "dhunche": "road_partial", "galchhi": "road", "malekhu": "road", "mugling": "road", "benighat": "road", "gajuri": "road",
@@ -66,10 +75,16 @@ def unknown_count(expected: int, confirmed: int) -> int:
     return max(int(expected) - int(confirmed), 0)
 
 
-def status_label(expected: int, confirmed: int, unknown: int) -> str:
+def status_label(expected: int, confirmed: int, unknown: int, kind: str | None = None, place_id: str | None = None) -> str:
+    if kind == "district" or (place_id and place_id in DISTRICT_LIKE):
+        return "district"
     if expected == 0 and confirmed == 0:
         return "no_data"
     return "mostly_unknown" if unknown > expected / 2 else "mostly_reached"
+
+
+def is_district_like(place: Any, place_id: str | None = None) -> bool:
+    return bool(place is not None and getattr(place, "kind", "") == "district") or (place_id or "") in DISTRICT_LIKE
 
 
 def phones_from_articles(arts: list[dict[str, Any]]) -> tuple[bool | None, str | None]:
@@ -82,6 +97,51 @@ def phones_from_articles(arts: list[dict[str, Any]]) -> tuple[bool | None, str |
         if OUTAGE_RE.search(t):
             return False, "no"
     return None, None
+
+
+def phones_status(telecom_figs: list[dict[str, Any]], arts: list[dict[str, Any]]) -> tuple[bool | None, str | None, datetime | None]:
+    """
+    The phones hook. telecom_figs = figures 'NTC/Ncell via press' scoped to the place (telecom_restored / telecom_outage,
+    any order); arts = telecom articles mentioning the place. The newest dated signal wins; a figure beats an article on the
+    same instant. → (telecom_restored, display, restored_at).
+    """
+    events: list[tuple[datetime, int, bool]] = []          # (at, priority, restored?)
+    for f in telecom_figs:
+        d = _dt(f.get("as_of"))
+        if d and f.get("metric") in ("telecom_restored", "telecom_outage"):
+            events.append((d, 1, f["metric"] == "telecom_restored"))
+    for a in arts:
+        t = f"{a.get('title') or ''} {a.get('body') or ''}"
+        d = _dt(a.get("published_at"))
+        if not d or not TELECOM_RE.search(t):
+            continue
+        if RESTORED_RE.search(t):
+            events.append((d, 0, True))
+        elif OUTAGE_RE.search(t):
+            events.append((d, 0, False))
+    if not events:
+        restored, display = phones_from_articles(arts)     # undated articles still count
+        return restored, display, None
+    at, _, restored = max(events, key=lambda e: (e[0], e[1]))
+    if restored:
+        return True, f"yes (since {at.astimezone(config.KTM).strftime('%-d %b')})", at
+    return False, "no", None
+
+
+def is_observed(as_of: Any, fetched_at: Any) -> bool:
+    """A figure whose as_of is just its fetch time (the register gives no validity time) is not an observation."""
+    a, f = _dt(as_of), _dt(fetched_at)
+    if a is None:
+        return False
+    return f is None or abs((a - f).total_seconds()) > 120
+
+
+def last_contact(report_times: list[Any], figure_times: list[Any], telecom_times: list[Any], timeline_times: list[Any],
+                 now: datetime) -> datetime | None:
+    """Last observed contact from the place: max of the dated observations, futures (> now + 1 h) dropped, else None."""
+    cands = [_dt(v) for v in list(report_times) + list(figure_times) + list(telecom_times) + list(timeline_times)]
+    cands = [c for c in cands if c and c <= now + timedelta(hours=1)]
+    return max(cands) if cands else None
 
 
 def nearest_gauge_label(place_km: float | None, gauges_latest: dict[str, dict[str, Any]]) -> str | None:
@@ -110,6 +170,8 @@ T = {
     "precip": ("Forecast rain {v} mm", "वर्षा पूर्वानुमान {v} मिमि", "वर्षा पूर्वानुमान {v} मिमी"),
     "flying_good": ("Morning flying window: good", "बिहानको उडान अवसर: राम्रो", "सुबह की उड़ान खिड़की: अच्छी"),
     "flying_poor": ("Morning flying window: poor", "बिहानको उडान अवसर: कमजोर", "सुबह की उड़ान खिड़की: खराब"),
+    "telecom_restored": ("Mobile network reported restored (NTC/Ncell via press)", "मोबाइल नेटवर्क पुनः सञ्चालनमा (प्रेसमार्फत NTC/Ncell)", "मोबाइल नेटवर्क बहाल होने की खबर (प्रेस के ज़रिये NTC/Ncell)"),
+    "telecom_outage": ("Mobile network reported down (press)", "मोबाइल नेटवर्क बन्द रहेको खबर (प्रेस)", "मोबाइल नेटवर्क बंद होने की खबर (प्रेस)"),
 }
 
 
@@ -135,6 +197,11 @@ def _day(v: Any) -> str | None:
     return d.astimezone(config.KTM).strftime("%Y-%m-%d") if d else None
 
 
+def _jsonable_dt(v: Any) -> str | None:
+    d = _dt(v)
+    return d.isoformat() if d else None
+
+
 # ─── the step ────────────────────────────────────────────────────────────────
 
 def run(ctx: ProcCtx) -> dict[str, Any]:
@@ -151,11 +218,36 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
     since = (ctx.now - timedelta(days=config.ARTICLE_LOOKBACK_DAYS)).isoformat()
     reports = db.select_all("reports_anon", {"select": "id,place_id,subject_count,respondent_type,status,event_time,created_at"})
     entities = db.select_all("entities", {"select": "id,probable_place_id,last_place_id,last_contact_at,status"})
-    figs = db.select_all("figures", {"select": "publisher,metric,scope,value,as_of,note,url", "scope": "like.place:*",
+    figs = db.select_all("figures", {"select": "publisher,metric,scope,value,as_of,fetched_at,note,url", "scope": "like.place:*",
                                      "fetched_at": f"gte.{since}", "order": "as_of.desc"})
     arts = db.select_all("articles", {"select": "id,title,body,publisher,published_at,places,url", "places": "neq.{}",
                                       "fetched_at": f"gte.{since}", "order": "published_at.desc"})
     gauges = db.select_all("v_gauges_latest", {"select": "station_id,station_name,level,observed_at,alive"})
+    try:
+        timeline_events = db.select_all("event_timeline", {"select": "place_id,at,kind"})
+    except Exception as e:  # noqa: BLE001 — the seeded table is optional
+        log.warn("ledger.event_timeline_unavailable", error=type(e).__name__)
+        timeline_events = []
+    # phones hook: telecom figures derived from the last TELECOM_LOOKBACK_DAYS of place-resolved articles
+    # (normalisers/ntc_restoration_articles.scan_articles), upserted so the site's /numbers shows them too.
+    telecom_rows = scan_articles(arts, gaz, ctx.now, since=ctx.now - timedelta(days=TELECOM_LOOKBACK_DAYS))
+    if telecom_rows.figures and not ctx.dry_run:
+        try:
+            db.upsert_figures(telecom_rows.figures)
+        except Exception as e:  # noqa: BLE001 — the ledger still uses them in memory
+            log.error("ledger.telecom_figures_failed", error=f"{type(e).__name__}: {str(e)[:120]}")
+    telecom_here: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    seen_tel: set[tuple[str, str, str]] = set()
+    for f in [f for f in figs if f.get("publisher") == TELECOM_PUBLISHER] + telecom_rows.figures:
+        pid = str(f["scope"]).split(":", 1)[1].split("|")[0] if ":" in str(f.get("scope")) else None
+        key = (pid or "", str(f.get("metric")), str(_jsonable_dt(f.get("as_of"))))
+        if pid and key not in seen_tel:
+            seen_tel.add(key)
+            telecom_here[pid].append(f)
+    tl_times: dict[str, list[Any]] = defaultdict(list)
+    for ev in timeline_events:
+        if ev.get("place_id") and (ev.get("kind") or "") in CONTACT_TIMELINE_KINDS:
+            tl_times[ev["place_id"]].append(ev.get("at"))
     district_shelter = {}
     for f in db.select("figures", {"select": "scope,metric,value,as_of", "publisher": "eq.NDRRMA", "metric": "in.(shelter_people,shelter_sites)",
                                    "order": "as_of.desc", "limit": 40}):
@@ -178,14 +270,10 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
                     gauges_latest[pid] = {"alive": bool(g.get("alive")), "observed_at": g.get("observed_at"), "label": label, "level": g.get("level")}
 
     ent_here: dict[str, int] = defaultdict(int)
-    ent_last: dict[str, datetime] = {}
     for e in entities:
         pid = e.get("probable_place_id") or e.get("last_place_id")
         if pid:
             ent_here[pid] += 1
-            d = _dt(e.get("last_contact_at"))
-            if d and (pid not in ent_last or d > ent_last[pid]):
-                ent_last[pid] = d
     rep_here: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for r in reports:
         if r.get("place_id"):
@@ -217,16 +305,15 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
         expected = expected_count(ent_here.get(pid, 0), subjects)
         confirmed = confirmed_count(nd_rescued, nd_stationed, rescuer)
         unknown = unknown_count(expected, confirmed)
-        # last contact
-        cands = [ent_last.get(pid)] + [_dt(r.get("event_time")) for r in reps] + [_dt(f.get("as_of")) for f in per_place_figs.get(pid, [])[:50]
-                 if f.get("publisher") not in ("Open-Meteo (ECMWF)",)] + [_dt(a.get("published_at")) for a in arts_here.get(pid, [])[:20]]
-        if pid in gauges_latest and gauges_latest[pid]["alive"]:
-            cands.append(_dt(gauges_latest[pid]["observed_at"]))
-        cands = [c for c in cands if c and c <= ctx.now + timedelta(hours=1)]
-        last_contact = max(cands) if cands else None
-        # phones
+        # phones (hook): NTC/Ncell figures for the place, then telecom articles — newest dated signal wins
+        tel_figs = telecom_here.get(pid, [])
         tel = [a for a in arts_here.get(pid, []) if TELECOM_RE.search(f"{a.get('title') or ''} {a.get('body') or ''}")]
-        telecom_restored, phones = phones_from_articles(tel)
+        telecom_restored, phones, restored_at = phones_status(tel_figs, tel)
+        # last OBSERVED contact from the place — reports, NDRRMA rescued/stationed, phones back, event timeline; else NULL
+        nd_times = [f.get("as_of") for f in per_place_figs.get(pid, []) if f.get("publisher") == "NDRRMA" and f.get("metric") in ("rescued", "stationed")
+                    and is_observed(f.get("as_of"), f.get("fetched_at"))]
+        last_contact_at = last_contact([r.get("event_time") for r in reps], nd_times, [restored_at] if restored_at else [],
+                                       tl_times.get(pid, []), ctx.now)
         # access / hazard / note
         bridges = [f for f in per_place_figs.get(pid, []) if f["metric"] == "bridge_status" and re.match(r"washed out|damaged", f.get("note") or "", re.I)]
         access = ACCESS_OBSERVED.get(pid) or ("helicopter_only" if place and place.kind == "helipad" else "road_partial" if bridges else "unknown")
@@ -254,9 +341,10 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
                     shelter = f"{place.district}: {int(ppl)} people in {int(sites) if sites else '?'} sites (NDRRMA)"
         status_rows.append({
             "place_id": pid, "as_of": ctx.now, "expected": expected, "confirmed_reached": confirmed, "unknown": unknown,
-            "reports_count": len(reps), "last_contact_at": last_contact, "telecom_restored": telecom_restored, "phones": phones,
+            "reports_count": len(reps), "last_contact_at": last_contact_at, "telecom_restored": telecom_restored, "phones": phones,
             "access": access, "hazard": hazard, "nearest_gauge": nearest_gauge_label(place.km if place else None, gauges_latest),
-            "shelter": shelter, "km": place.km if place else None, "status_label": status_label(expected, confirmed, unknown),
+            "shelter": shelter, "km": place.km if place else None,
+            "status_label": status_label(expected, confirmed, unknown, place.kind if place else None, pid),
             "note": " · ".join(n for n in notes if n) or None,
         })
         # timeline
@@ -282,11 +370,14 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
             elif f["publisher"] == "OPMCM portal" and f["metric"] == "lost_reports" and "|" not in f["scope"] and (k, d) not in seen_keys:
                 seen_keys.add((k, d))
                 tl(pid, d, "opmcm_lost", "unknown", f.get("url"), n=int(f["value"]))
-            elif f["publisher"] == "Open-Meteo (ECMWF)" and f["metric"] == "flying_window_quality" and (k, d) not in seen_keys:
+            elif f["publisher"] == "Open-Meteo (ECMWF)" and f["metric"].startswith("flying_window_quality") and (k, d) not in seen_keys:
                 seen_keys.add((k, d))
                 tl(pid, d, "flying_good" if f["value"] else "flying_poor", "neutral", f.get("url"))
         if bridges:
             tl(pid, _day(bridges[0].get("as_of")), "bridge", "unknown", bridges[0].get("url"), n=len(bridges))
+        for f in sorted(tel_figs, key=lambda f: str(f.get("as_of")), reverse=True)[:6]:
+            if f.get("metric") in ("telecom_restored", "telecom_outage"):
+                tl(pid, _day(f.get("as_of")), f["metric"], "live" if f["metric"] == "telecom_restored" else "unknown", f.get("url"))
         if pid in gauges_latest:
             g = gauges_latest[pid]
             d = _day(g["observed_at"])

@@ -37,10 +37,11 @@ def test_bullets_are_deterministic_and_bounded():
     h1, b1 = _build()
     h2, b2 = _build()
     assert h1 == h2 and b1 == b2
-    assert 5 <= len(b1) <= 8
+    assert 5 <= len(b1) <= D.MAX_BULLETS
     assert h1.startswith("Day 4 after the flood — NDRRMA: 675 dead · 2,498 out of contact · 6,633 rescued")
     kinds = [b["kind"] for b in b1]
-    assert kinds[0] == "figure" and "place" in kinds and "gauge" in kinds and "news" in kinds
+    assert kinds[0] == "figure" and "place" in kinds and "gauge" in kinds and "news" in kinds and "rescuers" in kinds
+    assert kinds.index("rescuers") < kinds.index("place") < kinds.index("gauge") < kinds.index("news")
     ndrrma = next(b for b in b1 if b["text"].startswith("NDRRMA:"))
     assert "675 dead (+96 since yesterday)" in ndrrma["text"] and "2,498 out of contact (+574 since yesterday)" in ndrrma["text"]
     assert not any("OPMCM portal: " in b["text"] and " dead" in b["text"] for b in b1)
@@ -50,7 +51,41 @@ def test_bullets_are_deterministic_and_bounded():
     gauge = next(b for b in b1 if b["kind"] == "gauge")
     assert "back online: Galchhi" in gauge["text"]
     news = [b for b in b1 if b["kind"] == "news"]
-    assert news[0]["source_url"] == "a1" and 2 <= len(news) <= 3 and len(b1) == 8
+    assert news[0]["source_url"] == "a1" and 2 <= len(news) <= 3 and len(b1) == 10
+    resc = next(b for b in b1 if b["kind"] == "rescuers")
+    assert resc["text"].startswith("For rescuers: 2 of 2 tracked places still have people unaccounted for")
+    assert "largest gaps: Timure (968), Betrawati (5)" in resc["text"]
+
+
+def test_figure_bullets_biggest_delta_first():
+    _, b = _build(previous={("NDRRMA", "dead"): 674, ("MoFA", "dead"): 100, ("OPMCM portal", "lost_open"): 10000})
+    fig = [x["text"].split(":")[0] for x in b if x["kind"] == "figure"]
+    assert fig == ["OPMCM portal", "MoFA", "NDRRMA"]          # +823, +526, +1
+
+
+def test_rescuers_newly_reached_and_watch():
+    _, b = _build(places_before={"betrawati": {"confirmed_reached": 0, "unknown": 43, "phones": None},
+                                 "timure": {"confirmed_reached": 3, "unknown": 968, "phones": "no"}},
+                  watch={"flying_window": "30 Aug 06–11 NPT · Dhunche",
+                         "barrier_lake": {"title": "Barrier lake level stable", "publisher": "Republica", "url": "a3"}})
+    resc = next(x for x in b if x["kind"] == "rescuers")
+    assert "newly reached: Betrawati" in resc["text"]
+    w = next(x for x in b if x["kind"] == "watch")
+    assert w["text"] == "What to watch: next good morning flying window 30 Aug 06–11 NPT · Dhunche; barrier lake — Republica: Barrier lake level stable"
+    assert w["source_url"] == "a3"
+    _, b2 = _build(watch={"flying_window": None, "barrier_lake": None})
+    assert not any(x["kind"] == "watch" for x in b2)
+    _, b3 = _build(watch={"flying_window": None, "barrier_lake": {"title": "Lake", "publisher": "X", "url": "u"}})
+    assert "no good morning flying window" in next(x for x in b3 if x["kind"] == "watch")["text"]
+
+
+def test_relevant_news_drops_off_topic_titles(gaz):
+    arts = [{"title": "Nepal Rastra Bank Sets Today's Exchange Rates", "url": "x", "places": [], "published_at": "2026-08-30T05:00:00+00:00"},
+            {"title": "Barrier lake level stable, army engineers say", "url": "y", "places": [], "published_at": "2026-08-30T06:00:00+00:00"},
+            {"title": "Tunnel rescue at Upper Trishuli-1 enters fourth day", "url": "z", "places": ["ut1_mailung_camp"], "published_at": "2026-08-30T04:00:00+00:00"},
+            {"title": "रसुवागढीमा थप ३ शव भेटिए", "url": "w", "places": ["rasuwagadhi"], "published_at": "2026-08-30T03:00:00+00:00"}]
+    keep = D.relevant_news(arts, gaz)
+    assert [a["url"] for a in keep] == ["z", "w", "y"]      # place-tagged first (newest first), then keyword-only; bank dropped
 
 
 def test_first_day_has_no_baseline_claims():
