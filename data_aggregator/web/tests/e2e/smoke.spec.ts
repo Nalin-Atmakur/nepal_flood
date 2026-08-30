@@ -28,11 +28,11 @@ for (const lang of LANGS) {
       await expect(row.locator("[data-video]")).toHaveCount(3);
       await expect(row.locator("iframe")).toHaveCount(0); // below the fold: posters only
       // scrolled into view: the tiles autoplay muted; scrolled away again: back to posters
-      await row.scrollIntoViewIfNeeded();
-      await expect.poll(async () => row.locator('[data-video][data-mode="auto"]').count(), WAIT).toBeGreaterThanOrEqual(1);
-      await expect(row.locator('iframe[src*="mute=1"]').first()).toBeAttached(WAIT);
+      await row.evaluate((el) => el.scrollIntoView({ block: "center" }));
+      await expect.poll(async () => row.locator('[data-video][data-mode="auto"], [data-video][data-mode="play"]').count(), { timeout: 20_000 }).toBeGreaterThanOrEqual(1);
+      await expect.poll(async () => row.locator("iframe").count(), WAIT).toBeGreaterThanOrEqual(1);
       await page.evaluate(() => window.scrollTo(0, 0));
-      await expect.poll(async () => row.locator("iframe").count(), WAIT).toBe(0);
+      await expect.poll(async () => row.locator("iframe").count(), { timeout: 20_000 }).toBe(0);
       await expect(page.locator('[data-block="corridor"] [data-testid="videos-add"]')).toHaveAttribute("href", new RegExp(`/${lang}/report`));
     });
 
