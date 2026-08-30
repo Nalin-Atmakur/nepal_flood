@@ -20,13 +20,14 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | Web: publisher spellings | ✅ deployed | bb01050 — all 5 side-by-side columns filled from live publishers |
 
 ## Cycle log
+- 02:15 BST — ⏸ SESSION USAGE LIMIT hit; all four cycle-4 lanes (S3/U3/P4/D) died at launch with 429 before producing files (nothing to salvage; worktree clean). Owner: "wait 2 hours then go again" → 2-h timer set, resume ≈ 04:15 BST. Owner also set the NEW TOP PRIORITY: the 3D corridor becomes an animated, interactive flood simulation ("Turbo Dismount"-style: drop houses/bridges/buses in the path, watch them get swept, replay, sliders for lake volume/breach) — spec in `web/docs/14-flood-sim.md`. On resume: (1) build the flood sim myself in web/ (cornerstone), (2) relaunch lanes S3, P4, D, U3 with the same briefs (see "In flight").
 - 02:10 BST — context compacted (auto-compact now ON per owner). W2B + P3 tested (192 pass) and pushed 95ade57; web columns fixed + deployed bb01050. Owner asleep. Launching cycle 4: S3 sources (12 unbuilt ids), U3 web (mobile pass, trends, place timeline), P4 processing + pull efficiency, D docs reconcile.
 - 03:05 BST — launchd job never ran (EX_CONFIG: TCC blocks bash under ~/Desktop); replaced by a detached loop (pid in pipeline/.scheduler.pid, 240 min) + launchd kept for when the owner grants /bin/bash Full Disk Access. Runbook §1 updated.
 - 02:55 BST — stat cards ranked with thresholds (19f9f44); test rows purged from public counters; flying windows 3 days; gauge tiles fixed. Lanes W2A/W2B/P3 still running.
 - 02:35 BST — ⚠️ see decisions-log 02:30: rotate OpenAI + Supabase service-role keys in the morning (accidental Vercel upload of pipeline/, deleted). Fixed: gate ignores Kathmandu/district-only headlines; 3 flying-window days; gauge tiles match DHM names (667f9c3). Stats now 22 rows (P3 in progress).
 - 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
 
-## In flight (02:10 BST) — cycle 4
+## Queued for relaunch at ≈04:15 BST (cycle 4; lanes were killed by the usage limit before doing anything)
 - S3 sources lane: opmcm_help_requests, opmcm_government_efforts, bipad_river_series, nesra_bridges, dor_rimes_bridges, microsoft_unosat_extent, outlet_tag_pages, gdelt_monitor, vantor_stac, planet_stac, cdse_catalogue, hf_fair_footprints.
 - U3 web lane: 390/1280 screenshots of every page, fix layout issues; figure_series trends on the site; place "Status, day by day" coverage; digest render check; deploy from web/ only.
 - P4 processing lane: pull efficiency (thread pool + per-source backoff), place_timeline coverage, divergence/dedup stats, help-request ledger fields once S3 lands.
