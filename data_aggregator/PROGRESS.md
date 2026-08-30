@@ -42,6 +42,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 04:52 BST — U3 (web UX/trends) never produced output → stood down. Lane W4 launched with its concrete list (place-page now-line, sparklines, Q1 web follow-ups, towers card). Lane S4 launched: source discovery beyond the catalogue from the research deep-dives + build the best 5.
 - 04:45 BST — P5 landed (0aa770e; 246 tests): step ⑩ place_now → `place_status.now_en/ne/hi` for 79/79 places ($0.015/run), police_udb district pages pooled (main thread 136 s → 0). Corridor place card now shows the "now" line (aef2080, deployed). U3 (web UX/trends) silent for 70 min — pinged; if no reply by 05:00 the main session takes its items: place page now-line, sparklines, Q1 web follow-ups, towers_restored_pct card.
 - 04:35 BST — Q1 audit landed (cb3055b, 86bb60f; `docs/audit-2026-08-30.md`; 234 tests): Latest ordering fixed (migration 009), 43 KP articles dated from URLs, missing-divergence stat compares people not report queues, ledger reconcile guard. Web follow-ups queued behind U3: OPMCM "missing" cell = `lost_open` report queue (label), `/sources` derived `ntc_restoration_articles` shows never-fetched, Latest duplicates each title in markup, add `towers_restored_pct` to STAT_CARDS. Next deploy flips the ISR-cached Latest.
 - 04:18 BST — Flood sim pass 2 deployed (2b2a685): 10 real washed-out/damaged bridges from the HOT OSM survey pre-placed on the path and swept as the wave passes ("real bridges lost 7/10"), crest highlight, "Share this run" (navigator.share → WhatsApp fallback). Scoreboard hydration warning fixed (6476552). Launched lane P5: per-place "now" summary (budget-guarded) + police_udb sub-fetch pooling. U3 still running.
@@ -54,7 +55,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - 02:35 BST — ⚠️ see decisions-log 02:30: rotate OpenAI + Supabase service-role keys in the morning (accidental Vercel upload of pipeline/, deleted). Fixed: gate ignores Kathmandu/district-only headlines; 3 flying-window days; gauge tiles match DHM names (667f9c3). Stats now 22 rows (P3 in progress).
 - 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
 
-## Cycle 4 lanes (relaunched 03:32 BST) — S3 ✅ P4 ✅ D ✅ U3 running
+## Cycle 4/5 lanes — S3 ✅ P4 ✅ D ✅ Q1 ✅ P5 ✅ · U3 ✗ (no output) · W4 running · S4 running
 - S3 sources lane: opmcm_help_requests, opmcm_government_efforts, bipad_river_series, nesra_bridges, dor_rimes_bridges, microsoft_unosat_extent, outlet_tag_pages, gdelt_monitor, vantor_stac, planet_stac, cdse_catalogue, hf_fair_footprints.
 - U3 web lane: 390/1280 screenshots of every page, fix layout issues; figure_series trends on the site; place "Status, day by day" coverage; digest render check; deploy from web/ only.
 - P4 processing lane: pull efficiency (thread pool + per-source backoff), place_timeline coverage, divergence/dedup stats, help-request ledger fields once S3 lands.
