@@ -7,6 +7,7 @@ interchangeably.
 |---|---|
 | approximately 0.3–0.4 m | Native public WorldView image ground-sample distance |
 | 1 m | Common orthoimage co-registration grid |
+| 2 m | Downsampled RGB web previews for clicked-point visual inspection only |
 | 64–96 m | Local image neighbourhood used for phase correlation |
 | 32 m | Default validated change-product cell spacing |
 | 10 m | Separately validated experimental output spacing; research-only |
@@ -16,6 +17,10 @@ Native image resolution is not change-map resolution. A 0.4 m image contains
 fine visual detail, but a defensible height displacement requires a textured
 neighbourhood, calibration, filtering, and uncertainty propagation. The current
 public orthorectified products do not support independent 0.4 m height estimates.
+
+The viewer's 2 m RGB crops are aligned to the same UTM extent as the analysis,
+but they are presentation assets. The displacement calculation continues to use
+the 1 m co-registered analysis rasters.
 
 ## How processing coverage is selected
 

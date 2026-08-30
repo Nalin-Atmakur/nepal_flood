@@ -42,6 +42,14 @@
   ],
   "mosaicDecision": "No multi-pair mosaic published because both expansion pairs failed the predeclared accuracy gate. The sole promoted 32 m pair remains the default.",
   "viewer": "https://raw.githack.com/Nalin-Atmakur/nepal_flood/main/docs/topographic-change-viewer/",
+  "visualEvidence": {
+    "synchronizedPins": ["Syabrubesi", "Timure", "Rasuwagadhi", "selected location"],
+    "viewA": "B040001100881410",
+    "viewB": "B040001100881710",
+    "relationship": "two post-event opposite-look acquisitions, not before/after",
+    "previewResolutionM": 2,
+    "analysisResolutionM": 1
+  },
   "limitations": [
     "Public orthos lack original camera models and a documented orthorectification reference DEM.",
     "GLO-30 provides broad absolute-height context, not building-scale pre-event ground.",

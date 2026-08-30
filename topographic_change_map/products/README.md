@@ -35,6 +35,11 @@ cells (0.688 km²), stable-terrain NMAD 4.034 m, median uncertainty 6.573 m, and
 vertical accuracy class: it remains `RESEARCH_ONLY`. The interactive viewer
 loads it lazily through **Product grid → Experimental 10 m**.
 
+The viewer's `imagery/` assets are 2 m RGB previews of the two post-event
+opposite-look inputs. They are aligned for clicked-point comparison but are not
+additional elevation products and are not described as pre/post imagery. They
+retain Vantor attribution and the Open Data CC BY-NC 4.0 licence.
+
 ## Buildings
 
 - `building-change-summary-strict.geojson` is the default building overlay.

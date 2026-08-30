@@ -41,6 +41,27 @@ The downloader refuses non-`0600` secret files, rejects unexpected download
 hosts and unsafe filenames, resumes `.part` downloads, and atomically renames
 completed files. Never commit the downloaded rasters or credential file.
 
+## Regenerate synchronized satellite previews
+
+Run `python/export_imagery_context.py` on the sandbox against each public RGB
+COG with the shared strict-product bounds:
+
+```bash
+python3 python/export_imagery_context.py \
+  --input /Users/zoral/topographic-change-map/data/vantor/SCENE.tif \
+  --output /Users/zoral/topographic-change-map/products/viewer-imagery/VIEW.jpg \
+  --metadata /Users/zoral/topographic-change-map/products/viewer-imagery/VIEW.json \
+  --scene-id SCENE --acquired-at ISO_TIME \
+  --off-nadir-deg ANGLE --azimuth-deg AZIMUTH \
+  --bounds 334277 3113828 342277 3129604 \
+  --resolution 2 --quality 86
+```
+
+Use scene `B040001100881410` for View A and `B040001100881710` for
+View B. Copy only the JPEG/JSON results into `viewer/public/imagery/`, rebuild,
+and rerun `viewer:test`. Both are post-event views. Retain Vantor attribution
+and the CC BY-NC 4.0 licence in the UI and README.
+
 ## Secret file
 
 Expected local file:

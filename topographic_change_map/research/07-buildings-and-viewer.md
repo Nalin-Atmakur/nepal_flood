@@ -65,6 +65,10 @@ The current viewer provides:
 - click inspection for elevation, change, uncertainty, and support;
 - an OpenStreetMap panel with authoritative affected polygons, acquisition
   overlap, direct support, reporting bins, settlements, and live coordinates;
+- colour-identical settlement and selected-location pins shared by the map and
+  3D terrain, with bidirectional focus;
+- same-coordinate RGB crops from both post-event opposite-look acquisitions,
+  including acquisition time and look geometry;
 - an explicit `RESEARCH ONLY` classification and nodata warning.
 
 ## Communication rules

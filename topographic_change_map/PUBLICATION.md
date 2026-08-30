@@ -14,6 +14,8 @@ This URL serves the files committed on `main` through the third-party
 RawGitHack development CDN. It is suitable for review, not an operational SLA.
 The viewer and both JSON grids have been independently fetched with HTTP 200,
 and both the 32 m and 10 m WebGL modes pass the automated browser smoke test.
+The same test opens the context map, selects a synchronized landmark pin,
+verifies readable popup contrast, and renders both satellite evidence crops.
 
 ## GitHub Pages
 

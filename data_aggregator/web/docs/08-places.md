@@ -57,3 +57,7 @@ one" under the table. Rows link to the place page.
 Devanagari nukta/accents stripped, lower-case, punctuation → space). `searchPlaces` ranks prefix matches
 (on any key or any word) before substring matches; `placeMatches` filters the table. The same index feeds the
 report box's PlacePicker (docs/06).
+
+### By district (added 30 Aug)
+
+`/places` renders two tables: corridor places (settlements, camps, portals, shelters…) and, below, "By district" — the `kind = 'district'` rows from the same view, without the search box. Split by `lib/places-split.ts`. Rationale: district-level registry totals are real signal for list-holders but would swamp the per-place picture rescuers scan.

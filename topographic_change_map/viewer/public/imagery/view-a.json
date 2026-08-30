@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "sceneId": "B040001100881410",
+  "acquiredAt": "2026-08-27T05:04:50.163085Z",
+  "offNadirDeg": 21.72,
+  "azimuthDeg": 14.29,
+  "crs": "EPSG:32645",
+  "originX": 334277.0,
+  "originY": 3129604.0,
+  "resolutionM": 2.0,
+  "width": 4000,
+  "height": 7888,
+  "bounds": [
+    334277.0,
+    3113828.0,
+    342277.0,
+    3129604.0
+  ],
+  "image": "view-a.jpg",
+  "role": "post-event opposite-look parallax acquisition",
+  "displayNote": "Web preview is downsampled; analysis uses the co-registered 1 m grid.",
+  "sourceUrl": "https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/B040001100881410.tif",
+  "copyright": "Vantor Inc. 2026",
+  "license": "CC BY-NC 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+  "adaptation": "Reprojected to EPSG:32645 and downsampled to a 2 m RGB web preview."
+}

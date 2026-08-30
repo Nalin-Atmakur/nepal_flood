@@ -79,3 +79,7 @@ Each block root carries `data-block="…"` (and `data-n="0N"` for numbered secti
 - Time shows `HH:MM` if published today (Nepal time) else `D Mon`. Rows link to the article; titles carry `lang`.
 
 ## Adding a block — see docs/01 step list.
+
+### District rows are split out (added 30 Aug)
+
+`v_place_status_latest` also returns rows whose `places.kind = 'district'` (Rasuwa, Nuwakot, Sindhupalchok, Kathmandu …) because the OPMCM registry projects many reports at district resolution. `lib/places-split.ts` → `splitDistricts()` removes them from the corridor table (§05) and from the 3D corridor's compact list; `/places` shows them in a second "By district" table. Pure helper, tested in `tests/places-split.test.ts`.

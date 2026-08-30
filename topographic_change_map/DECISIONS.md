@@ -79,3 +79,12 @@ Source imagery is 0.3–0.5 m, co-registration uses a 1 m working grid, phase-co
 ## 2026-08-29 — D20: Commit small aggregate raster deliverables
 
 The repository normally ignores GeoTIFFs to prevent raw imagery, personal data, and bulky products entering Git. The final derived change, uncertainty, support, coverage, and cropped baseline rasters are aggregate, non-personal, licence-compatible, and collectively small. They may be force-added at named product paths after secret/licence review; source satellite imagery remains excluded.
+
+## 2026-08-30 — D21: Synchronized visual evidence is not pre/post evidence
+
+The map and 3D terrain share colour-coded settlement and selected-location pins
+through exact WGS84 ↔ UTM Zone 45N transformations. A selected point may display
+same-coordinate crops from `B040001100881410` and `B040001100881710`. Both are
+post-event opposite-look orthos acquired 82 seconds apart; they must never be
+labelled before/after. The committed 2 m RGB files are web previews only, while
+matching remains on the 1 m co-registered analysis grid.

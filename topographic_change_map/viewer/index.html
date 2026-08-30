@@ -37,7 +37,25 @@
         <dl id="statistics"></dl>
       </aside>
       <main id="viewport" aria-label="Interactive three-dimensional terrain"></main>
-      <section id="context-panel" aria-label="Geographic context map"><div id="context-map"></div><div class="map-key"><span class="unosat">UNOSAT affected</span><span class="pair">Vantor overlap</span><span class="measured">Measured support</span><span class="tiles">1 km reporting grid</span><output id="map-coordinates">28.21°N, 85.35°E</output></div></section>
+      <section id="context-panel" aria-label="Geographic context map">
+        <div id="context-map"></div>
+        <div class="map-key">
+          <span class="unosat">UNOSAT affected</span><span class="pair">Vantor overlap</span><span class="measured">Measured support</span><span class="tiles">1 km reporting grid</span><output id="map-coordinates">28.21°N, 85.35°E</output>
+        </div>
+      </section>
+      <section id="imagery-panel" aria-label="Satellite parallax image evidence">
+        <div class="imagery-header">
+          <div><p class="eyebrow">CLICKED-POINT EVIDENCE</p><h2>Opposite-look satellite views</h2></div>
+          <button id="imagery-close" aria-label="Close satellite imagery">×</button>
+        </div>
+        <p id="imagery-location">Select a landmark or terrain cell.</p>
+        <div class="imagery-note"><strong>Not before/after:</strong> both are post-flood images acquired 82 seconds apart. Their opposing viewing directions create the parallax signal. GLO-30 is the pre-event terrain context.</div>
+        <div class="imagery-grid">
+          <figure><figcaption><strong>View A</strong><span id="view-a-meta"></span></figcaption><canvas id="view-a-crop" width="512" height="512"></canvas></figure>
+          <figure><figcaption><strong>View B</strong><span id="view-b-meta"></span></figcaption><canvas id="view-b-crop" width="512" height="512"></canvas></figure>
+        </div>
+        <p class="imagery-footnote">Crosshairs mark the same map coordinate. Previews are 2 m; calculations use the co-registered 1 m imagery grid. Imagery © Vantor 2026, <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noreferrer">CC BY-NC 4.0</a>.</p>
+      </section>
       <section id="inspection" aria-live="polite">Click the terrain to inspect a cell.</section>
       <footer>
         Drag to orbit · scroll to zoom · right-drag to pan. Unsupported cells are context-only GLO-30 terrain; absolute heights remain research estimates because the ortho reference DEM is unknown.

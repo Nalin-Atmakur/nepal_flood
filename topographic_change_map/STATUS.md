@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-30 00:53 BST
+Last updated: 2026-08-30 01:27 BST
 
 ## Goal
 
@@ -10,7 +10,7 @@ misrepresented as completed products.
 
 ## Current milestone
 
-**M6 — COMPLETE: final audited research release**
+**M7 — COMPLETE: synchronized visual-evidence viewer**
 
 Completed:
 
@@ -69,7 +69,7 @@ Completed:
 - Viewer now exposes strict 32 m and lazy-loaded experimental 10 m grids; both pass headless WebGL smoke tests.
 - Official Copernicus Data Space catalogue added 61 exact-overlap Sentinel-2 L2A context products (57 pre-cutoff, 4 post-cutoff); all are automatically rejected for precision DSM use, and only two have scene cloud below 20%.
 - Current automated checks pass: 16 Python tests and 12 TypeScript tests.
-- Machine-readable release audit passes 17/17 artifact, validation, selection, rejection, catalogue, provider, publication, source-exclusion, and secret-safety checks; external gates remain listed separately.
+- Machine-readable release audit passes 18/18 artifact, validation, selection, rejection, catalogue, provider, synchronized-evidence, publication, source-exclusion, and secret-safety checks; external gates remain listed separately.
 - Redundant local source COGs and 1 m warp caches were checksum-matched to the sandbox copies and moved to recoverable macOS Trash; bulk/source storage is now sandbox-only.
 - Earthdata was retried in ordinary sandbox Chrome after restoring the password fields, but its invisible reCAPTCHA again rejected submission; no solvable checkbox/image challenge is exposed, so VNC remains the explicit user handoff.
 - Dense matching now evaluates candidates in worker batches with durable progress reporting, reducing scheduler overhead for subsequent pairs.
@@ -80,6 +80,12 @@ Completed:
 - Viewer CI is green and retains a downloadable static artifact even before GitHub Pages is enabled; Pages deployment activates automatically after admin enablement.
 - A self-contained static viewer bundle is prepared under `docs/topographic-change-viewer/`; GitHub Pages activation remains repository-admin controlled.
 - The protected HMA request was exercised safely and returned HTTP 401, confirming that the pending Earthdata CAPTCHA/account activation is the only download gate.
+- Exact WGS84 ↔ UTM transformations now synchronize colour-coded Syabrubesi, Timure, Rasuwagadhi, and arbitrary selected-location pins between OpenStreetMap and the 3D terrain.
+- Clicking a map pin, map point, 3D pin, or terrain cell focuses the corresponding location and opens same-coordinate RGB crops from both actual parallax acquisitions.
+- The evidence panel labels both views as post-event opposite-look frames acquired 82 seconds apart, includes acquisition time/off-nadir/azimuth, and explicitly rejects the misleading before/after interpretation.
+- Two 2 m RGB web previews are aligned to the exact analysis extent; the UI states that matching continues on the 1 m co-registered rasters.
+- Map popup text now uses high-contrast dark foreground on white, selected marker colours remain consistent, popups are anchored above markers, and 3D labels are fog-independent.
+- Automated coverage now includes 15 TypeScript tests plus browser checks for three synchronized pins, dynamic map selection, direct 3D terrain selection, both imagery canvases, non-empty crop pixels, popup contrast, and both 32 m/10 m grids.
 
 In progress: none within the achievable public-data release.
 
@@ -119,4 +125,4 @@ No automated release action remains. Optional external handoffs are:
 
 ## Worktree safety
 
-Unrelated modified and untracked files exist under `aryaa_research_general/`. They belong to the user and must never be staged or changed by this project.
+Unrelated modified and untracked files may exist elsewhere in the repository. They belong to the user or other agents and must never be staged or changed by this project.

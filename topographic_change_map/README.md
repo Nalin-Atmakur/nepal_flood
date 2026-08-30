@@ -13,6 +13,8 @@ Research reconstruction of post-flood surface change in the upper Bhote Koshi co
 - Support-aware HOT/Copernicus building summaries.
 - Exact WGS84 processing extent and 1 km reporting-grid table.
 - Interactive Three.js terrain viewer with an OpenStreetMap geographic context panel.
+- Colour-matched Syabrubesi, Timure, and Rasuwagadhi pins synchronized between the map and 3D terrain, plus a shared selected-cell pin.
+- Click-driven side-by-side RGB crops from the two actual post-event opposite-look acquisitions, centred on the same UTM coordinate.
 - Reproducible public imagery catalogue, sparse/dense matching, validation, and cross-machine tests.
 - Official 61-scene Sentinel-2 temporal-context catalogue with exact affected-area overlap and explicit DSM rejection.
 
@@ -30,7 +32,13 @@ npx vite preview --config vite.config.ts --host 127.0.0.1 --port 4174
 Open <http://127.0.0.1:4174/>. Use **Product grid** to switch between the strict
 32 m default and the lazily loaded experimental 10 m product. Use **Map context**
 to see the processing footprint, affected polygons, direct support, reporting
-grid, settlement markers, and live latitude/longitude over OpenStreetMap.
+grid, synchronized settlement pins, and live latitude/longitude over
+OpenStreetMap. Click a map pin, map location, 3D pin, or terrain cell to focus
+the corresponding point and open the two satellite views used for parallax.
+
+The two displayed satellite frames are not before/after imagery. Both are
+post-flood WorldView-3 acquisitions taken 82 seconds apart from opposing look
+directions. GLO-30 supplies the pre-event terrain context.
 
 ## Key locations and scales
 

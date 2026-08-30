@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { PROJECT_ROOT } from "../src/constants.js";
@@ -18,6 +19,10 @@ function exists(relative: string): boolean {
 
 function readJson(relative: string): Record<string, unknown> {
   return JSON.parse(fs.readFileSync(path.join(REPO_ROOT, relative), "utf8")) as Record<string, unknown>;
+}
+
+function sha256(relative: string): string {
+  return createHash("sha256").update(fs.readFileSync(path.join(REPO_ROOT, relative))).digest("hex");
 }
 
 const requiredDocs = [
@@ -82,6 +87,36 @@ const viewerFiles = [
   "docs/topographic-change-viewer/data/surface-grid-10m.json",
 ];
 check("static-viewer", viewerFiles.every(exists), "32 m and 10 m static viewer grids");
+
+const imageryFiles = [
+  "topographic_change_map/viewer/public/imagery/view-a.jpg",
+  "topographic_change_map/viewer/public/imagery/view-b.jpg",
+  "topographic_change_map/viewer/public/imagery/view-a.json",
+  "topographic_change_map/viewer/public/imagery/view-b.json",
+  "docs/topographic-change-viewer/imagery/view-a.jpg",
+  "docs/topographic-change-viewer/imagery/view-b.jpg",
+];
+const viewA = readJson("topographic_change_map/viewer/public/imagery/view-a.json");
+const viewB = readJson("topographic_change_map/viewer/public/imagery/view-b.json");
+const imageryChecksums = fs.readFileSync(
+  path.join(PROJECT_ROOT, "viewer/public/imagery/checksums.sha256"),
+  "utf8",
+);
+check(
+  "synchronized-satellite-evidence",
+  imageryFiles.every(exists)
+    && viewA.sceneId === "B040001100881410"
+    && viewB.sceneId === "B040001100881710"
+    && viewA.role === "post-event opposite-look parallax acquisition"
+    && viewB.role === "post-event opposite-look parallax acquisition"
+    && viewA.license === "CC BY-NC 4.0"
+    && viewB.license === "CC BY-NC 4.0"
+    && fs.statSync(path.join(REPO_ROOT, imageryFiles[0]!)).size > 500_000
+    && fs.statSync(path.join(REPO_ROOT, imageryFiles[1]!)).size > 500_000
+    && imageryChecksums.includes(`${sha256(imageryFiles[0]!)}  view-a.jpg`)
+    && imageryChecksums.includes(`${sha256(imageryFiles[1]!)}  view-b.jpg`),
+  "same-grid RGB previews for both actual post-event parallax acquisitions",
+);
 
 const trackedTiffs = execFileSync("git", ["ls-files", "*.tif"], { cwd: REPO_ROOT, encoding: "utf8" })
   .trim().split("\n").filter(Boolean);

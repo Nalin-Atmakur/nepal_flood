@@ -371,5 +371,7 @@
   "og.added": "{n} people have added what they know",
   "og.no_data": "awaiting first data pull",
   "og.updated": "updated {ago}",
-  "og.no_processed": "no processed data yet"
+  "og.no_processed": "no processed data yet",
+  "sec.by_district": "By district",
+  "sec.by_district_sub": "Registry totals recorded at district level (mostly the PM’s portal) — kept apart from the corridor places above"
 }

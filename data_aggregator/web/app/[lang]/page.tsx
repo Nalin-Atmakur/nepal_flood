@@ -8,6 +8,7 @@ import Digest from "@/components/blocks/Digest";
 import FirstHours from "@/components/blocks/FirstHours";
 import Latest from "@/components/blocks/Latest";
 import PlacesTable from "@/components/blocks/PlacesTable";
+import { splitDistricts } from "@/lib/places-split";
 import RiverWeather from "@/components/blocks/RiverWeather";
 import Scoreboard from "@/components/blocks/Scoreboard";
 import ShareBar from "@/components/blocks/ShareBar";
@@ -41,6 +42,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
     getEventTimeline(),
     getDigest(lang),
   ]);
+  const { places: placeRows } = splitDistricts(statuses);
   const lastAttempt = live?.last_pull_at ?? null;
 
   return (
@@ -48,13 +50,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <h1 className="sr-only">{t(lang, "site.name")}</h1>
       <Scoreboard lang={lang} initial={live} />
       <Digest lang={lang} digest={digest} />
-      <Corridor lang={lang} statuses={statuses} refs={refs} />
+      <Corridor lang={lang} statuses={placeRows} refs={refs} />
       <StrikingStats lang={lang} stats={stats} />
       <FirstHours lang={lang} events={events} />
       <SideBySide lang={lang} figures={figures} lastAttempt={lastAttempt} />
       <section data-block="places" data-n="05" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-places">
         <SectionHead n="05" title={<span id="sec-places">{t(lang, "sec.places")}</span>} sub={<span className="hidden md:inline">{t(lang, "sec.places_sub")}</span>} align="center" />
-        <PlacesTable lang={lang} statuses={statuses} refs={refs} />
+        <PlacesTable lang={lang} statuses={placeRows} refs={refs} />
       </section>
       <AddCtas lang={lang} />
       <RiverWeather lang={lang} gauges={gauges} windows={windows} />
