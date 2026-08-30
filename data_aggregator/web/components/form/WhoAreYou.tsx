@@ -5,31 +5,42 @@ import { RESPONDENT_TYPES, type RespondentType } from "@/lib/config";
 import { t, type Lang } from "@/lib/i18n";
 
 /**
- * Screen 1 of the one-box report flow (Report v2 artboard): "Who are you?" and four CTA cards.
- * A column on mobile, a 2×2 grid on md+. Each card is a real button with the type's arrow circle.
+ * "Who are you?" — an inline selector that sits ABOVE the box on the same page (docs/06-report-flow.md §2).
+ * One tap picks the respondent type, which only changes the chip set; nothing else is gated behind it.
+ * Four cards: a column on mobile, one row on md+. The selected card is raised (hard shadow) and its arrow
+ * circle is filled; unselected cards are flat. Each card is a real button (keyboard + screen reader).
  */
-export default function WhoAreYou({ lang, onSelect }: { lang: Lang; onSelect: (type: RespondentType) => void }) {
+export default function WhoAreYou({ lang, value, onSelect }: { lang: Lang; value: RespondentType; onSelect: (type: RespondentType) => void }) {
   return (
-    <div data-step="who">
-      <h1 className="font-extrabold text-[24px] md:text-[32px] lh-tight">{t(lang, "report.who")}</h1>
-      <p className="font-medium text-[14px] md:text-[15px] text-muted lh-body mt-1">{t(lang, "report.who_sub")}</p>
-      <div className="flex flex-col md:grid md:grid-cols-2 gap-3 md:gap-4 mt-[18px] md:mt-6">
-        {RESPONDENT_TYPES.map((rt) => (
-          <button
-            key={rt.id}
-            type="button"
-            data-testid="who-card"
-            data-type={rt.id}
-            onClick={() => onSelect(rt.id)}
-            className="bg-card b-ink rounded-r2 shadow-hard-3 press-3 p-4 min-h-[56px] md:min-h-[64px] flex items-center gap-3 text-left text-ink cursor-pointer w-full"
-          >
-            <span className="font-extrabold text-[15px] md:text-[17px] lh-snug">{t(lang, `cta.${rt.id}`)}</span>
-            <span className="ml-auto flex-none">
-              <ArrowCircle bg={rt.bg} fg={rt.fg} size={30} />
-            </span>
-          </button>
-        ))}
+    <fieldset data-step="who" className="border-0 p-0 m-0 min-w-0">
+      <legend className="font-extrabold text-[20px] md:text-[24px] lh-tight">{t(lang, "report.who")}</legend>
+      <p className="font-medium text-[13px] md:text-[14px] text-muted lh-body mt-1">{t(lang, "report.who_sub")}</p>
+      <div role="radiogroup" aria-label={t(lang, "report.who")} className="flex flex-col md:grid md:grid-cols-4 gap-2.5 md:gap-3 mt-3 md:mt-4">
+        {RESPONDENT_TYPES.map((rt) => {
+          const selected = rt.id === value;
+          return (
+            <button
+              key={rt.id}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              data-testid="who-card"
+              data-type={rt.id}
+              data-selected={selected ? "true" : "false"}
+              onClick={() => onSelect(rt.id)}
+              className={
+                "b-ink rounded-r2 p-3 md:p-3.5 min-h-[52px] flex items-center gap-3 text-left text-ink cursor-pointer w-full " +
+                (selected ? "bg-card shadow-hard-3 press-3" : "bg-ground hover:bg-card")
+              }
+            >
+              <span className="font-extrabold text-[14px] md:text-[15px] lh-snug">{t(lang, `cta.${rt.id}`)}</span>
+              <span className="ml-auto flex-none">
+                <ArrowCircle bg={selected ? rt.bg : "#ffffff"} fg={selected ? rt.fg : "#1a1a1a"} size={28} />
+              </span>
+            </button>
+          );
+        })}
       </div>
-    </div>
+    </fieldset>
   );
 }

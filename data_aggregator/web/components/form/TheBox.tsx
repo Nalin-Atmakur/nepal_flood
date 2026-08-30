@@ -28,7 +28,7 @@ type Props = {
   initialPlaceId?: string | null;
   supersedes?: string | null;
   mode?: BoxMode;
-  onBack: () => void;
+  onBack?: () => void;   // when absent (single-page flow) no back arrow is rendered
   onSent: (id: string, placeId?: string | null) => void;
 };
 
@@ -295,14 +295,16 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
       {/* ---- left column, part 1: title, box, chips ---- */}
       <div className="order-1 md:col-start-1 md:row-start-1">
         <div className="flex items-center gap-[10px]">
-          <button
-            type="button"
-            onClick={onBack}
-            aria-label={t(lang, "nav.back")}
-            className="inline-grid place-items-center min-w-[44px] min-h-[44px] -ml-3 font-extrabold text-[18px] text-ink cursor-pointer rounded-r2"
-          >
-            <span aria-hidden="true">←</span>
-          </button>
+          {onBack ? (
+            <button
+              type="button"
+              onClick={onBack}
+              aria-label={t(lang, "nav.back")}
+              className="inline-grid place-items-center min-w-[44px] min-h-[44px] -ml-3 font-extrabold text-[18px] text-ink cursor-pointer rounded-r2"
+            >
+              <span aria-hidden="true">←</span>
+            </button>
+          ) : null}
           <h1 className="font-extrabold text-[24px] md:text-[32px] lh-tight">{t(lang, "report.title")}</h1>
         </div>
         <p className="font-medium text-[14px] md:text-[15px] text-muted lh-body mt-1 md:mt-[6px]">

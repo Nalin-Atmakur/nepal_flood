@@ -19,16 +19,21 @@ for (const lang of LANGS) {
       await expect(page.getByText("LIVE", { exact: true }).first()).toBeVisible(WAIT);
     });
 
-    test("report shows four who-cards and reveals the box", async ({ page }) => {
+    test("report is one page: who-cards, the box and Send together; picking a card swaps the chips", async ({ page }) => {
       const res = await page.goto(`/${lang}/report`);
       expect(res?.status()).toBe(200);
       const cards = page.locator('[data-testid="who-card"]');
       await expect(cards).toHaveCount(4, WAIT);
-      await cards.first().click();
       const box = page.locator('[data-testid="the-box"]');
-      await expect(box.first()).toBeVisible(WAIT);
-      const textarea = page.locator('textarea[data-testid="the-box"], [data-testid="the-box"] textarea');
-      await expect(textarea.first()).toBeVisible(WAIT);
+      await expect(box.first()).toBeVisible(WAIT);                       // no tap needed to see the box
+      await expect(page.locator('[data-testid="send"]').first()).toBeVisible(WAIT);
+      await expect(cards.first()).toHaveAttribute("data-selected", "true"); // "looking for someone" preselected
+      const chipsBefore = await page.locator('[data-testid="chip"]').allTextContents();
+      await cards.nth(2).click();                                          // rescuer
+      await expect(cards.nth(2)).toHaveAttribute("data-selected", "true");
+      await expect(box.first()).toBeVisible(WAIT);                         // still the same page
+      const chipsAfter = await page.locator('[data-testid="chip"]').allTextContents();
+      expect(chipsAfter).not.toEqual(chipsBefore);
     });
 
     test("sources, about and places carry their page markers", async ({ page }) => {

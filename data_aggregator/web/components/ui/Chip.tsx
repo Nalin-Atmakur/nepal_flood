@@ -24,6 +24,7 @@ export default function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={active}
+      data-testid="chip"
       aria-label={ariaLabel}
       className={[
         "inline-flex items-center min-h-[36px] md:min-h-[38px] px-[14px] md:px-4 pt-[2px] rounded-pill b-ink-2 font-semibold text-[13px] md:text-[13.5px] cursor-pointer select-none transition-colors",

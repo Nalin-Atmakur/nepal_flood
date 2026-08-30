@@ -27,7 +27,7 @@ No multi-step form. One tap picks the chip set, then one textarea (plus mic) is 
 
 | File | Screen | Notes |
 |---|---|---|
-| `WhoAreYou.tsx` | 1 · "Who are you?" | four `button[data-testid="who-card"]` with the type's arrow circle colour (`RESPONDENT_TYPES`) |
+| `WhoAreYou.tsx` | 1 · "Who are you?" — inline selector on the SAME page as the box | four `button[role="radio"][data-testid="who-card"]`; "I'm looking for someone" is preselected; picking another only swaps the chip set (`RESPONDENT_TYPES`) |
 | `TheBox.tsx` | 2 · the box, 3 · listening | textarea `data-testid="the-box"`, mic, BS hint, chips, Where, contact, Send, footnote; desktop grid `1fr 380px` with the HOW IT WORKS dark card |
 | `PlacePicker.tsx` | Where? | listbox over `buildPlaceIndex(places)`; last option "other — describe in the box" (`place_id = null`); selected place → amber pill + 44px clear |
 | `Understood.tsx` | 4 · success | `data-testid="understood"`; chips or the received line; Correct / Add more; ShareBar compact; link to /me |
@@ -57,7 +57,7 @@ No multi-step form. One tap picks the chip set, then one textarea (plus mic) is 
 
 | Param | Accepts | Effect |
 |---|---|---|
-| `type` | `family \| survivor \| rescuer \| agency` | skips "Who are you?" |
+| `type` | `family \| survivor \| rescuer \| agency` | preselects the "Who are you?" card (default `family`) |
 | `place` | an existing `places.id` | preselects the place |
 | `supersedes` | a UUID | new row supersedes it; the box shows "Adding to / Correcting your earlier report" |
 | `mode` | `add \| correct` | prefix "Also: " / "Correction: " |

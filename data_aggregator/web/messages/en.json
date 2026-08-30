@@ -4,7 +4,6 @@
   "site.tagline_short": "Volunteer-run · not official",
   "site.description": "Live picture of the 26 August 2026 Bhote Koshi / Trishuli flood: official numbers side by side with their sources, the places along the corridor, and what people have reported.",
   "site.og_sub": "Bhote Koshi · Trishuli — live picture, updated every {cadence}",
-
   "nav.add": "Add what you know →",
   "nav.add_short": "Add what you know",
   "nav.home": "Home",
@@ -17,14 +16,11 @@
   "nav.back": "Back",
   "nav.skip": "Skip to content",
   "nav.language": "Language",
-
   "official.not_substitute": "This page is not a substitute for official reporting.",
   "official.not_substitute_short": "Not a substitute for official reporting.",
   "official.not_substitute_dash": "not a substitute for official reporting",
-
   "stale.banner": "Last update {ago} — showing last known data.",
   "stale.none": "No processed data yet — showing empty states until the first pipeline run.",
-
   "live.right_now": "RIGHT NOW",
   "live.here_now": "people here now",
   "live.last_10": "contributions · last 10 min",
@@ -34,7 +30,6 @@
   "live.today_m": "today",
   "live.since_pull_m": "since data pull",
   "live.no_pull": "no pull yet",
-
   "sec.corridor": "The corridor",
   "sec.corridor_sub": "Gyirong border → Bharatpur · {km} km · height ×{x}",
   "sec.corridor_caption": "Marker size = people believed there · tap a marker for the place card · drag to orbit",
@@ -47,11 +42,9 @@
   "sec.corridor_card_link": "Place page →",
   "sec.corridor_last": "Last contact {t}",
   "sec.corridor_empty": "No places in the ledger yet — the corridor fills in after the first processing run.",
-
   "sec.stats": "What happened, in numbers",
   "sec.stats_empty": "No headline numbers yet. They appear after the first processing run; retrying every {cadence}.",
   "sec.stats_source_live": "Live · this site",
-
   "sec.side": "The numbers, side by side",
   "sec.side_sub": "no two agencies count the same thing — we show them all",
   "sec.side_explainer": "These differ because each agency counts something different: NDRRMA counts everyone reported out of contact; the Police count confirmed missing-person reports; MoFA counts foreigners reported to embassies; the Tourism Department counts tourists on agency manifests; the PM’s portal counts every report submitted, including duplicates.",
@@ -62,7 +55,6 @@
   "row.dead": "Dead",
   "row.missing": "Missing / out of contact",
   "row.rescued": "Rescued",
-
   "sec.places": "Places",
   "sec.places_sub": "sorted by unknown, highest first",
   "sec.places_updated": "sorted by unknown, highest first · updated {t}",
@@ -83,11 +75,9 @@
   "col.phones": "Phones",
   "col.access": "Access",
   "col.note": "Note",
-
   "sec.add": "Add what you know",
   "sec.add_lead": "Do you know where someone was, or what you saw? It takes five minutes and goes into the picture above.",
   "sec.add_lead_m": "Do you know where someone was, or what you saw? Five minutes, no login.",
-
   "sec.river": "River & weather",
   "sec.gauge_alive": "alive · {t}",
   "sec.gauge_dead": "dead since {t}",
@@ -99,10 +89,8 @@
   "sec.fly_poor": "poor",
   "sec.fly_empty": "No flying-window forecast yet — it appears once the weather source has been pulled.",
   "sec.fly_source": "Source: {src}, {t}.",
-
   "sec.latest": "Latest",
   "sec.latest_empty": "No headlines yet. Last attempt {t}; retrying every {cadence}.",
-
   "share.title": "Share this page",
   "share.whatsapp": "WhatsApp",
   "share.x": "X",
@@ -111,10 +99,8 @@
   "share.copy": "Copy link",
   "share.copied": "Copied",
   "share.text": "Nepal Flood Tracker — the 26 August 2026 Bhote Koshi / Trishuli flood: official numbers side by side, the places along the corridor, and what people have reported.",
-
   "footer.last_updated": "Last updated {t} NPT",
   "footer.no_update": "No data pull yet",
-
   "cta.family": "I’m looking for someone",
   "cta.family_d": "Their place, when you last heard, how to reach you.",
   "cta.survivor": "I was there",
@@ -123,14 +109,12 @@
   "cta.rescuer_d": "Places reached, people evacuated, access status.",
   "cta.agency": "I represent a company, agency or group",
   "cta.agency_d": "Manifests, staff lists, group counts.",
-
   "type.family": "Looking for someone",
   "type.survivor": "I was there",
   "type.rescuer": "Rescuer / official",
   "type.agency": "Company / group",
-
   "report.who": "Who are you?",
-  "report.who_sub": "One tap. Then just tell us what you know, in your own words.",
+  "report.who_sub": "Pick one — it only changes the prompts below. Then tell us what you know, in your own words.",
   "report.title": "Tell us what you know.",
   "report.sub": "Any language. As much or as little as you like.",
   "report.sub_desktop": "Any language. As much or as little as you like. A single line is a complete report.",
@@ -181,7 +165,6 @@
   "report.correcting": "Correcting your earlier report",
   "report.honeypot": "Leave this field empty",
   "report.chars": "{n} characters",
-
   "chips.family.who": "who",
   "chips.family.where": "where they were",
   "chips.family.when": "when you last heard",
@@ -210,7 +193,6 @@
   "chips.agency.accounted": "accounted for",
   "chips.agency.unaccounted": "unaccounted",
   "chips.agency.roster": "who holds the roster",
-
   "me.title": "My folder",
   "me.device": "this device · no account",
   "me.device_n": "this device · no account · {n} contributions",
@@ -247,7 +229,6 @@
   "me.unconfigured": "Your folder is not available right now.",
   "me.place_none": "place not given",
   "me.supersedes": "adds to an earlier report",
-
   "place.reported_there": "reported there",
   "place.reported_src": "site reports + manifests · {t}",
   "place.confirmed": "confirmed reached",
@@ -283,7 +264,6 @@
   "place.dhunche": "Dhunche",
   "place.langtang": "Langtang",
   "place.compact_unknown": "unknown",
-
   "access.road": "road",
   "access.road_partial": "road partially",
   "access.foot": "on foot",
@@ -292,7 +272,6 @@
   "phones.yes": "yes",
   "phones.no": "no",
   "phones.partial": "partial",
-
   "sources.title": "Every source we pull",
   "sources.sub": "fetched every {cadence} · reliability grades explained below",
   "sources.group.government": "Government",
@@ -321,7 +300,6 @@
   "sources.this_site": "This site — “Add what you know”",
   "sources.this_site_holds": "{n} contributions; extracted counts per place",
   "sources.live": "live",
-
   "about.what_title": "What this is",
   "about.what_body": "A volunteer-run aggregation site for the 26 August 2026 Bhote Koshi / Trishuli flood. We pull every public data source into one place every {cadence}, show official numbers side by side with their sources, and let anyone add what they know in under five minutes. Per place, we show how many people are believed there, how many are confirmed reached, and how many are unknown.",
   "about.not_title": "What this is not",
@@ -337,7 +315,6 @@
   "about.who_body": "A volunteer team of Nepali and international engineers, data people and translators, working with Nepali partners. No agency affiliation, no funding to disclose, no ads, no tracking beyond an anonymous visit counter.",
   "about.agencies_label": "FOR AGENCIES & NGOS",
   "about.agencies_body": "Want a data feed, a correction channel, or to endorse? Everything we hold is exportable as CSV/JSON with source attribution per cell. Write to us — we answer within hours.",
-
   "agency.ndrrma": "NDRRMA",
   "agency.police": "Nepal Police",
   "agency.mofa": "MoFA",
@@ -346,7 +323,6 @@
   "agency.note.foreigners": "foreigners ·",
   "agency.note.tourists": "tourists ·",
   "agency.note.open_reports": "open reports ·",
-
   "time.as_of": "as of {t}",
   "time.as_of_unknown": "time not stated",
   "time.never": "never",
@@ -358,7 +334,6 @@
   "time.cadence_hours": "{n} hours",
   "time.cadence_hour_1": "{n} hour",
   "time.cadence_minutes": "{n} minutes",
-
   "word.reported": "reported",
   "word.confirmed": "confirmed",
   "word.last": "last",
@@ -369,11 +344,9 @@
   "word.no": "no",
   "word.partial": "partial",
   "word.none": "—",
-
   "error.not_found_title": "Page not found",
   "error.not_found_body": "That link goes nowhere. The live picture is on the home page.",
   "error.home": "Go to the home page",
-
   "og.dead": "dead",
   "og.out_of_contact": "out of contact",
   "og.rescued": "rescued",
