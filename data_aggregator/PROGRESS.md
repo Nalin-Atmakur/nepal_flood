@@ -42,6 +42,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 05:40 BST — P6 landed (1c6ca31, 0045c8c, f6d6f23; 274 tests): place_timeline PK (place, day, kind) via migration 010 — 311 duplicate rows gone; digest v3 adds help-request and "as quoted by NRCS" context bullets, districts excluded from gaps; `*_quoted` metrics guarded in stats/digest and by a web config test; figures_latest now 36 publishers.
 - 05:22 BST — V1 visual QA landed + deployed (36a564b): no overflow anywhere; swipe hints on wide tables, delta labels wrap, ↗ links no longer orphan, /me empty CTA. Corridor: solid caption chip, thinner stems while riding (4491400). Launched P6: collapse duplicate place_timeline rows per place×day×kind, digest check after the 05:41 run, guard that `*_quoted` metrics never headline.
 - 05:20 BST — S4 landed (cc8101a; 261 tests): ~40 candidates probed, 9 registered (sources.yaml 51 → 60), 4 built and live: NRCS situation updates (PDF text), BIPAD incident API (event not yet entered by NEOC), 7 more feeds (ICIMOD, INSEC, Radio Nepal, Khabarhub, Setopati NE, Himalkhabar, Deshsanchar), ReliefWeb report pages with full bodies. `*_quoted` metrics are labelled and never headline-mapped. docs/sources.md regenerated (60).
 - 05:05 BST — W4 landed + deployed (53f5886): place pages "What is happening now" card, table notes from the now-line, NDRRMA sparklines "+N since yesterday", OPMCM cell labelled as open reports, derived sources on /sources, single-title Latest, towers_restored_pct card. 84 web unit tests, 15 e2e. S4 (source discovery) running.
@@ -58,7 +59,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - 02:35 BST — ⚠️ see decisions-log 02:30: rotate OpenAI + Supabase service-role keys in the morning (accidental Vercel upload of pipeline/, deleted). Fixed: gate ignores Kathmandu/district-only headlines; 3 flying-window days; gauge tiles match DHM names (667f9c3). Stats now 22 rows (P3 in progress).
 - 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
 
-## Cycle 4/5 lanes — S3 ✅ P4 ✅ D ✅ Q1 ✅ P5 ✅ W4 ✅ S4 ✅ · U3 ✗ (no output)
+## Cycle 4/5 lanes — S3 ✅ P4 ✅ D ✅ Q1 ✅ P5 ✅ W4 ✅ S4 ✅ V1 ✅ P6 ✅ · U3 ✗ (no output)
 - S3 sources lane: opmcm_help_requests, opmcm_government_efforts, bipad_river_series, nesra_bridges, dor_rimes_bridges, microsoft_unosat_extent, outlet_tag_pages, gdelt_monitor, vantor_stac, planet_stac, cdse_catalogue, hf_fair_footprints.
 - U3 web lane: 390/1280 screenshots of every page, fix layout issues; figure_series trends on the site; place "Status, day by day" coverage; digest render check; deploy from web/ only.
 - P4 processing lane: pull efficiency (thread pool + per-source backoff), place_timeline coverage, divergence/dedup stats, help-request ledger fields once S3 lands.
