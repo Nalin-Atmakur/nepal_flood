@@ -126,21 +126,27 @@ the camera never sinks below the water surface, and the X-ray amount follows `ho
 - The handle also exposes `debug()` (state, water visibility, draw count, max depth, front, objects, swept,
   injected); `?debug=1` puts the handle on `window.__corridor` for Playwright.
 
-## 3. Tuning knobs (and what the current values do)
+## 3. Tuning knobs (v2 values, 30 Aug 10:35)
 
 | Knob | Where | Value | Effect |
 |---|---|---|---|
-| `SIM_UNITS_PER_MM3` | flood-sim.ts | 260 | wave depth; 2 Mm³ → ~9 units at the lake, 2–3 in the mid-gorge |
-| `BREACH.radius` | flood-sim.ts | 3.6 | source footprint; smaller ponds a tall column at the lake |
+| `SIM_UNITS_PER_MM3` | lib/flood-sim.ts | 260 | wave volume; 2 Mm³ → ≈ 8 units deep at the lake, 1–3 mid-gorge |
+| `BREACH.radius` | lib/flood-sim.ts | 3.6 | source footprint |
 | `g` / `friction` | createSim | 9.8 / 0.9 | front speed: Syabrubesi ≈ 4 s, Betrawati ≈ 11 s, Galchhi ≈ 18 s, Devghat ≈ 24 s |
-| `DEFAULT_SCENARIO.breachSeconds` | flood-sim.ts | 4 (UI: 4 "sudden" / 12 "slow") | how fast the lake empties |
-| `VIS_AMP` | corridor-3d.ts | 1.5 | visual-only depth exaggeration |
-| `RIDE` | corridor-3d.ts | rad 40 · pol 0.42 · az −1.5 | chase camera: above and upstream of the front (+3), looking down the channel; a per-frame floor keeps it above the water surface; the run opens close on the lakes |
-| `OBJECT_SCALE` / `REAL_BRIDGE_SCALE`, `CARRY_SECONDS`, `SINK_SECONDS` | corridor-3d.ts | 2.2 / 2.1 · 1.8 · 0.9 | object readability and destruction timing |
-| `REACH_DEPTH` | corridor-3d.ts | 0.2 | when a place counts as reached |
-| `thresholdFor` | flood-sim.ts | camp 0.1/0.4 · bus 0.3/0.9 · house 0.5/1.2 · bridge 0.9/2.5 | depth / speed an object survives; the default 2 Mm³ run takes ~7 of the 10 real bridges, 0.5 Mm³ spares most |
+| `DEFAULT_SCENARIO.breachSeconds` | lib/flood-sim.ts | 4 (UI: sudden 4 / slow 12) | how fast the lake empties |
+| `VIS_AMP` | scene/context.ts | 3.2 | visual depth exaggeration (the overview needs it) |
+| wet dilation | scene/water.ts | 0.7 × neighbour depth | the sheet reads as a flood, not a hairline, from above |
+| `BLUE_X0` / `BROWN_RUN` | scene/water.ts | breach + 6 / 42 units | deep blue at the breach → mud downstream |
+| foam | scene/water.ts | crest band × 0.85, speed term (v − 18)/22 × 0.35 | foam only where the sheet drops |
+| `XRAY_DEFAULT` | corridor-3d.ts | 0.3 (→ 1 with tilt; depth-write off above 0.1) | see the surge through the near wall |
+| `fitCamera` | lib/corridor-camera.ts | landscape pol 0.5 az −0.75 · portrait pol 0.42 az −1.5 | overview-only camera (`RIDE_ENABLED = false`) |
+| `wallHeight` / `floorHalfWidth` | lib/corridor-terrain.ts | 26 → 6 · 1 → 7 | the gorge → plain profile |
+| `OBJECT_SCALE` (catalogue `scale`) / real bridges | lib/object-catalogue.ts · scene/objects.ts | 2.8 / × 0.55 | readability from the overview |
+| `thresholdFor` | lib/object-catalogue.ts | camp 0.1/0.4 … bridge 0.9/2.5 … boulder 1.2/3.0 | depth / speed an object survives |
+| physics | lib/flood-physics.ts | G −22 · drag 3.2 · restitution 0.28 · friction 0.45 · static-friction slope < 0.18 | pieces never below ground (tested) |
+| `SNOW_LINE` / `ROCK_SLOPE` / `SCREE_SLOPE` | lib/terrain-colours.ts | 36 / 0.72 / 0.52 | snow only on the high northern walls |
 
-Re-tune with `npx vitest run tests/flood-sim.test.ts` (front ordering must hold) and the screenshot loop in §5.
+Re-tune with `npx vitest run` (front ordering, physics invariants, camera fit must hold) and the screenshot loop in §5.
 
 ## 4. Copy, i18n, design
 
