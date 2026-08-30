@@ -146,3 +146,4 @@ Priority order (value ÷ effort), each = sources.yaml entry (if missing) + `norm
 - 16:05 BST 30 Aug · favicon.ico regenerated from icon.svg (the scaffold's Vercel triangle was still linked first; D-068).
 - 16:15 BST 30 Aug · contact@ removed everywhere (no mailbox; D-069); About points agencies at the form's “Agency” path.
 - 16:25 BST 30 Aug · Goals card first (2:3), Your part beside it; goal #2 ends "to spread awareness" (owner). Deploying.
+- 16:30 BST 30 Aug · Contact mailbox nepalfloodrescuers@gmail.com (D-070) on About/README/CONTRIBUTING/gazetteer UA; compact Your-part bar gets room under the button.

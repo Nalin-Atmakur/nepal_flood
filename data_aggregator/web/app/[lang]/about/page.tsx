@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fmtCadence } from "@/lib/format";
+import { CONTACT_EMAIL } from "@/lib/config";
 import { asLang, href, t } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { CheckCircle } from "@/components/ui/Badge";
@@ -60,8 +61,10 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
             <h2 className="font-extrabold text-[22px] lh-tight">{t(lang, "about.who_title")}</h2>
             <p className={body}>{t(lang, "about.who_body")}</p>
             <div className="flex flex-wrap gap-[10px] mt-[14px]">
-              {/* no mailbox yet (owner, 30 Aug): the form's "Agency" path is the contact channel */}
-              <Button href={href(lang, "/report?type=agency")} variant="dark" size="sm" shadow={0} className="min-h-[44px] border-2">
+              <Button href={`mailto:${CONTACT_EMAIL}`} external variant="dark" size="sm" shadow={0} className="min-h-[44px] border-2">
+                {CONTACT_EMAIL}
+              </Button>
+              <Button href={href(lang, "/report?type=agency")} variant="secondary" size="sm" shadow={0} className="min-h-[44px] border-2">
                 {t(lang, "about.contact_form")}
               </Button>
             </div>

@@ -87,7 +87,7 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
           </h2>
           {compact ? null : <p className="font-medium text-[13px] md:text-[14px] lh-body m-0 mt-1">{has ? t(lang, "yours.some_sub") : t(lang, "yours.none_sub", { cadence: fmtCadence(lang) })}</p>}
         </div>
-        <div className="flex flex-col sm:flex-row md:flex-col gap-2 md:items-stretch flex-none">
+        <div className={["flex flex-col sm:flex-row md:flex-col gap-2 md:items-stretch flex-none", compact ? "mb-1 md:mb-2" : ""].join(" ")}>
           <Button href={href(lang, "/report")} variant="primary" size={compact ? "md" : "lg"} shadow={compact ? 3 : 4} className={compact ? "min-h-[44px] px-5 leading-none" : "min-h-[52px] px-7 leading-none"} data-testid="yours-add">
             {t(lang, "nav.add")}
           </Button>
@@ -98,7 +98,7 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
           ) : null}
         </div>
         {/* the site's live counters — one slim row, Press Start 2P digits (docs/09) */}
-        <div className="md:basis-full border-t-[2px] border-ink/25 pt-[10px] md:pt-3 flex flex-wrap items-center gap-x-[14px] gap-y-[6px] font-semibold text-[11.5px] md:text-[12px] text-ink/80" data-testid="yours-live" aria-label={t(lang, "live.right_now")}>
+        <div className={["md:basis-full border-t-[2px] border-ink/25 pt-[10px] md:pt-3 flex flex-wrap items-center gap-x-[14px] gap-y-[6px] font-semibold text-[11.5px] md:text-[12px] text-ink/80", compact ? "md:mt-2" : ""].join(" ")} data-testid="yours-live" aria-label={t(lang, "live.right_now")}>
           <Led size={9} />
           {!hereHidden ? (
             <span className="inline-flex items-baseline gap-[6px] whitespace-nowrap">
