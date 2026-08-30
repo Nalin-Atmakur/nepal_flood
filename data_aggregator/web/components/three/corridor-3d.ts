@@ -279,7 +279,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     typeof IntersectionObserver === "function"
       ? new IntersectionObserver((entries) => {
           visible = entries.some((e) => e.isIntersecting);
-        }, { threshold: 0.15 })
+        }, { threshold: 0.02 })
       : null;
   io?.observe(el);
 

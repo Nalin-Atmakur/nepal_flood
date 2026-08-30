@@ -9,6 +9,24 @@
  *                       debris: 120 instanced boxes riding the surface with the flow (cap 6 u/s), spinning
  */
 import * as THREE from "three";
+
+/** A soft round dot (radial gradient) so spray reads as droplets, not squares. */
+function sprayTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const c = document.createElement("canvas");
+  c.width = c.height = 64;
+  const g = c.getContext("2d");
+  if (!g) return null;
+  const grad = g.createRadialGradient(32, 32, 4, 32, 32, 30);
+  grad.addColorStop(0, "rgba(255,255,255,1)");
+  grad.addColorStop(0.55, "rgba(255,255,255,0.75)");
+  grad.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 64, 64);
+  const t = new THREE.CanvasTexture(c);
+  t.needsUpdate = true;
+  return t;
+}
 import { cellCentre } from "@/lib/flood-sim";
 import { WATER } from "@/lib/terrain-colours";
 import { makeGridGeometry } from "./terrain";
@@ -150,7 +168,7 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
   const sprayAttr = new THREE.BufferAttribute(sprayPos, 3);
   sprayGeo.setAttribute("position", sprayAttr);
   sprayGeo.setDrawRange(0, 0);
-  const sprayMat = ctx.own(new THREE.PointsMaterial({ color: 0xf6f1e8, size: 1.6, sizeAttenuation: true, transparent: true, opacity: 0.92, depthWrite: false }));
+  const sprayMat = ctx.own(new THREE.PointsMaterial({ color: 0xf6f1e8, size: 1.05, map: sprayTexture() ?? undefined, alphaTest: 0.05, sizeAttenuation: true, transparent: true, opacity: 0.92, depthWrite: false }));
   const spray = new THREE.Points(sprayGeo, sprayMat);
   spray.frustumCulled = false;
   spray.visible = false;

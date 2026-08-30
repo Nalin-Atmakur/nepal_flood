@@ -184,7 +184,12 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     return () => document.removeEventListener("keydown", onKey);
   }, [armed]);
 
+  /** On phones the controls sit under the canvas: bring the scene back into view when a run starts or an object lands. */
+  const showScene = () => {
+    if (isMobile()) boxRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+  };
   const play = () => {
+    showScene();
     setPick(null);
     setSwept(0);
     setSweptReal(0);
@@ -204,6 +209,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     handleRef.current?.reset();
   };
   const arm = (kind: ObjectKind) => {
+    showScene();
     setPick(null);
     // tapping the armed chip again drops another of the same kind; a different chip switches kind
     setArmed(kind);
