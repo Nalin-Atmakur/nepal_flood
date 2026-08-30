@@ -8,8 +8,10 @@ docs/pull_external_data/05a-sources-wave2-official.md §police_udb.
                         HTML never reaches raw_pulls
         normalise() ─▶ publisher 'Nepal Police (UDB)':
                         bodies_recorded · missing_recorded · found_recorded   national
-                        bodies_recorded scope district:<slug>  for the affected districts (ids via
-                        GET /get-district/{province}; one list page per district, `count=` read from the pager)
+                        bodies_recorded scope district:<slug>  for the affected districts — one list page per
+                        district. sources.yaml lists those pages (district ids below) so the puller's thread pool
+                        fetches them; when a raw envelope carries no district pages (old snapshots, tests) the
+                        normaliser falls back to discovering ids via GET /get-district/{province} and ctx.fetch.
 `count=` appears in the pagination links only when there is more than one page; single-page lists are
 counted from their <tbody> rows; the "no records" row (a single colspan cell) counts as 0.
 """
@@ -36,6 +38,15 @@ DISTRICTS = {                               # UDB english_name → the district 
     "Sindhupalchok": "sindhupalchok",
 }
 SECTION_METRICS = {"dead-bodies-lists": "bodies_recorded", "missing": "missing_recorded", "found": "found_recorded"}
+DISTRICT_IDS = {                            # UDB district_id → slug (from GET /get-district/{3,4,5}, 29 Aug 2026)
+    23: "sindhupalchok", 27: "kathmandu", 28: "nuwakot", 29: "rasuwa", 30: "dhading", 31: "makwanpur", 35: "chitwan",
+    36: "gorkha", 37: "lamjung", 38: "tanahun", 40: "kaski", 77: "nawalparasi_east", 48: "nawalparasi_west",
+}
+
+
+def district_of(url: str) -> str | None:
+    m = re.search(r"[?&]district_id=(\d+)", url or "")
+    return DISTRICT_IDS.get(int(m.group(1))) if m else None
 
 
 def section_of(url: str) -> str:
@@ -53,7 +64,11 @@ def parse_list_page(html: str) -> dict[str, Any]:
 
 
 def project(url: str, html: str) -> dict[str, Any]:
-    return {"section": section_of(url), "url": url, "date_from": DATE_FROM, **parse_list_page(html)}
+    d = {"section": section_of(url), "url": url, "date_from": DATE_FROM, **parse_list_page(html)}
+    slug = district_of(url)
+    if slug:
+        d["district"] = slug
+    return d
 
 
 def _doc(p: Part) -> dict[str, Any] | None:
@@ -91,6 +106,8 @@ def normalise(raw: bytes, fetched_at: datetime, source: dict[str, Any], ctx: Con
             out.figure(publisher=PUBLISHER, metric=metric, value=value, scope=scope, as_of=fetched_at,
                        url=url or f"{BASE}/dead-bodies-lists", note=note, source_id=SOURCE_ID, fetched_at=fetched_at)
 
+    total = 0
+    got = 0
     for p in parts(raw):
         d = _doc(p) if p.ok else None
         if d is None:
@@ -99,11 +116,24 @@ def normalise(raw: bytes, fetched_at: datetime, source: dict[str, Any], ctx: Con
         metric = SECTION_METRICS.get(d.get("section") or "")
         if metric is None:
             continue
+        slug = d.get("district") or district_of(p.url)
+        if slug:   # a district page fetched by the pool
+            if d.get("count") is None:
+                out.notes.append(f"district {slug}: count not on the page")
+                continue
+            fig("bodies_recorded", d["count"], scope=f"district:{slug}", note=f"records dated from {DATE_FROM}", url=p.url)
+            total += d["count"]
+            got += 1
+            continue
         note = f"records dated from {DATE_FROM}; {d.get('pages')} page(s)"
         if d.get("count") is None:
             out.notes.append(f"{d['section']}: count not on the page ({d.get('pages')} pages)")
         fig(metric, d.get("count"), note=note, url=p.url or None)
+    if got:
+        fig("bodies_recorded_sum_of_districts", total, note=f"sum over {got} fetched districts (not the national total)")
+        return out
 
+    # Fallback: no district pages in the envelope → discover ids and fetch on the spot (slow; main thread).
     if ctx is None or ctx.fetch is None:
         return out
     ids: dict[str, tuple[int, int]] = {}
@@ -120,8 +150,6 @@ def normalise(raw: bytes, fetched_at: datetime, source: dict[str, Any], ctx: Con
             name = str(r.get("english_name") or "").strip()
             if name in DISTRICTS and r.get("id") is not None:
                 ids[DISTRICTS[name]] = (int(r["id"]), prov)
-    total = 0
-    got = 0
     for slug, (did, prov) in sorted(ids.items()):
         url = f"{BASE}/dead-bodies-lists?province_id={prov}&district_id={did}&date_from={DATE_FROM}"
         f = _fetch(ctx, url)

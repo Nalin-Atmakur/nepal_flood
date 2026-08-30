@@ -14,6 +14,7 @@ Docs: docs/process_data/00-anonymise.md … 07-digest.md, then 08-llm-budget.md,
     ⑦ digest           daily "what changed" bullets (EN/NE/HI)                  processing/digest.py
     ⑧ timeline         dated milestones appended to event_timeline              processing/timeline.py
     ⑨ trends           figure_series: one value per publisher × metric × day    processing/trends.py
+    ⑩ place_now        per-place "what is happening now" line EN/NE/HI          processing/place_now.py
     then reports_archive.status anonymised → processed (matched rows keep 'matched')
 
 Flags: --step N (repeatable; default all; 3.5 = ③b) · --dry-run (compute, write nothing) · --verbose ·
@@ -38,7 +39,7 @@ from lib.places import Gazetteer  # noqa: E402
 from lib.state import State, utcnow  # noqa: E402
 from processing import ProcCtx  # noqa: E402
 from processing import (anonymise, dedup, digest, figures_latest, findings, ledger, press_figures, purge_irrelevant,  # noqa: E402
-                        resolve_places, stats, timeline, trends)
+                        resolve_places, stats, timeline, trends, place_now)
 
 STEPS = [
     (0, "anonymise", anonymise.run),
@@ -52,6 +53,7 @@ STEPS = [
     (7, "digest", digest.run),
     (8, "timeline", timeline.run),
     (9, "trends", trends.run),
+    (10, "place_now", place_now.run),              # ⑩ — after the ledger (③) wrote today's place_status rows
 ]
 
 

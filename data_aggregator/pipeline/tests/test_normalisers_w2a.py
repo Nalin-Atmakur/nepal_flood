@@ -311,3 +311,23 @@ def test_ndrrma_bulletins(w2a_ctx, now):
     got = {_ktm(f["as_of"]): f["value"] for f in r.figures if f["metric"] == "disaster_incidents_24h"}
     assert got["2026-08-27 10:00"] == 51 and got["2026-08-26 10:00"] == 29
     assert all(is_relevant(a["title"], a["body"], w2a_ctx.gazetteer) for a in r.articles)
+
+
+def test_police_udb_reads_pooled_district_pages(now):
+    """District pages listed in sources.yaml arrive as envelope parts; no ctx.fetch is needed."""
+    import normalisers as N
+    from normalisers import Part, make_envelope, police_udb as P
+    parts = [Part(url=p.url, body=p.body) for p in N.parts(load_fixture("w2a_police_udb.json"))]
+    ras = load_fixture("w2a_police_udb_rasuwa.html").decode("utf-8")
+    chi = load_fixture("w2a_police_udb_chitwan.html").decode("utf-8")
+    parts += [Part(url=f"{P.BASE}/dead-bodies-lists?province_id=3&district_id=29&date_from={P.DATE_FROM}", body=ras),
+              Part(url=f"{P.BASE}/dead-bodies-lists?province_id=3&district_id=35&date_from={P.DATE_FROM}", body=chi)]
+    raw = make_envelope(P.prestore(parts))
+    r = P.normalise(raw, now, SOURCES["police_udb"], ctx=None)          # no fetcher at all
+    got = {(f["metric"], f["scope"]): f["value"] for f in r.figures}
+    assert got[("bodies_recorded", "national")] == 560
+    assert got[("bodies_recorded", "district:rasuwa")] == 5 and got[("bodies_recorded", "district:chitwan")] == 117
+    assert got[("bodies_recorded_sum_of_districts", "national")] == 122
+    assert not any(n.startswith("district ") for n in r.notes)
+    assert P.district_of("https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=4&district_id=77&x=1") == "nawalparasi_east"
+    assert P.district_of("https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=&district_id=&x=1") is None

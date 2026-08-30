@@ -137,6 +137,7 @@ pipeline/
   [08-llm-budget](docs/process_data/08-llm-budget.md) ·
   [09-failure-modes](docs/process_data/09-failure-modes.md) ·
   [10-timeline-and-trends](docs/process_data/10-timeline-and-trends.md) ·
+  [11-place-now](docs/process_data/11-place-now.md) ·
   [03b-press-figures](docs/process_data/03b-press-figures.md)
 - [lib/README.md](lib/README.md) · [normalisers/README.md](normalisers/README.md) ·
   [processing/README.md](processing/README.md)

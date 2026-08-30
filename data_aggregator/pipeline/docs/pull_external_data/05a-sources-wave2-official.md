@@ -56,7 +56,11 @@ Fixture `w2a_setu_recordlist.json` (page 1 projection) + `w2a_setu_recordlist_p1
 contacts replaced, served by the test fetcher as page 2; pages 3–18 return 404 so the test asserts the
 partial-count note).
 
-## police_udb — `GET https://udb.nepalpolice.gov.np/{dead-bodies-lists|missing|found}?province_id=&district_id=&date_from=2026-08-26`
+## police_udb — `GET https://udb.nepalpolice.gov.np/{dead-bodies-lists|missing|found}?province_id=&district_id=&date_from=2026-08-26` + 13 district list pages
+
+> Since 30 Aug (P5) the 13 affected-district `dead-bodies-lists` pages are listed in `sources.yaml` (ids in
+> `DISTRICT_IDS`) so the puller's thread pool fetches them; `normalise()` reads their counts from the envelope and only
+> falls back to `GET /get-district/{province}` + `ctx.fetch` when an envelope has no district parts. See `03-fetching.md` §6.
 
 Shape: Laravel HTML, 20 rows/page (photo, description list, place found), pager links carry
 `&count=<total>&page=N` and the text "Showing 1 out of N Pages"; single-page lists have neither, an

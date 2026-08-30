@@ -33,6 +33,7 @@ and what happens when it fails.
 | 07 | [process_data/07-digest.md](process_data/07-digest.md) | ⑦ | `processing/digest.py` |
 | 08 | [process_data/08-llm-budget.md](process_data/08-llm-budget.md) | — | `lib/llm.py` |
 | 09 | [process_data/09-failure-modes.md](process_data/09-failure-modes.md) | — | all steps, test data |
+| 11 | [process_data/11-place-now.md](process_data/11-place-now.md) | ⑩ | `processing/place_now.py` |
 
 Also: [../lib/README.md](../lib/README.md) · [../normalisers/README.md](../normalisers/README.md) ·
 [../processing/README.md](../processing/README.md) · the schema in `../../db/migrations/00{1..5}_*.sql`.

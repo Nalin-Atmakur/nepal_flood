@@ -1,7 +1,7 @@
 # normalisers — one module per source id
 
 A normaliser turns one raw pull into RAW-zone rows and nothing else. It is pure by default
-(bytes in, rows out), may use `ctx` for sub-fetches, Storage and the gazetteer, and never lets
+(bytes in, rows out), may use `ctx` for sub-fetches (prefer listing the extra URLs in `sources.yaml` so the puller's thread pool fetches them — see `police_udb`'s district pages — and keep `ctx.fetch` for what cannot be known up front), Storage and the gazetteer, and never lets
 a name, phone, passport number or photo through. Docs:
 `docs/pull_external_data/04-normalising.md` (contract) and `05-sources.md` (per source).
 

@@ -95,7 +95,12 @@ sources:
 
 - id: police_udb
   family: html
-  url: https://udb.nepalpolice.gov.np/{dead-bodies-lists|missing|found}?province_id=&district_id=&date_from=2026-08-26   # districts via GET /get-district/{province_id}
+  url:   # the three national lists + one dead-bodies list per affected district (ids from GET /get-district/{province}, fixed
+         # since the survey began; listed here so the puller's thread pool fetches them instead of the normaliser)
+    - https://udb.nepalpolice.gov.np/{dead-bodies-lists|missing|found}?province_id=&district_id=&date_from=2026-08-26
+    - https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=3&district_id={23|27|28|29|30|31|35}&date_from=2026-08-26
+    - https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=4&district_id={36|37|38|40|77}&date_from=2026-08-26
+    - https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=5&district_id={48}&date_from=2026-08-26
   auth: none (self-signed TLS — curl -k)
   cadence: daily
   format: html, 20 rows/page

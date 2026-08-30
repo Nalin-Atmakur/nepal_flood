@@ -136,6 +136,10 @@ def expand_alternatives(url: str) -> list[str]:
     return [url]
 
 
+INNER_POOL_WORKERS = 4      # threads for one source's own URL list (see docs/pull_external_data/03-fetching.md §6)
+INNER_POOL_MIN_URLS = 4
+
+
 def requests_for(src: dict[str, Any]) -> list[dict[str, Any]]:
     """[{url, method, json, paged, verify}] for one source, before pagination."""
     sid = src["id"]
@@ -189,6 +193,16 @@ def fetch_source(src: dict[str, Any], state: State, force: bool) -> tuple[list[P
     single: Fetched | None = None
     s = state.source(sid)
     conditional = len(reqs) == 1 and not reqs[0]["paged"] and not force
+    # A source with many plain GET pages (police_udb's 16 district lists, bipad_river_series' 11 stations) fetches
+    # them with a small inner pool; results are consumed below in the original order. Paged / POST / cursor
+    # requests keep the sequential path.
+    simple = [r["url"] for r in reqs if r["method"] == "GET" and not r["paged"] and sid != "bipad_river_stations"]
+    pre: dict[str, Fetched] = {}
+    if len(simple) >= INNER_POOL_MIN_URLS and not conditional:
+        verify = reqs[0]["verify"]
+        with ThreadPoolExecutor(max_workers=INNER_POOL_WORKERS) as ipool:
+            for url, f in zip(simple, ipool.map(lambda u: get(u, verify=verify), simple)):
+                pre[url] = f
     for r in reqs:
         if r["method"] == "POST":
             f = post(r["url"], json=r["json"], verify=r["verify"])
@@ -196,8 +210,8 @@ def fetch_source(src: dict[str, Any], state: State, force: bool) -> tuple[list[P
             single = f if len(reqs) == 1 else None
             continue
         if not r["paged"]:
-            f = get(r["url"], etag=s.get("etag") if conditional else None,
-                    last_modified=s.get("last_modified") if conditional else None, verify=r["verify"])
+            f = pre.get(r["url"]) or get(r["url"], etag=s.get("etag") if conditional else None,
+                                         last_modified=s.get("last_modified") if conditional else None, verify=r["verify"])
             single = f if len(reqs) == 1 else None
             parts.append(_to_part(f))
             if sid == "bipad_river_stations" and f.ok:

@@ -40,7 +40,12 @@ Pure, unit-tested parts: `dedup.score/decide/blocks/cluster/entity_from_cluster`
 `report_counts.counts`, `dedup.merge_stats_from`, `stats.{ndrrma_rows,divergence_row,places_rows,gauges_row,flying_window_row,days_since_event}`,
 `findings.{name_collision,publisher_divergence,unreached_by_record,stale_sources,duplicate_rate}`, `digest.{build_bullets,relevant_news}`,
 `press_figures.{extract,figures_from_articles}`, `timeline.{ndrrma_rows,towers_rows,phones_rows,gauge_rows,breach_rows}`,
-`trends.series_rows`, `_series.{daily_last,latest_and_previous,with_deltas}`.
+`trends.series_rows`, `_series.{daily_last,latest_and_previous,with_deltas}`,
+`place_now.{place_of,facts_for,template,sources_of,polish}`.
+
+⑩ `place_now.py` — the per-place "what is happening now" line (EN/NE/HI; counts, publishers and headline titles
+only; model-polished with a template fallback; per-step cap $1) → `place_status.now_*` ·
+[docs/process_data/11-place-now.md](../docs/process_data/11-place-now.md).
 
 ## Running
 
