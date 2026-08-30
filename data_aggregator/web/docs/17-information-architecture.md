@@ -77,6 +77,7 @@ scrolling at 1280 × 900.
 | Scoreboard (people here now · contributions · since last pull) | Home top | one slim counters row inside **Your part**, which heads every tab (Home · Numbers · Places · Latest news) — shared hook `lib/use-live-counts.ts`; a two-number miniature stays in the Right-now strip |
 | What changed today (digest card) | Home | Latest (full) · its headline in the Right-now strip |
 | The corridor | Home 01 | Home 2 (unchanged) |
+| Real footage of the day (new, 30 Aug 13:30) | — | Home, directly under the corridor: nine click-to-play clips + "Have footage?" into the form (docs/18) — the share hook next to the simulation |
 | What happened, in numbers (stat cards) | Home 02 | Numbers |
 | The first hours (timeline) | Home 03 | Numbers |
 | The numbers, side by side (+ sparklines) | Home 04 | Numbers (first) |
