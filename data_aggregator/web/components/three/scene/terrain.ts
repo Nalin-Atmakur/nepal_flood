@@ -101,6 +101,24 @@ export function createTerrain(ctx: SceneCtx): TerrainModule {
 
   // ---- the ground -----------------------------------------------------------------------------------------
   const { geo, vertCell } = makeGridGeometry(ctx);
+  // crop the plate to the corridor band (±22 units of the channel, east of the collapse site): the plane's empty
+  // margins and the landslide wedge would otherwise dominate the fit and read as a grey slab
+  {
+    const full = (geo.index as THREE.BufferAttribute).array as Uint16Array | Uint32Array;
+    const posA = geo.attributes.position as THREE.BufferAttribute;
+    const keepV = new Uint8Array(posA.count);
+    const xMin = kmToX(-11.5);
+    for (let v = 0; v < posA.count; v++) {
+      const x = posA.getX(v);
+      const z = posA.getZ(v);
+      keepV[v] = x >= xMin && Math.abs(z - meander(x)) <= 22 ? 1 : 0;
+    }
+    const kept: number[] = [];
+    for (let t = 0; t < full.length; t += 3) {
+      if (keepV[full[t]] && keepV[full[t + 1]] && keepV[full[t + 2]]) kept.push(full[t], full[t + 1], full[t + 2]);
+    }
+    geo.setIndex(kept);
+  }
   ctx.own(geo);
   const pos = geo.attributes.position as THREE.BufferAttribute;
   for (let v = 0; v < pos.count; v++) pos.setY(v, vertCell[v] >= 0 ? bed[vertCell[v]] : 0);

@@ -40,6 +40,8 @@ type Record_ = {
   label: THREE.Sprite | null;
   reached: number; // seconds since reached, −1 = not
   ringIndex: number;
+  /** instance indices of this place's roofs/tents (they carry the status colour) */
+  roofIdx: number[];
   top8: boolean;
   radius: number;
 };
@@ -162,7 +164,6 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
     return tmpQ.multiply(tmpQ2).clone();
   };
   /** Point at local (dx, dy, dz) on a pad with tilt `q` at centre c. */
-  const onPad = (c: THREE.Vector3, q: THREE.Quaternion, dx: number, dy: number, dz: number): THREE.Vector3 => tmpP.set(dx, dy, dz).applyQuaternion(q).add(c).clone();
 
   const clear = () => {
     for (const r of records) {
@@ -188,8 +189,26 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
     );
     for (const p of places) {
       const kind = kindOf(p);
-      const x = kmToX(p.km);
-      const z = meander(x) + p.side * (p.off ? 1 : 2.2);
+      const x0 = kmToX(p.km);
+      const z0 = meander(x0) + p.side * (p.off ? 1 : 2.2);
+      // settle on the flattest ground within 2.5 units (villages sit on terraces, not on cliff faces)
+      let x = x0;
+      let z = z0;
+      let best = Infinity;
+      for (let i = 0; i < 14; i++) {
+        const a = (i / 14) * Math.PI * 2;
+        const rr = i === 0 ? 0 : 1.2 + (i % 2) * 1.3;
+        const cx = x0 + Math.cos(a) * rr;
+        const cz = z0 + Math.sin(a) * rr;
+        const gg = ctx.groundAt(cx, cz);
+        if (!gg) continue;
+        const slope = 1 - gg.ny;
+        if (slope < best) {
+          best = slope;
+          x = cx;
+          z = cz;
+        }
+      }
       const g = ctx.groundAt(x, z);
       if (!g) continue;
       const n = new THREE.Vector3(g.nx, g.ny, g.nz);
@@ -197,11 +216,17 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
       const yaw = hash01(p.id, 3) * Math.PI * 2;
       const q = tilt(n, yaw);
       const radius = padRadius(p, kind);
-      const ringColour = p.reported <= 0 ? GREY : p.heavy ? AMBER : GREEN;
-      // pad + ring
-      tmpS.set(radius, 1, radius);
-      pads.add(centre, q, tmpS);
-      const ringIndex = rings.add(onPad(centre, q, 0, 0.1, 0), tilt(n, yaw).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2)), tmpS.set(radius * 0.92, radius * 0.92, 1), ringColour);
+      const statusColour = p.reported <= 0 ? GREY : p.heavy ? AMBER : GREEN;
+      // no pads, no rings (they read as floating discs): the roofs carry the legend colour
+      const ringIndex = -1;
+      const roofIdx: number[] = [];
+      /** world point for a local offset, seated on its own ground (each house stands on the terrain itself) */
+      const onGround = (dx: number, dy: number, dz: number): THREE.Vector3 => {
+        const wx = x + Math.cos(yaw) * dx - Math.sin(yaw) * dz;
+        const wz = z + Math.sin(yaw) * dx + Math.cos(yaw) * dz;
+        const gg = ctx.groundAt(wx, wz);
+        return tmpP.set(wx, (gg ? gg.y : centre.y) + dy, wz).clone();
+      };
       // the shape
       const one = new THREE.Vector3(1, 1, 1);
       switch (kind) {
@@ -215,37 +240,37 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
             const hyaw = hash01(p.id, 50 + i) * Math.PI;
             const hq = tilt(n, yaw + hyaw);
             const s = 0.8 + hash01(p.id, 70 + i) * 0.5;
-            houses.add(onPad(centre, q, hx, 0.08 + 0.275 * s, hz), hq, tmpS.set(s, s, s));
-            roofs.add(onPad(centre, q, hx, 0.08 + 0.55 * s + 0.2 * s, hz), tilt(n, yaw + hyaw + Math.PI / 4), tmpS.set(s, s, s), i % 3 === 0 ? ROOF_B : ROOF_A);
+            houses.add(onGround(hx, 0.275 * s, hz), hq, tmpS.set(s, s, s));
+            roofIdx.push(roofs.add(onGround(hx, 0.55 * s + 0.2 * s, hz), tilt(n, yaw + hyaw + Math.PI / 4), tmpS.set(s, s, s), statusColour));
           }
           break;
         }
         case "tents":
           for (let i = 0; i < 3; i++) {
             const a = (i / 3) * Math.PI * 2 + yaw;
-            tents.add(onPad(centre, q, Math.cos(a) * 0.8, 0.38, Math.sin(a) * 0.8), tilt(n, yaw), one, i === 1 ? ROOF_A : TENT);
+            roofIdx.push(tents.add(onGround(Math.cos(a) * 0.8, 0.38, Math.sin(a) * 0.8), tilt(n, yaw), one, i === 1 ? statusColour : TENT));
           }
           break;
         case "health":
-          cubes.add(onPad(centre, q, 0, 0.53, 0), q, one);
-          crosses.add(onPad(centre, q, 0, 1.06, 0), q, one);
-          crosses.add(onPad(centre, q, 0, 1.06, 0), tilt(n, yaw + Math.PI / 2), one);
+          cubes.add(onGround(0, 0.53, 0), q, one);
+          crosses.add(onGround(0, 1.06, 0), q, one);
+          crosses.add(onGround(0, 1.06, 0), tilt(n, yaw + Math.PI / 2), one);
           break;
         case "dam":
-          dams.add(onPad(centre, q, 0, 0.78, 0), q, one);
-          pipes.add(onPad(centre, q, 1.2, 0.5, 0), tilt(n, yaw).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI / 2 - 0.5)), one);
+          dams.add(onGround(0, 0.78, 0), q, one);
+          pipes.add(onGround(1.2, 0.5, 0), tilt(n, yaw).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI / 2 - 0.5)), one);
           break;
         case "helipad":
-          hpads.add(onPad(centre, q, 0, 0.13, 0), q, one);
-          hmarks.add(onPad(centre, q, -0.3, 0.2, 0), q, one);
-          hmarks.add(onPad(centre, q, 0.3, 0.2, 0), q, one);
-          hmarks.add(onPad(centre, q, 0, 0.2, 0), tilt(n, yaw + Math.PI / 2), tmpS.set(1, 1, 0.65));
+          hpads.add(onGround(0, 0.06, 0), q, one);
+          hmarks.add(onGround(-0.3, 0.14, 0), q, one);
+          hmarks.add(onGround(0.3, 0.14, 0), q, one);
+          hmarks.add(onGround(0, 0.14, 0), tilt(n, yaw + Math.PI / 2), tmpS.set(1, 1, 0.65));
           break;
         case "border":
-          poles.add(onPad(centre, q, -1.1, 0.88, 0), q, one);
-          poles.add(onPad(centre, q, 1.1, 0.88, 0), q, one);
-          barriers.add(onPad(centre, q, 0, 1.0, 0), q, one);
-          flags.add(onPad(centre, q, 1.1, 1.55, 0.3), q, one);
+          poles.add(onGround(-1.1, 0.88, 0), q, one);
+          poles.add(onGround(1.1, 0.88, 0), q, one);
+          barriers.add(onGround(0, 1.0, 0), q, one);
+          flags.add(onGround(1.1, 1.55, 0.3), q, one);
           break;
       }
       // pick sphere (invisible but raycastable)
@@ -265,7 +290,7 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
         label = null; // no DOM canvas (tests)
       }
       const rc = p.off ? cellIndex(grid, x, z) : cellIndex(grid, x, meander(x));
-      const rec: Record_ = { place: p, kind, x, y: centre.y, z, n, reachCell: rc, pick, label, reached: -1, ringIndex, top8: top8.has(p.id), radius };
+      const rec: Record_ = { place: p, kind, x, y: centre.y, z, n, reachCell: rc, pick, label, reached: -1, ringIndex, roofIdx, top8: top8.has(p.id), radius };
       records.push(rec);
       byId.set(p.id, rec);
       byPick.set(pick, rec);
@@ -292,11 +317,11 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
       const r = byId.get(id);
       if (!r || r.reached >= 0) return;
       r.reached = 0;
-      rings.setColor(r.ringIndex, 0xffd24d);
+      for (const i of r.roofIdx) (r.kind === "tents" ? tents : roofs).setColor(i, 0xffd24d);
     },
     clearReached() {
       for (const r of records) {
-        if (r.reached >= 0) rings.setColor(r.ringIndex, r.place.reported <= 0 ? GREY : r.place.heavy ? AMBER : GREEN);
+        if (r.reached >= 0) for (const i of r.roofIdx) (r.kind === "tents" ? tents : roofs).setColor(i, r.place.reported <= 0 ? GREY : r.place.heavy ? AMBER : GREEN);
         r.reached = -1;
       }
     },

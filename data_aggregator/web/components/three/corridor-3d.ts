@@ -92,6 +92,7 @@ export type CorridorHandle = {
 const SUBSTEPS = 2;
 const REACH_DEPTH = 0.2;
 const RUN_SECONDS = 34;
+const XRAY_DEFAULT = 0.45;
 
 /**
  * Mount the scene into `el` (which should be `position: relative` and sized by CSS).
@@ -320,7 +321,8 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     camera.update(dt, runInfo(), false);
     markers.setRide(false);
     markers.update(dt, camera.cam.position);
-    const hx = horizontality(currentPol());
+    // X-ray: on by default (owner likes seeing the flood through the mountain), stronger when tilted to the side
+    const hx = Math.max(XRAY_DEFAULT, horizontality(currentPol()));
     if (Math.abs(hx - xray) > 0.01) {
       xray = hx;
       terrain.setXray(hx);

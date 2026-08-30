@@ -9,6 +9,7 @@
  *                       debris: 120 instanced boxes riding the surface with the flow (cap 6 u/s), spinning
  */
 import * as THREE from "three";
+import { BREACH } from "@/lib/flood-sim";
 
 /** A soft round dot (radial gradient) so spray reads as droplets, not squares. */
 function sprayTexture(): THREE.Texture | null {
@@ -79,6 +80,11 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
   mesh.renderOrder = 5;
   scene.add(mesh);
 
+  /** deep lake blue (#1b4a8f) and the run over which it turns to mud (scene units from the breach) */
+  const BLUE: [number, number, number] = [0.106, 0.29, 0.561];
+  const BLUE_X0 = BREACH.x + 6;
+  const BROWN_RUN = 42;
+  const nx = ctx.grid.nx;
   const deep = WATER.mudDeep;
   const body = WATER.mudBody;
   const shallow = WATER.mudShallow;
@@ -98,7 +104,9 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
         wetV[v] = 0;
         continue;
       }
-      const dep = d[c];
+      // dilate by one cell so the sheet reads as a flood from the overview, not a hairline
+      const dep0 = d[c];
+      const dep = Math.max(dep0, 0.55 * Math.max(c > 0 ? d[c - 1] : 0, c + 1 < d.length ? d[c + 1] : 0, c >= nx ? d[c - nx] : 0, c + nx < d.length ? d[c + nx] : 0));
       if (dep > WET) {
         anyWet = true;
         wetV[v] = 1;
@@ -121,6 +129,13 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
           g = body[1] + (deep[1] - body[1]) * k;
           b = body[2] + (deep[2] - body[2]) * k;
         }
+        // colour by sediment: deep blue where the lake water leaves the breach, browning as it scours the corridor
+        // (owner's call: blue contrasts with everything else; brown says how much it has picked up)
+        const sed = Math.min(1, Math.max(0, (vx0[v] - BLUE_X0) / BROWN_RUN));
+        const bluek = 1 - sed * sed;
+        r += (BLUE[0] - r) * bluek;
+        g += (BLUE[1] - g) * bluek;
+        b += (BLUE[2] - b) * bluek;
         // crest band: the sheet drops steeply within the next two cells downstream
         const c1 = c + 1 < d.length ? d[c + 1] : dep;
         const c2 = c + 2 < d.length ? d[c + 2] : c1;

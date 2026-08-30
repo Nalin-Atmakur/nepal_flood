@@ -32,10 +32,10 @@ export function corridorBounds(): { minX: number; maxX: number; minZ: number; ma
   return {
     minX: Math.max(-SCENE_W / 2, kmToX(-12)),
     maxX: Math.min(SCENE_W / 2, kmToX(112)),
-    minZ: Math.max(-SCENE_D / 2, minZ - 11),
-    maxZ: Math.min(SCENE_D / 2, maxZ + 11),
+    minZ: Math.max(-SCENE_D / 2, minZ - 8),
+    maxZ: Math.min(SCENE_D / 2, maxZ + 8),
     minY,
-    maxY: maxY + 12,
+    maxY: maxY + 5,
   };
 }
 
@@ -88,7 +88,7 @@ export function boxFits(o: Orbit, aspect: number, margin = 0.06): boolean {
  * The radius is found by projection: start close and pull back until every corner of the corridor box is inside
  * the frustum (exact for the pinhole model, so the test and the scene agree).
  */
-export function fitCamera(aspect: number, margin = 0.06): Orbit {
+export function fitCamera(aspect: number, margin = 0.0): Orbit {
   const b = corridorBounds();
   const portrait = aspect < 1;
   const o: Orbit = {

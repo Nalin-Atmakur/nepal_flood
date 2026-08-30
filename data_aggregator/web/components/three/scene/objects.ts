@@ -27,6 +27,8 @@ const PALETTE: Record<Palette, number> = {
 };
 
 const PAD_COLOUR = 0xb9ad98;
+const BAND_X_MIN = kmToX(-11);
+const BAND_Z = 20;
 const PAD_RING = 0x1a1a1a;
 
 type PieceRec = { mesh: THREE.Mesh; body: Body; local: THREE.Vector3; baseRot: THREE.Euler; mass: number };
@@ -267,7 +269,14 @@ export function createObjects(ctx: SceneCtx, onEvent?: (e: ObjectEvent) => void)
       let allAsleep = true;
       const sub = dt > 1 / 50 ? 2 : 1;
       for (const p of rec.pieces) {
+        if (!p.mesh.visible) continue;
         for (let s = 0; s < sub; s++) physicsStep(p.body, world, dt / sub);
+        // out of the corridor band (west of the collapse or up the far walls): retire the piece
+        if (p.body.p.x < BAND_X_MIN || Math.abs(p.body.p.z - meander(p.body.p.x)) > BAND_Z) {
+          p.mesh.visible = false;
+          p.body.asleep = true;
+          continue;
+        }
         p.mesh.position.set(p.body.p.x, p.body.p.y, p.body.p.z);
         p.mesh.rotation.set(p.body.rot.x, p.body.rot.y, p.body.rot.z);
         if (!p.body.asleep) allAsleep = false;

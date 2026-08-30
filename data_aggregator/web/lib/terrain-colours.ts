@@ -21,13 +21,13 @@ export const RAMP = {
   scree: hex("#8d8a84"),
   rock: hex("#6b6660"),
   snow: hex("#f2f4f7"),
-  stain: hex("#5c4630"),
+  stain: hex("#46331f"),
   rim: hex("#ffe9c8"),
 } as const;
 
-export const SNOW_LINE = 22;
-export const ROCK_SLOPE = 0.62;
-export const SCREE_SLOPE = 0.42;
+export const SNOW_LINE = 36;
+export const ROCK_SLOPE = 0.72;
+export const SCREE_SLOPE = 0.52;
 
 export function hex(h: string): RGB {
   const n = parseInt(h.replace("#", ""), 16);
