@@ -7,7 +7,7 @@ import { expect, test } from "@playwright/test";
  */
 test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 });
 
-const PAGES = ["/en", "/en/numbers", "/en/places", "/en/places/timure", "/en/latest", "/en/report", "/en/report?type=family", "/en/me", "/en/sources", "/en/about", "/ne", "/hi/report", "/en/run?swept=3&bridges=2"];
+const PAGES = ["/en", "/en/numbers", "/en/places", "/en/places/timure", "/en/latest", "/en/report", "/en/report?type=family", "/en/me", "/en/sources", "/en/about", "/ne", "/zh", "/hi/report", "/en/run?swept=3&bridges=2"];
 const MIN_TAP = 36;
 
 for (const path of PAGES) {

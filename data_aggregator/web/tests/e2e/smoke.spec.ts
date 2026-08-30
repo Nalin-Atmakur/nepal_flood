@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const LANGS = ["en", "ne", "hi"] as const;
+const LANGS = ["en", "ne", "hi", "zh"] as const;
 const HOME_BLOCKS = ["right-now", "corridor", "yours"] as const;
 const NUMBERS_BLOCKS = ["yours", "side", "stats", "first-hours"] as const;
 const LATEST_BLOCKS = ["yours", "digest", "latest", "river"] as const;
@@ -159,7 +159,7 @@ test("the corridor flood sim: controls render, a run advances the clock, an obje
   // nothing is ever below the ground
   expect(await page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { belowGround: number } } }).__corridor?.debug().belowGround)).toBe(0);
   // the breach defaults to "slow"; the cinematic button restarts the run with the chase camera
-  await expect(page.locator('[data-testid="corridor-controls"] [role="radio"][aria-checked="true"]')).toHaveText(/slow|बिस्तारै|धीरे/i);
+  await expect(page.locator('[data-testid="corridor-controls"] [role="radio"][aria-checked="true"]')).toHaveText(/slow|बिस्तारै|धीरे|缓慢/i);
   await page.locator('[data-testid="corridor-cinematic"]').click();
   await expect.poll(async () => page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { cameraMode: string } } }).__corridor?.debug().cameraMode), { timeout: 8000 }).toBe("ride");
   await page.locator('[data-testid="corridor-frame"]').click();

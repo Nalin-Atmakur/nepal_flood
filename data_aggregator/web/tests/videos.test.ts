@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { FEATURED_VIDEOS, FLOOD_VIDEOS, YOUTUBE_ID, videoEmbed, videoThumb, videoWatch } from "@/lib/videos";
+import { LANGS } from "@/lib/i18n";
 
 const gazetteerIds = new Set(
   readFileSync(join(__dirname, "..", "..", "gazetteer", "places.csv"), "utf8")
@@ -23,7 +24,7 @@ describe("curated flood videos", () => {
       expect(v.creditUrl).toMatch(/^https:\/\/www\.youtube\.com\//);
       expect(v.title.length).toBeGreaterThan(8);
       expect(v.checked).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      for (const l of ["en", "ne", "hi"] as const) expect(v.caption[l].trim().length).toBeGreaterThan(4);
+      for (const l of LANGS) expect(v.caption[l].trim().length, `${v.id}/${l}`).toBeGreaterThan(4);
     }
   });
   it("place ids point at the gazetteer", () => {

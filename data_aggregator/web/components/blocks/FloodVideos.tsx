@@ -13,19 +13,23 @@ export default function FloodVideos({ lang, refs }: { lang: Lang; refs: PlaceRef
   const names = new Map((refs ?? []).map((r) => [r.id, localised(r as unknown as Record<string, unknown>, "name", lang) || r.name_en]));
   if (!FEATURED_VIDEOS.length) return null;
   return (
-    <div className="mt-3" data-testid="corridor-clips">
+    <div data-testid="corridor-clips">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 className="font-extrabold text-[15px] md:text-[17px] lh-tight m-0">{t(lang, "corridor.clips")}</h3>
         <Link href={href(lang, "/report")} className="inline-flex items-center min-h-[40px] px-3 rounded-r2 b-ink-2 bg-amber-fill font-bold text-[12.5px] text-ink no-underline hover:bg-amber" data-testid="videos-add">
           {t(lang, "corridor.clips_more")}
         </Link>
       </div>
-      <div className="mt-2 -mx-4 px-4 md:mx-0 md:px-0 flex md:grid md:grid-cols-3 gap-3 md:gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-2 md:pb-0" data-testid="videos-row">
+      {/* edge-to-edge scroller on phones: spacers, not padding — a scroll container drops the trailing/leading
+          padding in some engines and the first card ends up flush against the screen edge */}
+      <div className="mt-2 -mx-4 md:mx-0 flex md:grid md:grid-cols-3 gap-3 md:gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-pl-4 pb-2 md:pb-0" data-testid="videos-row">
+        <span className="flex-none w-4 md:hidden" aria-hidden="true" />
         {FEATURED_VIDEOS.map((v) => (
           <VideoTile key={v.id} v={v} lang={lang} placeName={v.placeId ? (names.get(v.placeId) ?? null) : null} />
         ))}
+        <span className="flex-none w-4 md:hidden" aria-hidden="true" />
       </div>
-      <p className="font-medium text-[11px] text-muted mt-1 mb-0 lh-body">{t(lang, "sec.videos_sub")}</p>
+      <p className="font-medium text-[11px] text-muted mt-1 mb-0 lh-body px-0">{t(lang, "sec.videos_sub")}</p>
     </div>
   );
 }

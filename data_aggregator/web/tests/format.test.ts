@@ -26,6 +26,8 @@ describe("fmtDayTime() / fmtDay()", () => {
   it("uses Latin digits with a localised month", () => {
     expect(fmtDayTime("2026-08-29T12:45:00Z", "ne")).toBe("29 अग 18:30");
     expect(fmtDayTime("2026-08-29T12:45:00Z", "hi")).toBe("29 अग 18:30");
+    // Chinese puts the month first
+    expect(fmtDayTime("2026-08-29T12:45:00Z", "zh")).toBe("8月29日 18:30");
   });
 
   it("dashes out missing or invalid input", () => {

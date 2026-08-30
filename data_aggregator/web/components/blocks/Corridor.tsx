@@ -14,8 +14,8 @@ import FloodVideos from "./FloodVideos";
 
 /**
  * Section 01 — The corridor. Server block: section head, legend, the framed 3D island (client, lazy) with the
- * flood simulation and its controls, caption, the three featured real clips (FloodVideos), and on mobile the compact
- * place list under the panel.
+ * three featured real clips (FloodVideos) first, then the flood simulation with its controls and caption, plus,
+ * on mobile, the compact place list under the panel.
  * See web/docs/10-3d-corridor.md and web/docs/14-flood-sim.md.
  */
 export default function Corridor({
@@ -42,22 +42,28 @@ export default function Corridor({
       <SectionHead n="01" title={<span id="sec-corridor">{t(lang, "sec.corridor")}</span>} sub={t(lang, "sec.corridor_sub", { km: CORRIDOR_LENGTH_KM, x: CORRIDOR_HEIGHT_EXAGGERATION })}>
         <Legend lang={lang} />
       </SectionHead>
-      <div className="mt-3">
-        <Frame>
-          {places.length ? (
-            <CorridorIsland places={places} lang={lang} lakeVolumeM3={lakeVolumeM3} bridges={bridges} />
-          ) : (
-            <div className="h-[400px] md:h-[480px] bg-scene grid place-items-center p-6">
-              <EmptyState center action={t(lang, "sec.places_empty_action")} href={href(lang, "/report")}>
-                {t(lang, "sec.corridor_empty")}
-              </EmptyState>
-            </div>
-          )}
-        </Frame>
+      {/* the real footage leads, everywhere (owner, 30 Aug): a first-time viewer understands the clips instantly,
+          and the simulation reads as the explanation of what they just saw */}
+      <div className="flex flex-col gap-3 mt-3">
+        <div className="order-2">
+          <Frame>
+            {places.length ? (
+              <CorridorIsland places={places} lang={lang} lakeVolumeM3={lakeVolumeM3} bridges={bridges} />
+            ) : (
+              <div className="h-[400px] md:h-[480px] bg-scene grid place-items-center p-6">
+                <EmptyState center action={t(lang, "sec.places_empty_action")} href={href(lang, "/report")}>
+                  {t(lang, "sec.corridor_empty")}
+                </EmptyState>
+              </div>
+            )}
+          </Frame>
+          <p className="font-medium text-[12px] text-muted mt-2 mb-0">{t(lang, "sec.corridor_caption")}</p>
+        </div>
+        {/* real footage of the day (docs/18) */}
+        <div className="order-1">
+          <FloodVideos lang={lang} refs={refs} />
+        </div>
       </div>
-      <p className="font-medium text-[12px] text-muted mt-2 mb-0">{t(lang, "sec.corridor_caption")}</p>
-      {/* real footage of the day, directly under the simulation (docs/18) */}
-      <FloodVideos lang={lang} refs={refs} />
 
       {/* mobile: compact place list under the panel */}
       {compact.length ? (
