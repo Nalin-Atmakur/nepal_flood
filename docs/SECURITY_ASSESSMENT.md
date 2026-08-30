@@ -1,7 +1,6 @@
 # Nepal 2026 flood-response application security and privacy assessment
 
 **Assessment date:** 30 August 2026  
-**Target repository:** `C:\Users\bobby\Documents\Codex\2026-08-29\ok-x20-2\nepal_flood`  
 **Assessed revision:** `9763f5cb9766f1b539f081a5cd35ba6da930367f` on `main`  
 **Assessment type:** Read-only source, design, migration, and safe local test review  
 **Decision:** **NO-GO for public intake or influencer promotion**
