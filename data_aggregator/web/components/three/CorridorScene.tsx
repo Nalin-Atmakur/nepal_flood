@@ -32,6 +32,8 @@ const FEED_MIN = 3;
 const FEED_MAX_VISIBLE = 6;
 const FEED_ROW_PX = 50;
 const POP_MS = 1600;
+/** how much of the panel must be on screen before the breach starts on its own */
+const AUTOPLAY_VISIBLE = 0.55;
 const NAMES_KEY = "nft.corridor.names";
 
 function slowConnection(): boolean {
@@ -142,6 +144,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     let idleId = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let autoplay: ReturnType<typeof setTimeout> | undefined;
+    let startObserver: IntersectionObserver | undefined;
     const boot = async () => {
       if (cancelled) return;
       if (slowConnection()) {
@@ -196,7 +199,25 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
         }
         if (window.location.search.includes("debug=1")) (window as unknown as { __corridor?: CorridorHandle }).__corridor = h;
         setMode("3d");
-        if (!reducedMotion()) autoplay = setTimeout(() => handleRef.current?.play(), 700);
+        // Do not start the breach until the panel is properly on screen: starting it while it is a sliver at the
+        // bottom of the viewport means the visitor scrolls down into a run that is already half over (owner, 30 Aug).
+        if (!reducedMotion()) {
+          const box = boxRef.current;
+          if (!box || typeof IntersectionObserver !== "function") {
+            autoplay = setTimeout(() => handleRef.current?.play(), 700);
+          } else {
+            const io = new IntersectionObserver(
+              (entries) => {
+                if (!entries.some((e) => e.isIntersecting)) return;
+                io.disconnect();
+                autoplay = setTimeout(() => handleRef.current?.play(), 350);
+              },
+              { threshold: AUTOPLAY_VISIBLE },
+            );
+            io.observe(box);
+            startObserver = io;
+          }
+        }
       } catch {
         if (!cancelled) setMode("fallback");
       }
@@ -208,6 +229,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
       if (idleId && typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleId);
       if (timer) clearTimeout(timer);
       if (autoplay) clearTimeout(autoplay);
+      startObserver?.disconnect();
       handleRef.current?.dispose();
       handleRef.current = null;
     };

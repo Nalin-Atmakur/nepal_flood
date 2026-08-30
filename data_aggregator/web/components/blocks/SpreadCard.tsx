@@ -11,8 +11,11 @@ import ShareMenu from "./ShareMenu";
 export default function SpreadCard({ lang }: { lang: Lang }) {
   return (
     <section data-block="spread" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-6" aria-labelledby="spread-title">
-      <div className="b-ink rounded-r2 shadow-hard-3 md:shadow-hard-4 bg-board text-white relative overflow-hidden px-4 py-4 md:px-7 md:py-6">
-        <span className="amber-quarter" style={{ width: 170, height: 170, left: -55, bottom: -55 }} aria-hidden="true" />
+      {/* the decoration is clipped, the card is not — an overflow-hidden card cut the share menu off (owner, 30 Aug) */}
+      <div className="b-ink rounded-r2 shadow-hard-3 md:shadow-hard-4 bg-board text-white relative px-4 py-4 md:px-7 md:py-6">
+        <span className="absolute inset-0 overflow-hidden rounded-r2 pointer-events-none" aria-hidden="true">
+          <span className="amber-quarter" style={{ width: 170, height: 170, left: -55, bottom: -55 }} />
+        </span>
         <div className="relative flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
           <div className="min-w-0 flex-1">
             <h2 id="spread-title" className="font-extrabold text-[18px] md:text-[24px] lh-tight m-0 [text-wrap:balance]">

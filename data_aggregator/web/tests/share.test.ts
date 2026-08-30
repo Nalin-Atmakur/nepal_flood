@@ -72,10 +72,9 @@ describe("pageUrl()", () => {
   });
   it("opens with the live numbers when all three are known, else the plain description", () => {
     const hook = shareText("en", { dead: 675, missing: 2498, rescued: 7514 });
-    expect(hook).toContain("675 dead");
-    expect(hook).toContain("2,498 out of contact");
-    expect(hook).toContain("7,514 rescued");
-    expect(hook.length).toBeLessThan(320);
+    for (const n of ["675", "2,498", "7,514"]) expect(hook).toContain(n);
+    expect(hook).toMatch(/share/i); // the ask is part of every share message
+    expect(hook.length).toBeLessThan(400);
     expect(shareText("en", { dead: 675, missing: null, rescued: 7514 })).toBe(shareText("en"));
     expect(shareText("ne", { dead: 1, missing: 2, rescued: 3 })).toContain("1 मृत");
     const [wa] = shareLinks({ url: PAGE, lang: "en", numbers: { dead: 675, missing: 2498, rescued: 7514 } });

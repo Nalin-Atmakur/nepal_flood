@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Rasterise app/icon.svg into the icons Next serves: apple-icon 180, icon 192/512 for the manifest, and
+ * Rasterise app/icon.svg into the icons Next serves: icon.png 96 (Safari), apple-icon 180, icon 192/512 for
+ * the manifest, and
  * app/favicon.ico — an ICO container holding 16/32/48 px PNGs (every current browser reads PNG-in-ICO).
  * The .ico matters: Next links it first and Safari/Chrome prefer it, so a stale one (the create-next-app
  * placeholder is the Vercel triangle) wins over icon.svg. Run with `npm run icons`.
@@ -12,7 +13,9 @@ import sharp from "sharp";
 const here = dirname(fileURLToPath(import.meta.url));
 const svg = await readFile(resolve(here, "../app/icon.svg"));
 const png = (size) => sharp(svg).resize(size, size).png().toBuffer();
-for (const [name, size] of [["../app/apple-icon.png", 180], ["../public/icon-192.png", 192], ["../public/icon-512.png", 512]]) {
+// app/icon.png gives Safari a plain PNG favicon: PNG-compressed ICO data has tripped some versions up, and
+// Safari's favicon cache is stubborn enough that a second, unambiguous format is worth the 2 KB.
+for (const [name, size] of [["../app/icon.png", 96], ["../app/apple-icon.png", 180], ["../public/icon-192.png", 192], ["../public/icon-512.png", 512]]) {
   await writeFile(resolve(here, name), await png(size));
   console.log("wrote", name, size);
 }
