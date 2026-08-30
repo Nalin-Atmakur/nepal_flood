@@ -237,13 +237,18 @@ export async function getNationalFigures(): Promise<FigureLatest[] | null> {
   return error ? null : (data as FigureLatest[]);
 }
 
-/** First matching metric for a publisher, in candidate order. */
-export function pickFigure(rows: FigureLatest[] | null, publisher: string, metrics: string[]): FigureLatest | null {
+/**
+ * First matching metric for a publisher, in candidate order. `publisher` may be a list of spellings
+ * (see `AGENCIES[].publishers`): publishers are tried in order and the first one with a matching metric wins.
+ */
+export function pickFigure(rows: FigureLatest[] | null, publisher: string | string[], metrics: string[]): FigureLatest | null {
   if (!rows) return null;
-  const mine = rows.filter((r) => r.publisher.toLowerCase() === publisher.toLowerCase());
-  for (const m of metrics) {
-    const hit = mine.find((r) => r.metric === m);
-    if (hit) return hit;
+  for (const pub of Array.isArray(publisher) ? publisher : [publisher]) {
+    const mine = rows.filter((r) => r.publisher.toLowerCase() === pub.toLowerCase());
+    for (const m of metrics) {
+      const hit = mine.find((r) => r.metric === m);
+      if (hit) return hit;
+    }
   }
   return null;
 }
@@ -436,7 +441,7 @@ export async function getOgNumbers(): Promise<OgNumbers> {
     dead: pickFigure(figures, "NDRRMA", ["dead"]),
     missing: pickFigure(figures, "NDRRMA", ["missing", "out_of_contact"]),
     rescued: pickFigure(figures, "NDRRMA", ["rescued"]),
-    policeMissing: pickFigure(figures, "Nepal Police", ["missing", "out_of_contact"]),
+    policeMissing: pickFigure(figures, ["Nepal Police", "Nepal Police (via press)"], ["missing", "out_of_contact"]),
     submissionsTotal: live?.submissions_total ?? 0,
     lastProcessedAt: live?.last_processed_at ?? null,
   };

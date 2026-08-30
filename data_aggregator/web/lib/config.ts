@@ -55,7 +55,12 @@ export const OFFICIAL_CHANNELS: OfficialChannel[] = [
 /** Section 03 columns, in design order, mapped to `figures_latest.publisher`. */
 export type Agency = {
   key: string;
-  publisher: string;
+  /**
+   * `figures_latest.publisher` candidates, first one with a matching metric wins. The pipeline names publishers
+   * precisely ("Nepal Police (via press)" when the number was quoted by a newspaper, "Nepal Police (UDB)" when it came
+   * from the unidentified-bodies register), so a column lists every spelling it may draw from, best first.
+   */
+  publishers: string[];
   /** i18n key for the column header */
   labelKey: string;
   url: string;
@@ -69,7 +74,7 @@ export type Agency = {
 export const AGENCIES: Agency[] = [
   {
     key: "ndrrma",
-    publisher: "NDRRMA",
+    publishers: ["NDRRMA"],
     labelKey: "agency.ndrrma",
     url: "https://bipadportal.gov.np/",
     dead: ["dead"],
@@ -78,16 +83,16 @@ export const AGENCIES: Agency[] = [
   },
   {
     key: "police",
-    publisher: "Nepal Police",
+    publishers: ["Nepal Police", "Nepal Police (via press)", "Nepal Police (UDB)"],
     labelKey: "agency.police",
     url: "https://www.nepalpolice.gov.np/",
-    dead: ["dead"],
-    missing: ["missing", "out_of_contact"],
+    dead: ["dead", "bodies_recorded"],
+    missing: ["missing", "out_of_contact", "missing_recorded"],
     rescued: ["rescued"],
   },
   {
     key: "mofa",
-    publisher: "MoFA",
+    publishers: ["MoFA"],
     labelKey: "agency.mofa",
     url: "https://mofa.gov.np/",
     dead: ["dead", "foreigners_dead"],
@@ -97,7 +102,7 @@ export const AGENCIES: Agency[] = [
   },
   {
     key: "dot",
-    publisher: "DoT",
+    publishers: ["DoT", "Dept of Tourism (via press)", "NTB (via press)", "NTB"],
     labelKey: "agency.dot",
     url: "https://www.tourism.gov.np/",
     dead: ["dead", "tourists_dead"],
@@ -107,7 +112,7 @@ export const AGENCIES: Agency[] = [
   },
   {
     key: "opmcm",
-    publisher: "OPMCM",
+    publishers: ["OPMCM portal", "OPMCM"],
     labelKey: "agency.opmcm",
     url: "https://rescue.opmcm.gov.np/",
     dead: ["dead"],

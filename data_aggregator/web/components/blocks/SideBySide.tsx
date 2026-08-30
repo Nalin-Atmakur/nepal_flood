@@ -21,7 +21,8 @@ export default function SideBySide({ lang, figures, lastAttempt }: { lang: Lang;
   const any = !!figures && figures.length > 0;
 
   const headerUrl = (a: (typeof AGENCIES)[number]) => {
-    const withUrl = (figures ?? []).find((f) => f.publisher.toLowerCase() === a.publisher.toLowerCase() && f.url);
+    const pubs = a.publishers.map((x) => x.toLowerCase());
+    const withUrl = (figures ?? []).find((f) => pubs.includes(f.publisher.toLowerCase()) && f.url);
     return withUrl?.url ?? a.url;
   };
 
@@ -51,7 +52,7 @@ export default function SideBySide({ lang, figures, lastAttempt }: { lang: Lang;
                       {t(lang, r.labelKey)}
                     </Td>
                     {AGENCIES.map((a) => {
-                      const f = pickFigure(figures, a.publisher, a[r.key]);
+                      const f = pickFigure(figures, a.publishers, a[r.key]);
                       const note = f?.note || (r.key !== "dead" && a.noteKey ? t(lang, a.noteKey) : "");
                       return (
                         <Td key={a.key} className="py-[10px] md:py-[14px] px-3 md:px-4">

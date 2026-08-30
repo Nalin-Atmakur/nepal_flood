@@ -40,7 +40,11 @@ describe("constants", () => {
   });
 
   it("lists the five agencies in design order", () => {
-    expect(AGENCIES.map((a) => a.publisher)).toEqual(["NDRRMA", "Nepal Police", "MoFA", "DoT", "OPMCM"]);
+    expect(AGENCIES.map((a) => a.key)).toEqual(["ndrrma", "police", "mofa", "dot", "opmcm"]);
+    // the pipeline's actual publisher spellings must be reachable from the columns
+    expect(AGENCIES.find((a) => a.key === "police")?.publishers).toContain("Nepal Police (via press)");
+    expect(AGENCIES.find((a) => a.key === "opmcm")?.publishers).toContain("OPMCM portal");
+    expect(AGENCIES.find((a) => a.key === "dot")?.publishers).toContain("NTB (via press)");
     for (const a of AGENCIES) {
       expect(a.dead.length).toBeGreaterThan(0);
       expect(a.missing.length).toBeGreaterThan(0);
