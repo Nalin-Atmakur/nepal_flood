@@ -182,7 +182,7 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
   const sprayAttr = new THREE.BufferAttribute(sprayPos, 3);
   sprayGeo.setAttribute("position", sprayAttr);
   sprayGeo.setDrawRange(0, 0);
-  const sprayMat = ctx.own(new THREE.PointsMaterial({ color: 0xf6f1e8, size: 1.05, map: sprayTexture() ?? undefined, alphaTest: 0.05, sizeAttenuation: true, transparent: true, opacity: 0.92, depthWrite: false }));
+  const sprayMat = ctx.own(new THREE.PointsMaterial({ color: 0xf6f1e8, size: 0.8, map: sprayTexture() ?? undefined, alphaTest: 0.05, sizeAttenuation: true, transparent: true, opacity: 0.92, depthWrite: false }));
   const spray = new THREE.Points(sprayGeo, sprayMat);
   spray.frustumCulled = false;
   spray.visible = false;
@@ -196,9 +196,9 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
     let spawned = 0;
     for (let i = (ctx.frame * 7) % 11; i < d.length && spawned < 48; i += 11) {
       const dep = d[i];
-      if (dep < 0.3) continue;
+      if (dep < 0.9) continue;
       const sp = Math.hypot(vx[i], vz[i]);
-      if (sp < 3.5) continue;
+      if (sp < 12) continue;
       const k = sprayCursor;
       sprayCursor = (sprayCursor + 1) % SPRAY_N;
       const { x, z } = cellCentre(grid, i);

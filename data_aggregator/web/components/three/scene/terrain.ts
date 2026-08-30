@@ -260,9 +260,9 @@ export function createTerrain(ctx: SceneCtx): TerrainModule {
     const v = cellVert[cell];
     if (v < 0) return;
     // darken toward the stain colour, keeping some of the ground's own hue
-    const r = base[v * 3] * 0.35 + RAMP.stain[0] * 0.65;
-    const g = base[v * 3 + 1] * 0.35 + RAMP.stain[1] * 0.65;
-    const b = base[v * 3 + 2] * 0.35 + RAMP.stain[2] * 0.65;
+    const r = base[v * 3] * 0.12 + RAMP.stain[0] * 0.88;
+    const g = base[v * 3 + 1] * 0.12 + RAMP.stain[1] * 0.88;
+    const b = base[v * 3 + 2] * 0.12 + RAMP.stain[2] * 0.88;
     col.setXYZ(v, r, g, b);
     stainDirty = true;
   };

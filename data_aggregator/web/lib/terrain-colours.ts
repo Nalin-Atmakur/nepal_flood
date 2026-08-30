@@ -21,7 +21,7 @@ export const RAMP = {
   scree: hex("#8d8a84"),
   rock: hex("#6b6660"),
   snow: hex("#f2f4f7"),
-  stain: hex("#46331f"),
+  stain: hex("#2f1e10"),
   rim: hex("#ffe9c8"),
 } as const;
 
