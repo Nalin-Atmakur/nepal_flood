@@ -141,15 +141,28 @@ export const FLYING_SITES: { placeId: string; labelKey: string }[] = [
 ];
 export const FLYING_METRIC = "flying_window_quality";
 
-/** Section 02 stat ids in design order, with the sticker rotation per card. */
-export const STAT_CARDS: { id: string; rot: number }[] = [
-  { id: "wave_time_to_port", rot: -0.6 },
-  { id: "wave_speed", rot: 0.5 },
-  { id: "galchhi_rise", rot: -0.4 },
-  { id: "bodies_downstream_km", rot: 0.6 },
-  { id: "missing_counts_divergence", rot: -0.5 },
-  { id: "reports_total", rot: 0.4 },
+/**
+ * Section 02 stat cards — a RANKED candidate list; the page shows the first STAT_CARD_COUNT that exist in
+ * `stats` and pass `min` (numeric ≥ min). This keeps the six cards striking on day one (no "0 people have
+ * added…" card until at least 5 people have) while letting live facts from process_data ⑤ surface as they
+ * appear. Sticker rotation alternates by position, not by id. See web/docs/05-home-blocks.md §02.
+ */
+export const STAT_CARD_COUNT = 6;
+export const STAT_CARDS: { id: string; min?: number }[] = [
+  { id: "wave_time_to_port" },
+  { id: "wave_speed" },
+  { id: "galchhi_rise" },
+  { id: "bodies_downstream_km" },
+  { id: "personnel_deployed", min: 1 },
+  { id: "missing_hydropower", min: 1 },
+  { id: "towers_restored", min: 1 },
+  { id: "heli_flights", min: 1 },
+  { id: "missing_counts_divergence", min: 2 },
+  { id: "rescued_per_day", min: 1 },
+  { id: "duplicates_merged", min: 50 },
+  { id: "reports_total", min: 5 },
 ];
+export const STAT_ROTATIONS = [-0.6, 0.5, -0.4, 0.6, -0.5, 0.4];
 
 /** Respondent types, in design order, with the CTA card colours from the artboards. */
 export type RespondentType = "family" | "survivor" | "rescuer" | "agency";

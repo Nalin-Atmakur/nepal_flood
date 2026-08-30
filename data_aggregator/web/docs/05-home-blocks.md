@@ -83,3 +83,8 @@ Each block root carries `data-block="…"` (and `data-n="0N"` for numbered secti
 ### District rows are split out (added 30 Aug)
 
 `v_place_status_latest` also returns rows whose `places.kind = 'district'` (Rasuwa, Nuwakot, Sindhupalchok, Kathmandu …) because the OPMCM registry projects many reports at district resolution. `lib/places-split.ts` → `splitDistricts()` removes them from the corridor table (§05) and from the 3D corridor's compact list; `/places` shows them in a second "By district" table. Pure helper, tested in `tests/places-split.test.ts`.
+
+
+### Stat cards are picked from a ranked list (added 30 Aug)
+
+`lib/config.ts` → `STAT_CARDS` is a ranked candidate list with optional `min` thresholds; `lib/stats-pick.ts` → `pickStatCards()` keeps the first six rows that exist in `stats` and pass their threshold (`reports_total` needs ≥ 5, `duplicates_merged` ≥ 50, live NDRRMA facts ≥ 1). Rotation alternates by position. Tested in `tests/stats-pick.test.ts`.

@@ -1,4 +1,4 @@
-import { STAT_CARDS } from "@/lib/config";
+import { pickStatCards } from "@/lib/stats-pick";
 import { fmtCadence, fmtDay, hostOf } from "@/lib/format";
 import { localised, t, type Lang } from "@/lib/i18n";
 import type { StatRow } from "@/lib/queries";
@@ -7,12 +7,13 @@ import EmptyState from "@/components/ui/EmptyState";
 import SectionHead from "@/components/ui/SectionHead";
 
 /**
- * Section 02 — What happened, in numbers: six tilted stat cards from the `stats` table
- * (wave_time_to_port, wave_speed, galchhi_rise, bodies_downstream_km, missing_counts_divergence, reports_total).
+ * Section 02 — What happened, in numbers: six tilted stat cards chosen by lib/stats-pick from the ranked
+ * candidate list in lib/config (static event facts first, then live facts from process_data ⑤; the
+ * self-referential "N people have added…" card only once it passes its threshold).
  * Every card carries its caption in the current language and a source link with the as-of day.
  */
 export default function StrikingStats({ lang, stats }: { lang: Lang; stats: StatRow[] | null }) {
-  const rows = (stats ?? []).map((s) => ({ ...s, rot: STAT_CARDS.find((c) => c.id === s.id)?.rot ?? 0 }));
+  const rows = pickStatCards(stats);
   return (
     <section data-block="stats" data-n="02" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-stats">
       <SectionHead n="02" title={<span id="sec-stats">{t(lang, "sec.stats")}</span>} />
