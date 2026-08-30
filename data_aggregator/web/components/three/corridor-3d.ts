@@ -70,7 +70,7 @@ export type CorridorHandle = {
   /** swept objects this run, split visitor / real bridges */
   swept(): { visitor: number; real: number };
   /** Introspection for tests and debugging (`?debug=1` exposes the handle as `window.__corridor`). */
-  debug(): { state: RunState; waterVisible: boolean; drawCount: number; maxDepth: number; frontX: number; objects: number; swept: number; injected: number };
+  debug(): { state: RunState; waterVisible: boolean; drawCount: number; maxDepth: number; frontX: number; objects: number; swept: number; injected: number; lowQuality: boolean };
 };
 
 const UNKNOWN_C = 0xb06a00;
@@ -142,7 +142,8 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.setSize(W(), H());
   const canvas = renderer.domElement;
-  canvas.style.cssText = "position:absolute;inset:0;touch-action:none;display:block";
+  // pan-y: a vertical swipe scrolls the page (the panel sits near the top on phones); horizontal drags orbit.
+  canvas.style.cssText = "position:absolute;inset:0;touch-action:pan-y;display:block";
   el.appendChild(canvas);
 
   const scene = new THREE.Scene();
@@ -634,10 +635,10 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     opts.onPhase?.(p);
   };
 
-  const simStep = (dtReal: number) => {
+  const simStep = (dtReal: number, substeps: number = SUBSTEPS) => {
     const total = scenario.lakeMm3 * SIM_UNITS_PER_MM3;
-    const sub = dtReal / SUBSTEPS;
-    for (let s = 0; s < SUBSTEPS; s++) {
+    const sub = dtReal / substeps;
+    for (let s = 0; s < substeps; s++) {
       const dv = breachVolume(total, scenario.breachSeconds, runT - ROCK_FALL_SECONDS, sub);
       if (dv > 0) sim.inject(BREACH.x, BREACH.z, BREACH.radius, dv);
       sim.step(sub);
@@ -707,23 +708,30 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   let raf = 0;
   let alive = true;
   let last = performance.now();
+  // Adaptive quality: a slow device (long frames) gets one sim substep and a water-mesh update every other frame.
+  let slowFrames = 0;
+  let lowQuality = false;
+  let frameNo = 0;
   const tick = (now: number) => {
     if (!alive) return;
     raf = requestAnimationFrame(tick);
     const dtReal = Math.min(0.05, (now - last) / 1000);
     last = now;
     if (!visible || document.hidden) return;
-    if (runState === "running") {
-      simStep(dtReal);
-      updateWater();
+    frameNo++;
+    if (dtReal > 0.034) slowFrames++;
+    else slowFrames = Math.max(0, slowFrames - 1);
+    if (!lowQuality && slowFrames > 20) lowQuality = true;
+    const active = runState === "running" || (runState === "done" && water.visible);
+    if (active) {
+      simStep(dtReal, lowQuality ? 1 : SUBSTEPS);
+      if (!lowQuality || frameNo % 2 === 0) updateWater();
       updateObjects(dtReal);
-    } else if (runState === "done" && water.visible) {
-      // let the tail drain for a while after the run
-      simStep(dtReal);
-      updateWater();
-      updateObjects(dtReal);
-      if (runT > RUN_SECONDS + 40) water.visible = false;
-      setPhase("after");
+      if (runState === "done") {
+        // let the tail drain for a while after the run
+        if (runT > RUN_SECONDS + 40) water.visible = false;
+        setPhase("after");
+      }
     }
     if (drift) az += 0.0009;
     updateCamera(dtReal);
@@ -764,6 +772,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         objects: objects.length,
         swept: sweptTotal,
         injected: sim.injected(),
+        lowQuality,
       };
     },
     dispose() {
