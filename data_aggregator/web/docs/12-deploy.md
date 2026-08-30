@@ -56,3 +56,7 @@ threshold follow automatically.
 ## 6. Rollback
 
 `vercel rollback` to the previous deployment, or redeploy the previous commit. Data is never touched by a deploy.
+
+## Live smoke (30 Aug)
+
+`npm run smoke:live` (`scripts/live-smoke.mjs`) hits every public route in en/ne/hi on the production host (plus `/api/og`, `/robots.txt`, `/sitemap.xml`, the apex redirect and the `/run` landing) and fails on any non-200, missing `og:image` or wrong `lang`. Run it after every deploy; pass a base URL to point it at a preview or localhost.
