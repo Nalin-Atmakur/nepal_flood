@@ -64,9 +64,10 @@ public per place as `figures` rows (`scope = place:<id>`, metrics `help_requests
 
 The last seven come from `figure_lines()` (`PLACE_FIGURE_LINES` maps `(publisher, metric)` → template; the multi-metric
 families are combined per publisher × day). Rule: **every place-scoped figure family the pull emits gets a line**, so a
-corridor place with any dated figure never shows an empty "Status, day by day". Coverage on 30 Aug 02:40 UTC: 59 → 63 of
-74 corridor places; the 11 still empty (shelters, camps, helipads such as `dhunche_army_camp`, `galchhi_relief_camp`) have
-no figure, article or report at all — the page shows the dashed empty state with "Add what you know".
+corridor place with any dated figure never shows an empty "Status, day by day". Coverage on 30 Aug 02:47 UTC: 59 → 64 of
+74 corridor places (506 → 796 timeline rows); the 10 still empty (`nagthali`, `bamboo`, `kyanjin_gompa`, `lama_hotel` and
+the shelters / camps / helipads such as `dhunche_army_camp`, `galchhi_relief_camp`) have no figure, article or report at
+all — the page shows the dashed empty state with "Add what you know".
 
 `T` holds the EN / NE / HI templates (numbers stay Latin in all languages); days are NPT dates.
 
