@@ -10,6 +10,7 @@ import { href, t, type Lang } from "@/lib/i18n";
 import { getOwnReports, type LiveCounts } from "@/lib/queries";
 import { browserClient } from "@/lib/supabase";
 import { useLiveCounts } from "@/lib/use-live-counts";
+import ShareMenu from "./ShareMenu";
 
 /**
  * "Your part" — the first block under the header on every tab (Home · Numbers · Places · Latest news; owner's
@@ -72,6 +73,26 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
             </Link>
           ) : null}
         </div>
+        {/* the three goals (owner, 30 Aug 12:26): on the front page so a visitor sees why sharing matters — #3 is them */}
+        {compact ? null : (
+          <ol className="md:basis-full list-none m-0 p-0 border-t-[2px] border-ink/25 pt-[10px] md:pt-3 grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-2" data-testid="yours-goals" aria-label={t(lang, "yours.goals")}>
+            {(["1", "2", "3"] as const).map((k) => (
+              <li key={k} className="flex items-start gap-2 font-medium text-[12.5px] md:text-[13px] lh-body">
+                <span className="arcade text-[9px] text-white bg-ink rounded-full w-[22px] h-[22px] inline-grid place-items-center flex-none mt-[2px]" aria-hidden="true">
+                  {k}
+                </span>
+                <span>
+                  {t(lang, "yours.goal_" + k)}
+                  {k === "3" ? (
+                    <span className="inline-block ml-2 align-middle">
+                      <ShareMenu lang={lang} size="sm" />
+                    </span>
+                  ) : null}
+                </span>
+              </li>
+            ))}
+          </ol>
+        )}
         {/* the site's live counters — one slim row, Press Start 2P digits (docs/09) */}
         <div className="md:basis-full border-t-[2px] border-ink/25 pt-[10px] md:pt-3 flex flex-wrap items-center gap-x-[14px] gap-y-[6px] font-semibold text-[11.5px] md:text-[12px] text-ink/80" data-testid="yours-live" aria-label={t(lang, "live.right_now")}>
           <Led size={9} />

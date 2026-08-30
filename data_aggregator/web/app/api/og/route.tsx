@@ -14,12 +14,23 @@
  */
 import { ImageResponse } from "next/og";
 import { LANGS, LANG_LABELS, asLang, t, type Lang } from "@/lib/i18n";
-import { SITE_HOST, STALE_AFTER_MINUTES } from "@/lib/config";
+import { CORRIDOR_LENGTH_KM, SITE_HOST, SITE_URL, STALE_AFTER_MINUTES } from "@/lib/config";
 import { fmtAgo, fmtCadence, fmtDayTime, fmtInt, minutesSince } from "@/lib/format";
 import { colors } from "@/lib/tokens";
 import { getOgNumbers, type FigureLatest, type OgNumbers } from "@/lib/queries";
 
 export const runtime = "nodejs";
+
+// ---------------------------------------------------------------------------
+// The corridor picture (docs/19 #11): the pre-rendered fallback PNG, fetched once per isolate as a data URI
+// ---------------------------------------------------------------------------
+let corridorPromise: Promise<string | null> | null = null;
+function loadCorridor(): Promise<string | null> {
+  corridorPromise ??= fetch(`${SITE_URL}/corridor-fallback.png`)
+    .then(async (r) => (r.ok ? `data:image/png;base64,${Buffer.from(await r.arrayBuffer()).toString("base64")}` : null))
+    .catch(() => null);
+  return corridorPromise;
+}
 
 // ---------------------------------------------------------------------------
 // Fonts
@@ -147,7 +158,7 @@ function NumberCard({ value, label, caption, bg, digits, labelColor, captionColo
   );
 }
 
-function Card({ lang, n, run }: { lang: Lang; n: OgNumbers; run?: { swept: number; bridges: number } | null }) {
+function Card({ lang, n, run, corridor }: { lang: Lang; n: OgNumbers; run?: { swept: number; bridges: number } | null; corridor: string | null }) {
   const noData = n.dead === null && n.missing === null && n.rescued === null;
   const caption = (fig: FigureLatest | null) => (noData ? t(lang, "og.no_data") : asOfCaption(lang, fig));
   const missingCaption = noData
@@ -282,8 +293,15 @@ function Card({ lang, n, run }: { lang: Lang; n: OgNumbers; run?: { swept: numbe
           captionColor={colors.muted}
         />
       </div>
+        {/* the corridor itself — the picture that says what this is (docs/19 #11) */}
+        {corridor ? (
+          <div style={{ position: "absolute", left: 56, right: 56, top: 396, height: 128, display: "flex", border: `3px solid ${colors.ink}`, borderRadius: 4, overflow: "hidden", background: colors.card }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={corridor} alt="" width={1088} height={128} style={{ width: 1088, height: 128, objectFit: "cover", objectPosition: "center 55%" }} />
+          </div>
+        ) : null}
         {/* the cornerstone: invite the viewer to play the breach */}
-        <div style={{ position: "absolute", left: 56, top: 414, display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ position: "absolute", left: 76, top: corridor ? 436 : 414, display: "flex", alignItems: "center", gap: 12 }}>
           <div
             style={{
               display: "flex",
@@ -299,7 +317,7 @@ function Card({ lang, n, run }: { lang: Lang; n: OgNumbers; run?: { swept: numbe
               fontSize: 19,
             }}
           >
-            {run ? t(lang, "og.run", { n: fmtInt(run.swept), b: fmtInt(run.bridges) }) : t(lang, "og.sim")}
+            {run ? t(lang, "og.run", { n: fmtInt(run.swept), b: fmtInt(run.bridges) }) : t(lang, "og.sim", { km: String(CORRIDOR_LENGTH_KM) })}
           </div>
         </div>
 
@@ -395,8 +413,9 @@ export async function GET(req: Request) {
   } catch {
     fonts = [];
   }
+  const corridor = await loadCorridor();
 
-  return new ImageResponse(<Card lang={lang} n={numbers} run={run} />, {
+  return new ImageResponse(<Card lang={lang} n={numbers} run={run} corridor={corridor} />, {
     width: 1200,
     height: 630,
     // An empty list would leave satori without any font; undefined falls back to the bundled default.

@@ -16,7 +16,7 @@ export default function FloodVideos({ lang, refs }: { lang: Lang; refs: PlaceRef
     <div className="mt-3" data-testid="corridor-clips">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 className="font-extrabold text-[15px] md:text-[17px] lh-tight m-0">{t(lang, "corridor.clips")}</h3>
-        <Link href={href(lang, "/report")} className="font-bold text-[12.5px] text-ultra" data-testid="videos-add">
+        <Link href={href(lang, "/report")} className="inline-flex items-center min-h-[40px] px-3 rounded-r2 b-ink-2 bg-amber-fill font-bold text-[12.5px] text-ink no-underline hover:bg-amber" data-testid="videos-add">
           {t(lang, "corridor.clips_more")}
         </Link>
       </div>

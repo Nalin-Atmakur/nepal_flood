@@ -25,9 +25,24 @@ export function pageUrl(lang: Lang, path: string = "/"): string {
 
 export type ShareLink = { id: ShareTarget; labelKey: string; href: string; url: string };
 
+/** The three headline numbers the share message opens with (null = not known → the plain text is used). */
+export type ShareNumbers = { dead: number | null; missing: number | null; rescued: number | null };
+
+/**
+ * The share message (docs/19 #9): with the live numbers it is a hook — "675 dead · 2,498 out of contact · 7,514
+ * rescued …" — and one ask; without them, the plain description. The link is appended by the network builders.
+ */
+export function shareText(lang: Lang, n?: ShareNumbers | null): string {
+  if (n && n.dead !== null && n.missing !== null && n.rescued !== null) {
+    const f = (v: number) => new Intl.NumberFormat("en-US").format(v);
+    return t(lang, "share.hook", { dead: f(n.dead), missing: f(n.missing), rescued: f(n.rescued) });
+  }
+  return t(lang, "share.text");
+}
+
 /** Build every share link for a page. `copy` carries the plain URL (with utm) for the clipboard. */
-export function shareLinks({ url, lang, text }: { url: string; lang: Lang; text?: string }): ShareLink[] {
-  const msg = text ?? t(lang, "share.text");
+export function shareLinks({ url, lang, text, numbers }: { url: string; lang: Lang; text?: string; numbers?: ShareNumbers | null }): ShareLink[] {
+  const msg = text ?? shareText(lang, numbers);
   return SHARE_TARGETS.map((id) => {
     const target = withUtm(url, id, lang);
     let href = target;

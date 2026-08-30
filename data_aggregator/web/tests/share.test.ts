@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SHARE_TARGETS, pageUrl, shareLinks, withUtm } from "@/lib/share";
+import { SHARE_TARGETS, pageUrl, shareLinks, shareText, withUtm } from "@/lib/share";
 
 const PAGE = "https://nepalfloodtracker.com/ne/places/timure";
 
@@ -65,5 +65,16 @@ describe("pageUrl()", () => {
     expect(pageUrl("en")).toBe("https://nepalfloodtracker.com/en");
     expect(pageUrl("ne", "/places/timure")).toBe("https://nepalfloodtracker.com/ne/places/timure");
     expect(pageUrl("hi", "report")).toBe("https://nepalfloodtracker.com/hi/report");
+  });
+  it("opens with the live numbers when all three are known, else the plain description", () => {
+    const hook = shareText("en", { dead: 675, missing: 2498, rescued: 7514 });
+    expect(hook).toContain("675 dead");
+    expect(hook).toContain("2,498 out of contact");
+    expect(hook).toContain("7,514 rescued");
+    expect(hook.length).toBeLessThan(320);
+    expect(shareText("en", { dead: 675, missing: null, rescued: 7514 })).toBe(shareText("en"));
+    expect(shareText("ne", { dead: 1, missing: 2, rescued: 3 })).toContain("1 मृत");
+    const [wa] = shareLinks({ url: PAGE, lang: "en", numbers: { dead: 675, missing: 2498, rescued: 7514 } });
+    expect(decodeURIComponent(wa.href)).toContain("675 dead");
   });
 });

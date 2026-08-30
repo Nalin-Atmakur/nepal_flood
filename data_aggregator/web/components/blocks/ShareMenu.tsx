@@ -6,7 +6,8 @@ import ShareBar from "./ShareBar";
 
 /**
  * The header's Share button: a small popover with the share pills (WhatsApp / X / LinkedIn / Telegram / copy).
- * Uses `navigator.share` directly when the device has it (phones), so one tap opens the native sheet.
+ * Always the pills — on phones too: WhatsApp through wa.me carries the hook text and gets a link preview, which the
+ * native share sheet does not give a text+URL share (docs/19 #10). The sheet is still there as "More…".
  */
 export default function ShareMenu({ lang, size = "md" }: { lang: Lang; size?: "md" | "sm" }) {
   const [open, setOpen] = useState(false);
@@ -30,16 +31,8 @@ export default function ShareMenu({ lang, size = "md" }: { lang: Lang; size?: "m
     };
   }, [open]);
 
-  async function onClick() {
-    const nav = navigator as Navigator & { share?: (d: { title?: string; text?: string; url?: string }) => Promise<void> };
-    if (typeof nav.share === "function" && window.matchMedia("(max-width: 767px)").matches) {
-      try {
-        await nav.share({ title: t(lang, "site.name"), text: t(lang, "share.text"), url: window.location.origin + `/${lang}` });
-        return;
-      } catch {
-        /* cancelled → show the pills */
-      }
-    }
+  /** Always the pills: WhatsApp via wa.me gets the hook *and* a preview; the native sheet is "More…" in the pills (docs/19 #10). */
+  function onClick() {
     setOpen((v) => !v);
   }
 
@@ -54,7 +47,18 @@ export default function ShareMenu({ lang, size = "md" }: { lang: Lang; size?: "m
         ↗ {t(lang, "nav.share")}
       </button>
       {open ? (
-        <div role="dialog" aria-label={t(lang, "share.title")} className="absolute right-0 top-[calc(100%+8px)] z-30 min-w-[280px] bg-card b-ink rounded-r2 shadow-hard-3 p-3">
+        <div
+          role="dialog"
+          aria-label={t(lang, "share.title")}
+          className="fixed md:absolute left-3 right-3 bottom-[84px] md:left-auto md:right-0 md:bottom-auto md:top-[calc(100%+8px)] z-40 md:min-w-[300px] bg-card b-ink rounded-r2 shadow-hard-3 p-3"
+          data-testid="share-popover"
+        >
+          <div className="flex items-center justify-between mb-2 md:hidden">
+            <span className="font-extrabold text-[14px]">{t(lang, "share.title")}</span>
+            <button type="button" onClick={() => setOpen(false)} className="inline-grid place-items-center w-8 h-8 rounded-full b-ink-2 bg-card font-extrabold cursor-pointer" aria-label={t(lang, "corridor.disarm")}>
+              ×
+            </button>
+          </div>
           <ShareBar lang={lang} path="/" variant="compact" />
         </div>
       ) : null}

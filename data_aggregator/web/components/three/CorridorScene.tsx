@@ -329,7 +329,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
                 type="button"
                 onClick={toggleNames}
                 aria-pressed={names}
-                className={"inline-flex items-center gap-[6px] min-h-[32px] px-[10px] b-ink-2 rounded-r2 font-bold text-[11px] cursor-pointer shadow-hard-2 " + (names ? "bg-card text-ink" : "bg-board text-white")}
+                className={"inline-flex items-center gap-[6px] min-h-[40px] px-[10px] b-ink-2 rounded-r2 font-bold text-[11px] cursor-pointer shadow-hard-2 " + (names ? "bg-card text-ink" : "bg-board text-white")}
                 data-testid="corridor-names"
                 title={t(lang, "corridor.names")}
               >
