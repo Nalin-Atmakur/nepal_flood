@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-08-30T01:29:09+01:00",
+  "passed": true,
+  "checks": {
+    "fixedSynchronizedPins": 3,
+    "dynamicMapSelectionMarker": true,
+    "directTerrainSelection": true,
+    "satelliteEvidenceCanvases": 2,
+    "viewAHasRenderedPixels": true,
+    "viewBHasRenderedPixels": true,
+    "popupForegroundRgb": "rgb(16, 33, 43)",
+    "strict32mGridLoaded": true,
+    "experimental10mGridLoaded": true,
+    "browserFailures": []
+  },
+  "imagery": {
+    "viewA": "B040001100881410",
+    "viewB": "B040001100881710",
+    "relationship": "post-event opposite-look pair; not before/after",
+    "acquisitionDeltaSeconds": 81.799775,
+    "previewResolutionM": 2,
+    "analysisResolutionM": 1,
+    "licence": "CC BY-NC 4.0"
+  },
+  "tests": {
+    "typescript": 15,
+    "python": 16,
+    "viewerSmoke": "passed"
+  }
+}

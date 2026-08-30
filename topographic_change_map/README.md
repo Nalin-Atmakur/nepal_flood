@@ -64,6 +64,7 @@ directions. GLO-30 supplies the pre-event terrain context.
 - [RUNBOOK.md](RUNBOOK.md) — operation and recovery
 - [PUBLICATION.md](PUBLICATION.md) — live viewer URL, Pages activation, and local build
 - [products/release-audit.json](products/release-audit.json) — machine-readable release-completeness evidence and external gates
+- [products/viewer-evidence-validation.json](products/viewer-evidence-validation.json) — synchronized pin, imagery, popup, and direct-terrain interaction evidence
 - [research/README.md](research/README.md) — detailed research package
 
 ## Test everything

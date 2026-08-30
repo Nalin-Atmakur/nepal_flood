@@ -117,6 +117,19 @@ check(
     && imageryChecksums.includes(`${sha256(imageryFiles[1]!)}  view-b.jpg`),
   "same-grid RGB previews for both actual post-event parallax acquisitions",
 );
+const viewerEvidence = readJson("topographic_change_map/products/viewer-evidence-validation.json") as {
+  passed?: boolean;
+  checks?: { fixedSynchronizedPins?: number; directTerrainSelection?: boolean; satelliteEvidenceCanvases?: number; browserFailures?: unknown[] };
+};
+check(
+  "viewer-interaction-validation",
+  viewerEvidence.passed === true
+    && viewerEvidence.checks?.fixedSynchronizedPins === 3
+    && viewerEvidence.checks?.directTerrainSelection === true
+    && viewerEvidence.checks?.satelliteEvidenceCanvases === 2
+    && viewerEvidence.checks?.browserFailures?.length === 0,
+  "map pins, dynamic selection, direct terrain click, imagery crops, popup contrast, and both grids pass",
+);
 
 const trackedTiffs = execFileSync("git", ["ls-files", "*.tif"], { cwd: REPO_ROOT, encoding: "utf8" })
   .trim().split("\n").filter(Boolean);

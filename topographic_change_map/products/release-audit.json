@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-30T00:29:09.592Z",
+  "generatedAt": "2026-08-30T00:31:20.425Z",
   "passed": true,
   "scientificClass": "RESEARCH_ONLY",
   "checks": [
@@ -78,6 +78,11 @@
       "id": "synchronized-satellite-evidence",
       "passed": true,
       "evidence": "same-grid RGB previews for both actual post-event parallax acquisitions"
+    },
+    {
+      "id": "viewer-interaction-validation",
+      "passed": true,
+      "evidence": "map pins, dynamic selection, direct terrain click, imagery crops, popup contrast, and both grids pass"
     },
     {
       "id": "source-imagery-excluded",

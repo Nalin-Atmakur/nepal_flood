@@ -69,7 +69,7 @@ Completed:
 - Viewer now exposes strict 32 m and lazy-loaded experimental 10 m grids; both pass headless WebGL smoke tests.
 - Official Copernicus Data Space catalogue added 61 exact-overlap Sentinel-2 L2A context products (57 pre-cutoff, 4 post-cutoff); all are automatically rejected for precision DSM use, and only two have scene cloud below 20%.
 - Current automated checks pass: 16 Python tests and 12 TypeScript tests.
-- Machine-readable release audit passes 18/18 artifact, validation, selection, rejection, catalogue, provider, synchronized-evidence, publication, source-exclusion, and secret-safety checks; external gates remain listed separately.
+- Machine-readable release audit passes 19/19 artifact, validation, selection, rejection, catalogue, provider, synchronized-evidence, interaction, publication, source-exclusion, and secret-safety checks; external gates remain listed separately.
 - Redundant local source COGs and 1 m warp caches were checksum-matched to the sandbox copies and moved to recoverable macOS Trash; bulk/source storage is now sandbox-only.
 - Earthdata was retried in ordinary sandbox Chrome after restoring the password fields, but its invisible reCAPTCHA again rejected submission; no solvable checkbox/image challenge is exposed, so VNC remains the explicit user handoff.
 - Dense matching now evaluates candidates in worker batches with durable progress reporting, reducing scheduler overhead for subsequent pairs.
