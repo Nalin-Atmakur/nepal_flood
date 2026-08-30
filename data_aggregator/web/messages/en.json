@@ -325,7 +325,7 @@
   "about.why_body": "Each agency counts something different: NDRRMA counts everyone reported out of contact; the Police count confirmed missing-person reports; MoFA counts foreigners reported to embassies; the Tourism Department counts tourists on agency manifests; the PM’s portal counts every report submitted, including duplicates. We show them all rather than choosing one.",
   "about.handling_title": "Data handling",
   "about.handling_1": "Names, contacts and photos are stripped and encrypted on arrival; the public site shows counts, places, statuses and times only.",
-  "about.handling_2": "Full reports go to Nepal Police and MoFA through an agreed channel, with your permission flag attached (on by default).",
+  "about.handling_2": "Full reports are kept in the archive for the official channel to Nepal Police and MoFA that the team is arranging; nothing is passed on automatically, and your permission flag (on by default) travels with the report if it is.",
   "about.handling_3": "Every public number carries its source and an “as of” time. We never blend sources into a single invented figure.",
   "about.handling_4": "Everything is deletable: from “My folder” you can withdraw a contribution and it leaves the public counts within {cadence}.",
   "about.who_title": "Who runs it",
