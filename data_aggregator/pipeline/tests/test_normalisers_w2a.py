@@ -1,11 +1,12 @@
-from pathlib import Path
 """Fixture-backed tests for the wave-2 official/government normalisers (docs/pull_external_data/05a-sources-wave2-official.md)."""
 from __future__ import annotations
+
+from pathlib import Path
+import pytest
 
 import json
 from datetime import datetime, timezone
 
-import pytest
 import yaml
 
 import normalisers as N
