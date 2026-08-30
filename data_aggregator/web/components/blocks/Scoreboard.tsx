@@ -54,6 +54,8 @@ export default function Scoreboard({ lang, initial }: { lang: Lang; initial: Liv
   }, []);
 
   const lastPull = counts?.last_pull_at ?? null;
+  // `now` is captured at render time, so the server's (ISR) label and the client's differ by design; the Cell
+  // suppresses the hydration warning for that text and the 30 s tick keeps it honest.
   const mins = minutesSince(lastPull, new Date(now));
   const since = lastPull ? fmtSinceArcade(lastPull, new Date(now)) : "—";
   const sinceColor = mins === null ? "text-board-text" : mins > STALE_AFTER_MINUTES ? "text-amber" : "text-live-green";
@@ -109,7 +111,7 @@ export default function Scoreboard({ lang, initial }: { lang: Lang; initial: Liv
 function Cell({ value, label, color = "text-amber", small = false }: { value: string; label: string; color?: string; small?: boolean }) {
   return (
     <div>
-      <div className={["arcade num", color].join(" ")} style={{ fontSize: small ? 13 : 15, lineHeight: small ? 1 : 1.4 }} aria-live="polite">
+      <div className={["arcade num", color].join(" ")} style={{ fontSize: small ? 13 : 15, lineHeight: small ? 1 : 1.4 }} aria-live="polite" suppressHydrationWarning>
         {value}
       </div>
       <div className={["font-semibold text-board-text", small ? "text-[10.5px] mt-[5px]" : "text-[12px] mt-[6px]"].join(" ")}>{label}</div>
