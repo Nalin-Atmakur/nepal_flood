@@ -19,11 +19,10 @@ from lib.text import lang_of, nfc
 
 from . import Context, NormalisedRows, parts
 from ._common import strip_tags
-from ._rss import is_relevant, publisher_for
+from ._rss import is_relevant, published_from_path, publisher_for
 
 SOURCE_ID = "outlet_tag_pages"
 _A = re.compile(r"<a\s[^>]*?href=[\"']([^\"']+)[\"'][^>]*>(.*?)</a>", re.S | re.I)
-_DATE_PATH = re.compile(r"/(20\d{2})/(\d{2})/(\d{2})/")
 # host → article path pattern; unknown hosts fall back to "two path segments, slug ≥ 10 chars"
 ARTICLE_PATHS: dict[str, re.Pattern[str]] = {
     "kathmandupost.com": re.compile(r"^/[a-z-]+/20\d{2}/\d{2}/\d{2}/[a-z0-9-]{8,}$"),
@@ -60,14 +59,6 @@ def candidates(html: str, page_url: str) -> dict[str, str]:
     return found
 
 
-def published_from_path(url: str) -> datetime | None:
-    m = _DATE_PATH.search(urlparse(url).path)
-    if not m:
-        return None
-    try:
-        return datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)), tzinfo=timezone.utc)
-    except ValueError:
-        return None
 
 
 def normalise(raw: bytes, fetched_at: datetime, source: dict[str, Any], ctx: Context | None = None) -> NormalisedRows:

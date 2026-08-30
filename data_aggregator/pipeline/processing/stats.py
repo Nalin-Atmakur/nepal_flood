@@ -63,7 +63,8 @@ MISSING_CANDIDATES = [
     ("NDRRMA", "missing"), ("Nepal Police", "missing"), ("Nepal Police (UDB)", "missing"), ("Nepal Police (via press)", "missing"),
     ("MoFA", "missing"), ("MoFA", "foreigners_missing"),
     ("Dept of Tourism", "tourists_missing"), ("Dept of Tourism (via press)", "tourists_missing"), ("NTB (via press)", "tourists_missing"),
-    ("OPMCM portal", "lost_open"),
+    ("Setu (NDRRMA)", "missing"),
+    # not OPMCM `lost_open`: that is a queue of lost-person *reports* (duplicates, resolved-but-open), not a count of people
 ]
 
 CAPTIONS: dict[str, tuple[str, str, str]] = {

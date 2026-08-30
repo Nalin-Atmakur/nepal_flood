@@ -1,6 +1,8 @@
 """Shared RSS → articles logic for reliefweb_rss and outlet_rss_set (not registered as a source)."""
 from __future__ import annotations
 
+import re
+
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
@@ -73,7 +75,22 @@ def publisher_for(link: str, feed_title: str | None) -> str:
     return nfc(feed_title).strip() or host or "unknown"
 
 
-def entry_datetime(e) -> datetime | None:
+_DATE_PATH = re.compile(r"/(20\d{2})/(\d{2})/(\d{2})/")
+
+
+def published_from_path(url: str) -> datetime | None:
+    """Date from a `/section/YYYY/MM/DD/slug` path (Kathmandu Post, THT, Onlinekhabar EN …); None when the path has none."""
+    m = _DATE_PATH.search(urlparse(url or "").path)
+    if not m:
+        return None
+    try:
+        return datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)), tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
+def entry_datetime(e, link: str | None = None) -> datetime | None:
+    """Feed pubDate/updated, else the date in the link's path, else None (never invented)."""
     for key in ("published_parsed", "updated_parsed"):
         st = e.get(key)
         if st:
@@ -81,7 +98,7 @@ def entry_datetime(e) -> datetime | None:
                 return datetime(*st[:6], tzinfo=timezone.utc)
             except (TypeError, ValueError):
                 continue
-    return None
+    return published_from_path(link) if link else None
 
 
 def feed_to_articles(part: Part, *, source_id: str, fetched_at: datetime, max_items: int = 200,
@@ -111,7 +128,7 @@ def feed_to_articles(part: Part, *, source_id: str, fetched_at: datetime, max_it
         if "reliefweb.int" in host and e.get("author"):
             pub = f"{nfc(e.get('author')).strip()} (via ReliefWeb)"
         out.article(url=link, title=title[:500], publisher=pub, lang=lang_of(title + " " + summary[:200], hint=hint),
-                    published_at=entry_datetime(e), body=(summary[:2000] or None), source_id=source_id,
+                    published_at=entry_datetime(e, link), body=(summary[:2000] or None), source_id=source_id,
                     fetched_at=fetched_at)
     if dropped:
         out.notes.append(f"{host}: {dropped} off-topic item(s) dropped by the relevance gate")

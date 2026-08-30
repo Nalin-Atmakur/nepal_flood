@@ -62,15 +62,16 @@ def test_divergence_live_and_fallback():
     latest = [{"publisher": "NDRRMA", "metric": "missing", "scope": "national", "value": 2498, "as_of": "2026-08-29T12:45:00+00:00"},
               {"publisher": "MoFA", "metric": "missing", "scope": "national", "value": 2400, "as_of": "2026-08-29T08:15:00+00:00"},
               {"publisher": "MoFA", "metric": "foreigners_missing", "scope": "national", "value": 511, "as_of": "2026-08-28T11:15:00+00:00"},
-              {"publisher": "OPMCM portal", "metric": "lost_open", "scope": "national", "value": 10823, "as_of": "2026-08-29T23:50:00+00:00"},
+              {"publisher": "OPMCM portal", "metric": "lost_open", "scope": "national", "value": 10823, "as_of": "2026-08-29T23:50:00+00:00"},   # a report queue, not people: ignored
+              {"publisher": "Setu (NDRRMA)", "metric": "missing", "scope": "national", "value": 1275, "as_of": "2026-08-30T02:35:00+00:00"},
               {"publisher": "Nepal Police (via press)", "metric": "missing", "scope": "national", "value": 2426, "as_of": "2026-08-29T09:00:00+00:00"},
               {"publisher": "Nepal Police (UDB)", "metric": "missing", "scope": "national", "value": 2430, "as_of": "2026-08-29T10:00:00+00:00"},   # official beats press for the same agency
               {"publisher": "NDRRMA", "metric": "missing", "scope": "district:rasuwa", "value": 5, "as_of": "2026-08-29T12:45:00+00:00"}]
     r = S.divergence_row(latest, NOW)
     assert r["value"] == "4 numbers" and r["numeric"] == 4
-    assert r["caption_en"] == "different “missing” figures from 4 agencies — from 2,400 (MoFA) to 10,823 (OPMCM portal)."
-    assert "2,400 (MoFA)" in r["caption_ne"] and "10,823 (OPMCM portal)" in r["caption_hi"]
-    assert r["as_of"].isoformat() == "2026-08-29T23:50:00+00:00"
+    assert r["caption_en"] == "different “missing” figures from 4 agencies — from 1,275 (Setu (NDRRMA)) to 2,498 (NDRRMA)."
+    assert "1,275 (Setu (NDRRMA))" in r["caption_ne"] and "2,498 (NDRRMA)" in r["caption_hi"]
+    assert r["as_of"].isoformat() == "2026-08-30T02:35:00+00:00"
     assert S.divergence_row(latest[:1], NOW)["value"] == "5 numbers"     # < 2 agencies → the seeded static row
 
 

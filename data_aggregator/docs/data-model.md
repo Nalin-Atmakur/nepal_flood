@@ -32,7 +32,7 @@ Related: `db/README.md` (how to apply) · `db/docs/01-zones.md` … `07-applying
                        ╚══════════════════════════════╤══════════════════════════════╝
                                                       │
         views (public, read-only projections):        ▼
-        v_live_counts  v_articles_recent  v_place_status_latest  v_sources_status  v_gauges_latest
+        v_live_counts  v_articles_recent  v_place_status_latest  v_sources_status  v_gauges_latest — since `009_articles_recent_order.sql`: dated articles first (`published_at desc nulls last`), undated after them by `fetched_at`; `fetched_at` exposed.
                                                       │
                                                       ▼
                                         website (Next.js, anon key, ISR)
@@ -323,6 +323,7 @@ Indexes on `place_id`, `person_key`. Writes: `process_data` ⓪. Reads: `process
 | `shelter` | text | |
 | `km` | double precision | copied from `places.km` |
 | `status_label` | text | `mostly_unknown` · `mostly_reached` · `no_data` · `district` (for `places.kind = 'district'` and district-like ids; the site lists these under "By district", not as places) |
+| `now_en` / `now_ne` / `now_hi` / `now_sources` / `now_as_of` | text · text · text · text · timestamptz | step ⑩ `processing/place_now.py` (008): one or two sentences of "what is happening now" from counts, publishers and headline titles (36 h), model-polished with a template fallback; `now_sources` = publishers named (`OPMCM · NESRA · Kathmandu Post`) |
 | `note` | text | |
 
 Index `(place_id, as_of desc)`.

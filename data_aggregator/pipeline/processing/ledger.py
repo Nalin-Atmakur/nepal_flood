@@ -79,6 +79,13 @@ def unknown_count(expected: int, confirmed: int) -> int:
     return max(int(expected) - int(confirmed), 0)
 
 
+def reconcile_counts(expected: int, confirmed: int) -> tuple[int, int]:
+    """(expected, unknown) with expected raised to confirmed when more people are confirmed there than were expected
+    (hospital admission lists, NDRRMA rescued figures) — the ledger never shows confirmed > expected."""
+    exp = max(int(expected), int(confirmed), 0)
+    return exp, unknown_count(exp, confirmed)
+
+
 def status_label(expected: int, confirmed: int, unknown: int, kind: str | None = None, place_id: str | None = None) -> str:
     if kind == "district" or (place_id and place_id in DISTRICT_LIKE):
         return "district"
@@ -410,9 +417,8 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
                       if r.get("respondent_type") in ("rescuer", "agency") and (r.get("status") or "") in ("rescued", "reported_safe"))
         nd_rescued = int((latest.get(("NDRRMA", "rescued", pid)) or {}).get("value") or 0)
         nd_stationed = int((latest.get(("NDRRMA", "stationed", pid)) or {}).get("value") or 0)
-        expected = expected_count(ent_here.get(pid, 0), subjects)
         confirmed = confirmed_count(nd_rescued, nd_stationed, rescuer)
-        unknown = unknown_count(expected, confirmed)
+        expected, unknown = reconcile_counts(expected_count(ent_here.get(pid, 0), subjects), confirmed)
         # phones (hook): NTC/Ncell figures for the place, then telecom articles — newest dated signal wins
         tel_figs = telecom_here.get(pid, [])
         tel = [a for a in arts_here.get(pid, []) if TELECOM_RE.search(f"{a.get('title') or ''} {a.get('body') or ''}")]
