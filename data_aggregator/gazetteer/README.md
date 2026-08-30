@@ -94,7 +94,7 @@ cd data_aggregator/gazetteer
 ../pipeline/.venv/bin/python build_gazetteer.py --refresh  # re-fetch NDRRMA + Nominatim (≈ 1 req/s, ~2 min)
 ```
 
-The build is deterministic from the cache: `tests/test_places.py::test_build_offline_is_deterministic`
+The build is deterministic from the cache: `tests/test_gazetteer_places.py::test_build_offline_is_deterministic`
 asserts an offline rebuild reproduces the committed CSV byte for byte. Unmapped NDRRMA locations are
 printed as `[ndrrma] unmapped …` warnings and never dropped silently — the test suite then fails until
 you map them (step 2).
@@ -110,7 +110,7 @@ you map them (step 2).
    - `fixed=True` — the guess is used as-is; end `notes` with `; coord estimated`.
 2. If NDRRMA names it: add the exact `title` to `NDRRMA_RESCUED_MAP`, or the API `id` to
    `NDRRMA_STATIONED_ROWS` (those rows take the API centroid as their coordinate).
-3. Keep `km` consistent with `design/…/corridor-3d.js` (`tests/test_places.py::CHAINAGE_3D`) and
+3. Keep `km` consistent with `design/…/corridor-3d.js` (`tests/test_gazetteer_places.py::CHAINAGE_3D`) and
    monotonic for in-channel rows.
 4. Run step 1, then step 3, then step 4.
 
