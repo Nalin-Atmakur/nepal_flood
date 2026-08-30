@@ -16,7 +16,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-_PHONE_RE = re.compile(r"(?<!\d)(?:\+?\d[\d\-\s]{7,}\d)(?!\d)")
+_PHONE_RE = re.compile(r"(?<!\d)(?:\+?\d(?:[\s-]?\d){8,13})(?!\d)")   # 9–14 digits, optional separators
+_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")                                # ISO dates/timestamps are not phones
 _EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 _PASSPORT_RE = re.compile(r"\b[A-Z]{1,2}\d{6,8}\b")
 _SECRET_RE = re.compile(r"(eyJ[\w-]{20,}|sk-[\w-]{20,}|sbp_[\w]{20,})")
@@ -30,7 +31,7 @@ def redact(value: Any) -> Any:
     if isinstance(value, str):
         v = _SECRET_RE.sub("[secret]", value)
         v = _EMAIL_RE.sub("[email]", v)
-        v = _PHONE_RE.sub("[phone]", v)
+        v = _PHONE_RE.sub(lambda m: m.group(0) if _DATE_RE.search(m.group(0)) else "[phone]", v)
         v = _PASSPORT_RE.sub("[id]", v)
         return v if len(v) <= 300 else v[:297] + "..."
     if isinstance(value, dict):
