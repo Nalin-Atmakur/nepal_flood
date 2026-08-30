@@ -38,6 +38,7 @@ article headlines stay in their own language.
 from __future__ import annotations
 
 import re
+import hashlib
 from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import Any
@@ -295,6 +296,24 @@ def tpl(key: str, **kw: Any) -> tuple[str, str, str]:
     return en.format(**kw), ne.format(**kw), hi.format(**kw)
 
 
+def article_kind(title: str) -> str:
+    """Stable per-headline kind for `place_timeline` (matches migration 010's backfill: 'article:' || md5(what_en))."""
+    return "article:" + hashlib.md5(title.encode("utf-8")).hexdigest()
+
+
+def timeline_row(pid: str, day: str, kind: str, en: str, ne: str, hi: str, dot: str, url: str | None, now: Any) -> dict[str, Any]:
+    """One 'Status, day by day' line. The table is keyed (place_id, day, kind), so a re-run replaces the line."""
+    return {"place_id": pid, "day": day, "kind": kind, "what_en": en, "what_ne": ne, "what_hi": hi, "dot": dot, "source_url": url, "computed_at": now}
+
+
+def collapse_timeline(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Last row wins per (place_id, day, kind) — what the upsert key enforces, applied before the write."""
+    out: dict[tuple[str, str, str], dict[str, Any]] = {}
+    for r in rows:
+        out[(r["place_id"], r["day"], r["kind"])] = r
+    return list(out.values())
+
+
 def _dt(v: Any) -> datetime | None:
     if not v:
         return None
@@ -407,7 +426,7 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
         if not day:
             return
         en, ne, hi = tpl(key, **kw)
-        timeline[(pid, day, en)] = {"place_id": pid, "day": day, "what_en": en, "what_ne": ne, "what_hi": hi, "dot": dot, "source_url": url, "computed_at": ctx.now}
+        timeline[(pid, day, key)] = timeline_row(pid, day, key, en, ne, hi, dot, url, ctx.now)
 
     for pid in sorted(signal_places):
         place = gaz.get(pid)
@@ -509,15 +528,15 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
             d = _day(a.get("published_at"))
             if d and a.get("title"):
                 title = a["title"][:140]
-                timeline[(pid, d, title)] = {"place_id": pid, "day": d, "what_en": title, "what_ne": title, "what_hi": title,
-                                             "dot": "live", "source_url": a.get("url"), "computed_at": ctx.now}
+                kind = article_kind(title)
+                timeline[(pid, d, kind)] = timeline_row(pid, d, kind, title, title, title, "live", a.get("url"), ctx.now)
 
     if not ctx.dry_run:
         if status_rows:
             db.upsert("place_status", status_rows, on_conflict="place_id,as_of")
-        rows = list(timeline.values())
+        rows = collapse_timeline(list(timeline.values()))
         if rows:
-            db.upsert("place_timeline", rows, on_conflict="place_id,day,what_en")
+            db.upsert("place_timeline", rows, on_conflict="place_id,day,kind")
     log.info("ledger.done", places=len(status_rows), timeline=len(timeline))
     return {"places": len(status_rows), "timeline": len(timeline),
             "with_unknown": sum(1 for r in status_rows if r["unknown"] > 0)}

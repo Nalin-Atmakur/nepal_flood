@@ -59,6 +59,11 @@ STATIC_DIVERGENCE = {
     "source_url": "/about", "as_of": "2026-08-29T18:30:00+05:45"}
 
 # one figure per agency: the first (publisher, metric) that exists wins; "(via press)" variants stand in for the agency
+def is_headline_metric(metric: str) -> bool:
+    """Third-party numbers lifted from reports (`*_quoted`, e.g. NRCS/ReliefWeb) are context, never headline figures."""
+    return not str(metric).endswith("_quoted")
+
+
 MISSING_CANDIDATES = [
     ("NDRRMA", "missing"), ("Nepal Police", "missing"), ("Nepal Police (UDB)", "missing"), ("Nepal Police (via press)", "missing"),
     ("MoFA", "missing"), ("MoFA", "foreigners_missing"),
@@ -206,6 +211,8 @@ def divergence_row(latest: list[dict[str, Any]], now: datetime) -> dict[str, Any
     by = {(f["publisher"], f["metric"]): f for f in latest if (f.get("scope") or "national") == "national"}
     picked: dict[str, dict[str, Any]] = {}
     for pub, metric in MISSING_CANDIDATES:
+        if not is_headline_metric(metric):
+            continue
         agency = pub.replace(" (via press)", "").replace(" (UDB)", "")
         if agency in picked or (pub, metric) not in by:
             continue
