@@ -25,7 +25,7 @@ db-test:         ## live RLS + view tests against the project
 pull:            ## pull_external_data once (all due sources)
 	cd pipeline && ./.venv/bin/python pull_external_data.py
 
-process:         ## process_data once (anonymise → resolve → dedup → ledger → figures_latest → stats → findings)
+process:         ## process_data once (⓪ anonymise → ① resolve → ② dedup → ③ ledger → 3.5 press figures → ④ figures_latest → ⑤ stats → ⑥ findings → ⑦ digest → ⑧ timeline → ⑨ trends)
 	cd pipeline && ./.venv/bin/python process_data.py
 
 pipeline:        ## pull then process (what cron runs)

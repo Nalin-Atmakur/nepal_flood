@@ -1,6 +1,6 @@
 # pipeline — the two scripts that make the database the single source of truth
 
-Everything the site shows comes out of these two scripts. They run on a laptop cron, talk only
+Everything the site shows comes out of these two scripts. They run on a schedule (`scripts/install_schedule.sh`: a detached loop today, launchd once Full Disk Access is granted; a cron line on a VM later), talk only
 to the Supabase project (PostgREST + Storage + Auth admin over HTTPS) and never to the website.
 
 ```
