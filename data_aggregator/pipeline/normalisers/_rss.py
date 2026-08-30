@@ -26,6 +26,9 @@ def _gazetteer(gaz=None):
     return _default_gaz
 
 
+GENERIC_PLACE_IDS = {"kathmandu", "bharatpur", "pokhara_pahs", "tuth_kathmandu", "trauma_center_kathmandu", "bharatpur_body_centre"}
+
+
 def is_relevant(title: str | None, summary: str | None = None, gaz=None) -> bool:
     """
     The relevance gate for every `articles` row (docs/pull_external_data/04-normalising.md §relevance):
@@ -37,7 +40,12 @@ def is_relevant(title: str | None, summary: str | None = None, gaz=None) -> bool
         return False
     if config.ARTICLE_RELEVANCE_KEYWORDS.search(text):
         return True
-    return _gazetteer(gaz).resolve(text) is not None
+    # A place mention alone counts only for corridor-specific places: district names and the big
+    # destination cities (Kathmandu, Bharatpur, Pokhara) appear in general news every day.
+    for m in _gazetteer(gaz).resolve_all(text):
+        if m.kind != "district" and m.place_id not in GENERIC_PLACE_IDS:
+            return True
+    return False
 
 PUBLISHERS = {
     "onlinekhabar.com": "Onlinekhabar", "english.onlinekhabar.com": "Onlinekhabar English",

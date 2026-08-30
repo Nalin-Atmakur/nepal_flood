@@ -4,7 +4,8 @@ docs/pull_external_data/05-sources.md §openmeteo_corridor.
 
 The puller fetches one URL per site in config.OPENMETEO_SITES (Dhunche, Langtang village).
   precip_mm / low_cloud_pct     scope place:<site>, as_of = each hour (UTC), next 72 h
-  flying_window_quality         scope place:<site>, one per day, value 1 (good) / 0 (poor),
+  flying_window_quality:<day>   scope place:<site>, one per day (the day is in the metric so figures_latest
+                                keeps every day, not just the newest), value 1 (good) / 0 (poor),
                                 as_of = 06:00 NPT that day; good = mean low cloud ≤ 40 % and
                                 total precip ≤ 3 mm over 06–11 NPT
 """
@@ -81,7 +82,7 @@ def normalise(raw: bytes, fetched_at: datetime, source: dict[str, Any], ctx: Con
             total_rain = sum(rains)
             good = mean_cloud <= config.FLYING_GOOD_MAX_LOW_CLOUD_PCT and total_rain <= config.FLYING_GOOD_MAX_PRECIP_MM
             as_of = datetime.fromisoformat(f"{day}T{h0:02d}:00").replace(tzinfo=tz).astimezone(timezone.utc)
-            out.figure(publisher=PUBLISHER, metric="flying_window_quality", value=1 if good else 0, scope=f"place:{site}",
+            out.figure(publisher=PUBLISHER, metric=f"flying_window_quality:{day}", value=1 if good else 0, scope=f"place:{site}",
                        as_of=as_of, url=url, source_id=SOURCE_ID, fetched_at=fetched_at,
                        note=f"{'good' if good else 'poor'} · {h0:02d}–{h1:02d} NPT · low cloud {mean_cloud:.0f}% · rain {total_rain:.1f} mm")
     return out

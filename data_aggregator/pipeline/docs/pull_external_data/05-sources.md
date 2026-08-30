@@ -184,7 +184,7 @@ precipitation[], cloud_cover_low[]}}`. Cadence 6h.
 
 Emits (publisher `Open-Meteo (ECMWF)`, scope `place:<site>`): `precip_mm` and `low_cloud_pct`
 per hour, `as_of` = the hour in UTC, only hours within `fetched_at − 1 h … + OPENMETEO_HOURS (72)`;
-`flying_window_quality` per local day, value 1 = good / 0 = poor, `as_of` = 06:00 NPT that day,
+`flying_window_quality:<day>` per local day (day in the metric so `figures_latest` keeps all three days), value 1 = good / 0 = poor, `as_of` = 06:00 NPT that day,
 note `"good|poor · 06–11 NPT · low cloud NN% · rain N.N mm"`. **Rule:** the morning window is
 06:00–11:00 NPT (`FLYING_WINDOW_HOURS_LOCAL`); good when mean low cloud ≤ 40 %
 (`FLYING_GOOD_MAX_LOW_CLOUD_PCT`) and total rain ≤ 3 mm (`FLYING_GOOD_MAX_PRECIP_MM`). Fixture

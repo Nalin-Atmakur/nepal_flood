@@ -118,15 +118,21 @@ export const AGENCIES: Agency[] = [
 ];
 
 /** Section 06 gauge tiles, in design order; matched by name substring on v_gauges_latest. */
-export const GAUGE_STATIONS = [
-  "Rasuwagadhi",
-  "Syabrubesi",
-  "Betrawati",
-  "Dhunche",
-  "Galchhi",
-  "Kali Khola",
-  "Devghat",
-] as const;
+/**
+ * The seven corridor gauge tiles (design §07), matched against v_gauges_latest.station_name with a pattern
+ * because the DHM/BIPAD spellings differ from ours ("Bhotekoshi at Rasuwagadi", "Bhote Koshi at Shyaprubesi",
+ * "Trishuli at Galchi"); the rainfall station "Trishuli at Kali Khola (Rainfall)" must not win over the river one.
+ * When several rows match, the most recently observed row is shown.
+ */
+export const GAUGE_STATIONS: { label: string; pattern: RegExp }[] = [
+  { label: "Rasuwagadhi", pattern: /rasuwagad/i },
+  { label: "Syabrubesi", pattern: /bhote ?koshi at (shyapru|syabru|syaphru|syafru)/i },
+  { label: "Betrawati", pattern: /^trishuli at betrawati/i },
+  { label: "Dhunche", pattern: /dhunche/i },
+  { label: "Galchhi", pattern: /galch/i },
+  { label: "Kali Khola", pattern: /kali khola(?!.*rainfall)/i },
+  { label: "Devghat", pattern: /devghat/i },
+];
 
 /** Flying-window sites (figures_latest scope prefix → i18n label key). */
 export const FLYING_SITES: { placeId: string; labelKey: string }[] = [

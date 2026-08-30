@@ -153,7 +153,7 @@ def test_openmeteo_corridor(ctx, now):
     r = _run("openmeteo_corridor", ctx, now)
     sites = {f["scope"] for f in r.figures}
     assert sites == {"place:dhunche", "place:langtang_village"}
-    fw = [f for f in r.figures if f["metric"] == "flying_window_quality"]
+    fw = [f for f in r.figures if f["metric"].startswith("flying_window_quality")]
     assert 4 <= len(fw) <= 8 and all(f["value"] in (0, 1) for f in fw)
     assert all(f["as_of"] >= now.replace(hour=0) for f in r.figures)
     assert any(f["metric"] == "precip_mm" for f in r.figures) and any(f["metric"] == "low_cloud_pct" for f in r.figures)
@@ -193,7 +193,7 @@ def test_reliefweb_rss(ctx, now):
 
 def test_outlet_rss_set(ctx, now):
     r = _run("outlet_rss_set", ctx, now)
-    assert len(r.articles) >= 90
+    assert len(r.articles) >= 60   # gate tightened 30 Aug (district/Kathmandu-only headlines excluded): 81 of the fixture pass
     pubs = {a["publisher"] for a in r.articles}
     assert {"Onlinekhabar", "Kathmandu Post", "BBC Nepali", "Nepali Times"} <= pubs
     langs = {a["lang"] for a in r.articles}

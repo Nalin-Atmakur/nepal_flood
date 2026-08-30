@@ -13,8 +13,10 @@ import SectionHead from "@/components/ui/SectionHead";
  * (metric flying_window_quality*, scope place:<id>…, value 0–1, note good|fair|poor, as_of = the day).
  */
 export default function RiverWeather({ lang, gauges, windows }: { lang: Lang; gauges: GaugeRow[] | null; windows: FigureLatest[] | null }) {
-  const tiles = GAUGE_STATIONS.map((name) => {
-    const g = (gauges ?? []).find((row) => (row.station_name ?? row.station_id).toLowerCase().includes(name.toLowerCase()));
+  const tiles = GAUGE_STATIONS.map(({ label: name, pattern }) => {
+    const g = (gauges ?? [])
+      .filter((row) => pattern.test(row.station_name ?? row.station_id))
+      .sort((a, b) => (b.observed_at ?? "").localeCompare(a.observed_at ?? ""))[0];
     return { name, g };
   });
 

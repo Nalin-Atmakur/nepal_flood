@@ -42,7 +42,16 @@ def test_summary_can_rescue_a_bland_title(gaz):
     assert not is_relevant("Live updates", "Cricket: Nepal beats UAE", gaz)
 
 
-def test_kathmandu_alone_counts_as_a_place(gaz):
-    # Kathmandu is a gazetteer place (hospital/relief hub), so a Kathmandu headline passes the gate;
-    # process_data ① only attaches corridor places to the timeline, so this is a deliberate wide net.
-    assert is_relevant("New smartphone launches in Kathmandu next week", "", gaz)
+def test_kathmandu_alone_does_not_count_as_a_place(gaz):
+    # Kathmandu is in the gazetteer (hospital/relief hub) but appears in general news every day, so a
+    # Kathmandu-only headline is NOT relevant (GENERIC_PLACE_IDS); a corridor place or an event keyword is needed.
+    assert not is_relevant("New smartphone launches in Kathmandu next week", "", gaz)
+    assert is_relevant("Flood victims treated at Kathmandu hospitals", "", gaz)
+
+
+def test_generic_places_do_not_make_an_article_relevant():
+    from normalisers._rss import is_relevant
+    assert not is_relevant("What's on in Kathmandu Valley this week", "")
+    assert not is_relevant("Nepal Rastra Bank Sets Today's Exchange Rates", "")
+    assert not is_relevant("Bharatpur cricket league final on Saturday", "")
+    assert is_relevant("Helicopters resume shuttle from Dhunche to Syabrubesi", "")
