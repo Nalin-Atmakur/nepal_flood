@@ -150,6 +150,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
             if (p !== "after") push({ kind: "phase", title: t(lang, "corridor.phase_" + p), tone: "ink" });
           },
           onXray: setXray,
+          objectLabel: (kind) => t(lang, "corridor.obj." + kind),
         });
         handleRef.current = h;
         if (window.location.search.includes("debug=1")) (window as unknown as { __corridor?: CorridorHandle }).__corridor = h;

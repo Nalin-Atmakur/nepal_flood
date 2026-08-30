@@ -53,6 +53,8 @@ export type MountOptions = {
   onPhase?: (phase: Phase) => void;
   /** X-ray amount changed (0…1) — the UI shows a chip above 0.35. */
   onXray?: (amount: number) => void;
+  /** localised name for an object kind (the placement label) */
+  objectLabel?: (kind: ObjectKind) => string;
 };
 
 export type CorridorHandle = {
@@ -151,7 +153,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       const s = camera.screenOf(e.x, e.y + 1, e.z);
       opts.onSwept?.(e.obj.kind, sweptTotal, sweptReal, s.x, s.y, clockForFrontX(sim.frontX()));
     }
-  });
+  }, opts.objectLabel);
   for (const b of opts.bridges ?? []) objects.place("bridge", kmToX(b.km), meander(kmToX(b.km)), { real: true });
 
   // ---- the run --------------------------------------------------------------------------------------------

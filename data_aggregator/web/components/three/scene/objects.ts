@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { kmToX, meander } from "@/lib/corridor-terrain";
 import { kick, makeBody, step as physicsStep, type Body } from "@/lib/flood-physics";
 import { MAX_OBJECTS, catalogue, isSwept, massFactor, snapToPath, type ObjectKind, type Palette, type Part } from "@/lib/object-catalogue";
+import { createLabel } from "./labels";
 import type { ObjectEvent, ObjectsModule, PlacedObject, SceneCtx } from "./types";
 
 /**
@@ -40,7 +41,7 @@ type Rec = PlacedObject & {
   marker: THREE.Group | null;
 };
 
-export function createObjects(ctx: SceneCtx, onEvent?: (e: ObjectEvent) => void): ObjectsModule {
+export function createObjects(ctx: SceneCtx, onEvent?: (e: ObjectEvent) => void, labelFor?: (kind: ObjectKind) => string): ObjectsModule {
   const mats = new Map<Palette, THREE.MeshStandardMaterial>();
   const mat = (p: Palette) => {
     let m = mats.get(p);
@@ -143,14 +144,23 @@ export function createObjects(ctx: SceneCtx, onEvent?: (e: ObjectEvent) => void)
     const g = new THREE.Group();
     const ring = new THREE.Mesh(ringGeo, markerRingMat);
     ring.rotation.x = Math.PI / 2;
-    ring.scale.set(3.2, 3.2, 1);
+    ring.scale.set(4.4, 4.4, 1);
     ring.position.y = 0.3;
     g.add(ring);
     const arrow = new THREE.Mesh(markerArrowGeo, markerArrowMat);
     arrow.rotation.x = Math.PI;
-    arrow.scale.setScalar(1.8);
+    arrow.scale.setScalar(2.2);
     arrow.position.y = 7.5;
     g.add(arrow);
+    if (labelFor) {
+      try {
+        const label = createLabel(labelFor(rec.kind), { height: 2.6, tone: "amber" });
+        label.position.y = 10.5;
+        g.add(label);
+      } catch {
+        /* no DOM canvas (tests) */
+      }
+    }
     g.position.copy(rec.group.position);
     g.userData.t = 0;
     ctx.scene.add(g);
@@ -258,7 +268,7 @@ export function createObjects(ctx: SceneCtx, onEvent?: (e: ObjectEvent) => void)
         if (rec.marker) {
           rec.marker.userData.t += dt;
           const t = rec.marker.userData.t as number;
-          const s = 3.2 + Math.sin(t * 5) * 0.4;
+          const s = 4.4 + Math.sin(t * 5) * 0.5;
           rec.marker.children[0].scale.set(s, s, 1);
           rec.marker.children[1].position.y = 7.5 + Math.sin(t * 6) * 0.8;
           if (t > 6) clearMarker(rec);

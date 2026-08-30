@@ -332,7 +332,13 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
         if (!r.label) continue;
         const dx = camPos.x - r.x;
         const dz = camPos.z - r.z;
-        const near = dx * dx + dz * dz < 45 * 45;
+        const dist = Math.hypot(dx, dz, camPos.y - r.y);
+        const near = dist < 45;
+        // far away (phones, the full overview): only the eight largest keep a label
+        if (dist > 120 && !r.top8 && r.reached < 0) {
+          r.label.visible = false;
+          continue;
+        }
         const justReached = r.reached >= 0 && r.reached < 6;
         r.label.visible = !ride && (near || justReached || r.top8) && r.place.reported > 0;
       }
