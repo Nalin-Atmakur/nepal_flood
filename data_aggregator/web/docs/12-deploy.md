@@ -60,3 +60,9 @@ threshold follow automatically.
 ## Live smoke (30 Aug)
 
 `npm run smoke:live` (`scripts/live-smoke.mjs`) hits every public route in en/ne/hi on the production host (plus `/api/og`, `/robots.txt`, `/sitemap.xml`, the apex redirect and the `/run` landing) and fails on any non-200, missing `og:image` or wrong `lang`. Run it after every deploy; pass a base URL to point it at a preview or localhost.
+
+## Icons and manifest (30 Aug)
+
+`app/icon.svg` (the logo: ultramarine disc, ink border, waves + peak) is the favicon Next serves; `npm run icons`
+(`scripts/make-icons.mjs`, sharp) rasterises it into `app/apple-icon.png` (180) and `public/icon-{192,512}.png`
+for `app/manifest.ts`. Vercel Analytics is mounted in `app/[lang]/layout.tsx` (`@vercel/analytics/next`).

@@ -11,7 +11,8 @@
     "e2e": "NODE_OPTIONS=--dns-result-order=ipv4first playwright test",
     "i18n:check": "node scripts/i18n-check.mjs",
     "fallback": "node scripts/make-fallback.mjs",
-    "smoke:live": "node scripts/live-smoke.mjs"
+    "smoke:live": "node scripts/live-smoke.mjs",
+    "icons": "node scripts/make-icons.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",

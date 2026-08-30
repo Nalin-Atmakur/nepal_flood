@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- the site logo: ultramarine disc with an ink border, two waves and a peak (components/ui/Logo.tsx) -->
+  <circle cx="32" cy="32" r="29" fill="#2438e8" stroke="#1a1a1a" stroke-width="4"/>
+  <g transform="translate(14 14) scale(1.5)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round">
+    <path d="M3 14c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/>
+    <path d="M3 19c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/>
+    <path d="M12 4l3 5H9l3-5z" fill="#fff"/>
+  </g>
+</svg>

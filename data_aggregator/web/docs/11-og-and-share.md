@@ -44,3 +44,9 @@ the report success screen (`variant="compact"`).
 ## The invitation pill (30 Aug)
 
 Below the three cards an amber pill (`og.sim`, en/ne/hi) invites the viewer to play the breach — the flood simulation is the cornerstone of the home page (`14-flood-sim.md`). It is absolutely positioned at `top: 414` (root-relative; Satori resolves absolute children against the root here).
+
+## The header Share button (30 Aug)
+
+`components/blocks/ShareMenu.tsx`: on phones with `navigator.share` one tap opens the native sheet with
+`share.text` + the language home URL; elsewhere it toggles a popover with the compact `ShareBar` (WhatsApp / X /
+LinkedIn / Telegram / copy). Escape or an outside tap closes it.

@@ -4,6 +4,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { getArticles, getDigest, getEventTimeline, getFlyingWindows, getGauges, getHeadlineSeries, getLakeVolumeM3, getLiveCounts, getLostBridges, getNationalFigures, getPlaces, getPlaceStatuses, getStats } from "@/lib/queries";
 import AddCtas from "@/components/blocks/AddCtas";
 import Corridor from "@/components/blocks/Corridor";
+import YourPart from "@/components/blocks/YourPart";
 import Digest from "@/components/blocks/Digest";
 import FirstHours from "@/components/blocks/FirstHours";
 import Latest from "@/components/blocks/Latest";
@@ -51,6 +52,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   return (
     <main>
       <h1 className="sr-only">{t(lang, "site.name")}</h1>
+      <YourPart lang={lang} />
       <Scoreboard lang={lang} initial={live} />
       <Digest lang={lang} digest={digest} />
       <Corridor lang={lang} statuses={placeRows} refs={refs} lakeVolumeM3={lakeVolumeM3} lostBridges={lostBridges} />

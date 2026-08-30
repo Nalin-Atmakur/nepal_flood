@@ -104,3 +104,17 @@ title in the markup). `/sources`: sources whose `url` is "(derived …)" show "d
 ### Stat cards are picked from a ranked list (added 30 Aug)
 
 `lib/config.ts` → `STAT_CARDS` is a ranked candidate list with optional `min` thresholds; `lib/stats-pick.ts` → `pickStatCards()` keeps the first six rows that exist in `stats` and pass their threshold (`reports_total` needs ≥ 5, `duplicates_merged` ≥ 50, live NDRRMA facts ≥ 1). Rotation alternates by position. Tested in `tests/stats-pick.test.ts`.
+
+
+## 00 · Your part (30 Aug, owner's request)
+
+```
+  header  →  official channels  →  ┌ YOUR PART ─────────────────────────────────────────────┐  →  scoreboard …
+                                   │ You haven't added anything yet.        [Add what you know →]│
+                                   │ If you know anything about anyone on the corridor …        │
+                                   └────────────────────────────────────────────────────────────┘
+```
+`components/blocks/YourPart.tsx` (client) is the first block on the home page: the device's own non-withdrawn
+report count from `reports_archive` (RLS; only if a session already exists — a fresh visitor is not signed in to
+count), worded as a prompt (amber) or a thank-you with "See what you added →" (green), with the big Add button.
+The header no longer carries "Add what you know"; it carries Sources · About · Share (`ShareMenu`).
