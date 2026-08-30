@@ -19,16 +19,20 @@ day-by-day place_timeline rows. All arithmetic is in pure functions so tests can
                         telecom articles (TELECOM_RE) with RESTORED_RE / OUTAGE_RE wording:
                         'yes (since <d Mon>)' · 'no' · null
     access            observed: HOT bridge 'Washed out' here → road_partial; helipad kind → helicopter_only;
+                        bridge inventories (NESRA / DoR via `bridges_washed_out` > 0 → road_partial, `bridges_damaged` > 0
+                        with all others intact → road) fill in when no sitrep bullet exists;
                         Sitrep #8 road bullets (ACCESS_OBSERVED, dated 29 Aug) override; else 'unknown'
     hazard            places.below_barrier_lakes → 'below_barrier_lakes' else in_channel → 'in_channel' else null
     nearest_gauge     corridor gauge closest by km chainage: 'Galchhi — alive' / 'Rasuwagadhi — dead since 26 Aug 08:40'
     shelter           NDRRMA stationed count at a shelter/hospital in the same district, else sitrep shelter_people
     status_label      district (places.kind = 'district', plus the DISTRICT_LIKE ids the OPMCM projection swamps) |
                         no_data | mostly_unknown (unknown > expected/2) | mostly_reached
-    note              bridge/helipad facts + first line of the place's `notes`
+    note              open help requests here (OPMCM `help_requests_open` / `help_requests_critical` / `people_affected_reported`,
+                        scope place:<id>) + bridge facts (HOT survey, NESRA/DoR inventories) + first line of the place's `notes`
 
 Timeline dots: confirmed (rescued/stationed figures, rescuer reports), unknown (lost/missing reports),
-live (gauge alive, articles), neutral (everything else). NE/HI text comes from templates below;
+live (gauge alive, articles), neutral (everything else). Every place-scoped figure family the pipeline emits has a
+timeline template (PLACE_FIGURE_LINES) so a corridor place with any dated figure never shows an empty "day by day". NE/HI text comes from templates below;
 article headlines stay in their own language.
 """
 from __future__ import annotations
@@ -172,7 +176,111 @@ T = {
     "flying_poor": ("Morning flying window: poor", "बिहानको उडान अवसर: कमजोर", "सुबह की उड़ान खिड़की: खराब"),
     "telecom_restored": ("Mobile network reported restored (NTC/Ncell via press)", "मोबाइल नेटवर्क पुनः सञ्चालनमा (प्रेसमार्फत NTC/Ncell)", "मोबाइल नेटवर्क बहाल होने की खबर (प्रेस के ज़रिये NTC/Ncell)"),
     "telecom_outage": ("Mobile network reported down (press)", "मोबाइल नेटवर्क बन्द रहेको खबर (प्रेस)", "मोबाइल नेटवर्क बंद होने की खबर (प्रेस)"),
+    "setu_missing": ("{n} people registered missing here with NDRRMA (Setu)", "NDRRMA (सेतु) मा यहाँ {n} जना हराएको दर्ता", "NDRRMA (सेतु) में यहाँ {n} लोग लापता दर्ज"),
+    "dao_rescued": ("District administration lists {n} people rescued from here", "जिल्ला प्रशासन सूचीअनुसार यहाँबाट {n} जना उद्धार", "जिला प्रशासन सूची: यहाँ से {n} लोग बचाए गए"),
+    "volunteer_rescued": ("Volunteer rescue bulletin lists {n} rescued from here", "स्वयंसेवी उद्धार बुलेटिनमा यहाँबाट {n} जना उद्धार", "स्वयंसेवी बचाव बुलेटिन: यहाँ से {n} बचाए गए"),
+    "bridges_to_inspect": ("{n} bridge(s) here flagged for inspection (NESRA FloodWatch)", "यहाँका {n} पुल निरीक्षण गर्नुपर्ने (NESRA FloodWatch)", "यहाँ {n} पुल निरीक्षण के लिए चिह्नित (NESRA FloodWatch)"),
+    "bridges_damaged": ("{n} bridge(s) here damaged, {w} washed out (inventory)", "यहाँका {n} पुल क्षतिग्रस्त, {w} बगेका (सूची)", "यहाँ {n} पुल क्षतिग्रस्त, {w} बह गए (सूची)"),
+    "ems_buildings": ("Copernicus EMS: {n} of {total} buildings affected", "Copernicus EMS: {total} मध्ये {n} भवन प्रभावित", "Copernicus EMS: {total} में से {n} इमारतें प्रभावित"),
+    "help_requests": ("{n} open help request(s) here on the PM's portal ({c} critical)", "प्रधानमन्त्री पोर्टलमा यहाँका {n} सहयोग अनुरोध खुला ({c} गम्भीर)", "पीएम पोर्टल पर यहाँ {n} सहायता अनुरोध खुले ({c} गंभीर)"),
+    "people_affected": ("{n} people reported affected here (PM's portal help requests)", "प्रधानमन्त्री पोर्टलका अनुरोधअनुसार यहाँ {n} जना प्रभावित", "पीएम पोर्टल के अनुरोधों के अनुसार यहाँ {n} लोग प्रभावित"),
 }
+# (publisher, metric) → (template, dot); the pure `figure_lines()` turns a place's figures into day-by-day rows with these.
+PLACE_FIGURE_LINES: dict[tuple[str, str], tuple[str, str]] = {
+    ("Setu (NDRRMA)", "missing"): ("setu_missing", "unknown"),
+    ("DAO Nuwakot", "rescued"): ("dao_rescued", "confirmed"),
+    ("DAO Rasuwa", "rescued"): ("dao_rescued", "confirmed"),
+    ("Volunteer bulletin (nirajbhusal)", "rescued"): ("volunteer_rescued", "confirmed"),
+    ("NESRA FloodWatch", "bridges_to_inspect"): ("bridges_to_inspect", "neutral"),
+}
+HELP_METRICS = ("help_requests_open", "help_requests_critical", "people_affected_reported")
+BRIDGE_METRICS = ("bridges_damaged", "bridges_washed_out", "bridges_intact")
+
+
+def figure_lines(figs: list[dict[str, Any]]) -> list[tuple[str | None, str, str, str | None, dict[str, Any]]]:
+    """
+    A place's figures (any publisher, newest first) → [(day, template key, dot, url, kwargs)] for the families not handled
+    by name in the step body: Setu / DAO / volunteer counts, NESRA bridges to inspect, bridge inventories (bridges_damaged +
+    bridges_washed_out on the same day), Copernicus EMS buildings, OPMCM help requests. One line per (family, day).
+    """
+    out: list[tuple[str | None, str, str, str | None, dict[str, Any]]] = []
+    seen: set[tuple[str, str | None]] = set()
+    by_day: dict[tuple[str, str | None], dict[str, dict[str, Any]]] = defaultdict(dict)   # (publisher, day) → metric → figure
+    for f in figs:
+        d = _day(f.get("as_of"))
+        key = (str(f.get("publisher")), str(f.get("metric")))
+        by_day[(key[0], d)].setdefault(key[1], f)
+        if key in PLACE_FIGURE_LINES and (key[1], d) not in seen and int(f.get("value") or 0) > 0:
+            seen.add((key[1], d))
+            tk, dot = PLACE_FIGURE_LINES[key]
+            out.append((d, tk, dot, f.get("url"), {"n": int(f["value"])}))
+    for (pub, d), metrics in by_day.items():
+        if "bridges_damaged" in metrics and ("bridges", d) not in seen:
+            dmg, wo = int(metrics["bridges_damaged"].get("value") or 0), int((metrics.get("bridges_washed_out") or {}).get("value") or 0)
+            if dmg + wo > 0:
+                seen.add(("bridges", d))
+                out.append((d, "bridges_damaged", "unknown", metrics["bridges_damaged"].get("url"), {"n": dmg, "w": wo}))
+        if "buildings_affected" in metrics and ("ems", d) not in seen:
+            aff, tot = int(metrics["buildings_affected"].get("value") or 0), int((metrics.get("buildings_total") or {}).get("value") or 0)
+            if aff > 0:
+                seen.add(("ems", d))
+                out.append((d, "ems_buildings", "unknown", metrics["buildings_affected"].get("url"), {"n": aff, "total": tot or "?"}))
+        if "help_requests_open" in metrics and ("help", d) not in seen:
+            n, c = int(metrics["help_requests_open"].get("value") or 0), int((metrics.get("help_requests_critical") or {}).get("value") or 0)
+            if n > 0:
+                seen.add(("help", d))
+                out.append((d, "help_requests", "unknown", metrics["help_requests_open"].get("url"), {"n": n, "c": c}))
+        if "people_affected_reported" in metrics and ("affected", d) not in seen:
+            n = int(metrics["people_affected_reported"].get("value") or 0)
+            if n > 0:
+                seen.add(("affected", d))
+                out.append((d, "people_affected", "unknown", metrics["people_affected_reported"].get("url"), {"n": n}))
+    return out
+
+
+def latest_metric(figs: list[dict[str, Any]], metric: str, publishers: tuple[str, ...] | None = None) -> dict[str, Any] | None:
+    """Newest figure with this metric (figs newest first), optionally restricted to publishers."""
+    for f in figs:
+        if f.get("metric") == metric and (publishers is None or f.get("publisher") in publishers):
+            return f
+    return None
+
+
+def access_from_bridges(figs: list[dict[str, Any]], fallback: str) -> str:
+    """Bridge inventory figures (bridges_washed_out / bridges_damaged / bridges_intact) → access, else `fallback`."""
+    wo = latest_metric(figs, "bridges_washed_out")
+    dmg = latest_metric(figs, "bridges_damaged")
+    if wo and int(wo.get("value") or 0) > 0:
+        return "road_partial"
+    if dmg and int(dmg.get("value") or 0) > 0:
+        return "road_partial"
+    intact = latest_metric(figs, "bridges_intact")
+    if intact and int(intact.get("value") or 0) > 0 and fallback == "unknown":
+        return "road"
+    return fallback
+
+
+def help_note(figs: list[dict[str, Any]]) -> str | None:
+    """'12 open help requests (3 critical), 40 people reported affected (PM portal)' from the newest OPMCM help figures."""
+    n = latest_metric(figs, "help_requests_open")
+    if not n or int(n.get("value") or 0) <= 0:
+        return None
+    c = latest_metric(figs, "help_requests_critical")
+    a = latest_metric(figs, "people_affected_reported")
+    parts = [f"{int(n['value'])} open help request(s)" + (f" ({int(c['value'])} critical)" if c and int(c.get("value") or 0) > 0 else "")]
+    if a and int(a.get("value") or 0) > 0:
+        parts.append(f"{int(a['value'])} people reported affected")
+    return ", ".join(parts) + " (PM portal)"
+
+
+def bridge_note(figs: list[dict[str, Any]]) -> str | None:
+    dmg = latest_metric(figs, "bridges_damaged")
+    wo = latest_metric(figs, "bridges_washed_out")
+    d, w = int((dmg or {}).get("value") or 0), int((wo or {}).get("value") or 0)
+    if d + w <= 0:
+        return None
+    src = (dmg or wo or {}).get("publisher") or "inventory"
+    return f"{d} bridge(s) damaged, {w} washed out ({src})"
 
 
 def tpl(key: str, **kw: Any) -> tuple[str, str, str]:
@@ -315,14 +423,18 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
         last_contact_at = last_contact([r.get("event_time") for r in reps], nd_times, [restored_at] if restored_at else [],
                                        tl_times.get(pid, []), ctx.now)
         # access / hazard / note
-        bridges = [f for f in per_place_figs.get(pid, []) if f["metric"] == "bridge_status" and re.match(r"washed out|damaged", f.get("note") or "", re.I)]
+        pfigs = per_place_figs.get(pid, [])
+        bridges = [f for f in pfigs if f["metric"] == "bridge_status" and re.match(r"washed out|damaged", f.get("note") or "", re.I)]
         access = ACCESS_OBSERVED.get(pid) or ("helicopter_only" if place and place.kind == "helipad" else "road_partial" if bridges else "unknown")
+        if pid not in ACCESS_OBSERVED:
+            access = access_from_bridges(pfigs, access)
         hazard = None
         if place:
             hazard = "below_barrier_lakes" if place.below_barrier_lakes else "in_channel" if place.in_channel else None
-        notes = []
+        notes = [help_note(pfigs)]
         if bridges:
             notes.append(f"{len(bridges)} bridge(s) washed out/damaged (HOT survey)")
+        notes.append(bridge_note(pfigs))
         if place and place.notes:
             notes.append(place.notes.split(";")[0].split(".")[0][:120])
         # shelter
@@ -375,6 +487,8 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
                 tl(pid, d, "flying_good" if f["value"] else "flying_poor", "neutral", f.get("url"))
         if bridges:
             tl(pid, _day(bridges[0].get("as_of")), "bridge", "unknown", bridges[0].get("url"), n=len(bridges))
+        for d, key, dot, url, kw in figure_lines(pfigs):
+            tl(pid, d, key, dot, url, **kw)
         for f in sorted(tel_figs, key=lambda f: str(f.get("as_of")), reverse=True)[:6]:
             if f.get("metric") in ("telecom_restored", "telecom_outage"):
                 tl(pid, _day(f.get("as_of")), f["metric"], "live" if f["metric"] == "telecom_restored" else "unknown", f.get("url"))

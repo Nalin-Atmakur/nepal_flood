@@ -35,6 +35,13 @@
 `get()`/`post()` never raise; problems land in `Fetched.error` (`http 404`, `ConnectionError`,
 `ReadTimeout`, …) and `http.failed` is logged.
 
+## Threads (§5)
+
+`session()` keeps one `requests.Session` per thread (`threading.local`), so the puller's fetch pool
+(02-scheduling, `PULL_WORKERS=6`) never shares a connection pool between threads. Normalisers that fetch
+sub-resources through `Context.fetch` run on the main thread and get its session. Nothing in this module
+writes shared state.
+
 ## URL forms in `sources.yaml` and what the puller does
 
 | form | example | result |

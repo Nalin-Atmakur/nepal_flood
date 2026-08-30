@@ -8,7 +8,7 @@ the rest are recomputed from the database every run — a stat that cannot be co
     static      wave_time_to_port · wave_speed · galchhi_rise · bodies_downstream_km
     event       days_since_event
     NDRRMA      rescued_total_ndrrma · rescued_per_day (day-over-day from `figures`) · bodies_by_district_top ·
-                missing_hydropower · towers_restored · heli_flights · personnel_deployed
+                missing_hydropower · towers_restored · towers_restored_pct · heli_flights · personnel_deployed
     publishers  missing_counts_divergence (live: how many agencies, min → max; static fallback when < 2)
     ledger      places_reached · places_with_unknown · gauges_alive · next_flying_window
     this site   reports_total · reports_last_hour · submissions_today · duplicates_merged · last_pull
@@ -88,6 +88,9 @@ CAPTIONS: dict[str, tuple[str, str, str]] = {
     "towers_restored": ("damaged telecom towers back on air, per NDRRMA.",
                         "क्षतिग्रस्त टेलिकम टावर फेरि सञ्चालनमा, NDRRMA अनुसार।",
                         "क्षतिग्रस्त टेलीकॉम टावर फिर चालू, NDRRMA के अनुसार।"),
+    "towers_restored_pct": ("of the {damaged} damaged telecom towers are back on air ({restored}), per NDRRMA.",
+                            "क्षतिग्रस्त {damaged} टेलिकम टावरमध्ये फेरि सञ्चालनमा ({restored}), NDRRMA अनुसार।",
+                            "क्षतिग्रस्त {damaged} टेलीकॉम टावरों में से फिर चालू ({restored}), NDRRMA के अनुसार।"),
     "towers_restored_places": ("places where phones are recorded working again.",
                                "ठाउँमा फोन फेरि चलेको अभिलेख छ।",
                                "जगहों पर फोन फिर चालू दर्ज है।"),
@@ -180,6 +183,10 @@ def ndrrma_rows(figures: list[dict[str, Any]], now: datetime) -> list[dict[str, 
     if tw:
         val = f"{fmt_int(tw['value'])} of {fmt_int(dmg['value'])}" if dmg and dmg["value"] >= tw["value"] else fmt_int(tw["value"])
         rows.append(live_row("towers_restored", val, tw["value"], tw.get("url"), tw["as_of"]))
+        if dmg and dmg["value"] > 0 and dmg["value"] >= tw["value"]:
+            pct = round(100 * tw["value"] / dmg["value"])
+            rows.append(live_row("towers_restored_pct", f"{pct}%", pct, tw.get("url"), tw["as_of"],
+                                 damaged=fmt_int(dmg["value"]), restored=fmt_int(tw["value"])))
     heli, _ = latest_and_previous(series.get(("NDRRMA", "heli_flights_total", "national")) or [])
     if heli:
         rows.append(live_row("heli_flights", fmt_int(heli["value"]), heli["value"], heli.get("url"), heli["as_of"]))

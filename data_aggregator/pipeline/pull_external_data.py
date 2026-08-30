@@ -3,9 +3,9 @@
 pull_external_data.py — external sources → ARCHIVE (raw_pulls) + RAW (figures, gauges, articles).
 Docs: docs/pull_external_data/01-overview.md … 07-failure-modes.md (one file per stage below).
 
-    sources.yaml ──▶ (02) due by cadence? ──▶ (03) expand urls · fetch (ETag/If-Modified-Since, sha256)
-                                                  │
-                            prestore() strips photos/names ◀─┘
+    sources.yaml ──▶ (02) due by cadence × 2^failures? ──▶ (03) expand urls · fetch (ETag/If-Modified-Since, sha256)
+                                                  │            ↑ PULL_WORKERS threads fetch in parallel; everything
+                            prestore() strips photos/names ◀─┘   after the fetch runs on the main thread, in completion order
                                                   ▼
                        (03) raw_pulls (unchanged=true, no body when hash == last) + pulls log
                                                   ▼
@@ -13,8 +13,8 @@ Docs: docs/pull_external_data/01-overview.md … 07-failure-modes.md (one file p
                                                   ▼
                        _state.json: last_fetch_at, etag, last_modified, body_hash per source
 
-Flags: --only <id> (repeatable) · --force (ignore cadence and hashes) · --dry-run (fetch +
-normalise, write nothing) · --verbose. Local-only mode when SUPABASE_URL is unset: raw bodies go
+Flags: --only <id> (repeatable, comma lists accepted) · --force (ignore cadence, backoff and hashes) ·
+--dry-run (fetch + normalise, write nothing) · --workers N (default PULL_WORKERS=6; 1 = sequential) · --verbose. Local-only mode when SUPABASE_URL is unset: raw bodies go
 to pipeline/snapshots/<id>/<ts>.<ext>, normalised rows to <ts>.normalised.json.
 Fails soft per source; the process exits 0 unless the script itself crashes.
 """
@@ -25,6 +25,7 @@ import json
 import re
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -58,16 +59,46 @@ def load_sources(path: Path = config.SOURCES_YAML) -> list[dict[str, Any]]:
     return [s for s in doc.get("sources", []) if isinstance(s, dict) and s.get("id")]
 
 
+def backoff_minutes(cadence_minutes: int, failures: int, cap: int = config.BACKOFF_CAP_MINUTES) -> int:
+    """
+    Minutes to wait after the last fetch before trying a source again.
+    0 failures → its cadence; n failures → cadence × 2^n (2×, 4×, 8× …), never more than `cap` (24 h);
+    a static source that has failed waits like an hourly one would. A success resets `failures` to 0.
+    """
+    base = min(int(cadence_minutes), cap) if cadence_minutes < config.STATIC_MINUTES else 60
+    if failures <= 0:
+        return base
+    return int(min(base * (2 ** min(int(failures), 20)), cap))
+
+
 def is_due(state: State, src: dict[str, Any], now: datetime) -> bool:
     minutes = config.cadence_minutes(str(src.get("cadence") or ""))
-    s = state.source(src["id"])
-    last_ok = s.get("last_ok_at")
-    if minutes >= config.STATIC_MINUTES:
-        return not last_ok
-    last = state.last_fetch(src["id"])
+    sid = src["id"]
+    s = state.source(sid)
+    failures = state.failures(sid)
+    last = state.last_fetch(sid)
+    if minutes >= config.STATIC_MINUTES and s.get("last_ok_at"):
+        return False                                    # fetched once, fine forever
     if last is None:
         return True
-    return now - last >= timedelta(minutes=minutes)
+    return now - last >= timedelta(minutes=backoff_minutes(minutes, failures))
+
+
+def select_due(sources: list[dict[str, Any]], state: State, now: datetime, *, only: list[str], force: bool) -> list[dict[str, Any]]:
+    """The sources this run will fetch: --only wins; else --force takes all; else cadence × backoff. Sources without a URL never run."""
+    due: list[dict[str, Any]] = []
+    for src in sources:
+        sid = src["id"]
+        if only and sid not in only:
+            continue
+        if not only and not force and not is_due(state, src, now):
+            log.debug("pull.not_due", source=sid, failures=state.failures(sid))
+            continue
+        if not src.get("url") or (isinstance(src.get("url"), str) and not src["url"].startswith("http")):
+            log.info("pull.skip_no_url", source=sid)
+            continue
+        due.append(src)
+    return due
 
 
 # ─── (03) url expansion ───────────────────────────────────────────────────────
@@ -218,6 +249,27 @@ def ext_for(src: dict[str, Any], parts: list[Part]) -> str:
     return "txt"
 
 
+# ─── (03) the fetch phase runs in a thread pool ──────────────────────────────
+
+class Prefetched:
+    """What a worker thread hands back: the parts (or the exception) plus timing, nothing touched the DB yet."""
+
+    def __init__(self, source_id: str, fetched_at: datetime, parts: list[Part] | None = None, single: Fetched | None = None,
+                 error: BaseException | None = None, seconds: float = 0.0):
+        self.source_id, self.fetched_at, self.parts, self.single, self.error, self.seconds = source_id, fetched_at, parts or [], single, error, seconds
+
+
+def prefetch(src: dict[str, Any], state: State, force: bool) -> Prefetched:
+    """Runs on a worker thread: only network I/O and reads of _state.json's etag/last_modified (never a write)."""
+    t0 = time.monotonic()
+    fetched_at = utcnow()
+    try:
+        parts, single = fetch_source(src, state, force)
+        return Prefetched(src["id"], fetched_at, parts, single, seconds=round(time.monotonic() - t0, 1))
+    except Exception as e:  # noqa: BLE001 — surfaced on the main thread by run_source
+        return Prefetched(src["id"], fetched_at, error=e, seconds=round(time.monotonic() - t0, 1))
+
+
 # ─── the per-source run ──────────────────────────────────────────────────────
 
 class Runner:
@@ -231,13 +283,20 @@ class Runner:
             upload = lambda path, body, ct: self.db.storage_upload(path, body, ct)  # noqa: E731
         return Context(source_id=sid, fetch=get, upload=upload, state=self.state, gazetteer=self.gaz, dry_run=self.dry_run)
 
-    def run_source(self, src: dict[str, Any]) -> dict[str, Any]:
+    def run_source(self, src: dict[str, Any], prefetched: "Prefetched | None" = None) -> dict[str, Any]:
+        """Everything for one source. `prefetched` comes from the thread pool (main() below); without it we fetch here."""
         sid = src["id"]
         started = time.monotonic()
-        fetched_at = utcnow()
+        fetched_at = prefetched.fetched_at if prefetched else utcnow()
         rec: dict[str, Any] = {"source": sid, "ok": False, "unchanged": False, "parts": 0, "error": None}
         try:
-            parts, single = fetch_source(src, self.state, self.force)
+            if prefetched is None:
+                parts, single = fetch_source(src, self.state, self.force)
+            elif prefetched.error is not None:
+                raise prefetched.error
+            else:
+                parts, single = prefetched.parts, prefetched.single
+                rec["fetch_seconds"] = prefetched.seconds
             rec["parts"] = len(parts)
             if not parts:
                 rec["error"] = "no url"
@@ -377,8 +436,9 @@ class Runner:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
-    ap.add_argument("--only", action="append", default=[], help="source id (repeatable)")
-    ap.add_argument("--force", action="store_true", help="ignore cadence and body hashes")
+    ap.add_argument("--only", action="append", default=[], help="source id (repeatable; 'a,b' lists accepted)")
+    ap.add_argument("--force", action="store_true", help="ignore cadence, backoff and body hashes")
+    ap.add_argument("--workers", type=int, default=config.PULL_WORKERS, help="parallel fetchers (1 = sequential)")
     ap.add_argument("--dry-run", action="store_true", help="fetch and normalise, write nothing")
     ap.add_argument("--local", action="store_true", help="local-only mode even if SUPABASE_URL is set")
     ap.add_argument("--verbose", action="store_true")
@@ -395,20 +455,21 @@ def main(argv: list[str] | None = None) -> int:
     sources = load_sources()
     gaz = Gazetteer.load(db)
     now = utcnow()
-    log.info("pull.start", mode=mode, sources=len(sources), only=args.only or None, force=args.force,
+    only = [x.strip() for o in args.only for x in o.split(",") if x.strip()]
+    log.info("pull.start", mode=mode, sources=len(sources), only=only or None, force=args.force, workers=args.workers,
              interval_minutes=config.PULL_INTERVAL_MINUTES)
     runner = Runner(db=db, state=state, gaz=gaz, dry_run=args.dry_run, force=args.force)
-    for src in sources:
-        sid = src["id"]
-        if args.only and sid not in args.only:
-            continue
-        if not args.only and not args.force and not is_due(state, src, now):
-            log.debug("pull.not_due", source=sid)
-            continue
-        if not src.get("url") or (isinstance(src.get("url"), str) and not src["url"].startswith("http")):
-            log.info("pull.skip_no_url", source=sid)
-            continue
-        runner.run_source(src)
+    due = select_due(sources, state, now, only=only, force=args.force)
+    workers = max(1, args.workers)
+    if workers == 1 or len(due) <= 1:
+        for src in due:
+            runner.run_source(src)
+    else:
+        # fetch phase in a pool; normalise + DB writes on this thread as each fetch completes (order = completion order)
+        with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="fetch") as pool:
+            futures = {pool.submit(prefetch, src, state, args.force): src for src in due}
+            for fut in as_completed(futures):
+                runner.run_source(futures[fut], fut.result())
     ok = sum(1 for r in runner.summary if r["ok"])
     bad = [r["source"] for r in runner.summary if not r["ok"]]
     if not args.dry_run:

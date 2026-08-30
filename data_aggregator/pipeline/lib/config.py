@@ -40,6 +40,8 @@ MAX_BODY_BYTES = 25 * 1024 * 1024   # refuse bodies above this
 
 # Source cadence strings in sources.yaml → minutes (docs/pull_external_data/02-scheduling.md)
 STATIC_MINUTES = 10 ** 9            # "static (fetch once)": due only when never fetched
+PULL_WORKERS = int(os.environ.get("PULL_WORKERS", "6"))          # concurrent fetchers (normalise + writes stay on the main thread)
+BACKOFF_CAP_MINUTES = 24 * 60       # a failing source is retried after cadence × 2^failures, never later than this
 DEFAULT_CADENCE_MINUTES = 60
 
 

@@ -6,6 +6,7 @@ Layout:
 {
   "sources": {"<source_id>": {"last_fetch_at": iso, "last_ok_at": iso, "etag": str|null,
                                "last_modified": str|null, "body_hash": str|null,
+                               "failures": n,          # consecutive failed fetches → backoff (02-scheduling.md §4)
                                "seen": [..]            # per-source memory (e.g. publication ids)
                                }},
   "llm":     {"calls": n, "prompt_tokens": n, "completion_tokens": n, "usd": float,
@@ -81,6 +82,7 @@ class State:
         s["last_fetch_at"] = now
         if ok:
             s["last_ok_at"] = now
+            s["failures"] = 0
             if etag is not None:
                 s["etag"] = etag
             if last_modified is not None:
@@ -89,6 +91,10 @@ class State:
                 s["body_hash"] = body_hash
         else:
             s["last_error_at"] = now
+            s["failures"] = int(s.get("failures") or 0) + 1
+
+    def failures(self, source_id: str) -> int:
+        return int(self.source(source_id).get("failures") or 0)
 
     def seen(self, source_id: str, key: str = "seen") -> set[str]:
         return set(self.source(source_id).get(key, []))

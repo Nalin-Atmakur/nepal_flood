@@ -12,10 +12,12 @@ See docs/pull_external_data/03-fetching.md.
   values remembered in _state.json; a 304 comes back as `not_modified=True` with empty body
 * sha256 of the body so the puller can mark `unchanged` even when the server ignores ETags
 * never raises: errors land in `Fetched.error`; callers fail soft per source
+* thread-safe: one Session per thread (the puller runs a pool of PULL_WORKERS fetchers)
 """
 from __future__ import annotations
 
 import hashlib
+import threading
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -59,16 +61,17 @@ def body_hash(body: bytes) -> str:
     return hashlib.sha256(body).hexdigest()
 
 
-_session: requests.Session | None = None
+_local = threading.local()
 
 
 def session() -> requests.Session:
-    global _session
-    if _session is None:
+    """One requests.Session per thread: the puller fetches sources from a small thread pool (03-fetching.md §5)."""
+    s = getattr(_local, "session", None)
+    if s is None:
         s = requests.Session()
         s.headers.update({"User-Agent": config.USER_AGENT, "Accept": "*/*", "Accept-Language": "en,ne;q=0.8"})
-        _session = s
-    return _session
+        _local.session = s
+    return s
 
 
 def _request(method: str, url: str, *, etag: str | None = None, last_modified: str | None = None,

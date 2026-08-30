@@ -48,6 +48,8 @@ def test_ndrrma_rows():
     assert "रसुवामा मात्र 13" in top["caption_ne"] and "रसुवा में केवल 13" in top["caption_hi"]
     assert rows["missing_hydropower"]["value"] == "933" and "2,498" in rows["missing_hydropower"]["caption_en"]
     assert rows["towers_restored"]["value"] == "145 of 198"
+    assert rows["towers_restored_pct"]["value"] == "73%" and rows["towers_restored_pct"]["numeric"] == 73
+    assert "198" in rows["towers_restored_pct"]["caption_ne"] and "145" in rows["towers_restored_pct"]["caption_hi"]
     assert rows["heli_flights"]["value"] == "261" and rows["personnel_deployed"]["value"] == "15,224"
     for r in rows.values():
         assert len(r["value"]) <= S.MAX_VALUE_CHARS and r["caption_ne"] and r["caption_hi"] and r["as_of"]

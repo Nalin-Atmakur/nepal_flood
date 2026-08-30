@@ -15,6 +15,7 @@ cannot be computed this run keeps its previous value (upsert on `id`; each block
                                                 missing_counts_divergence "3 numbers"    different “missing” figures from 3 agencies — from 2,400 (MoFA) to 10,823 (OPMCM portal)
                                                 missing_hydropower        "933"          of the 2,498 out of contact are hydropower-project workers
                                                 towers_restored           "145 of 198"   damaged telecom towers back on air (else "N places" from the ledger)
+                                                towers_restored_pct       "73%"          of the 198 damaged telecom towers are back on air (145)
                                                 heli_flights              "261"          helicopter sorties flown since 26 Aug
                                                 personnel_deployed        "15,224"       army, police and APF personnel deployed
                                                 places_reached            "1 of 64"      tracked places where everyone reported is accounted for; 63 still have people missing
@@ -45,6 +46,7 @@ cannot be computed this run keeps its previous value (upsert on `id`; each block
 | `missing_counts_divergence` | `figures_latest` national: one missing-type figure per agency (`MISSING_CANDIDATES`: NDRRMA `missing`, Nepal Police `missing`, MoFA `missing`/`foreigners_missing`, Dept of Tourism / NTB `tourists_missing`, OPMCM `lost_open`; "(via press)" rows stand in for the agency). Static "5 numbers" row when < 2 agencies | newest `as_of` among them · `/about` |
 | `missing_hydropower` | NDRRMA `missing` scoped `category:hydropower_projects`, same day as the national figure | sitrep |
 | `towers_restored` | NDRRMA `telecom_towers_restored` (of `telecom_towers_damaged`); fallback: count of `v_place_status_latest.telecom_restored` | sitrep · `/places` |
+| `towers_restored_pct` | round(100 × restored ÷ damaged) when both exist on the newest day and damaged ≥ restored | sitrep |
 | `heli_flights`, `personnel_deployed` | NDRRMA `heli_flights_total`, `personnel` | sitrep |
 | `places_reached`, `places_with_unknown` | `v_place_status_latest`: tracked = expected > 0 or confirmed > 0 or reports > 0; reached = unknown = 0 | run time · `/places` |
 | `gauges_alive` | `v_gauges_latest` ∩ `config.CORRIDOR_GAUGES` with alive | run time · BIPAD |
