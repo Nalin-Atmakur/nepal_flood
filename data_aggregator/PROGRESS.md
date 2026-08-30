@@ -148,3 +148,4 @@ Priority order (value ÷ effort), each = sources.yaml entry (if missing) + `norm
 - 16:25 BST 30 Aug · Goals card first (2:3), Your part beside it; goal #2 ends "to spread awareness" (owner). Deploying.
 - 16:30 BST 30 Aug · Contact mailbox nepalfloodrescuers@gmail.com (D-070) on About/README/CONTRIBUTING/gazetteer UA; compact Your-part bar gets room under the button.
 - 16:45 BST 30 Aug · Water: level wall-to-wall water line (flat fill core), clearer blue held through the gorge, foam/specular cut (D-071). Deploying.
+- 17:10 BST 30 Aug · Corridor tally strip + flash fix, Cinematic/Overview order, no Share-this-run, drop row on its own line, shorter share text with a blank line before the link (D-072). `lib/tokens.ts` tracked at last (D-073); deploys now from a clean worktree. Note: another editor has ~19 uncommitted files in the checkout (privacy rewrite of the report flow + pipeline) — untouched by me.
