@@ -105,3 +105,9 @@ sparingly).
 `retract_withdrawn()` runs first in ⓪: every `reports_archive` row with `withdrawn_at` set has its
 `reports_anon` row deleted (batches of 50 ids), so a withdrawal made after processing leaves RAW on the
 next run and the ledger/stats follow. The archive row itself is never deleted (soft withdraw).
+
+
+## Attachments (since 30 Aug)
+
+Reports may carry files (`report_files` → bucket `report-media`). Step ⓪ never opens them: only the text is sent to
+the model; the number of files per report may be projected as a count later. Files stay in ARCHIVE with the report.

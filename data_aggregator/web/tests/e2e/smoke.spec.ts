@@ -50,6 +50,17 @@ for (const lang of LANGS) {
       expect(chipsAfter).not.toEqual(chipsBefore);
     });
 
+    test("report: a file can be attached and removed before sending; how-it-works is a banner, not a form field", async ({ page }) => {
+      await page.goto(`/${lang}/report`);
+      await expect(page.getByText("HOW IT WORKS", { exact: true })).toBeVisible(WAIT);
+      const attach = page.locator('[data-testid="attach"]');
+      await expect(attach).toBeVisible(WAIT);
+      await page.locator('[data-testid="attach-input"]').setInputFiles({ name: "photo.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64") });
+      await expect(attach.getByText("photo.png")).toBeVisible(WAIT);
+      await attach.getByRole("button", { name: /photo\.png/ }).click();
+      await expect(attach.getByText("photo.png")).toHaveCount(0);
+    });
+
     test("sources, about and places carry their page markers", async ({ page }) => {
       for (const p of ["sources", "about", "places"] as const) {
         const res = await page.goto(`/${lang}/${p}`);

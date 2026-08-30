@@ -50,3 +50,12 @@ Both buckets are created by the migration so a fresh project is complete after `
 No edge functions, no database webhooks, no `pg_cron`, no Supabase Auth beyond anonymous sign-in (optionally upgraded to email/phone from `/me` without changing the UUID). Keeping the surface this small is what makes the runbook short.
 
 Next: `07-applying-migrations.md`.
+
+
+## report-media (migration 011, 30 Aug)
+
+The attachments bucket: private, `file_size_limit` 50 MB, `allowed_mime_types` = images (jpeg/png/webp/heic/heif/gif),
+video (mp4/quicktime/webm/3gpp), audio (mpeg/mp4/aac/ogg/webm/wav/m4a), pdf, txt, doc/docx. Objects live at
+`<user_id>/<report_id>/NN-<name>`; policies let the authenticated (anonymous) user insert and select within the folder
+named by their own `auth.uid()`; everything else is service role. One `report_files` row per object (ARCHIVE).
+`report-photos` (005) is unused since 011.

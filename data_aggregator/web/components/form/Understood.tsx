@@ -15,7 +15,19 @@ import { browserClient } from "@/lib/supabase";
  * (written by process_data) every UNDERSTOOD_POLL.everyMs for UNDERSTOOD_POLL.forMs, then gives up
  * with a pointer to My folder. An empty id (honeypot "success") shows the received line and never polls.
  */
-export default function Understood({ lang, id, onCorrect, onAddMore }: { lang: Lang; id: string; onCorrect: () => void; onAddMore: () => void }) {
+export default function Understood({
+  lang,
+  id,
+  files = null,
+  onCorrect,
+  onAddMore,
+}: {
+  lang: Lang;
+  id: string;
+  files?: { attached: number; failed: number } | null;
+  onCorrect: () => void;
+  onAddMore: () => void;
+}) {
   const [summary, setSummary] = useState<string | null>(null);
   const [timedOut, setTimedOut] = useState(false);
   const cadence = fmtCadence(lang);
@@ -72,6 +84,14 @@ export default function Understood({ lang, id, onCorrect, onAddMore }: { lang: L
       <CheckCircle size={46} />
       <h1 className="font-extrabold text-[26px] md:text-[32px] lh-tight mt-[14px]">{t(lang, "report.thanks")}</h1>
       <p className="font-medium text-[14.5px] md:text-[15px] lh-body mt-[6px] max-w-[320px] md:max-w-[440px]">{t(lang, "report.thanks_sub", { cadence })}</p>
+      {files && (files.attached > 0 || files.failed > 0) ? (
+        <p className="font-semibold text-[13px] lh-body mt-2 num" data-testid="understood-files">
+          {files.attached > 0 ? t(lang, "report.attached", { n: String(files.attached) }) : null}
+          {files.failed > 0 ? (
+            <span className="text-amber-text"> {t(lang, "report.attach_failed", { n: String(files.failed) })}</span>
+          ) : null}
+        </p>
+      ) : null}
 
       <div className="bg-card b-ink rounded-r2 shadow-hard-3 p-[14px] md:p-4 mt-[18px]">
         <div className="font-bold text-[13px]">{t(lang, "report.understood")}</div>

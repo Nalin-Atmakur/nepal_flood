@@ -415,5 +415,19 @@
   "about.sim_link": "Where the numbers come from →",
   "about.handling_5": "Sixty registered sources — government, UN/humanitarian, geospatial, signals, news and community — each shown with a reliability grade and its last fetch time. Figures that a report merely quotes from someone else are labelled as quotations and never used as headline numbers.",
   "about.handling_6": "The per-place “What is happening now” line is written from counts, publisher names and headline titles only; no name, phone number or free text from a report ever reaches the model.",
-  "sec.places_show_all": "Show all {n} places →"
+  "sec.places_show_all": "Show all {n} places →",
+  "attach.title": "Attach anything that helps",
+  "attach.sub": "Photos, videos, voice notes, screenshots of messages, documents, lists — the more the better. Kept private; never shown on the site.",
+  "attach.add": "Add files",
+  "attach.camera": "Take a photo or video",
+  "attach.drop_hint": "or drop files here · up to 10 files, 50 MB each",
+  "attach.remove": "Remove {name}",
+  "attach.uploading": "Uploading {done} of {total}…",
+  "attach.too_big": "That file is over {mb} MB — please choose a smaller one.",
+  "attach.too_many": "Up to {n} files per report — send another report for more.",
+  "report.optional": "optional",
+  "report.uploading": "Sending files…",
+  "report.attached": "{n} file(s) attached.",
+  "report.attach_failed": "{n} could not be uploaded — you can add them again from My folder.",
+  "report.how_banner": "You write or speak, attach what you have → a model extracts who / where / when → it joins the public counts within {cadence}. Names, contacts and files are never shown publicly; the full report is kept for the official channel the team is arranging."
 }

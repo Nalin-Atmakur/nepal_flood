@@ -69,3 +69,35 @@ No multi-step form. One tap picks the chip set, then one textarea (plus mic) is 
   (if still open) and the trail on `/me` advances.
 
 > Picker ranking (30 Aug, lane W5): `searchPlaces` ranks exact name → name prefix → word prefix → substring, shorter label first, so "Dhunche" precedes "Dhunche Army relief camp" and "Timure" precedes "Timure health post" (`tests/places-search.test.ts`). NE/HI phone walkthrough of the whole flow (cards, chips per type, picker in both scripts, send, understood, folder, withdraw) passed with no layout defects.
+
+
+## Attachments and the decluttered layout (30 Aug, owner's request)
+
+```
+  /report                                                          Supabase
+  ┌ HOW IT WORKS ── one slim banner at the top (not a form field) ┐
+  │ Who are you?  2×2 cards on phones, 4-up on desktop            │
+  │ THE box + mic · chips                                          │
+  │ Attach anything that helps ── [＋ Add files] [📷 Take photo]   │      report-media (private bucket)
+  │   photos · video · voice notes · screenshots · documents       │        <user_id>/<report_id>/NN-name
+  │ Where? · optional   |   Your contact · optional                │      report_files (ARCHIVE, own rows)
+  │ [ Send ]  footnote                                             │
+  └────────────────────────────────────────────────────────────────┘
+  Send → insertReport (row) → uploadReportFiles (one by one, progress "Uploading 2 of 3…") → Understood
+         "2 file(s) attached." · failures listed, the report itself is already saved
+  /me   → listReportFiles → chips per report; tap → signed URL (1 h) opens the file
+```
+
+1. `components/form/Attach.tsx` holds `File[]` in memory (max 10, 50 MB each, `ACCEPT` mirrors the bucket's
+   `allowed_mime_types`); the camera/video shortcut uses `capture="environment"` on phones.
+2. `lib/uploads.ts`: `fileKind()` (mime, then extension — HEIC/M4A pickers send empty types), `safeName()`,
+   `objectPath(user, report, n, name)`, `uploadReportFiles()` (never throws; returns uploaded + failed),
+   `listReportFiles()`, `signedUrl()`.
+3. Access: `db/migrations/011_report_media.sql` — bucket policies let an anonymous authenticated user insert into
+   and read from their own folder only; `report_files` RLS = own rows, and the row's report must be theirs. The
+   service role (pipeline) can read everything; nothing is public and the site never renders a file.
+4. The pipeline ignores file contents (PII rule): `report_files` counts may appear in DERIVED later, bytes never.
+5. Withdraw: the report row is soft-withdrawn as before; files stay in ARCHIVE with it (the owner's archive
+   retention decision). A future purge job can delete `report-media/<user>/<report>/` for withdrawn reports.
+6. Tests: `tests/uploads.test.ts` (classification, names, paths, limits, sizes); e2e attaches and removes a file
+   before sending. Verified live on 30 Aug 09:20 BST: two files → rows → `/me` chips → cleaned up.

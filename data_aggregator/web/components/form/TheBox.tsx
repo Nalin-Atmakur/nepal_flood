@@ -3,19 +3,20 @@
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
-import DarkCard from "@/components/ui/DarkCard";
 import { RATE_LIMIT, SPEECH_LANG, type RespondentType } from "@/lib/config";
 import { fmtCadence } from "@/lib/format";
 import { LANG_NAMES, localised, t, type Lang } from "@/lib/i18n";
 import type { PlaceRef } from "@/lib/queries";
 import { checkRateLimit, insertReport, logSubmission, recordSend } from "@/lib/reports";
 import { browserClient, ensureSession } from "@/lib/supabase";
+import { uploadReportFiles } from "@/lib/uploads";
+import Attach from "./Attach";
 import PlacePicker, { PLACE_INPUT_CLASS, type PlaceValue } from "./PlacePicker";
 
 /**
- * THE box (Report v2 screens 2 + 3 + desktop): one textarea + mic, prompt chips that insert text,
- * two optional fields (place, contact), Send. One component for both breakpoints — the aside with
- * Where / Your contact sits between the chips and Send on mobile and in the right column on md+.
+ * THE box (Report v2 + the 30 Aug declutter): one column — textarea + mic, prompt chips, "attach anything that
+ * helps" (photos / video / voice / documents → report-media bucket after the row exists), two light optional rows
+ * (Where / Your contact), Send. "How it works" lives in the page banner (ReportFlow), not next to the inputs.
  */
 
 export type BoxMode = "add" | "correct" | null;
@@ -29,7 +30,7 @@ type Props = {
   supersedes?: string | null;
   mode?: BoxMode;
   onBack?: () => void;   // when absent (single-page flow) no back arrow is rendered
-  onSent: (id: string, placeId?: string | null) => void;
+  onSent: (id: string, placeId?: string | null, files?: { attached: number; failed: number }) => void;
 };
 
 /** Chip sets per respondent, in design order (messages: chips.<type>.<key>). */
@@ -122,6 +123,8 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
     return p ? { id: p.id, label: localised(p, "name", lang) || p.name_en } : null;
   });
   const [contact, setContact] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [honeypot, setHoneypot] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
@@ -270,11 +273,20 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
       }
       recordSend(Date.now());
       void logSubmission(sb, type, lang);
-      onSent(res.id, place?.id ?? null);
+      let attached = 0;
+      let failed = 0;
+      if (files.length) {
+        setProgress({ done: 0, total: files.length });
+        const out = await uploadReportFiles(sb, userId, res.id, files, (done, total) => setProgress({ done, total }));
+        attached = out.uploaded.length;
+        failed = out.failed.length;
+      }
+      onSent(res.id, place?.id ?? null, { attached, failed });
     } catch {
       setError(t(lang, "report.err_failed"));
     } finally {
       setSending(false);
+      setProgress(null);
     }
   }
 
@@ -288,121 +300,122 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
   const contactId = `${uid}-contact`;
   const contactHintId = `${uid}-contact-hint`;
   const micDisabled = micSupported === false;
-  const asideCard = "md:bg-card md:b-ink md:rounded-r2 md:shadow-hard-3 md:p-4";
 
   return (
-    <form onSubmit={onSubmit} noValidate data-step="box" className="flex flex-col md:grid md:grid-cols-[1fr_380px] md:gap-8 md:items-start">
-      {/* ---- left column, part 1: title, box, chips ---- */}
-      <div className="order-1 md:col-start-1 md:row-start-1">
-        <div className="flex items-center gap-[10px]">
-          {onBack ? (
-            <button
-              type="button"
-              onClick={onBack}
-              aria-label={t(lang, "nav.back")}
-              className="inline-grid place-items-center min-w-[44px] min-h-[44px] -ml-3 font-extrabold text-[18px] text-ink cursor-pointer rounded-r2"
-            >
-              <span aria-hidden="true">←</span>
-            </button>
-          ) : null}
-          <h1 className="font-extrabold text-[24px] md:text-[32px] lh-tight">{t(lang, "report.title")}</h1>
-        </div>
-        <p className="font-medium text-[14px] md:text-[15px] text-muted lh-body mt-1 md:mt-[6px]">
-          <span className="md:hidden">{t(lang, "report.sub")}</span>
-          <span className="hidden md:inline">{t(lang, "report.sub_desktop")}</span>
-        </p>
-        {supersedes ? (
-          <p className="font-semibold text-[12px] text-muted mt-3 md:mt-4">{t(lang, mode === "correct" ? "report.correcting" : "report.superseding")}</p>
-        ) : null}
-
-        {/* the box */}
-        <div
-          data-listening={listening || undefined}
-          className={[
-            "relative bg-card rounded-r2 border-[2.5px] border-solid mt-[14px] md:mt-[18px]",
-            "has-[textarea:focus-visible]:outline-[3px] has-[textarea:focus-visible]:outline-ultra has-[textarea:focus-visible]:outline-offset-2",
-            listening ? "border-live shadow-live-3" : "border-ink shadow-hard-3 md:shadow-hard-4",
-          ].join(" ")}
-        >
-          <div className="grid">
-            {/* Sizing ghost: keeps the box growing with the text, and shows the interim transcript greyed after it. */}
-            <div aria-hidden="true" className={["[grid-area:1/1/2/2] whitespace-pre-wrap break-words text-transparent min-h-[160px] md:min-h-[200px]", boxText].join(" ")}>
-              <span>{text}</span>
-              {listening && interim ? (
-                <span className="text-hint">
-                  {text && !/\s$/.test(text) ? " " : ""}
-                  {interim}…
-                </span>
-              ) : null}
-              {" "}
-            </div>
-            <textarea
-              ref={taRef}
-              data-testid="the-box"
-              aria-label={t(lang, "report.box_label")}
-              placeholder={t(lang, "report.placeholder")}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              maxLength={20000}
-              rows={1}
-              className={["[grid-area:1/1/2/2] w-full block bg-transparent text-ink resize-none overflow-hidden outline-none min-h-[160px] md:min-h-[200px]", boxText].join(" ")}
-            />
-          </div>
-
+    <form onSubmit={onSubmit} noValidate data-step="box" className="flex flex-col max-w-[820px]">
+      <div className="flex items-center gap-[10px]">
+        {onBack ? (
           <button
             type="button"
-            onClick={toggleMic}
-            disabled={micDisabled}
-            aria-disabled={micDisabled || undefined}
-            aria-pressed={listening}
-            aria-label={t(lang, listening ? "report.mic_stop" : "report.mic_start")}
-            className={[
-              "absolute right-3 bottom-3 md:right-[14px] md:bottom-[14px] w-11 h-11 md:w-12 md:h-12 rounded-full b-ink grid place-items-center",
-              listening ? "bg-live animate-micring" : "bg-board",
-              micDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
-            ].join(" ")}
+            onClick={onBack}
+            aria-label={t(lang, "nav.back")}
+            className="inline-grid place-items-center min-w-[44px] min-h-[44px] -ml-3 font-extrabold text-[18px] text-ink cursor-pointer rounded-r2"
           >
-            <MicIcon size={desktop ? 22 : 20} />
+            <span aria-hidden="true">←</span>
           </button>
+        ) : null}
+        <h1 className="font-extrabold text-[24px] md:text-[32px] lh-tight">{t(lang, "report.title")}</h1>
+      </div>
+      <p className="font-medium text-[14px] md:text-[15px] text-muted lh-body mt-1 md:mt-[6px]">
+        <span className="md:hidden">{t(lang, "report.sub")}</span>
+        <span className="hidden md:inline">{t(lang, "report.sub_desktop")}</span>
+      </p>
+      {supersedes ? (
+        <p className="font-semibold text-[12px] text-muted mt-3 md:mt-4">{t(lang, mode === "correct" ? "report.correcting" : "report.superseding")}</p>
+      ) : null}
 
-          <div className="absolute left-[14px] bottom-4 md:left-[18px] md:bottom-5 pointer-events-none">
-            {listening ? (
-              <span className="flex items-center gap-[7px]">
-                <span className="w-2 h-2 rounded-full bg-live animate-ledpulse-fast" aria-hidden="true" />
-                {/* Latin only — Press Start 2P has no Devanagari, so this label is never translated (same rule as LIVE). */}
-                <span className="arcade text-live" style={{ fontSize: 7, lineHeight: 1 }}>
-                  LISTENING
-                </span>
-                <span className="font-semibold text-[11px] text-muted">{t(lang, "report.listening_hint", { lang: LANG_NAMES[lang] })}</span>
+      {/* the box */}
+      <div
+        data-listening={listening || undefined}
+        className={[
+          "relative bg-card rounded-r2 border-[2.5px] border-solid mt-[14px] md:mt-[18px]",
+          "has-[textarea:focus-visible]:outline-[3px] has-[textarea:focus-visible]:outline-ultra has-[textarea:focus-visible]:outline-offset-2",
+          listening ? "border-live shadow-live-3" : "border-ink shadow-hard-3 md:shadow-hard-4",
+        ].join(" ")}
+      >
+        <div className="grid">
+          {/* Sizing ghost: keeps the box growing with the text, and shows the interim transcript greyed after it. */}
+          <div aria-hidden="true" className={["[grid-area:1/1/2/2] whitespace-pre-wrap break-words text-transparent min-h-[160px] md:min-h-[200px]", boxText].join(" ")}>
+            <span>{text}</span>
+            {listening && interim ? (
+              <span className="text-hint">
+                {text && !/\s$/.test(text) ? " " : ""}
+                {interim}…
               </span>
-            ) : (
-              <span className="font-medium text-[11px] md:text-[12px] text-hint num">{t(lang, "report.bs_hint")}</span>
-            )}
+            ) : null}
+            {" "}
           </div>
+          <textarea
+            ref={taRef}
+            data-testid="the-box"
+            aria-label={t(lang, "report.box_label")}
+            placeholder={t(lang, "report.placeholder")}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            maxLength={20000}
+            rows={1}
+            className={["[grid-area:1/1/2/2] w-full block bg-transparent text-ink resize-none overflow-hidden outline-none min-h-[160px] md:min-h-[200px]", boxText].join(" ")}
+          />
         </div>
 
-        {micSupported === false ? (
-          <p className="font-medium text-[12px] text-muted mt-2">{t(lang, "report.mic_unsupported")}</p>
-        ) : micError === "denied" ? (
-          <p role="status" className="font-medium text-[12px] text-muted mt-2">
-            {t(lang, "report.mic_denied")}
-          </p>
-        ) : null}
+        <button
+          type="button"
+          onClick={toggleMic}
+          disabled={micDisabled}
+          aria-disabled={micDisabled || undefined}
+          aria-pressed={listening}
+          aria-label={t(lang, listening ? "report.mic_stop" : "report.mic_start")}
+          className={[
+            "absolute right-3 bottom-3 md:right-[14px] md:bottom-[14px] w-11 h-11 md:w-12 md:h-12 rounded-full b-ink grid place-items-center",
+            listening ? "bg-live animate-micring" : "bg-board",
+            micDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
+          ].join(" ")}
+        >
+          <MicIcon size={desktop ? 22 : 20} />
+        </button>
 
-        <div className="font-bold text-[12.5px] md:text-[13px] mt-4 md:mt-[18px]">{t(lang, "report.chips_title")}</div>
-        <div className="flex flex-wrap gap-2 md:gap-[9px] mt-2 md:mt-[9px]">
-          {chips.map((c) => (
-            <Chip key={c.key} active={text.includes(`${c.label}:`)} onClick={() => insertChip(c.label)}>
-              {c.label}
-            </Chip>
-          ))}
+        <div className="absolute left-[14px] bottom-4 md:left-[18px] md:bottom-5 pointer-events-none">
+          {listening ? (
+            <span className="flex items-center gap-[7px]">
+              <span className="w-2 h-2 rounded-full bg-live animate-ledpulse-fast" aria-hidden="true" />
+              {/* Latin only — Press Start 2P has no Devanagari, so this label is never translated (same rule as LIVE). */}
+              <span className="arcade text-live" style={{ fontSize: 7, lineHeight: 1 }}>
+                LISTENING
+              </span>
+              <span className="font-semibold text-[11px] text-muted">{t(lang, "report.listening_hint", { lang: LANG_NAMES[lang] })}</span>
+            </span>
+          ) : (
+            <span className="font-medium text-[11px] md:text-[12px] text-hint num">{t(lang, "report.bs_hint")}</span>
+          )}
         </div>
       </div>
 
-      {/* ---- aside: Where / Your contact / How it works (right column on md+, in flow on mobile) ---- */}
-      <aside className="order-2 md:col-start-2 md:row-start-1 md:row-span-2 flex flex-col gap-[10px] md:gap-[14px] mt-[18px] md:mt-0">
-        <div className={asideCard}>
-          <div className="hidden md:block font-bold text-[14px] mb-2">{t(lang, "report.where_label")}</div>
+      {micSupported === false ? (
+        <p className="font-medium text-[12px] text-muted mt-2">{t(lang, "report.mic_unsupported")}</p>
+      ) : micError === "denied" ? (
+        <p role="status" className="font-medium text-[12px] text-muted mt-2">
+          {t(lang, "report.mic_denied")}
+        </p>
+      ) : null}
+
+      <div className="font-bold text-[12.5px] md:text-[13px] mt-4 md:mt-[18px]">{t(lang, "report.chips_title")}</div>
+      <div className="flex flex-wrap gap-2 md:gap-[9px] mt-2 md:mt-[9px]">
+        {chips.map((c) => (
+          <Chip key={c.key} active={text.includes(`${c.label}:`)} onClick={() => insertChip(c.label)}>
+            {c.label}
+          </Chip>
+        ))}
+      </div>
+
+      {/* attach anything that helps */}
+      <Attach lang={lang} files={files} onChange={setFiles} disabled={sending} progress={progress} />
+
+      {/* two light optional rows */}
+      <div className="grid md:grid-cols-2 gap-3 md:gap-4 mt-4 md:mt-5">
+        <div>
+          <div className="font-bold text-[13px] mb-[6px]">
+            {t(lang, "report.where_label")} <span className="font-medium text-muted">· {t(lang, "report.optional")}</span>
+          </div>
           <PlacePicker
             places={places}
             lang={lang}
@@ -412,12 +425,9 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
             hint={desktop ? t(lang, "report.where_hint_desktop", { n: places.length }) : t(lang, "report.where_hint")}
           />
         </div>
-        <div className={asideCard}>
-          <label htmlFor={contactId} className="hidden md:block font-bold text-[14px] mb-2">
-            {t(lang, "report.contact_label")}
-          </label>
-          <label htmlFor={contactId} className="sr-only md:hidden">
-            {t(lang, "report.contact_label")}
+        <div>
+          <label htmlFor={contactId} className="block font-bold text-[13px] mb-[6px]">
+            {t(lang, "report.contact_label")} <span className="font-medium text-muted">· {t(lang, "report.optional")}</span>
           </label>
           <input
             id={contactId}
@@ -434,33 +444,27 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
             {t(lang, "report.contact_hint")}
           </div>
         </div>
-        <div className="hidden md:block">
-          <DarkCard label={t(lang, "report.how_label")}>{t(lang, "report.how_body", { cadence })}</DarkCard>
-        </div>
-      </aside>
-
-      {/* ---- left column, part 2: error, Send, footnote ---- */}
-      <div className="order-3 md:col-start-1 md:row-start-2">
-        {/* Honeypot: invisible to people, tempting to bots. */}
-        <input
-          name="website"
-          tabIndex={-1}
-          autoComplete="off"
-          aria-hidden="true"
-          value={honeypot}
-          onChange={(e) => setHoneypot(e.target.value)}
-          className="absolute left-[-9999px]"
-        />
-        {error ? (
-          <p role="alert" className="font-bold text-[13px] text-amber-text bg-amber-fill b-ink-2 rounded-r2 px-3 py-2 mt-4 md:mt-5 lh-body">
-            {error}
-          </p>
-        ) : null}
-        <Button type="submit" variant="primary" size="lg" shadow={4} block disabled={sending} className="mt-4 md:mt-6 md:w-auto md:px-16" data-testid="send">
-          {t(lang, sending ? "report.sending" : "report.send")}
-        </Button>
-        <p className="font-medium text-[11.5px] text-muted text-center lh-body mt-[10px] md:hidden">{t(lang, "report.footnote", { cadence })}</p>
       </div>
+
+      {/* Honeypot: invisible to people, tempting to bots. */}
+      <input
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        className="absolute left-[-9999px]"
+      />
+      {error ? (
+        <p role="alert" className="font-bold text-[13px] text-amber-text bg-amber-fill b-ink-2 rounded-r2 px-3 py-2 mt-4 md:mt-5 lh-body">
+          {error}
+        </p>
+      ) : null}
+      <Button type="submit" variant="primary" size="lg" shadow={4} block disabled={sending} className="mt-5 md:mt-6 md:w-auto md:px-16" data-testid="send">
+        {t(lang, sending ? (progress ? "report.uploading" : "report.sending") : "report.send")}
+      </Button>
+      <p className="font-medium text-[11.5px] text-muted lh-body mt-[10px] text-center md:text-left">{t(lang, "report.footnote", { cadence })}</p>
     </form>
   );
 }

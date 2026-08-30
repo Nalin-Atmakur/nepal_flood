@@ -519,3 +519,23 @@ So from the browser: `update reports_archive set withdrawn_at = now() where id =
 | bucket `report-photos` (private) | `report_photos_own_insert`: `authenticated` may insert into `report-photos/<auth.uid()>/…` | photos attached to a submission; nobody but the service role reads them, including the uploader |
 
 More: `db/docs/06-realtime-and-storage.md`.
+
+### report_files (ARCHIVE · migration 011)
+
+| column | type | notes |
+|---|---|---|
+| id | uuid pk | |
+| report_id | uuid → reports_archive | cascade delete |
+| user_id | uuid → users | the uploading device |
+| path | text unique | `<user_id>/<report_id>/NN-<safe name>` in the private bucket `report-media` |
+| kind | text | image · video · audio · document |
+| mime, bytes | text, int | as uploaded |
+| created_at | timestamptz | |
+
+Writer: the browser (own rows, own bucket folder). Reader: the same device (signed URLs) and the service role.
+RLS: `report_files_own_insert` (user_id = auth.uid() and the report is theirs), `report_files_own_select`.
+Bucket `report-media`: private, 50 MB per file, mime whitelist (images, video, audio, pdf, txt, doc/docx);
+storage policies `report_media_own_insert` / `report_media_own_select` on the first folder = auth.uid().
+The pipeline never reads file contents. `reports_archive.photo_path` and the `report-photos` bucket from 005 are
+superseded by this table and unused.
+

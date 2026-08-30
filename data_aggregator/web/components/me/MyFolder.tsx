@@ -13,6 +13,7 @@ import { fmtCadence, fmtDayTime } from "@/lib/format";
 import { href, localised, t, type Lang } from "@/lib/i18n";
 import { getOwnReports, getOwnUser, type OwnReport, type PlaceRef } from "@/lib/queries";
 import { saveContact, withdrawReport } from "@/lib/reports";
+import { fmtBytes, listReportFiles, signedUrl, type ReportFile } from "@/lib/uploads";
 import { browserClient, ensureSession, supabaseConfigured } from "@/lib/supabase";
 
 /**
@@ -61,6 +62,7 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
   const [phase, setPhase] = useState<Phase>("loading");
   const [userId, setUserId] = useState<string | null>(null);
   const [reports, setReports] = useState<OwnReport[]>([]);
+  const [files, setFiles] = useState<Record<string, ReportFile[]>>({});
   const [contact, setContact] = useState("");
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [withdrawing, setWithdrawing] = useState<string | null>(null);
@@ -88,6 +90,12 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
       if (cancelled) return;
       setUserId(uid);
       setReports(rows ?? []);
+      if (rows?.length) {
+        const all = await listReportFiles(sb, rows.map((r) => r.id));
+        const byReport: Record<string, ReportFile[]> = {};
+        for (const f of all) (byReport[f.report_id] ??= []).push(f);
+        setFiles(byReport);
+      }
       setContact(user?.contact ?? "");
       setPhase("ready");
     };
@@ -176,6 +184,27 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
                   </div>
 
                   <p className="font-medium text-[13px] md:text-[14px] text-muted-2 lh-body mt-[6px] m-0">{r.summary_public?.trim() || t(lang, "me.received_placeholder")}</p>
+                  {files[r.id]?.length ? (
+                    <ul className="list-none m-0 p-0 mt-2 flex flex-wrap gap-[6px]" aria-label={t(lang, "attach.title")}>
+                      {files[r.id].map((f) => (
+                        <li key={f.id}>
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              const sb = browserClient();
+                              const url = sb ? await signedUrl(sb, f.path) : null;
+                              if (url) window.open(url, "_blank", "noopener");
+                            }}
+                            className="inline-flex items-center gap-[6px] min-h-[32px] px-[10px] b-ink-2 rounded-pill bg-card font-semibold text-[12px] text-ink cursor-pointer hover:bg-ground"
+                          >
+                            <span aria-hidden="true">{f.kind === "image" ? "🖼️" : f.kind === "video" ? "🎬" : f.kind === "audio" ? "🎙️" : "📄"}</span>
+                            <span className="max-w-[160px] truncate">{f.path.split("/").pop()?.replace(/^\d+-/, "")}</span>
+                            <span className="font-medium text-[10.5px] text-muted num">{fmtBytes(f.bytes)}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                   {r.supersedes ? <p className="font-medium text-[11px] text-muted mt-1 m-0">{t(lang, "me.supersedes")}</p> : null}
                   {withdrawn ? (
                     <p className="font-semibold text-[12px] text-muted mt-1 m-0">{t(lang, "me.withdrawn_line", { t: fmtDayTime(r.withdrawn_at, lang), cadence })}</p>

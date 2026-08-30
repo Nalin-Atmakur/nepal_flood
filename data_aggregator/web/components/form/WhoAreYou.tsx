@@ -15,7 +15,7 @@ export default function WhoAreYou({ lang, value, onSelect }: { lang: Lang; value
     <fieldset data-step="who" className="border-0 p-0 m-0 min-w-0">
       <legend className="font-extrabold text-[20px] md:text-[24px] lh-tight">{t(lang, "report.who")}</legend>
       <p className="font-medium text-[13px] md:text-[14px] text-muted lh-body mt-1">{t(lang, "report.who_sub")}</p>
-      <div role="radiogroup" aria-label={t(lang, "report.who")} className="flex flex-col md:grid md:grid-cols-4 gap-2.5 md:gap-3 mt-3 md:mt-4">
+      <div role="radiogroup" aria-label={t(lang, "report.who")} className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-3 mt-3 md:mt-4">
         {RESPONDENT_TYPES.map((rt) => {
           const selected = rt.id === value;
           return (
