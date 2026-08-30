@@ -253,6 +253,21 @@ export function pickFigure(rows: FigureLatest[] | null, publisher: string | stri
   return null;
 }
 
+/** The first barrier lake's volume in m³ as last published (China MWR, scope place:barrier_lake_site), or null. */
+export async function getLakeVolumeM3(): Promise<number | null> {
+  const sb = serverClient();
+  if (!sb) return null;
+  const { data, error } = await sb
+    .from("figures_latest")
+    .select("value")
+    .eq("metric", "barrier_lake_volume_m3")
+    .order("as_of", { ascending: false })
+    .limit(1);
+  if (error || !data?.length) return null;
+  const v = Number((data[0] as { value: number }).value);
+  return Number.isFinite(v) && v > 0 ? v : null;
+}
+
 /** Flying-window forecast rows (metric = flying_window_quality, scope starts with place:<id>). */
 export async function getFlyingWindows(): Promise<FigureLatest[] | null> {
   const sb = serverClient();

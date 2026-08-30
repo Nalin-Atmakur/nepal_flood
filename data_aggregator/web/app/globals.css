@@ -193,3 +193,15 @@ html:lang(ne), html:lang(hi) {
   left: -9999px;
   &:focus { left: 8px; top: 8px; z-index: 50; }
 }
+
+/* Flood-sim "reached" card (web/docs/14-flood-sim.md): pops in, holds, fades. */
+@keyframes corridor-pop {
+  0% { transform: translateY(6px) scale(0.92); opacity: 0; }
+  12% { transform: translateY(0) scale(1); opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.corridor-pop { animation: corridor-pop 2.6s ease-out forwards; }
+.corridor-pop-hold { animation: corridor-pop 2.6s ease-out forwards; animation-fill-mode: both; animation-iteration-count: 1; animation-name: corridor-pop-in; }
+@keyframes corridor-pop-in { 0% { transform: translateY(6px) scale(0.92); opacity: 0; } 100% { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .corridor-pop { animation: none; } }

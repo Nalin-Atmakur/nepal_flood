@@ -18,8 +18,14 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | W2B geospatial + text (14) | ✅ | 95ade57 — NESRA, EMSR927, HOT TM, Google News, ekantipur live, live blogs, China search, Wikipedia, GEOFON, DHM riverwatch, NTC, HDX, HOT S3, OAM |
 | P3 processing | ✅ | 95ade57 — press_figures (3.5), timeline (8), figure_series (9, migration 007), stats 22, findings w/ summaries, dedup skip guard, digest v2 |
 | Web: publisher spellings | ✅ deployed | bb01050 — all 5 side-by-side columns filled from live publishers |
+| **Flood simulation (cornerstone)** | ✅ deployed 04:05 BST | `web/lib/flood-sim.ts` + `corridor-terrain.ts` + scene: auto-play breach, ride camera, honest clock from event_timeline, pop cards, drop house/bridge/bus/camp → swept, sliders (lake volume seeded from China MWR 2.0 Mm³), 13 sim tests + e2e; docs `web/docs/14-flood-sim.md` |
+| S3 sources wave 3 (12) | ✅ | a389b67, d70c683 — all 51 sources now have normalisers; 231 pipeline tests |
+| P4 processing + pull efficiency | ✅ | 30e0399, ae7865b — 6-thread pull (292 s vs ≈540 s), backoff, place_timeline 59→64 places, towers_restored_pct stat, help/bridge notes in ledger |
+| D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 04:08 BST — Flood sim shipped + deployed (see table). Lanes S3, P4, D done and pushed; U3 (web UX/trends, no corridor files) still running. Known: React #418 hydration text mismatch on /en is PRE-EXISTING (seen on live before the sim) — find the server/client time string and add suppressHydrationWarning. Next: STAT_CARDS add `towers_restored_pct` once U3 lands (config.ts), Makefile/pipeline README wording (D lane report), `make health`, then sim polish (whitecaps, share card) if time remains.
+- 03:31 BST — resumed after the usage-limit reset; relaunched S3/P4/D/U3; built the flood sim in the main session.
 - 02:15 BST — ⏸ SESSION USAGE LIMIT hit; all four cycle-4 lanes (S3/U3/P4/D) died at launch with 429 before producing files (nothing to salvage; worktree clean). Owner: "wait 2 hours then go again" → 2-h timer set, resume ≈ 04:15 BST. Owner also set the NEW TOP PRIORITY: the 3D corridor becomes an animated, interactive flood simulation ("Turbo Dismount"-style: drop houses/bridges/buses in the path, watch them get swept, replay, sliders for lake volume/breach) — spec in `web/docs/14-flood-sim.md`. On resume: (1) build the flood sim myself in web/ (cornerstone), (2) relaunch lanes S3, P4, D, U3 with the same briefs (see "In flight").
 - 02:10 BST — context compacted (auto-compact now ON per owner). W2B + P3 tested (192 pass) and pushed 95ade57; web columns fixed + deployed bb01050. Owner asleep. Launching cycle 4: S3 sources (12 unbuilt ids), U3 web (mobile pass, trends, place timeline), P4 processing + pull efficiency, D docs reconcile.
 - 03:05 BST — launchd job never ran (EX_CONFIG: TCC blocks bash under ~/Desktop); replaced by a detached loop (pid in pipeline/.scheduler.pid, 240 min) + launchd kept for when the owner grants /bin/bash Full Disk Access. Runbook §1 updated.
@@ -27,7 +33,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - 02:35 BST — ⚠️ see decisions-log 02:30: rotate OpenAI + Supabase service-role keys in the morning (accidental Vercel upload of pipeline/, deleted). Fixed: gate ignores Kathmandu/district-only headlines; 3 flying-window days; gauge tiles match DHM names (667f9c3). Stats now 22 rows (P3 in progress).
 - 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
 
-## Queued for relaunch at ≈04:15 BST (cycle 4; lanes were killed by the usage limit before doing anything)
+## Cycle 4 lanes (relaunched 03:32 BST) — S3 ✅ P4 ✅ D ✅ U3 running
 - S3 sources lane: opmcm_help_requests, opmcm_government_efforts, bipad_river_series, nesra_bridges, dor_rimes_bridges, microsoft_unosat_extent, outlet_tag_pages, gdelt_monitor, vantor_stac, planet_stac, cdse_catalogue, hf_fair_footprints.
 - U3 web lane: 390/1280 screenshots of every page, fix layout issues; figure_series trends on the site; place "Status, day by day" coverage; digest render check; deploy from web/ only.
 - P4 processing lane: pull efficiency (thread pool + per-source backoff), place_timeline coverage, divergence/dedup stats, help-request ledger fields once S3 lands.

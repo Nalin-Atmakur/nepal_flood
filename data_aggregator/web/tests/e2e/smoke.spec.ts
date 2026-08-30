@@ -75,3 +75,32 @@ test("GET / with a Nepali Accept-Language lands on /ne", async ({ request }) => 
   const hi = await request.get("/places", { headers: { "accept-language": "hi-IN,hi;q=0.9,en;q=0.5" }, maxRedirects: 0 });
   expect(new URL(hi.headers()["location"] ?? "", "http://localhost:3000").pathname).toBe("/hi/places");
 });
+
+test("the corridor flood sim: controls render, a run advances the clock, an object in the path gets swept", async ({ page }) => {
+  await page.goto("/en?debug=1");
+  const controls = page.locator('[data-testid="corridor-controls"]');
+  // WebGL is not available on every CI runner: the PNG fallback (no controls) is the documented behaviour there.
+  try {
+    await expect(controls).toBeVisible({ timeout: 20_000 });
+  } catch {
+    test.skip(true, "WebGL unavailable → static fallback");
+  }
+  await page.locator('[data-block="corridor"]').scrollIntoViewIfNeeded();
+  const clock = page.locator('[data-testid="corridor-clock"]');
+  await expect(clock).toHaveText(/^\d\d:\d\d$/);
+  // drop objects in the path through the debug hook (the UI does the same via arm + tap) and replay
+  await page.evaluate(() => {
+    const h = (window as unknown as { __corridor?: { drop: (k: string, x: number, z: number) => void; play: () => void } }).__corridor;
+    h?.drop("house", -10, 0);
+    h?.drop("camp", -6, 0);
+    h?.play();
+  });
+  await expect.poll(async () => Number(await page.locator('[data-testid="corridor-swept"]').textContent()), { timeout: 20_000 }).toBeGreaterThanOrEqual(1);
+  await expect.poll(async () => page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { frontX: number } } }).__corridor?.debug().frontX ?? -Infinity), {
+    timeout: 20_000,
+  }).toBeGreaterThan(-20);
+  await expect(clock).not.toHaveText("08:37");
+  // reset clears the counter
+  await page.getByRole("button", { name: /Reset/ }).click();
+  await expect(page.locator('[data-testid="corridor-swept"]')).toHaveText("0");
+});

@@ -12,10 +12,22 @@ import SectionHead from "@/components/ui/SectionHead";
 import CorridorIsland from "./CorridorIsland";
 
 /**
- * Section 01 — The corridor. Server block: section head, legend, the framed 3D island (client, lazy),
- * caption, and on mobile the compact place list under the panel. See web/docs/10-3d-corridor.md.
+ * Section 01 — The corridor. Server block: section head, legend, the framed 3D island (client, lazy) with the
+ * flood simulation and its controls, caption, and on mobile the compact place list under the panel.
+ * See web/docs/10-3d-corridor.md and web/docs/14-flood-sim.md.
  */
-export default function Corridor({ lang, statuses, refs }: { lang: Lang; statuses: PlaceStatusRow[] | null; refs: PlaceRef[] | null }) {
+export default function Corridor({
+  lang,
+  statuses,
+  refs,
+  lakeVolumeM3 = null,
+}: {
+  lang: Lang;
+  statuses: PlaceStatusRow[] | null;
+  refs: PlaceRef[] | null;
+  /** China MWR barrier-lake volume in m³ (figures_latest), seeds the simulation's slider */
+  lakeVolumeM3?: number | null;
+}) {
   const places = toCorridorPlaces(statuses, refs, lang);
   const compact = (statuses ?? []).slice().sort((a, b) => b.unknown - a.unknown).slice(0, 8);
 
@@ -27,7 +39,7 @@ export default function Corridor({ lang, statuses, refs }: { lang: Lang; statuse
       <div className="mt-3">
         <Frame>
           {places.length ? (
-            <CorridorIsland places={places} lang={lang} />
+            <CorridorIsland places={places} lang={lang} lakeVolumeM3={lakeVolumeM3} />
           ) : (
             <div className="h-[400px] md:h-[480px] bg-scene grid place-items-center p-6">
               <EmptyState center action={t(lang, "sec.places_empty_action")} href={href(lang, "/report")}>

@@ -14,6 +14,6 @@ const CorridorScene = dynamic(() => import("@/components/three/CorridorScene"), 
   loading: () => <div className="h-[400px] md:h-[480px] w-full bg-scene" aria-busy="true" aria-label="3D corridor" />,
 });
 
-export default function CorridorIsland({ places, lang }: { places: CorridorPlace[]; lang: Lang }) {
-  return <CorridorScene places={places} lang={lang} fallbackSrc="/corridor-fallback.png" />;
+export default function CorridorIsland({ places, lang, lakeVolumeM3 }: { places: CorridorPlace[]; lang: Lang; lakeVolumeM3?: number | null }) {
+  return <CorridorScene places={places} lang={lang} fallbackSrc="/corridor-fallback.png" lakeVolumeM3={lakeVolumeM3} />;
 }

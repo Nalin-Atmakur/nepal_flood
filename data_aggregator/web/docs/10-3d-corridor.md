@@ -12,6 +12,11 @@ TypeScript module and fed with live place data.
                     └─ components/three/corridor-3d.ts  the ported scene: terrain · flood tube · lakes · markers · lights · camera · orbit · pick
 ```
 
+> Since 30 Aug the panel also runs the flood simulation (water, breach, objects, ride camera, clock) — see
+> `14-flood-sim.md`. The terrain maths moved to `lib/corridor-terrain.ts` (pure, shared with the sim and tests);
+> `kmToX` now compresses km > 74 so Devghat/Bharatpur stay on the mesh, and `bedH` = `terrainH` − riverbed carve +
+> landslide dam upstream of the lakes.
+
 ## 1. The port (`components/three/corridor-3d.ts`)
 
 Identical maths and parameters to the design script: `kmToX`, `meander`, `baseElev`, `n2`, `terrainH`,
