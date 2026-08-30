@@ -21,12 +21,18 @@ for (const lang of LANGS) {
       await expect(page.locator('nav[aria-label] a[aria-current="page"]').first()).toBeAttached(WAIT);
     });
 
-    test("three real clips sit under the simulation as click-to-play posters, no iframe until a tap", async ({ page }) => {
+    test("three real clips sit under the simulation: posters below the fold, muted autoplay in view, sound on tap", async ({ page }) => {
       await page.goto(`/${lang}`);
       const row = page.locator('[data-block="corridor"] [data-testid="videos-row"]');
       await expect(row).toBeAttached(WAIT);
       await expect(row.locator("[data-video]")).toHaveCount(3);
-      await expect(row.locator("iframe")).toHaveCount(0);
+      await expect(row.locator("iframe")).toHaveCount(0); // below the fold: posters only
+      // scrolled into view: the tiles autoplay muted; scrolled away again: back to posters
+      await row.scrollIntoViewIfNeeded();
+      await expect.poll(async () => row.locator('[data-video][data-mode="auto"]').count(), WAIT).toBeGreaterThanOrEqual(1);
+      await expect(row.locator('iframe[src*="mute=1"]').first()).toBeAttached(WAIT);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await expect.poll(async () => row.locator("iframe").count(), WAIT).toBe(0);
       await expect(page.locator('[data-block="corridor"] [data-testid="videos-add"]')).toHaveAttribute("href", new RegExp(`/${lang}/report`));
     });
 

@@ -142,3 +142,4 @@ Priority order (value ÷ effort), each = sources.yaml entry (if missing) + `norm
 - 14:25 BST 30 Aug · Distribution pass group 1 (docs/19 rows 1–7; D-062/063/064): slow breach default, two-row controls, "Flood volume" wording, full pixel ratio on phones, Overview + Cinematic camera, three featured clips under the panel, "My info". 124 unit · 26 e2e green; deploying.
 - 15:10 BST 30 Aug · Distribution pass groups 2–3 (docs/19 rows 8–12; D-065/066): three goals on Your part, share hook with live numbers (`/api/share-numbers`), WhatsApp via wa.me + "More…" sheet, phone share bottom sheet, OG card with the corridor strip, mobile audit e2e (13 pages, no sideways scroll, tap targets ≥ 36 px). Deploying.
 - 15:40 BST 30 Aug · Goals split into their own card beside Your part (3:2 desktop, stacked on phones; D-066 revised). 40 e2e green; deploying.
+- 15:55 BST 30 Aug · Clips autoplay muted in view, poster out of view, sound on tap (D-067). Deploying.

@@ -13,7 +13,9 @@ increases the viral potential."* The simulation says what happened at scale; the
         ▼
   blocks/VideoTile.tsx  (client)
         poster = https://i.ytimg.com/vi/<id>/hqdefault.jpg  + ▶  + kind badge (+ "in Nepali")
-        tap ──▶ <iframe src="https://www.youtube-nocookie.com/embed/<id>?autoplay=1&rel=0&playsinline=1">
+        ≥ 60 % in view ──▶ muted, looping embed (…&mute=1&loop=1&playlist=<id>) + "muted" badge; out of view ──▶ poster
+        tap ──▶ <iframe src="https://www.youtube-nocookie.com/embed/<id>?autoplay=1&rel=0&playsinline=1">  (with sound, stays)
+        (no autoplay for reduced-motion / Save-Data visitors)
         under it: our caption (en/ne/hi) · 📍 place chip → /places/<id> · credit → channel · "on YouTube"
   then: the fact-check note · "Have footage from the corridor?" → /report (attachments, docs/06)
 ```
@@ -73,7 +75,7 @@ Considered and left out: Times Now / Oneindia (sensational titles, same footage 
 
 ## Performance and privacy
 
-- No iframe, no YouTube script, no cookie until a tap; the posters are three lazy `<img>`s (~15 KB each).
+- No iframe, no YouTube script, no cookie until a tile is scrolled into view (owner, 13:28: autoplay in view) or tapped; the posters are three lazy `<img>`s (~15 KB each). Only in-view tiles hold a player.
 - `youtube-nocookie.com` embeds; the tap itself is the consent.
 - The block adds nothing to the server render but nine URLs and the place names it already has.
 
