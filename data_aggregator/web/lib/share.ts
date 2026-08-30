@@ -40,7 +40,7 @@ export function shareText(lang: Lang, n?: ShareNumbers | null): string {
   return t(lang, "share.text");
 }
 
-/** Build every share link for a page. `copy` carries the plain URL (with utm) for the clipboard. */
+/** Build every share link for a page. `copy` carries the plain URL (with utm) for the clipboard. The message and the link are separated by a blank line. */
 export function shareLinks({ url, lang, text, numbers }: { url: string; lang: Lang; text?: string; numbers?: ShareNumbers | null }): ShareLink[] {
   const msg = text ?? shareText(lang, numbers);
   return SHARE_TARGETS.map((id) => {
@@ -48,10 +48,11 @@ export function shareLinks({ url, lang, text, numbers }: { url: string; lang: La
     let href = target;
     switch (id) {
       case "whatsapp":
-        href = `https://wa.me/?text=${encodeURIComponent(`${msg} ${target}`)}`;
+        href = `https://wa.me/?text=${encodeURIComponent(`${msg}\n\n${target}`)}`;
         break;
       case "x":
-        href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(msg)}&url=${encodeURIComponent(target)}`;
+        // the link goes inside the text after a blank line (X keeps the line break; the separate url param would not)
+        href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${msg}\n\n${target}`)}`;
         break;
       case "linkedin":
         href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(target)}`;

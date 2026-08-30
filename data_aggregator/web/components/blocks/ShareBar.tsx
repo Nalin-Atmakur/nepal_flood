@@ -23,7 +23,7 @@ export default function ShareBar({ lang, path = "/", variant = "full" }: { lang:
 
   async function copy(u: string) {
     try {
-      await navigator.clipboard.writeText(`${shareText(lang, numbers)} ${u}`);
+      await navigator.clipboard.writeText(`${shareText(lang, numbers)}\n\n${u}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {

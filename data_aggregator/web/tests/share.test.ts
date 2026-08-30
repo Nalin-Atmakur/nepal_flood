@@ -55,7 +55,11 @@ describe("shareLinks()", () => {
     const copy = links.find((l) => l.id === "copy");
     expect(copy?.href).toBe(copy?.url);
     const x = links.find((l) => l.id === "x");
-    expect(x?.href).toContain(`url=${encodeURIComponent(x?.url ?? "")}`);
+    expect(x?.href).toContain(encodeURIComponent(x?.url ?? ""));
+    // the link sits on its own line after a blank one (WhatsApp and X)
+    const wa = links.find((l) => l.id === "whatsapp");
+    expect(decodeURIComponent(wa?.href ?? "")).toContain("\n\nhttps://");
+    expect(decodeURIComponent(x?.href ?? "")).toContain("\n\nhttps://");
   });
 });
 

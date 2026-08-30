@@ -7,7 +7,6 @@ import { DEFAULT_SCENARIO, LAKE_MM3_MAX, LAKE_MM3_MIN, type Scenario } from "@/l
 import { fmtInt } from "@/lib/format";
 import { href, t, type Lang } from "@/lib/i18n";
 import { CATALOGUE, type ObjectKind } from "@/lib/object-catalogue";
-import { pageUrl, shareLinks } from "@/lib/share";
 import Chip from "@/components/ui/Chip";
 import type { CorridorHandle, Phase, RunState } from "./corridor-3d";
 
@@ -68,7 +67,11 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
   const [clock, setClock] = useState("08:37");
   const [swept, setSwept] = useState(0);
   const [sweptReal, setSweptReal] = useState(0);
-  const [flash, setFlash] = useState(false);
+  /** which stat box just changed (it flashes): the bridges box for a real bridge, the swept box for a visitor's object */
+  const [flash, setFlash] = useState<"swept" | "bridges" | null>(null);
+  const sweptRealRef = useRef(0);
+  const [reached, setReached] = useState<{ n: number; people: number }>({ n: 0, people: 0 });
+  const [sweptByKind, setSweptByKind] = useState<Partial<Record<ObjectKind, number>>>({});
   const [armed, setArmed] = useState<ObjectKind | null>(null);
   const [xray, setXray] = useState(0);
   const [names, setNames] = useState(true);
@@ -155,12 +158,18 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
           mobile: isMobile(),
           reducedMotion: reducedMotion(),
           onPick,
-          onReached: (place, clk) => push({ kind: "reached", title: place.name, sub: `${fmtInt(place.reported)} ${t(lang, "word.reported")} · ${fmtInt(place.unknown)} ${t(lang, "word.unknown")}`, clock: clk, tone: "amber" }),
+          onReached: (place, clk) => {
+            setReached((r) => ({ n: r.n + 1, people: r.people + Math.max(0, place.reported) }));
+            push({ kind: "reached", title: place.name, sub: `${fmtInt(place.reported)} ${t(lang, "word.reported")} · ${fmtInt(place.unknown)} ${t(lang, "word.unknown")}`, clock: clk, tone: "amber" });
+          },
           onSwept: (kind, total, real, x, y, clk) => {
+            const wasRealBridge = real > sweptRealRef.current;
+            sweptRealRef.current = real;
             setSwept(total);
             setSweptReal(real);
-            setFlash(true);
-            setTimeout(() => setFlash(false), 500);
+            if (!wasRealBridge) setSweptByKind((m) => ({ ...m, [kind]: (m[kind] ?? 0) + 1 }));
+            setFlash(wasRealBridge ? "bridges" : "swept");
+            setTimeout(() => setFlash(null), 600);
             pop(`${t(lang, "corridor.swept_pop")} ${clk}`, x, y, "red");
             push({ kind: "swept", title: t(lang, "corridor.swept_feed", { obj: t(lang, "corridor.obj." + kind) }), clock: clk, tone: "red" });
           },
@@ -221,11 +230,17 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
   const showScene = () => {
     if (isMobile()) boxRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
   };
+  const clearCounters = () => {
+    setSwept(0);
+    setSweptReal(0);
+    sweptRealRef.current = 0;
+    setReached({ n: 0, people: 0 });
+    setSweptByKind({});
+  };
   const play = () => {
     showScene();
     setPick(null);
-    setSwept(0);
-    setSweptReal(0);
+    clearCounters();
     setFeed([]);
     setArmed(null);
     handleRef.current?.arm(null);
@@ -235,8 +250,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
   const cinematic = () => {
     showScene();
     setPick(null);
-    setSwept(0);
-    setSweptReal(0);
+    clearCounters();
     setFeed([]);
     setArmed(null);
     handleRef.current?.arm(null);
@@ -246,8 +260,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     setPick(null);
     setFeed([]);
     setPops([]);
-    setSwept(0);
-    setSweptReal(0);
+    clearCounters();
     setArmed(null);
     handleRef.current?.arm(null);
     handleRef.current?.reset();
@@ -273,22 +286,6 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
       /* storage unavailable */
     }
   };
-  const shareRun = async () => {
-    const url = pageUrl(lang, `/run?swept=${swept}&bridges=${sweptReal}`);
-    const text = t(lang, "corridor.share_text", { n: String(swept), b: String(sweptReal) });
-    const nav = navigator as Navigator & { share?: (d: { title?: string; text?: string; url?: string }) => Promise<void> };
-    if (typeof nav.share === "function") {
-      try {
-        await nav.share({ title: t(lang, "site.name"), text, url });
-        return;
-      } catch {
-        /* cancelled → WhatsApp */
-      }
-    }
-    const wa = shareLinks({ url, lang, text }).find((l) => l.id === "whatsapp");
-    if (wa) window.open(wa.href, "_blank", "noopener");
-  };
-
   const cardLink = t(lang, "sec.corridor_card_link");
   const feedVisible = feed.slice(0, feedCap);
 
@@ -339,21 +336,21 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
             <div className="absolute bottom-2 right-2 z-10 flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => handleRef.current?.frame()}
-                className="inline-flex items-center justify-center min-h-[40px] px-3 bg-card b-ink-2 rounded-r2 font-bold text-[12px] text-ink shadow-hard-2 cursor-pointer hover:bg-ground"
-                aria-label={t(lang, "corridor.frame")}
-                data-testid="corridor-frame"
-              >
-                ⌂ {t(lang, "corridor.frame")}
-              </button>
-              <button
-                type="button"
                 onClick={cinematic}
                 className="inline-flex items-center justify-center min-h-[40px] px-3 bg-board text-white b-ink-2 rounded-r2 font-bold text-[12px] shadow-hard-2 cursor-pointer hover:bg-ink"
                 aria-label={t(lang, "corridor.cinematic")}
                 data-testid="corridor-cinematic"
               >
                 🎬 {t(lang, "corridor.cinematic")}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleRef.current?.frame()}
+                className="inline-flex items-center justify-center min-h-[40px] px-3 bg-card b-ink-2 rounded-r2 font-bold text-[12px] text-ink shadow-hard-2 cursor-pointer hover:bg-ground"
+                aria-label={t(lang, "corridor.frame")}
+                data-testid="corridor-frame"
+              >
+                ⌂ {t(lang, "corridor.frame")}
               </button>
             </div>
             {/* pops: SWEPT / PLACED, at the object's screen position */}
@@ -412,27 +409,26 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
               <button type="button" onClick={reset} className="inline-flex items-center justify-center min-h-[44px] px-[14px] pt-[2px] rounded-r2 b-ink-2 bg-card text-ink font-bold text-[13px] cursor-pointer hover:bg-ground">
                 ⟲ {t(lang, "corridor.reset")}
               </button>
-              {swept > 0 || sweptReal > 0 || runState === "done" ? (
-                <button type="button" onClick={shareRun} className="inline-flex items-center justify-center min-h-[44px] px-[14px] pt-[2px] rounded-r2 b-ink-2 bg-amber-fill text-ink font-bold text-[13px] cursor-pointer shadow-hard-2 press-2" data-testid="corridor-share">
-                  ↗ {t(lang, "corridor.share_run")}
-                </button>
-              ) : null}
-              <div className="ml-auto flex items-center gap-2">
-                {bridges.length ? (
-                  <div className="inline-flex items-center gap-2 bg-ground b-ink-2 rounded-r2 px-[10px] py-[6px]" title={t(lang, "corridor.real_bridges_title")}>
-                    <span className="font-semibold text-[11px] text-muted">{t(lang, "corridor.real_bridges")}</span>
-                    <span className="arcade text-[12px] num" data-testid="corridor-real">
-                      {sweptReal}/{bridges.length}
-                    </span>
-                  </div>
-                ) : null}
-                <div className={"inline-flex items-center gap-2 b-ink-2 rounded-r2 px-[10px] py-[6px] transition-colors " + (flash ? "bg-amber-fill" : "bg-ground")}>
-                  <span className="font-semibold text-[11px] text-muted">{t(lang, "corridor.swept")}</span>
-                  <span className={"arcade num transition-transform " + (flash ? "text-[15px]" : "text-[12px]")} data-testid="corridor-swept">
-                    {swept}
-                  </span>
-                </div>
-              </div>
+            </div>
+
+            {/* what the run has done so far: villages · people · bridges · things (the box that changed flashes) */}
+            <div className="flex flex-wrap items-stretch gap-2" data-testid="corridor-stats">
+              <Stat label={t(lang, "corridor.villages_reached")} value={`${reached.n}/${places.length}`} />
+              <Stat label={t(lang, "corridor.people_in_path")} value={fmtInt(reached.people)} tone="amber" />
+              {bridges.length ? <Stat label={t(lang, "corridor.real_bridges")} value={`${sweptReal}/${bridges.length}`} title={t(lang, "corridor.real_bridges_title")} flash={flash === "bridges"} testId="corridor-real" /> : null}
+              <Stat
+                label={t(lang, "corridor.swept")}
+                value={String(swept)}
+                flash={flash === "swept"}
+                testId="corridor-swept"
+                sub={
+                  swept > 0
+                    ? CATALOGUE.filter((c) => (sweptByKind[c.kind] ?? 0) > 0)
+                        .map((c) => `${c.emoji}${sweptByKind[c.kind]}`)
+                        .join(" ")
+                    : undefined
+                }
+              />
             </div>
 
             {/* row 1: the volume the wave carries (the barrier lake the avalanche breached) */}
@@ -443,7 +439,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
               <span className="font-medium text-[11px] text-muted">· {t(lang, "corridor.lake_volume_sub")}</span>
             </label>
 
-            {/* row 2: breach speed and the things to drop, on one line (wrapping on phones) */}
+            {/* row 2: breach speed */}
             <div className="flex flex-wrap items-start gap-x-5 gap-y-2">
               <div className="flex items-center gap-[6px] font-semibold text-[12px] min-h-[40px]" role="radiogroup" aria-label={t(lang, "corridor.breach")}>
                 <span>{t(lang, "corridor.breach")}</span>
@@ -453,6 +449,10 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* row 3: the things to drop, on its own line (owner, 14:51) */}
+            <div className="flex flex-wrap items-start">
               <div className="flex-1 min-w-[260px]">
                 <div className="flex items-center gap-2 flex-wrap min-h-[40px]">
                   <span className="font-semibold text-[12px]">{t(lang, "corridor.drop")}</span>
@@ -481,6 +481,21 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
           </div>
         </>
       ) : null}
+    </div>
+  );
+}
+
+/** One box of the run's tally; `flash` lights it for a beat when its number just changed. */
+function Stat({ label, value, sub, tone, flash, testId, title }: { label: string; value: string; sub?: string; tone?: "amber"; flash?: boolean; testId?: string; title?: string }) {
+  return (
+    <div className={["inline-flex flex-col justify-center min-h-[44px] b-ink-2 rounded-r2 px-[10px] py-[5px] transition-colors", flash ? "bg-amber-fill" : tone === "amber" ? "bg-amber-fill/40" : "bg-ground"].join(" ")} title={title}>
+      <span className="font-semibold text-[10.5px] text-muted leading-tight">{label}</span>
+      <span className="inline-flex items-baseline gap-2">
+        <span className={["arcade num transition-transform leading-tight", flash ? "text-[15px]" : "text-[12px]"].join(" ")} data-testid={testId}>
+          {value}
+        </span>
+        {sub ? <span className="font-medium text-[11px] leading-tight">{sub}</span> : null}
+      </span>
     </div>
   );
 }
