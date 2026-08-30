@@ -41,14 +41,17 @@ export default function Corridor({
   const compact = (statuses ?? []).slice().sort((a, b) => b.unknown - a.unknown).slice(0, 8);
 
   return (
-    <section data-block="corridor" data-n="01" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-6" aria-labelledby="sec-corridor">
-      <SectionHead n="01" title={<span id="sec-corridor">{heading?.title ?? t(lang, "sec.corridor")}</span>} sub={heading?.sub ?? t(lang, "sec.corridor_sub", { km: CORRIDOR_LENGTH_KM, x: CORRIDOR_HEIGHT_EXAGGERATION })}>
-        <Legend lang={lang} />
-      </SectionHead>
+    <section data-block="corridor" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-6" aria-labelledby="sec-corridor">
       {/* the real footage leads, everywhere (owner, 30 Aug): a first-time viewer understands the clips instantly,
           and the simulation reads as the explanation of what they just saw */}
-      <div className="flex flex-col gap-3 mt-3">
+      <div className="flex flex-col gap-3">
+        {/* the clips come first; the title and legend introduce the simulation, directly above it */}
         <div className="order-2">
+          <SectionHead title={<span id="sec-corridor">{heading?.title ?? t(lang, "sec.corridor")}</span>} sub={heading?.sub ?? t(lang, "sec.corridor_sub", { km: CORRIDOR_LENGTH_KM, x: CORRIDOR_HEIGHT_EXAGGERATION })}>
+            <Legend lang={lang} />
+          </SectionHead>
+        </div>
+        <div className="order-3">
           <Frame>
             {places.length ? (
               <CorridorIsland places={places} lang={lang} lakeVolumeM3={lakeVolumeM3} bridges={bridges} />

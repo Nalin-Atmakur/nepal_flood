@@ -14,8 +14,8 @@ import { getLakeVolumeM3, getLiveCounts, getLostBridges, getNationalFigures, get
  *
  * The order answers the questions a stranger actually arrives with, in the order they arrive:
  *   1 what happened, how bad          HeroEvent   (event → three numbers → still out of contact, ticking)
- *   2 show me                         Corridor    (real footage first, then the replay of the path)
- *   3 why should I pass this on       SpreadCard  (named recipients, not "share this")
+ *   2 pass it on                      SpreadCard  (named recipients, not "share this" — while the shock is fresh)
+ *   3 show me                         Corridor    (real footage first, then the replay of the path)
  *   4 what do I do if it's my people  YourPart    (the ask + what happens to a submission)
  * Everything deeper stays in the tabs.
  */
@@ -41,6 +41,7 @@ export default async function HomeV2({ params }: { params: Promise<{ lang: strin
   return (
     <main data-page="home-v2">
       <HeroEvent lang={lang} figures={figures} />
+      <SpreadCard lang={lang} />
       <Corridor
         lang={lang}
         statuses={placeRows}
@@ -49,7 +50,6 @@ export default async function HomeV2({ params }: { params: Promise<{ lang: strin
         lostBridges={lostBridges}
         heading={{ title: t(lang, "hero.path_title"), sub: t(lang, "hero.path_sub") }}
       />
-      <SpreadCard lang={lang} />
       <YourPart lang={lang} live={live} />
     </main>
   );

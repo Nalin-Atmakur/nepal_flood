@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ReportFlow from "@/components/form/ReportFlow";
 import { isRespondentType } from "@/lib/config";
+import AuthBootstrap from "@/components/blocks/AuthBootstrap";
 import { asLang, t } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getPlaces } from "@/lib/queries";
@@ -45,5 +46,11 @@ export default async function ReportPage({ params, searchParams }: { params: Par
   const modeRaw = one(sp.mode);
   const mode = modeRaw === "add" || modeRaw === "correct" ? modeRaw : null;
 
-  return <ReportFlow lang={lang} places={places} initialType={initialType} initialPlaceId={initialPlaceId} supersedes={supersedes} mode={mode} />;
+  return (
+    <>
+      {/* anonymous sign-in happens on this page, not site-wide: only a submitter needs an identity (QA F3) */}
+      <AuthBootstrap lang={lang} />
+      <ReportFlow lang={lang} places={places} initialType={initialType} initialPlaceId={initialPlaceId} supersedes={supersedes} mode={mode} />
+    </>
+  );
 }

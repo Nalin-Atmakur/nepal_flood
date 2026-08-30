@@ -398,9 +398,12 @@ function Card({ lang, n, run, corridor }: { lang: Lang; n: OgNumbers; run?: { sw
 export async function GET(req: Request) {
   const sp = new URL(req.url).searchParams;
   const requested = asLang(sp.get("lang"));
-  // The card's fonts are Baloo 2 + Press Start 2P (Latin + Devanagari). Chinese would render as tofu, and a CJK
-  // webfont is ~10 MB per isolate — so the zh card shows the English text; the page's own meta is still Chinese.
-  const lang = requested === "zh" ? "en" : requested;
+  // Satori (next/og) has no complex-script shaping: Devanagari matras do not reorder and conjuncts do not form,
+  // so a Nepali card read "सम्पर्कवहिीन" for "सम्पर्कविहीन" (QA F1, 30 Aug); Chinese has no glyphs at all without a
+  // ~10 MB CJK font per isolate. Until the cards are pre-rendered in a real browser, every non-Latin language
+  // gets the English card — the numbers, which are the point, are Latin in every language anyway. The page's own
+  // title, description and meta stay in the visitor's language.
+  const lang = requested === "en" ? requested : "en";
   const num = (k: string) => Math.max(0, Math.min(999, Number.parseInt(sp.get(k) ?? "", 10) || 0));
   const run = sp.has("swept") ? { swept: num("swept"), bridges: num("bridges") } : null;
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { SHARE_TARGETS, pageUrl, shareLinks, shareText, withUtm } from "@/lib/share";
 
-const PAGE = "https://nepalfloodtracker.com/ne/places/timure";
+const PAGE = "https://www.nepalfloodtracker.com/ne/places/timure";
 
 describe("withUtm()", () => {
   it("keeps existing query params and adds the three utm fields", () => {
@@ -23,7 +23,7 @@ describe("withUtm()", () => {
 
   it("resolves relative paths against the site origin", () => {
     const u = new URL(withUtm("/en", "copy", "en"));
-    expect(u.origin).toBe("https://nepalfloodtracker.com");
+    expect(u.origin).toBe("https://www.nepalfloodtracker.com");
     expect(u.pathname).toBe("/en");
     expect(u.searchParams.get("utm_campaign")).toBe("nft_en");
   });
@@ -65,10 +65,10 @@ describe("shareLinks()", () => {
 
 describe("pageUrl()", () => {
   it("builds the canonical absolute URL", () => {
-    expect(pageUrl("en", "/")).toBe("https://nepalfloodtracker.com/en");
-    expect(pageUrl("en")).toBe("https://nepalfloodtracker.com/en");
-    expect(pageUrl("ne", "/places/timure")).toBe("https://nepalfloodtracker.com/ne/places/timure");
-    expect(pageUrl("hi", "report")).toBe("https://nepalfloodtracker.com/hi/report");
+    expect(pageUrl("en", "/")).toBe("https://www.nepalfloodtracker.com/en");
+    expect(pageUrl("en")).toBe("https://www.nepalfloodtracker.com/en");
+    expect(pageUrl("ne", "/places/timure")).toBe("https://www.nepalfloodtracker.com/ne/places/timure");
+    expect(pageUrl("hi", "report")).toBe("https://www.nepalfloodtracker.com/hi/report");
   });
   it("opens with the live numbers when all three are known, else the plain description", () => {
     const hook = shareText("en", { dead: 675, missing: 2498, rescued: 7514 });

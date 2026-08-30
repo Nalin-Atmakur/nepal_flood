@@ -53,9 +53,18 @@ export async function ensureSession(sb: SupabaseClient, lang: string): Promise<s
   const { data: sessionData } = await sb.auth.getSession();
   let userId = sessionData.session?.user.id ?? null;
   if (!userId) {
-    const { data, error } = await sb.auth.signInAnonymously();
-    if (error) return null;
-    userId = data.user?.id ?? null;
+    // Anonymous sign-in is rate-limited per IP, and Nepali mobile networks put thousands of people behind one
+    // carrier-NAT address — a 429 here is transient, not a failure, so back off and try again (QA F3, 30 Aug).
+    for (let attempt = 0; attempt < 3 && !userId; attempt++) {
+      const { data, error } = await sb.auth.signInAnonymously();
+      if (!error) {
+        userId = data.user?.id ?? null;
+        break;
+      }
+      const status = (error as { status?: number }).status;
+      if (status !== 429 || attempt === 2) return null;
+      await new Promise((r) => setTimeout(r, 800 * 2 ** attempt + Math.random() * 400));
+    }
   }
   if (!userId) return null;
   await sb.from("users").upsert({ id: userId, lang }, { onConflict: "id", ignoreDuplicates: false });

@@ -12,7 +12,12 @@ export const STALE_AFTER_MINUTES = PULL_INTERVAL_MINUTES * 1.5;
 /** /sources colours "last fetched" green below this, amber above. */
 export const SOURCE_OK_MINUTES = PULL_INTERVAL_MINUTES * 2;
 
-export const SITE_URL = "https://nepalfloodtracker.com";
+/**
+ * The apex 308-redirects to www, and some scrapers do not follow redirects for og:image — so every canonical,
+ * hreflang, share and OG URL is built on the host the site is actually served from (QA W1, 30 Aug).
+ */
+export const SITE_URL = "https://www.nepalfloodtracker.com";
+/** Display only (the OG card, the footer): the pretty host without the www. */
 export const SITE_HOST = "nepalfloodtracker.com";
 /** The team mailbox (owner, 30 Aug 16:30; D-070). */
 export const CONTACT_EMAIL = "nepalfloodrescuers@gmail.com";

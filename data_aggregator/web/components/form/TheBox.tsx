@@ -127,6 +127,7 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [honeypot, setHoneypot] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const sendingRef = useRef(false);
   const [sending, setSending] = useState(false);
 
   const micSupported = useMicSupported();
@@ -251,6 +252,9 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
       setError(t(lang, "report.err_unconfigured"));
       return;
     }
+    // a state flag updates on the next render; two clicks in one tick both passed it (QA W2, 30 Aug)
+    if (sendingRef.current) return;
+    sendingRef.current = true;
     setSending(true);
     try {
       const userId = await ensureSession(sb, lang);
@@ -285,6 +289,7 @@ export default function TheBox({ lang, type, places, initialText = "", initialPl
     } catch {
       setError(t(lang, "report.err_failed"));
     } finally {
+      sendingRef.current = false;
       setSending(false);
       setProgress(null);
     }

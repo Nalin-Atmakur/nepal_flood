@@ -21,12 +21,16 @@ function counts(sp: { swept?: string; bridges?: string }): { swept: number; brid
 export async function generateMetadata({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Search }): Promise<Metadata> {
   const lang = asLang((await params).lang);
   const { swept, bridges } = counts(await searchParams);
-  return pageMetadata(lang, {
-    title: t(lang, "run.title", { n: String(swept), b: String(bridges) }),
-    description: t(lang, "run.description"),
-    path: "/",
-    image: `${SITE_URL}/api/og?lang=${lang}&swept=${swept}&bridges=${bridges}`,
-  });
+  return {
+    ...pageMetadata(lang, {
+      title: t(lang, "run.title", { n: String(swept), b: String(bridges) }),
+      description: t(lang, "run.description"),
+      path: "/",
+      image: `${SITE_URL}/api/og?lang=${lang}&swept=${swept}&bridges=${bridges}`,
+    }),
+    // a share landing, not a page to index (robots.txt disallows crawling; this stops a linked URL being indexed)
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function RunPage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Search }) {

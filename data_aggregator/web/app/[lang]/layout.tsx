@@ -9,7 +9,6 @@ import { isLang, LANGS, LANG_TAGS, t, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getLiveCounts } from "@/lib/queries";
 import { colors } from "@/lib/tokens";
-import AuthBootstrap from "@/components/blocks/AuthBootstrap";
 import Footer from "@/components/blocks/Footer";
 import Header from "@/components/blocks/Header";
 import OfficialChannels from "@/components/blocks/OfficialChannels";
@@ -81,7 +80,6 @@ export default async function LangLayout({ children, params }: { children: React
         {/* phones: the fixed bottom tab bar; the spacer keeps the footer reachable above it */}
         <div className="h-[72px] md:hidden" aria-hidden="true" />
         <TabBar lang={lang} variant="bottom" />
-        <AuthBootstrap lang={lang} />
         <Analytics />
       </body>
     </html>

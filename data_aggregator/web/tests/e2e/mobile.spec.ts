@@ -21,7 +21,7 @@ for (const path of PAGES) {
     // anything that looks like a button must be tappable
     const small = await page.evaluate((min) => {
       const out: string[] = [];
-      const els = document.querySelectorAll<HTMLElement>('button, [role="button"], [role="radio"], a.press-3, a.press-4, a[data-testid]');
+      const els = document.querySelectorAll<HTMLElement>('button, [role="button"], [role="radio"], a.press-3, a.press-4, a[data-testid], a[href^="tel:"]');
       for (const el of els) {
         const r = el.getBoundingClientRect();
         const cs = getComputedStyle(el);

@@ -56,29 +56,29 @@ export default function OfficialChannels({ lang }: { lang: Lang }) {
       {/* mobile */}
       <div className="md:hidden px-4 py-2 font-medium text-[11px] lh-loose">
         <strong>
-          <a href={`tel:${police.tel}`} className="text-ink no-underline">
+          <a href={`tel:${police.tel}`} className="inline-flex items-center min-h-[36px] px-[2px] text-ink no-underline">
             {police.short}
           </a>
         </strong>{" "}
         ·{" "}
         <strong>
-          <a href={`tel:${tourist.tel}`} className="text-ink no-underline">
+          <a href={`tel:${tourist.tel}`} className="inline-flex items-center min-h-[36px] px-[2px] text-ink no-underline">
             {tourist.short}
           </a>
         </strong>{" "}
         · <strong>{mofa.short}</strong>{" "}
-        <a href={`tel:${mofa.tel}`} className="text-ink no-underline">
+        <a href={`tel:${mofa.tel}`} className="inline-flex items-center min-h-[36px] px-[2px] text-ink no-underline">
           {mofa.number}
         </a>{" "}
         ·{" "}
         <strong>
-          <a href={`tel:${redCross.tel}`} className="text-ink no-underline">
+          <a href={`tel:${redCross.tel}`} className="inline-flex items-center min-h-[36px] px-[2px] text-ink no-underline">
             {redCross.short}
           </a>
         </strong>{" "}
         ·{" "}
         <strong>
-          <a href={`tel:${neoc.tel}`} className="text-ink no-underline">
+          <a href={`tel:${neoc.tel}`} className="inline-flex items-center min-h-[36px] px-[2px] text-ink no-underline">
             {neoc.short}
           </a>
         </strong>
