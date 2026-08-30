@@ -47,15 +47,15 @@ sources:
 
 - id: opmcm_help_requests
   family: json_api
-  url: https://rescue.opmcm.gov.np/api/help-requests
+  url: https://rescue.opmcm.gov.np/api/help-requests?page={n}&limit=200
   auth: none
   cadence: 60m
   format: json
   holds: geocoded help requests (problemType, affectedCount, urgency, district/municipality/ward, Point)
   pii: true
-  parser: keep placeName/ward/location/affectedCount/urgency/status; drop reporterName/phone
+  parser: prestore drops reporterName/phone/thumbnail/title/description and keeps gazetteer place_ids; figures help_requests_open/critical + people_affected_reported per place / district / problem / help-type scope
   catalogue: A1
-  verified: C
+  verified: 2026-08-30 (227 requests, 2 pages)
 
 - id: opmcm_government_efforts
   family: json_api
@@ -65,9 +65,9 @@ sources:
   format: json
   holds: official notices mirrored from nepal.gov.np
   pii: false
-  parser: title/date/body
+  parser: articles (ne) through the relevance gate, url = portal anchor + nepalRef; figure government_notices_total
   catalogue: A1
-  verified: C
+  verified: 2026-08-30 (94 notices)
 
 - id: ndrrma_rescues
   family: json_api
@@ -286,14 +286,26 @@ sources:
 
 - id: bipad_river_series
   family: json_api
-  url: https://bipadportal.gov.np/api/v1/river/?water_level_on__gt=2026-08-26&limit=1000
+  url:
+    - https://bipadportal.gov.np/api/v1/river/?station=171&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=74&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=49&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=137&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=79&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=105&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=281&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=261&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=67&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=25&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
+    - https://bipadportal.gov.np/api/v1/river/?station=35&water_level_on__gt=2026-08-25&ordering=-water_level_on&limit=60
   auth: none
   cadence: 60m
   format: json 10-min series
-  holds: hydrograph incl. pre-collapse window
+  holds: hydrograph per corridor station — BIPAD station ids 171 Rasuwagadi, 74 Bhote Koshi@Syabrubesi, 49 Langtang@Syabrubesi, 137 Betrawati, 79 Phalakhu, 105 Dhunche, 281 Galchi, 261 Malekhu, 67 Kali Khola, 25 Devghat, 35 Bhorle; newest 60 readings each
   pii: false
+  parser: gauges rows keyed bipad-<station> / waterLevelOn (same key space as bipad_river_stations)
   catalogue: B2
-  verified: C
+  verified: 2026-08-30 (station filter + ordering=-water_level_on work; the unfiltered endpoint is stuck on 26 Aug)
 
 - id: dhm_riverwatch_post
   family: post_api
@@ -348,8 +360,9 @@ sources:
   format: geojson
   holds: 62 bridges intersecting flood path
   pii: false
+  parser: delegates to nesra_bucket (the same file is part 2 of its envelope); refreshes the bridge layer alone
   catalogue: B7
-  verified: C
+  verified: 2026-08-30
 
 - id: dor_rimes_bridges
   family: json_api
@@ -359,8 +372,9 @@ sources:
   format: json 2,135 bridges with coords
   holds: national bridge inventory — join key for "bridges lost" claims
   pii: false
+  parser: corridor bbox + corridor rivers → road_bridges_inventory per nearest place (≤ 8 km) + national
   catalogue: B8
-  verified: C
+  verified: 2026-08-30 (2,135 bridges)
 
 - id: ntc_restoration_articles
   family: rss   # derived: no fetch — process_data ③ scans stored articles (last 3 days) for NTC|Ncell|टावर|tower|BTS + restoration wording
@@ -429,8 +443,9 @@ sources:
   format: geojson
   holds: UNOSAT impacted-area polygon (37 km²)
   pii: false
+  parser: flood_extent_km2 = Σ Shape_Area / 1e6
   catalogue: C6 / C8
-  verified: C
+  verified: 2026-08-30 (1 polygon, 37.4 km²)
 
 - id: vantor_stac
   family: stac
@@ -440,8 +455,9 @@ sources:
   format: stac → COG
   holds: 13 VHR scenes (0.35–0.58 m)
   pii: false
+  parser: item sub-fetches (≤ 24) → imagery_scenes_total / imagery_scenes_post_event, as_of = newest scene
   catalogue: D1
-  verified: C
+  verified: 2026-08-30 (13 items)
 
 - id: planet_stac
   family: stac
@@ -451,8 +467,9 @@ sources:
   format: stac catalog (pre-event/, post-event/) + items.parquet
   holds: 24 scenes (PlanetScope, SkySat 0.8 m, Pelican 0.55 m)
   pii: false
+  parser: catalog → pre/post catalogs → collections (≤ 16 sub-fetches) → imagery_scenes_total / _post_event / imagery_collections
   catalogue: D2
-  verified: C
+  verified: 2026-08-30
 
 - id: oam_bbox
   family: json_api
@@ -474,19 +491,21 @@ sources:
   format: odata json
   holds: new S1/S2 acquisitions over the corridor
   pii: false
+  parser: s2_products_since_event + s2_acquisition_dates, as_of = latest ContentDate.Start
   catalogue: D3–D5
-  verified: C
+  verified: 2026-08-30 (12 S2 products)
 
 - id: hf_fair_footprints
   family: s3
-  url: https://huggingface.co/datasets/hotosm/nepal_flood_2026   # upperstream/buildings.parquet
+  url: https://huggingface.co/api/datasets/hotosm/nepal_flood_2026   # dataset API; files live under upperstream/
   auth: none
   cadence: daily
-  format: parquet/geojson
+  format: json (dataset API — the parquet/geojson are not pulled)
   holds: 13,663 fAIr footprints (HDX copy is 403)
   pii: false
+  parser: dataset_files / dataset_downloads, as_of = lastModified
   catalogue: C5
-  verified: C
+  verified: 2026-08-30
 
 - id: hot_tasking_manager
   family: json_api
@@ -563,8 +582,9 @@ sources:
   format: html
   holds: back-catalogue and outlets without feeds
   pii: some
+  parser: per-host article-path patterns → articles (longest anchor text = title), relevance-gated; date from the path when present
   catalogue: F12, F15–F17
-  verified: C
+  verified: 2026-08-30 (KP 2 tags, THT, Onlinekhabar EN, Gorkhapatra, INSEC)
 
 - id: ekantipur_live
   family: html
@@ -627,14 +647,15 @@ sources:
 
 - id: gdelt_monitor
   family: json_api
-  url: https://api.gdeltproject.org/api/v2/doc/doc?query=Rasuwa&mode=artlist&maxrecords=250&timespan=1d&format=json
+  url: https://api.gdeltproject.org/api/v2/doc/doc?query=Rasuwa%20flood&mode=artlist&maxrecords=100&timespan=1d&format=json
   auth: none
   cadence: 2h
-  format: json (250 cap; flaky)
+  format: json (100 cap; slow — 60 s+ answers, sometimes times out)
   holds: volume monitor + Nepali-outlet discovery (onlinekhabar/ratopati/ekantipur); misses KP/THT
   pii: false
+  parser: articles (relevance-gated, lang from GDELT language) + figure gdelt_articles_24h
   catalogue: F24
-  verified: C
+  verified: 2026-08-30 (one 67 s answer, one timeout)
 
 # ── 6. Seismic ────────────────────────────────────────────────────────────────
 
