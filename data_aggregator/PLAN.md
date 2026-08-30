@@ -135,7 +135,7 @@ Supabase is **database only**: Postgres + RLS + Storage for PDFs/photos. No edge
 ## 5. `pull_external_data.py`
 
 ```
-   sources.yaml (51 sources)
+   sources.yaml (60 sources)
         │  for each source whose cadence is due
         ▼
    fetch (browser UA, 20 s, 2 retries; ETag / If-Modified-Since where supported)

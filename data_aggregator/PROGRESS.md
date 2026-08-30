@@ -10,7 +10,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 
 **What changed overnight, in order of what you asked for**
 1. **The corridor is now the flood simulation** (your 02:15 brief) — auto-plays the breach on load, camera rides the wave, clock follows the recorded front (08:37 collapse → 13:00 Devghat), place cards pop as the front reaches them with live ledger numbers, drop houses/bridges/buses/camps and watch them tumble and sink, lake-volume/breach sliders (seeded with China MWR's 2.0 Mm³), the 10 bridges HOT OSM surveyed as washed-out/damaged are placed where they stood and go with the wave, "Share this run". Illustrative, labelled as such. Tuning knobs + how it works: `web/docs/14-flood-sim.md`.
-2. **All 51 catalogued sources have normalisers** (waves 2A/2B/3): 25+ publishers in `figures_latest`, hydrographs, help requests per place, bridges, imagery catalogues. `docs/sources.md`.
+2. **All 51 catalogued sources have normalisers, plus 4 discovered beyond the catalogue (60 registered)** (waves 2A/2B/3/4): 25+ publishers in `figures_latest`, hydrographs, help requests per place, bridges, imagery catalogues. `docs/sources.md`.
 3. **Processing**: press-quoted figures (Police/DoT columns filled), `figure_series` trends, timeline, digest v2, place_timeline 64/74 corridor places, 23 stats, 6-thread pull with backoff (≈2× faster). Per-place "what is happening now" line (79/79 places, on place pages + tables + corridor cards), data-quality audit (`docs/audit-2026-08-30.md`), NDRRMA sparklines.
 4. **Docs reconciled** with what shipped (README, PLAN, runbook, data-model, decisions D-025+).
 
@@ -42,6 +42,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 05:20 BST — S4 landed (cc8101a; 261 tests): ~40 candidates probed, 9 registered (sources.yaml 51 → 60), 4 built and live: NRCS situation updates (PDF text), BIPAD incident API (event not yet entered by NEOC), 7 more feeds (ICIMOD, INSEC, Radio Nepal, Khabarhub, Setopati NE, Himalkhabar, Deshsanchar), ReliefWeb report pages with full bodies. `*_quoted` metrics are labelled and never headline-mapped. docs/sources.md regenerated (60).
 - 05:05 BST — W4 landed + deployed (53f5886): place pages "What is happening now" card, table notes from the now-line, NDRRMA sparklines "+N since yesterday", OPMCM cell labelled as open reports, derived sources on /sources, single-title Latest, towers_restored_pct card. 84 web unit tests, 15 e2e. S4 (source discovery) running.
 - 04:52 BST — U3 (web UX/trends) never produced output → stood down. Lane W4 launched with its concrete list (place-page now-line, sparklines, Q1 web follow-ups, towers card). Lane S4 launched: source discovery beyond the catalogue from the research deep-dives + build the best 5.
 - 04:45 BST — P5 landed (0aa770e; 246 tests): step ⑩ place_now → `place_status.now_en/ne/hi` for 79/79 places ($0.015/run), police_udb district pages pooled (main thread 136 s → 0). Corridor place card now shows the "now" line (aef2080, deployed). U3 (web UX/trends) silent for 70 min — pinged; if no reply by 05:00 the main session takes its items: place page now-line, sparklines, Q1 web follow-ups, towers_restored_pct card.
@@ -56,7 +57,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - 02:35 BST — ⚠️ see decisions-log 02:30: rotate OpenAI + Supabase service-role keys in the morning (accidental Vercel upload of pipeline/, deleted). Fixed: gate ignores Kathmandu/district-only headlines; 3 flying-window days; gauge tiles match DHM names (667f9c3). Stats now 22 rows (P3 in progress).
 - 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
 
-## Cycle 4/5 lanes — S3 ✅ P4 ✅ D ✅ Q1 ✅ P5 ✅ W4 ✅ · U3 ✗ (no output) · S4 running
+## Cycle 4/5 lanes — S3 ✅ P4 ✅ D ✅ Q1 ✅ P5 ✅ W4 ✅ S4 ✅ · U3 ✗ (no output)
 - S3 sources lane: opmcm_help_requests, opmcm_government_efforts, bipad_river_series, nesra_bridges, dor_rimes_bridges, microsoft_unosat_extent, outlet_tag_pages, gdelt_monitor, vantor_stac, planet_stac, cdse_catalogue, hf_fair_footprints.
 - U3 web lane: 390/1280 screenshots of every page, fix layout issues; figure_series trends on the site; place "Status, day by day" coverage; digest render check; deploy from web/ only.
 - P4 processing lane: pull efficiency (thread pool + per-source backoff), place_timeline coverage, divergence/dedup stats, help-request ledger fields once S3 lands.
