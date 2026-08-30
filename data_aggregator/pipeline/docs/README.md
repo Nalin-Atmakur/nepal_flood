@@ -13,6 +13,9 @@ and what happens when it fails.
 | 03 | [pull_external_data/03-fetching.md](pull_external_data/03-fetching.md) | `lib/http.py`, url expansion, pagination, `raw_pulls` + `pulls` |
 | 04 | [pull_external_data/04-normalising.md](pull_external_data/04-normalising.md) | normaliser contract, dispatch, upsert keys, PII stripping |
 | 05 | [pull_external_data/05-sources.md](pull_external_data/05-sources.md) | the 13 wave-1 normalisers, one section each |
+| 05a | [pull_external_data/05a-sources-wave2-official.md](pull_external_data/05a-sources-wave2-official.md) | wave 2 — 12 official/government sources |
+| 05b | [pull_external_data/05b-sources-wave2-geospatial-text.md](pull_external_data/05b-sources-wave2-geospatial-text.md) | wave 2 — 14 geospatial + text sources |
+| 05c | [pull_external_data/05c-sources-wave3.md](pull_external_data/05c-sources-wave3.md) | wave 3 — the last 12 ids (help requests, hydrograph, bridges, extents, listings, catalogues) |
 | 06 | [pull_external_data/06-adding-a-source.md](pull_external_data/06-adding-a-source.md) | numbered steps |
 | 07 | [pull_external_data/07-failure-modes.md](pull_external_data/07-failure-modes.md) | what breaks, what happens, where to see it |
 

@@ -32,7 +32,8 @@ def prestore(parts: list[Part], ctx: Context | None = None) -> list[Part]: ...  
   gauges `(station_id, observed_at)`, articles `(url)`; unresolved `place_hints` are appended to
   `snapshots/place_hints.jsonl`; `notes` are logged as `pull.note`.
 - Modules starting with `_` (`_common.py`: `parse_dt`, `strip_tags`, `parse_bs_datetime`;
-  `_rss.py`: feed → articles) are helpers, not sources. `registry()` lists the rest.
+  `_rss.py`: feed → articles + the relevance gate; `_geo.py`: haversine, centroid, nearest gazetteer
+  place; `_stac.py`: bounded STAC link walking) are helpers, not sources. `registry()` lists the rest.
 
 ## Template
 

@@ -4,7 +4,7 @@ Everything the site shows comes out of these two scripts. They run on a laptop c
 to the Supabase project (PostgREST + Storage + Auth admin over HTTPS) and never to the website.
 
 ```
-                 sources.yaml (51 sources; 13 have a normaliser = "wave 1")
+                 sources.yaml (51 sources; every id has a normaliser — waves 1–3)
                         │
                         ▼
    ┌──────────────────────────────────────────────────────────────────────────────┐
@@ -110,7 +110,7 @@ the OpenAI cost ledger. `run.log` is the structured log (no PII, secrets redacte
 pipeline/
 ├── pull_external_data.py  process_data.py  run.sh  requirements.txt  .env(.example)
 ├── lib/          config · net · http · db · state · log · text · places · llm      (lib/README.md)
-├── normalisers/  one module per wave-1 source + _common, _rss                       (normalisers/README.md)
+├── normalisers/  one module per source (51) + _common, _rss, _geo, _stac               (normalisers/README.md)
 ├── processing/   anonymise · resolve_places · dedup · ledger · press_figures · figures_latest · stats · report_counts · findings · digest · timeline · trends
 ├── tests/        pytest + fixtures/ (anonymised captures) + build_fixtures.py
 ├── docs/         README.md · pull_external_data/01–07 · process_data/00–08
