@@ -165,7 +165,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     handleRef.current?.play();
   };
   const shareRun = async () => {
-    const url = pageUrl(lang, "/");
+    const url = pageUrl(lang, `/run?swept=${swept}&bridges=${sweptReal}`);
     const text = t(lang, "corridor.share_text", { n: String(swept), b: String(sweptReal) });
     const nav = navigator as Navigator & { share?: (d: { title?: string; text?: string; url?: string }) => Promise<void> };
     if (typeof nav.share === "function") {

@@ -46,9 +46,11 @@ viral surface. Shipped 30 Aug 04:05 BST (pass 2 04:40); this file is the referen
    starting "washed out" / "damaged" (HOT OSM damage survey), `toRealBridges()` joins them to gazetteer chainage (one
    per place, washed-out first, max 10) and the scene pre-places ink bridge decks where they stood. They are swept
    like any object, restored on Replay, never cleared by Reset, and counted separately ("real bridges lost 7/10").
-8. **Share this run** (pass 2): once anything is swept (or the run ends) a button offers `navigator.share` with the
-   `corridor.share_text` copy (visitor objects + real bridges swept) and the page URL, falling back to the WhatsApp
-   link from `lib/share.ts`.
+8. **Share this run** (pass 2 + 3): once anything is swept (or the run ends) a button offers `navigator.share` with the
+   `corridor.share_text` copy (visitor objects + real bridges swept) and the link `/{lang}/run?swept=N&bridges=M`,
+   falling back to the WhatsApp link from `lib/share.ts`. `app/[lang]/run/page.tsx` is a tiny dynamic landing whose
+   OG image is `/api/og?lang&swept&bridges` ("I watched N things and M real bridges go — play the breach yourself")
+   and which meta-refreshes to the home page; robots disallow it.
 9. **Lake volume** slider (0.5–20 Mm³, seeded with the latest `figures_latest.barrier_lake_volume_m3` — China MWR
    published 2.0 Mm³) and **breach** speed change the next run.
 

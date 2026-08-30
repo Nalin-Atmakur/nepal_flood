@@ -4,13 +4,13 @@ import { LANGS, LANG_TAGS, t, type Lang } from "./i18n";
 import { pageUrl } from "./share";
 
 /** Per-page metadata: title, description, OG/Twitter image (/api/og?lang=…), hreflang alternates. */
-export function pageMetadata(lang: Lang, opts: { title?: string; description?: string; path?: string } = {}): Metadata {
+export function pageMetadata(lang: Lang, opts: { title?: string; description?: string; path?: string; image?: string } = {}): Metadata {
   const site = t(lang, "site.name");
   const title = opts.title ? `${opts.title} · ${site}` : site;
   const description = opts.description ?? t(lang, "site.description");
   const path = opts.path ?? "/";
   const url = pageUrl(lang, path);
-  const og = `${SITE_URL}/api/og?lang=${lang}`;
+  const og = opts.image ?? `${SITE_URL}/api/og?lang=${lang}`;
   const languages: Record<string, string> = {};
   for (const l of LANGS) languages[LANG_TAGS[l]] = pageUrl(l, path);
   languages["x-default"] = pageUrl("en", path);

@@ -147,7 +147,7 @@ function NumberCard({ value, label, caption, bg, digits, labelColor, captionColo
   );
 }
 
-function Card({ lang, n }: { lang: Lang; n: OgNumbers }) {
+function Card({ lang, n, run }: { lang: Lang; n: OgNumbers; run?: { swept: number; bridges: number } | null }) {
   const noData = n.dead === null && n.missing === null && n.rescued === null;
   const caption = (fig: FigureLatest | null) => (noData ? t(lang, "og.no_data") : asOfCaption(lang, fig));
   const missingCaption = noData
@@ -299,7 +299,7 @@ function Card({ lang, n }: { lang: Lang; n: OgNumbers }) {
               fontSize: 19,
             }}
           >
-            {t(lang, "og.sim")}
+            {run ? t(lang, "og.run", { n: fmtInt(run.swept), b: fmtInt(run.bridges) }) : t(lang, "og.sim")}
           </div>
         </div>
 
@@ -377,7 +377,10 @@ function Card({ lang, n }: { lang: Lang; n: OgNumbers }) {
 // ---------------------------------------------------------------------------
 
 export async function GET(req: Request) {
-  const lang = asLang(new URL(req.url).searchParams.get("lang"));
+  const sp = new URL(req.url).searchParams;
+  const lang = asLang(sp.get("lang"));
+  const num = (k: string) => Math.max(0, Math.min(999, Number.parseInt(sp.get(k) ?? "", 10) || 0));
+  const run = sp.has("swept") ? { swept: num("swept"), bridges: num("bridges") } : null;
 
   let numbers: OgNumbers = EMPTY;
   try {
@@ -393,7 +396,7 @@ export async function GET(req: Request) {
     fonts = [];
   }
 
-  return new ImageResponse(<Card lang={lang} n={numbers} />, {
+  return new ImageResponse(<Card lang={lang} n={numbers} run={run} />, {
     width: 1200,
     height: 630,
     // An empty list would leave satori without any font; undefined falls back to the bundled default.
