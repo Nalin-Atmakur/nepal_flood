@@ -166,6 +166,9 @@ test("the corridor flood sim: controls render, a run advances the clock, an obje
   }).toBeGreaterThan(-20);
   await expect(clock).not.toHaveText("08:37");
   // 14 object chips; tapping one places it in the path immediately and shows the armed hint
+  // six things are offered; the other eight are one tap away
+  await expect(page.locator('[data-testid="corridor-controls"] [data-testid="chip"]')).toHaveCount(6);
+  await page.locator('[data-testid="corridor-more-objects"]').click();
   await expect(page.locator('[data-testid="corridor-controls"] [data-testid="chip"]')).toHaveCount(14);
   await page.locator('[data-testid="corridor-controls"] [data-testid="chip"]').nth(2).click();
   await expect(page.locator('[data-testid="corridor-armed"]')).toBeVisible();

@@ -522,11 +522,13 @@
   "report.how_banner": "You write or speak and attach what helps → the original is stored privately. It is not analysed by our pipeline, sent to an AI model, added to public data, or automatically shared.",
   "hero.eyebrow": "26 AUGUST 2026 · RASUWA → CHITWAN, NEPAL",
   "hero.title": "The Bhote Koshi–Trishuli flood",
-  "hero.lead": "At 08:37 a ~600 m block of glacier and rock fell into the Lhende Khola above the Nepal–Tibet border. The barrier lake it made broke minutes later and ran 72 km down the corridor, through Timure, Syabrubesi and Trishuli Bazar, in under five hours, taking villages, bridges and hydropower camps with it.",
+  "hero.lead": "A glacier collapse on the Nepal–Tibet border sent a wall of water 72 km down this valley.",
   "hero.why": "Why agencies report different numbers →",
   "hero.path_title": "Follow the flood's path",
   "hero.path_sub": "what the wave did, minute by minute, and the places it reached",
   "spread.title": "Know anyone with family in Rasuwa, Nuwakot or Dhading?",
-  "spread.body": "Send them this page. Most people searching do not know these numbers exist, and the one person who remembers where someone was may be two forwards away.",
-  "map.wheel_hint": "Hold ⌘ or Ctrl and scroll to zoom · or use + and −"
+  "spread.body": "Send them this page. The person who remembers where someone was may be two forwards away.",
+  "map.wheel_hint": "Hold ⌘ or Ctrl and scroll to zoom · or use + and −",
+  "corridor.more_objects": "+{n} more",
+  "corridor.fewer_objects": "Fewer"
 }

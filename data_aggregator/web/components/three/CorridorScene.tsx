@@ -34,6 +34,8 @@ const FEED_ROW_PX = 50;
 const POP_MS = 1600;
 /** how much of the panel must be on screen before the breach starts on its own */
 const AUTOPLAY_VISIBLE = 0.55;
+/** how many things to offer before the list folds away — fourteen chips read as a wall (owner, 30 Aug) */
+const OBJECTS_SHOWN = 6;
 const NAMES_KEY = "nft.corridor.names";
 
 function slowConnection(): boolean {
@@ -78,6 +80,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
   const [xray, setXray] = useState(0);
   const [names, setNames] = useState(true);
   const [feedCap, setFeedCap] = useState(FEED_MIN);
+  const [allObjects, setAllObjects] = useState(false);
   const seedMm3 = lakeVolumeM3 && lakeVolumeM3 > 0 ? Math.min(LAKE_MM3_MAX, Math.max(LAKE_MM3_MIN, lakeVolumeM3 / 1e6)) : DEFAULT_SCENARIO.lakeMm3;
   // the breach starts on "slow" (owner, 30 Aug 12:30): the wave builds instead of appearing
   const [scenario, setScenario] = useState<Scenario>({ lakeMm3: seedMm3, breachSeconds: BREACH_OPTIONS[1].seconds });
@@ -490,11 +493,22 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
                   )}
                 </div>
                 <div className="flex flex-wrap gap-2 mt-1">
-                  {CATALOGUE.map((c) => (
+                  {(allObjects ? CATALOGUE : CATALOGUE.slice(0, OBJECTS_SHOWN)).map((c) => (
                     <Chip key={c.kind} active={armed === c.kind} onClick={() => arm(c.kind)} className="!min-h-[40px] !px-3 text-[12.5px]" ariaLabel={t(lang, "corridor.obj." + c.kind)}>
                       {c.emoji} {t(lang, "corridor.obj." + c.kind)}
                     </Chip>
                   ))}
+                  {CATALOGUE.length > OBJECTS_SHOWN ? (
+                    <button
+                      type="button"
+                      onClick={() => setAllObjects((v) => !v)}
+                      aria-expanded={allObjects}
+                      className="inline-flex items-center min-h-[40px] px-3 rounded-pill b-ink-2 bg-ground font-semibold text-[12.5px] text-ink cursor-pointer hover:bg-card"
+                      data-testid="corridor-more-objects"
+                    >
+                      {allObjects ? t(lang, "corridor.fewer_objects") : t(lang, "corridor.more_objects", { n: String(CATALOGUE.length - OBJECTS_SHOWN) })}
+                    </button>
+                  ) : null}
                 </div>
               </div>
             </div>

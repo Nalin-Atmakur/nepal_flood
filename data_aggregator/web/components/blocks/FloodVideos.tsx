@@ -29,7 +29,6 @@ export default function FloodVideos({ lang, refs }: { lang: Lang; refs: PlaceRef
         ))}
         <span className="flex-none w-4 md:hidden" aria-hidden="true" />
       </div>
-      <p className="font-medium text-[11px] text-muted mt-1 mb-0 lh-body px-0">{t(lang, "sec.videos_sub")}</p>
     </div>
   );
 }
