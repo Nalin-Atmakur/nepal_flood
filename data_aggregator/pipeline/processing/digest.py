@@ -31,6 +31,7 @@ HEADLINE_PUBLISHERS = ["NDRRMA", "Nepal Police", "Nepal Police (UDB)", "Nepal Po
 HEADLINE_METRICS = {"dead": "dead", "missing": "out of contact", "rescued": "rescued", "lost_open": "open missing-person reports",
                     "without_contact": "reports without contact", "foreigners_missing": "foreigners missing",
                     "tourists_missing": "tourists out of contact", "tourists_rescued": "tourists rescued"}
+HELP_METRICS = ("help_requests_open", "help_requests_critical", "people_affected_reported")
 MIN_BULLETS, MAX_BULLETS = 5, 10
 MAX_NEWS = 3
 EVENT_DAY = date(2026, 8, 26)
@@ -81,7 +82,7 @@ def build_bullets(*, day: date, latest: list[dict[str, Any]], previous: dict[tup
     gauges_*      {label: alive}
     articles      today's relevant articles (already gated by relevant_news), place-tagged first
     watch         optional {flying_window: "30 Aug 06–11 NPT · Dhunche" | None, barrier_lake: {title, url} | None}
-    → (headline_en, bullets[{text, kind, source_url}])   kinds: figure | rescuers | place | gauge | watch | news
+    → (headline_en, bullets[{text, kind, source_url}])   kinds: figure | rescuers | place | help | context | gauge | watch | news
     """
     bullets: list[dict[str, Any]] = []
     nat = {(f["publisher"], f["metric"]): f for f in latest if (f.get("scope") or "national") == "national"}
@@ -119,7 +120,8 @@ def build_bullets(*, day: date, latest: list[dict[str, Any]], previous: dict[tup
     # (b) for rescuers — the ledger in one line
     if places_today:
         tracked = {pid: p for pid, p in places_today.items()
-                   if int(p.get("expected") or 0) > 0 or int(p.get("confirmed_reached") or 0) > 0 or int(p.get("unknown") or 0) > 0}
+                   if (p.get("status_label") or "") != "district"   # district roll-ups are not places
+                   and (int(p.get("expected") or 0) > 0 or int(p.get("confirmed_reached") or 0) > 0 or int(p.get("unknown") or 0) > 0)}
         with_unknown = {pid: int(p.get("unknown") or 0) for pid, p in tracked.items() if int(p.get("unknown") or 0) > 0}
         parts = [f"{len(with_unknown)} of {len(tracked)} tracked places still have people unaccounted for"]
         if places_before:
@@ -152,6 +154,31 @@ def build_bullets(*, day: date, latest: list[dict[str, Any]], previous: dict[tup
     for b in place_bullets[:2]:
         b.pop("_w", None)
         bullets.append(b)
+    # (c') help requests on the PM's portal — the rescue-side queue (wave 3 source opmcm_help_requests)
+    h_open, h_crit, h_aff = (nat.get(("OPMCM portal", m)) for m in HELP_METRICS)
+    if h_open and float(h_open["value"]) > 0:
+        txt = f"Help requests on the PM's portal: {_fmt(h_open['value'])} open{_delta(h_open['value'], previous.get(('OPMCM portal', 'help_requests_open')))}"
+        if h_crit and float(h_crit["value"]) > 0:
+            txt += f" ({_fmt(h_crit['value'])} critical)"
+        if h_aff and float(h_aff["value"]) > 0:
+            txt += f", {_fmt(h_aff['value'])} people reported affected{_delta(h_aff['value'], previous.get(('OPMCM portal', 'people_affected_reported')))}"
+        bullets.append({"text": txt, "kind": "help", "source_url": h_open.get("url") or "https://rescue.opmcm.gov.np/"})
+    # (c'') what third-party reports quote — `*_quoted` figures (NRCS / ReliefWeb, wave 4): context, never a headline
+    quoted: dict[str, list[str]] = {}
+    q_url: dict[str, str | None] = {}
+    for f in latest:
+        m = str(f.get("metric") or "")
+        if not m.endswith("_quoted") or (f.get("scope") or "national") != "national":
+            continue
+        base = m[: -len("_quoted")]
+        if base not in HEADLINE_METRICS:
+            continue
+        quoted.setdefault(f["publisher"], []).append(f"{_fmt(f['value'])} {HEADLINE_METRICS[base]}")
+        q_url.setdefault(f["publisher"], f.get("url"))
+    if quoted:
+        pub = sorted(quoted, key=lambda p: -len(quoted[p]))[0]
+        bullets.append({"text": f"As quoted by {pub} (their report, not an official count): " + " · ".join(quoted[pub][:3]),
+                        "kind": "context", "source_url": q_url.get(pub)})
     # (d) gauges
     back = sorted(k for k, v in gauges_now.items() if v and not gauges_before.get(k, False))
     silent = sorted(k for k, v in gauges_now.items() if not v and gauges_before.get(k, False))
@@ -203,15 +230,16 @@ def load_inputs(ctx: ProcCtx) -> dict[str, Any]:
     latest = db.select_all("figures_latest", {"select": "publisher,metric,scope,value,url", "scope": "eq.national"})
     previous: dict[tuple[str, str], float] = {}
     have = {(f["publisher"], f["metric"]) for f in latest}
-    for pub in HEADLINE_PUBLISHERS:
-        for metric in HEADLINE_METRICS:
+    wanted = [(pub, metric) for pub in HEADLINE_PUBLISHERS for metric in HEADLINE_METRICS] + [("OPMCM portal", m) for m in HELP_METRICS]
+    for pub, metric in wanted:
+        if True:
             if (pub, metric) not in have:
                 continue
             rows = db.select("figures", {"select": "value", "publisher": f"eq.{pub}", "metric": f"eq.{metric}", "scope": "eq.national",
                                          "as_of": f"lt.{start.isoformat()}", "order": "as_of.desc", "limit": 1})
             if rows:
                 previous[(pub, metric)] = float(rows[0]["value"])
-    ps_today = {r["place_id"]: r for r in db.select_all("v_place_status_latest", {"select": "place_id,expected,confirmed_reached,unknown,phones,as_of"})}
+    ps_today = {r["place_id"]: r for r in db.select_all("v_place_status_latest", {"select": "place_id,expected,confirmed_reached,unknown,phones,as_of,status_label"})}
     ps_before: dict[str, dict[str, Any]] = {}
     for r in db.select_all("place_status", {"select": "place_id,expected,confirmed_reached,unknown,phones,as_of", "as_of": f"lt.{start.isoformat()}", "order": "as_of.desc"}):
         ps_before.setdefault(r["place_id"], r)

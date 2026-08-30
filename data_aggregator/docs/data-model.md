@@ -334,7 +334,8 @@ Index `(place_id, as_of desc)`.
 |---|---|---|
 | `place_id` | text → `places(id)` | PK part |
 | `day` | date | PK part |
-| `what_en` | text, not null | PK part; the line |
+| `kind` | text, not null | PK part (migration 010): template key (`gauge_alive`, `opmcm_lost`, `reports` …) or `article:<md5(title)>` |
+| `what_en` | text, not null | the line |
 | `what_ne`, `what_hi` | text | |
 | `dot` | text, default `'neutral'` | `live` · `unknown` · `confirmed` · `neutral` |
 | `source_url` | text | |

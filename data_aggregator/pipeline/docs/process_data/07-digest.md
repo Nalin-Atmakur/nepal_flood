@@ -60,3 +60,10 @@ title itself to pass `is_relevant` (keywords or a gazetteer place; district name
 - Any DB error → logged as `digest.failed`, step returns `{"error"}`; the rest of the run is unaffected.
 - Re-runs within a day overwrite the day's rows; the deltas are always against the last value *before* the
   day, so they do not drift between runs.
+
+## Inputs added 30 Aug 05:30 (P6)
+
+- **Help requests** (`OPMCM portal` national `help_requests_open` / `help_requests_critical` / `people_affected_reported`,
+  wave 3) → one `help` bullet with deltas since yesterday.
+- **Quoted third-party figures** (`*_quoted`, wave 4) → at most one `context` bullet, "As quoted by <publisher> (their
+  report, not an official count): …". They never enter the `figure` bullets or the headline (see 04-figures-latest.md).

@@ -28,6 +28,14 @@ watches it, so ④ running is what makes a run "count".
 |---|---|---|
 | `figures` (30-day window) | `figures_latest` (upsert) | `figures_latest.done` (rows, publishers) |
 
+## `*_quoted` metrics are context, never headlines
+
+Wave-4 sources (NRCS situation updates, ReliefWeb reports) emit numbers *as written in third-party reports* with the
+metric suffix `_quoted` (`dead_quoted`, `missing_quoted` …). They flow into `figures` / `figures_latest` like any
+figure, but: `stats.is_headline_metric()` filters them out of every candidate list (`tests/test_quoted_guard.py`), the
+digest shows them only as one labelled "As quoted by …" bullet (`kind: context`), and the web's column candidates and
+stat cards may not name them (`web/tests/quoted-guard.test.ts`).
+
 ## Failure behaviour
 
 One try/except (`figures_latest.failed`); the previous rows stay. Rows for a
