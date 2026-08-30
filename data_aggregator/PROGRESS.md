@@ -6,7 +6,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 
 ## ☀️ Handover (rewritten 10:45 BST 30 Aug — the owner is awake and directing; this stays the single place to resume from)
 
-**Live:** https://www.nepalfloodtracker.com (EN / नेपाली / हिन्दी). Everything is on `origin/main`. Last full validation: 113 web unit · 21 e2e · 338 Python (pipeline + db + gazetteer in one call) · live smoke 30/30 · health OK. Model spend ≈ $0.05 of $20.
+**Live:** https://www.nepalfloodtracker.com (EN / नेपाली / हिन्दी). Everything is on `origin/main`. Last full validation (11:15 BST): 113 web unit · 23 e2e · 338 Python (pipeline + db + gazetteer in one call) · live smoke 30/30 · health OK. Model spend ≈ $0.05 of $20.
 
 **What the site is now (after this morning's direction)**
 1. **Home = three things** (`web/docs/17-information-architecture.md`): *Your part* (this device's contributions + the big "Add what you know" + the live counters row) → *Right now* (the three NDRRMA numbers, today's headline) → *The corridor*. Tabs: Home · Numbers · Places · Latest news · More (Sources, About, My folder, Share); phones get a bottom tab bar with ＋ in the centre. *Your part* heads every tab.
