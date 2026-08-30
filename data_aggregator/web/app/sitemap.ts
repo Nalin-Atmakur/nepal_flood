@@ -9,7 +9,7 @@ export const revalidate = 3600;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = `https://www.${SITE_HOST}`;
   const now = new Date();
-  const statics = ["", "/report", "/places", "/sources", "/about"];
+  const statics = ["", "/numbers", "/places", "/latest", "/report", "/sources", "/about"];
   const out: MetadataRoute.Sitemap = [];
   for (const lang of LANGS) {
     for (const p of statics) {

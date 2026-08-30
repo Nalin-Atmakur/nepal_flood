@@ -13,10 +13,12 @@ import AuthBootstrap from "@/components/blocks/AuthBootstrap";
 import Footer from "@/components/blocks/Footer";
 import Header from "@/components/blocks/Header";
 import OfficialChannels from "@/components/blocks/OfficialChannels";
+import TabBar from "@/components/blocks/TabBar";
 import StaleBanner from "@/components/ui/StaleBanner";
 
 /**
- * Root layout for /[lang]: fonts (Baloo 2 with Devanagari, Press Start 2P), header, official-channels bar,
+ * Root layout for /[lang]: fonts (Baloo 2 with Devanagari, Press Start 2P), header, tab row (desktop) / bottom
+ * tab bar (phones), official-channels bar,
  * stale banner (when the last processed run is older than PULL_INTERVAL_MINUTES × 1.5), page, dark footer,
  * anonymous-auth bootstrap and Vercel Analytics. See web/docs/01-architecture.md.
  */
@@ -67,6 +69,7 @@ export default async function LangLayout({ children, params }: { children: React
           {t(lang, "nav.skip")}
         </a>
         <Header lang={lang} />
+        <TabBar lang={lang} variant="top" />
         <OfficialChannels lang={lang} />
         {stale ? (
           <StaleBanner>
@@ -75,6 +78,9 @@ export default async function LangLayout({ children, params }: { children: React
         ) : null}
         <div id="main">{children}</div>
         <Footer lang={lang} lastUpdated={live?.last_processed_at ?? live?.last_pull_at ?? null} />
+        {/* phones: the fixed bottom tab bar; the spacer keeps the footer reachable above it */}
+        <div className="h-[72px] md:hidden" aria-hidden="true" />
+        <TabBar lang={lang} variant="bottom" />
         <AuthBootstrap lang={lang} />
         <Analytics />
       </body>

@@ -1,3 +1,11 @@
+# 05 · Home blocks
+
+> **Since 30 Aug (docs/17-information-architecture.md) the home page is three things:** `RightNow` (the headline
+> numbers + today's line), `Corridor` (the simulation) and `YourPart` (the ask). Every other block below now lives
+> on its tab: Numbers (`SideBySide`, `StrikingStats`, `FirstHours`), Places (`PlacesTable`), Latest (`Scoreboard`,
+> `Digest`, `Latest`, `RiverWeather`). The blocks themselves are unchanged; the sections below document them where
+> they render now.
+
 # 05 · Home blocks — what each one reads
 
 `app/[lang]/page.tsx` runs all reads in one `Promise.all` and composes the blocks in design order. Every block

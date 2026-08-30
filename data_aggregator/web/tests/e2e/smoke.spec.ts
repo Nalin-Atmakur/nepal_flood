@@ -1,26 +1,35 @@
 import { expect, test } from "@playwright/test";
 
 const LANGS = ["en", "ne", "hi"] as const;
-const HOME_BLOCKS = ["scoreboard", "corridor", "stats", "first-hours", "side", "places", "add", "river", "latest", "share"] as const;
+const HOME_BLOCKS = ["right-now", "corridor", "yours"] as const;
+const NUMBERS_BLOCKS = ["side", "stats", "first-hours"] as const;
+const LATEST_BLOCKS = ["scoreboard", "digest", "latest", "river"] as const;
 const WAIT = { timeout: 15_000 };
 
 for (const lang of LANGS) {
   test.describe(`/${lang}`, () => {
-    test("home renders every block and the LIVE chip", async ({ page }) => {
+    test("home is three things (right now · corridor · your part) with the tabs and the LIVE chip", async ({ page }) => {
       const res = await page.goto(`/${lang}`);
       expect(res?.status()).toBe(200);
       for (const block of HOME_BLOCKS) {
         await expect(page.locator(`[data-block="${block}"]`).first(), block).toBeAttached(WAIT);
       }
-      for (const n of ["01", "02", "03", "04", "05", "06", "07", "08"]) {
-        await expect(page.locator(`[data-n="${n}"]`).first(), `section ${n}`).toBeAttached(WAIT);
-      }
-      await expect(page.locator('[data-block="scoreboard"]').first()).toBeVisible(WAIT);
+      const blocks = await page.locator("main [data-block]").evaluateAll((els) => els.map((e) => e.getAttribute("data-block")));
+      expect(blocks.filter((b) => !HOME_BLOCKS.includes(b as (typeof HOME_BLOCKS)[number]))).toEqual([]);
+      await expect(page.locator('[data-block="right-now"]').first()).toBeVisible(WAIT);
       await expect(page.getByText("LIVE", { exact: true }).first()).toBeVisible(WAIT);
+      await expect(page.locator('nav[aria-label] a[aria-current="page"]').first()).toBeAttached(WAIT);
+    });
+
+    test("numbers and latest tabs render their blocks", async ({ page }) => {
+      await page.goto(`/${lang}/numbers`);
+      for (const block of NUMBERS_BLOCKS) await expect(page.locator(`[data-block="${block}"]`).first(), block).toBeAttached(WAIT);
+      await page.goto(`/${lang}/latest`);
+      for (const block of LATEST_BLOCKS) await expect(page.locator(`[data-block="${block}"]`).first(), block).toBeAttached(WAIT);
     });
 
     test("the first hours: section 03 lists at least 10 events with a dot, a time label and text", async ({ page }) => {
-      await page.goto(`/${lang}`);
+      await page.goto(`/${lang}/numbers`);
       const section = page.locator('[data-block="first-hours"][data-n="03"]').first();
       await expect(section).toBeAttached(WAIT);
       const events = section.locator("[data-event]");
@@ -111,6 +120,14 @@ test("the corridor flood sim: controls render, a run advances the clock, an obje
     timeout: 20_000,
   }).toBeGreaterThan(-20);
   await expect(clock).not.toHaveText("08:37");
+  // 14 object chips; tapping one places it in the path immediately and shows the armed hint
+  await expect(page.locator('[data-testid="corridor-controls"] [data-testid="chip"]')).toHaveCount(14);
+  await page.locator('[data-testid="corridor-controls"] [data-testid="chip"]').nth(2).click();
+  await expect(page.locator('[data-testid="corridor-armed"]')).toBeVisible();
+  await expect.poll(async () => page.evaluate(() => (window as unknown as { __corridor?: { objectCount: () => number } }).__corridor?.objectCount() ?? 0)).toBeGreaterThan(10);
+  // nothing is ever below the ground
+  expect(await page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { belowGround: number } } }).__corridor?.debug().belowGround)).toBe(0);
+  await page.locator('[data-testid="corridor-frame"]').click();
   // reset clears the counter
   await page.getByRole("button", { name: /Reset/ }).click();
   await expect(page.locator('[data-testid="corridor-swept"]')).toHaveText("0");

@@ -74,3 +74,13 @@ that its clock follows the recorded front, that the lake volume and the bridges 
 groups, quoted figures never headline; 6: the per-place "now" line is built from counts/publishers/titles only —
 both verified against `pipeline/processing/place_now.py` and `pipeline/docs/process_data/04-figures-latest.md`).
 `sources.sub` names the 60 registered sources and explains "derived" rows.
+
+
+## Navigation (30 Aug, docs/17)
+
+```
+  Header: logo · LIVE · language · Share (desktop) / More (phones: Sources · About · My folder · share pills)
+  TabBar "top" (≥ md): Home · Numbers · Places · Latest ……… Sources · About · My folder
+  TabBar "bottom" (< md, fixed): Home · Numbers · [＋ Add] · Places · Latest   (safe-area padding, 56 px rows)
+  Pages: /  /numbers  /places  /places/{id}  /latest  /sources  /about  /report  /me  /run
+```
