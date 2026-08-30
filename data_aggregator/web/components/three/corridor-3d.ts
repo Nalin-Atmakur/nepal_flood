@@ -8,7 +8,7 @@
  * No React, no DOM custom element: CorridorScene.tsx mounts it into a host element after first paint.
  */
 import * as THREE from "three";
-import type { CorridorPlace } from "@/lib/corridor";
+import type { CorridorPlace, RealBridge } from "@/lib/corridor";
 import { LAKE_KMS, SCENE_D, SCENE_W, bedH, kmToX, meander } from "@/lib/corridor-terrain";
 import {
   BREACH,
@@ -37,13 +37,15 @@ export type Phase = "collapse" | "breach" | "wave" | "after";
 
 export type MountOptions = {
   places: CorridorPlace[];
+  /** Real bridges (HOT OSM) pre-placed on the path; restored on every replay, never cleared by reset. */
+  bridges?: RealBridge[];
   scenario?: Scenario;
   /** Called on a tap/click: the picked place (or null on empty terrain) and the pointer position relative to `el`. */
   onPick?: (place: CorridorPlace | null, x: number, y: number) => void;
   /** The front has reached a place (first time this run); x/y = marker's screen position relative to `el`. */
   onReached?: (place: CorridorPlace, clock: string, x: number, y: number) => void;
-  /** An object was taken by the flow. */
-  onSwept?: (kind: ObjectKind, total: number) => void;
+  /** An object was taken by the flow: `total` = the visitor's objects this run, `real` = surveyed bridges. */
+  onSwept?: (kind: ObjectKind, total: number, real: number) => void;
   /** The clock label changed (≈ every 100 ms while running). */
   onClock?: (clock: string) => void;
   onState?: (state: RunState) => void;
@@ -65,6 +67,8 @@ export type CorridorHandle = {
   armed(): ObjectKind | null;
   objectCount(): number;
   state(): RunState;
+  /** swept objects this run, split visitor / real bridges */
+  swept(): { visitor: number; real: number };
   /** Introspection for tests and debugging (`?debug=1` exposes the handle as `window.__corridor`). */
   debug(): { state: RunState; waterVisible: boolean; drawCount: number; maxDepth: number; frontX: number; objects: number; swept: number; injected: number };
 };
@@ -96,6 +100,8 @@ type PickMesh = THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
 type Piece = { mesh: THREE.Mesh; spin: THREE.Vector3; drift: THREE.Vector3; y0: number };
 type DroppedObject = {
   kind: ObjectKind;
+  /** a surveyed bridge, not a visitor's object */
+  real?: boolean;
   group: THREE.Group;
   home: { x: number; z: number; y: number };
   x: number;
@@ -111,6 +117,7 @@ const SINK_SECONDS = 0.9;
 const REACH_DEPTH = 0.2;
 const RUN_SECONDS = 34;
 const OBJECT_SCALE = 3;
+const REAL_BRIDGE_SCALE = 2.1;
 /** Visual exaggeration of water depth (the terrain is already ×1.5); the sim itself is untouched. */
 const VIS_AMP = 1.5;
 
@@ -201,7 +208,10 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         wpos.setY(v, bed[c] + dep * VIS_AMP);
         const speed = Math.hypot(vx[c], vz[c]);
         tmpC.copy(MUD_SHALLOW).lerp(MUD_DEEP, Math.min(1, dep / 4));
-        const foam = Math.min(1, Math.max(0, (speed - 5) / 14));
+        // foam where it runs fast, and a crest where the sheet drops steeply ahead (the wave's face)
+        const ahead = c + 1 < d.length ? d[c + 1] : dep;
+        const crest = Math.min(1, Math.max(0, (dep - ahead - 0.4) / 1.5));
+        const foam = Math.max(Math.min(1, Math.max(0, (speed - 5) / 14)), crest);
         if (foam > 0) tmpC.lerp(FOAM, foam * 0.85);
         wcol.setXYZ(v, tmpC.r, tmpC.g, tmpC.b);
       } else {
@@ -381,16 +391,17 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
 
   let objects: DroppedObject[] = [];
   let sweptTotal = 0;
+  let sweptReal = 0;
   let armedKind: ObjectKind | null = null;
 
-  const placeObject = (kind: ObjectKind, px: number, pz: number) => {
+  const placeObject = (kind: ObjectKind, px: number, pz: number, real = false) => {
     const { x, z } = snapToPath(kind, px, pz, meander(px));
     const idx = cellIndex(GRID, x, z);
     if (idx < 0) return;
-    if (objects.length >= MAX_OBJECTS) removeObject(objects[0]);
+    if (objects.filter((o) => !o.real).length >= MAX_OBJECTS) removeObject(objects.find((o) => !o.real)!);
     const y = bed[idx];
     const group = buildObject(kind);
-    group.scale.setScalar(OBJECT_SCALE);
+    group.scale.setScalar(real ? REAL_BRIDGE_SCALE : OBJECT_SCALE);
     group.position.set(x, y, z);
     if (kind === "bridge") group.rotation.y = 0;
     else group.rotation.y = Math.random() * Math.PI * 2;
@@ -401,8 +412,9 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       drift: new THREE.Vector3((Math.random() - 0.5) * 1.6, Math.random() * 1.2, (Math.random() - 0.5) * 1.6),
       y0: m.position.y,
     }));
-    objects.push({ kind, group, home: { x, z, y }, x, z, state: "standing", age: 0, pieces });
+    objects.push({ kind, real, group, home: { x, z, y }, x, z, state: "standing", age: 0, pieces });
   };
+  for (const b of opts.bridges ?? []) placeObject("bridge", kmToX(b.km), 0, true);
   const removeObject = (o: DroppedObject) => {
     scene.remove(o.group);
     objects = objects.filter((q) => q !== o);
@@ -415,7 +427,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       o.z = o.home.z;
       o.group.position.set(o.home.x, o.home.y, o.home.z);
       o.group.rotation.set(0, o.kind === "bridge" ? 0 : o.group.rotation.y, 0);
-      o.group.scale.setScalar(OBJECT_SCALE);
+      o.group.scale.setScalar(o.real ? REAL_BRIDGE_SCALE : OBJECT_SCALE);
       for (const p of o.pieces) {
         p.mesh.position.set(p.mesh.position.x, p.y0, p.mesh.position.z);
         p.mesh.rotation.set(0, p.mesh.rotation.y, 0);
@@ -432,8 +444,9 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         if (isSwept(o.kind, dep, speed)) {
           o.state = "carried";
           o.age = 0;
-          sweptTotal++;
-          opts.onSwept?.(o.kind, sweptTotal);
+          if (o.real) sweptReal++;
+          else sweptTotal++;
+          opts.onSwept?.(o.kind, sweptTotal, sweptReal);
         } else if (dep > 0.05) {
           // wobble as the water rises around it
           o.group.rotation.x = Math.sin(o.age * 9) * Math.min(0.25, dep * 0.4);
@@ -464,7 +477,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         }
       } else if (o.state === "sunk") {
         const k = Math.max(0, 1 - o.age / SINK_SECONDS);
-        o.group.scale.setScalar(k * OBJECT_SCALE);
+        o.group.scale.setScalar(k * (o.real ? REAL_BRIDGE_SCALE : OBJECT_SCALE));
         o.group.position.y -= dt * 1.2;
         if (k <= 0) {
           o.group.visible = false;
@@ -668,6 +681,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     for (const o of objects) o.group.visible = true;
     restoreObjects();
     sweptTotal = 0;
+    sweptReal = 0;
     lastClock = "";
     opts.onClock?.(clockForFrontX(-Infinity));
     setPhase("collapse");
@@ -679,7 +693,8 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     injectedFrac = 0;
     reached.clear();
     lakes[0].scale.setScalar(1);
-    for (const o of objects.slice()) removeObject(o);
+    for (const o of objects.slice()) if (!o.real) removeObject(o);
+    restoreObjects();
     sweptTotal = 0;
     lastClock = "";
     updateWater();
@@ -736,6 +751,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     drop: placeObject,
     objectCount: () => objects.length,
     state: () => runState,
+    swept: () => ({ visitor: sweptTotal, real: sweptReal }),
     debug() {
       let maxDepth = 0;
       for (let i = 0; i < sim.depth.length; i++) if (sim.depth[i] > maxDepth) maxDepth = sim.depth[i];

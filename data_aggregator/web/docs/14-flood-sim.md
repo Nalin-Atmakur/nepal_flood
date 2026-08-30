@@ -42,7 +42,14 @@ viral surface. Shipped 30 Aug ~05:30 BST; this file is the reference for how it 
    (camp < bus < house < bridge) it is *carried* (its pieces tumble apart, moving with the flow at ≤ 5 units/s) for
    1.8 s, then *sinks* (shrinks, drops) and disappears; "swept away" counts. Replay restores every object to where
    it stood; Reset clears water and objects. Max 24 objects (oldest is recycled).
-7. **Lake volume** slider (0.5–20 Mm³, seeded with the latest `figures_latest.barrier_lake_volume_m3` — China MWR
+7. **Real bridges** (pass 2): `getLostBridges()` reads `figures_latest` rows with metric `bridge_status` and a note
+   starting "washed out" / "damaged" (HOT OSM damage survey), `toRealBridges()` joins them to gazetteer chainage (one
+   per place, washed-out first, max 10) and the scene pre-places ink bridge decks where they stood. They are swept
+   like any object, restored on Replay, never cleared by Reset, and counted separately ("real bridges lost 7/10").
+8. **Share this run** (pass 2): once anything is swept (or the run ends) a button offers `navigator.share` with the
+   `corridor.share_text` copy (visitor objects + real bridges swept) and the page URL, falling back to the WhatsApp
+   link from `lib/share.ts`.
+9. **Lake volume** slider (0.5–20 Mm³, seeded with the latest `figures_latest.barrier_lake_volume_m3` — China MWR
    published 2.0 Mm³) and **breach** speed change the next run.
 
 ## 2. Architecture
@@ -133,6 +140,6 @@ scenarios (the share bar already shares the page).
 
 ## 7. Ideas queued (not built)
 
-Whitecap particles at the front; a "your run" share card (swept count + scenario) via `/api/og`; a bridge-inventory
-overlay from `figures` (`bridges_washed_out` per place) so real lost bridges appear on the path; sound (off by
-default).
+Whitecap particles at the front (a crest highlight where the sheet drops steeply is in); a "your run" OG card
+(swept count + scenario) via `/api/og`; sound (off by default); NESRA `bridges_to_inspect` as a second, lighter bridge
+class.

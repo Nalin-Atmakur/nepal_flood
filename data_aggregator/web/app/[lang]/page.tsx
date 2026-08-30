@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { asLang, t } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { getArticles, getDigest, getEventTimeline, getFlyingWindows, getGauges, getLakeVolumeM3, getLiveCounts, getNationalFigures, getPlaces, getPlaceStatuses, getStats } from "@/lib/queries";
+import { getArticles, getDigest, getEventTimeline, getFlyingWindows, getGauges, getLakeVolumeM3, getLiveCounts, getLostBridges, getNationalFigures, getPlaces, getPlaceStatuses, getStats } from "@/lib/queries";
 import AddCtas from "@/components/blocks/AddCtas";
 import Corridor from "@/components/blocks/Corridor";
 import Digest from "@/components/blocks/Digest";
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const lang = asLang((await params).lang);
-  const [live, statuses, refs, stats, figures, gauges, windows, articles, events, digest, lakeVolumeM3] = await Promise.all([
+  const [live, statuses, refs, stats, figures, gauges, windows, articles, events, digest, lakeVolumeM3, lostBridges] = await Promise.all([
     getLiveCounts(),
     getPlaceStatuses(),
     getPlaces(),
@@ -42,6 +42,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
     getEventTimeline(),
     getDigest(lang),
     getLakeVolumeM3(),
+    getLostBridges(),
   ]);
   const { places: placeRows } = splitDistricts(statuses);
   const lastAttempt = live?.last_pull_at ?? null;
@@ -51,7 +52,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <h1 className="sr-only">{t(lang, "site.name")}</h1>
       <Scoreboard lang={lang} initial={live} />
       <Digest lang={lang} digest={digest} />
-      <Corridor lang={lang} statuses={placeRows} refs={refs} lakeVolumeM3={lakeVolumeM3} />
+      <Corridor lang={lang} statuses={placeRows} refs={refs} lakeVolumeM3={lakeVolumeM3} lostBridges={lostBridges} />
       <StrikingStats lang={lang} stats={stats} />
       <FirstHours lang={lang} events={events} />
       <SideBySide lang={lang} figures={figures} lastAttempt={lastAttempt} />

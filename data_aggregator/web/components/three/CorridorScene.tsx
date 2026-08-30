@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { CorridorPlace } from "@/lib/corridor";
+import type { CorridorPlace, RealBridge } from "@/lib/corridor";
+import { pageUrl, shareLinks } from "@/lib/share";
 import { DEFAULT_SCENARIO, LAKE_MM3_MAX, LAKE_MM3_MIN, OBJECT_KINDS, type ObjectKind, type Scenario } from "@/lib/flood-sim";
 import { fmtInt } from "@/lib/format";
 import { href, t, type Lang } from "@/lib/i18n";
@@ -15,7 +16,7 @@ import type { CorridorHandle, Phase, RunState } from "./corridor-3d";
  * legend and the caption. three.js is loaded after first paint and only on a fast connection; on 2G/3G,
  * Save-Data or any WebGL failure the pre-rendered PNG swaps in (no controls).
  */
-type Props = { places: CorridorPlace[]; lang: Lang; fallbackSrc: string; lakeVolumeM3?: number | null };
+type Props = { places: CorridorPlace[]; lang: Lang; fallbackSrc: string; lakeVolumeM3?: number | null; bridges?: RealBridge[] };
 
 type Mode = "loading" | "3d" | "fallback";
 type Pick = { place: CorridorPlace; x: number; y: number };
@@ -42,7 +43,7 @@ const BREACH_OPTIONS: { key: "fast" | "slow"; seconds: number }[] = [
   { key: "slow", seconds: 12 },
 ];
 
-export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3 }: Props) {
+export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3, bridges = [] }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const handleRef = useRef<CorridorHandle | null>(null);
@@ -55,6 +56,8 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3 
   const [clock, setClock] = useState("08:37");
   const [phase, setPhase] = useState<Phase>("after");
   const [swept, setSwept] = useState(0);
+  const [sweptReal, setSweptReal] = useState(0);
+  const bridgesRef = useRef<RealBridge[]>(bridges);
   const [armed, setArmed] = useState<ObjectKind | null>(null);
   const seedMm3 = lakeVolumeM3 && lakeVolumeM3 > 0 ? Math.min(LAKE_MM3_MAX, Math.max(LAKE_MM3_MIN, lakeVolumeM3 / 1e6)) : DEFAULT_SCENARIO.lakeMm3;
   const [scenario, setScenario] = useState<Scenario>({ lakeMm3: seedMm3, breachSeconds: DEFAULT_SCENARIO.breachSeconds });
@@ -121,9 +124,13 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3 
         if (cancelled || !host) return;
         const h = mod.mountCorridor(host, {
           places: placesRef.current,
+          bridges: bridgesRef.current,
           onPick,
           onReached,
-          onSwept: (_kind, total) => setSwept(total),
+          onSwept: (_kind, total, real) => {
+            setSwept(total);
+            setSweptReal(real);
+          },
           onClock: setClock,
           onState: setRunState,
           onPhase: setPhase,
@@ -156,12 +163,29 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3 
   const play = () => {
     setPick(null);
     setSwept(0);
+    setSweptReal(0);
     handleRef.current?.play();
+  };
+  const shareRun = async () => {
+    const url = pageUrl(lang, "/");
+    const text = t(lang, "corridor.share_text", { n: String(swept), b: String(sweptReal) });
+    const nav = navigator as Navigator & { share?: (d: { title?: string; text?: string; url?: string }) => Promise<void> };
+    if (typeof nav.share === "function") {
+      try {
+        await nav.share({ title: t(lang, "site.name"), text, url });
+        return;
+      } catch {
+        /* cancelled or unsupported → fall through to WhatsApp */
+      }
+    }
+    const wa = shareLinks({ url, lang, text }).find((l) => l.id === "whatsapp");
+    if (wa) window.open(wa.href, "_blank", "noopener");
   };
   const reset = () => {
     setPick(null);
     setPops([]);
     setSwept(0);
+    setSweptReal(0);
     setArmed(null);
     handleRef.current?.arm(null);
     handleRef.current?.reset();
@@ -297,11 +321,31 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3 
             >
               ⟲ {t(lang, "corridor.reset")}
             </button>
-            <div className="ml-auto inline-flex items-center gap-2 bg-ground b-ink-2 rounded-r2 px-[10px] py-[6px]">
-              <span className="font-semibold text-[11px] text-muted">{t(lang, "corridor.swept")}</span>
-              <span className="arcade text-[12px] num" data-testid="corridor-swept">
-                {swept}
-              </span>
+            {swept > 0 || sweptReal > 0 || runState === "done" ? (
+              <button
+                type="button"
+                onClick={shareRun}
+                className="inline-flex items-center justify-center min-h-[40px] px-[14px] pt-[2px] rounded-r2 b-ink-2 bg-amber-fill text-ink font-bold text-[13px] cursor-pointer shadow-hard-2 press-2"
+                data-testid="corridor-share"
+              >
+                ↗ {t(lang, "corridor.share_run")}
+              </button>
+            ) : null}
+            <div className="ml-auto flex items-center gap-2">
+              {bridges.length ? (
+                <div className="inline-flex items-center gap-2 bg-ground b-ink-2 rounded-r2 px-[10px] py-[6px]" title={t(lang, "corridor.real_bridges_title")}>
+                  <span className="font-semibold text-[11px] text-muted">{t(lang, "corridor.real_bridges")}</span>
+                  <span className="arcade text-[12px] num" data-testid="corridor-real">
+                    {sweptReal}/{bridges.length}
+                  </span>
+                </div>
+              ) : null}
+              <div className="inline-flex items-center gap-2 bg-ground b-ink-2 rounded-r2 px-[10px] py-[6px]">
+                <span className="font-semibold text-[11px] text-muted">{t(lang, "corridor.swept")}</span>
+                <span className="arcade text-[12px] num" data-testid="corridor-swept">
+                  {swept}
+                </span>
+              </div>
             </div>
           </div>
 

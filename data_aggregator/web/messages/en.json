@@ -392,5 +392,9 @@
   "corridor.illustrative": "Illustrative, not a hydraulic model. The clock follows the recorded front (DHM river watch, USGS, ICIMOD); the lake volume starts at the figure China's MWR published. Nothing here is a forecast.",
   "corridor.phase_collapse": "08:37 — a ~600 m section of glacier and rock falls into the Lhende Khola (USGS records it as M5.2)",
   "corridor.phase_breach": "The barrier lake breaches. Gyirong Port is hit seven minutes later — about 190 km/h over the first 22 km",
-  "corridor.phase_wave": "The wave runs the corridor: Timure 08:45 · Syabrubesi 08:50 · Betrawati 09:20 · Galchhi 10:28 · Devghat 13:00"
+  "corridor.phase_wave": "The wave runs the corridor: Timure 08:45 · Syabrubesi 08:50 · Betrawati 09:20 · Galchhi 10:28 · Devghat 13:00",
+  "corridor.share_run": "Share this run",
+  "corridor.share_text": "I put {n} things in the path of the 26 Aug Bhote Koshi flood and watched them go ({b} real bridges too). See what actually happened, and add what you know:",
+  "corridor.real_bridges": "real bridges lost",
+  "corridor.real_bridges_title": "Bridges the HOT OSM damage survey recorded as washed out or damaged, placed where they stood"
 }

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { CORRIDOR_HEIGHT_EXAGGERATION, CORRIDOR_LENGTH_KM } from "@/lib/config";
-import { statusTone, toCorridorPlaces } from "@/lib/corridor";
+import { statusTone, toCorridorPlaces, type RealBridge } from "@/lib/corridor";
 import { fmtInt } from "@/lib/format";
 import { href, localised, t, type Lang } from "@/lib/i18n";
-import type { PlaceRef, PlaceStatusRow } from "@/lib/queries";
+import type { LostBridge, PlaceRef, PlaceStatusRow } from "@/lib/queries";
 import { colors } from "@/lib/tokens";
 import { Dot } from "@/components/ui/Badge";
 import { Frame } from "@/components/ui/Card";
@@ -21,14 +21,18 @@ export default function Corridor({
   statuses,
   refs,
   lakeVolumeM3 = null,
+  lostBridges = [],
 }: {
   lang: Lang;
   statuses: PlaceStatusRow[] | null;
   refs: PlaceRef[] | null;
   /** China MWR barrier-lake volume in m³ (figures_latest), seeds the simulation's slider */
   lakeVolumeM3?: number | null;
+  /** HOT OSM washed-out / damaged bridges; placed on the path where they stood */
+  lostBridges?: LostBridge[];
 }) {
   const places = toCorridorPlaces(statuses, refs, lang);
+  const bridges = toRealBridges(lostBridges, refs);
   const compact = (statuses ?? []).slice().sort((a, b) => b.unknown - a.unknown).slice(0, 8);
 
   return (
@@ -39,7 +43,7 @@ export default function Corridor({
       <div className="mt-3">
         <Frame>
           {places.length ? (
-            <CorridorIsland places={places} lang={lang} lakeVolumeM3={lakeVolumeM3} />
+            <CorridorIsland places={places} lang={lang} lakeVolumeM3={lakeVolumeM3} bridges={bridges} />
           ) : (
             <div className="h-[400px] md:h-[480px] bg-scene grid place-items-center p-6">
               <EmptyState center action={t(lang, "sec.places_empty_action")} href={href(lang, "/report")}>
@@ -72,6 +76,22 @@ export default function Corridor({
       ) : null}
     </section>
   );
+}
+
+/** Bridges with a chainage (one per place, washed-out first, at most 10) — the sim's pre-placed real objects. */
+export function toRealBridges(lost: LostBridge[] | null | undefined, refs: PlaceRef[] | null | undefined): RealBridge[] {
+  if (!lost?.length) return [];
+  const km = new Map((refs ?? []).map((r) => [r.id, r.km]));
+  const seen = new Set<string>();
+  const out: RealBridge[] = [];
+  for (const b of [...lost].sort((a, b) => (a.status === b.status ? 0 : a.status === "washed out" ? -1 : 1))) {
+    const k = km.get(b.placeId);
+    if (k === null || k === undefined || !Number.isFinite(k) || seen.has(b.placeId)) continue;
+    seen.add(b.placeId);
+    out.push({ id: b.placeId, name: b.name, km: k, status: b.status });
+    if (out.length >= 10) break;
+  }
+  return out;
 }
 
 function Legend({ lang }: { lang: Lang }) {

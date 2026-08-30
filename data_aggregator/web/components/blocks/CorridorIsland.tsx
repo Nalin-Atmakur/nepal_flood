@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { CorridorPlace } from "@/lib/corridor";
+import type { CorridorPlace, RealBridge } from "@/lib/corridor";
 import type { Lang } from "@/lib/i18n";
 
 /**
@@ -14,6 +14,6 @@ const CorridorScene = dynamic(() => import("@/components/three/CorridorScene"), 
   loading: () => <div className="h-[400px] md:h-[480px] w-full bg-scene" aria-busy="true" aria-label="3D corridor" />,
 });
 
-export default function CorridorIsland({ places, lang, lakeVolumeM3 }: { places: CorridorPlace[]; lang: Lang; lakeVolumeM3?: number | null }) {
-  return <CorridorScene places={places} lang={lang} fallbackSrc="/corridor-fallback.png" lakeVolumeM3={lakeVolumeM3} />;
+export default function CorridorIsland({ places, lang, lakeVolumeM3, bridges = [] }: { places: CorridorPlace[]; lang: Lang; lakeVolumeM3?: number | null; bridges?: RealBridge[] }) {
+  return <CorridorScene places={places} lang={lang} fallbackSrc="/corridor-fallback.png" lakeVolumeM3={lakeVolumeM3} bridges={bridges} />;
 }

@@ -25,6 +25,9 @@ export type CorridorPlace = {
   heavy: boolean;
 };
 
+/** A real bridge (HOT OSM survey) placed on the path by the simulation. */
+export type RealBridge = { id: string; name: string; km: number; status: "washed out" | "damaged" };
+
 /** Ledger tone for a place: amber "mostly unknown", green "mostly reached", or no data. */
 export function statusTone(row: Pick<PlaceStatusRow, "status_label" | "expected" | "unknown"> | null | undefined): "unknown" | "reached" | "none" {
   if (!row) return "none";

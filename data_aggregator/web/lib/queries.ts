@@ -268,6 +268,30 @@ export async function getLakeVolumeM3(): Promise<number | null> {
   return Number.isFinite(v) && v > 0 ? v : null;
 }
 
+/** A bridge HOT OSM's damage survey recorded as washed out or damaged, keyed to a gazetteer place. */
+export type LostBridge = { placeId: string; name: string; status: "washed out" | "damaged" };
+
+/**
+ * Bridges on the corridor that the HOT OSM survey marks washed out / damaged (figures_latest metric `bridge_status`,
+ * scope `place:<id>`, note "<status> · <name> · <adm3>"). The flood simulation puts them back where they stood.
+ */
+export async function getLostBridges(): Promise<LostBridge[]> {
+  const sb = serverClient();
+  if (!sb) return [];
+  const { data, error } = await sb.from("figures_latest").select("scope, note").eq("metric", "bridge_status").like("scope", "place:%");
+  if (error || !data) return [];
+  const out: LostBridge[] = [];
+  for (const r of data as { scope: string; note: string | null }[]) {
+    const [status, name] = (r.note ?? "").split(" · ");
+    const st = (status ?? "").trim().toLowerCase();
+    if (st !== "washed out" && st !== "damaged") continue;
+    const placeId = r.scope.slice("place:".length).split("|")[0];
+    if (!placeId) continue;
+    out.push({ placeId, name: (name ?? "").trim() || placeId, status: st });
+  }
+  return out;
+}
+
 /** Flying-window forecast rows (metric = flying_window_quality, scope starts with place:<id>). */
 export async function getFlyingWindows(): Promise<FigureLatest[] | null> {
   const sb = serverClient();
