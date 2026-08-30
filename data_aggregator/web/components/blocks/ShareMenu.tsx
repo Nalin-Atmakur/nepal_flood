@@ -6,8 +6,10 @@ import ShareBar from "./ShareBar";
 
 /**
  * The header's Share button: a small popover with the share pills (WhatsApp / X / LinkedIn / Telegram / copy).
- * Always the pills — on phones too: WhatsApp through wa.me carries the hook text and gets a link preview, which the
- * native share sheet does not give a text+URL share (docs/19 #10). The sheet is still there as "More…".
+ * Always the pills, on phones too: WhatsApp through wa.me carries the hook text and gets a link preview, which the
+ * native share sheet does not give a text+URL share (docs/19 #10). The device's own sheet is offered as "More…".
+ * The panel opens against the button that was tapped, over a dimmed page, so it reads as a share sheet rather than
+ * something that appeared elsewhere on the screen (owner, 30 Aug).
  */
 export default function ShareMenu({ lang, size = "md", label }: { lang: Lang; size?: "md" | "sm" | "cta"; label?: string }) {
   const [open, setOpen] = useState(false);
@@ -53,23 +55,33 @@ export default function ShareMenu({ lang, size = "md", label }: { lang: Lang; si
         ↗ {label ?? t(lang, "nav.share")}
       </button>
       {open ? (
-        <div
-          role="dialog"
-          aria-label={t(lang, "share.title")}
-          className={[
-            "fixed md:absolute left-3 right-3 bottom-[84px] md:left-auto md:right-0 z-40 md:min-w-[300px] bg-card b-ink rounded-r2 shadow-hard-3 p-3",
-            up ? "md:bottom-[calc(100%+8px)] md:top-auto" : "md:bottom-auto md:top-[calc(100%+8px)]",
-          ].join(" ")}
-          data-testid="share-popover"
-        >
-          <div className="flex items-center justify-between mb-2 md:hidden">
-            <span className="font-extrabold text-[14px]">{t(lang, "share.title")}</span>
-            <button type="button" onClick={() => setOpen(false)} className="inline-grid place-items-center w-8 h-8 rounded-full b-ink-2 bg-card font-extrabold cursor-pointer" aria-label={t(lang, "corridor.disarm")}>
-              ×
-            </button>
+        <>
+          {/* a dimmed layer so the panel reads as a sheet above the page, and a tap anywhere closes it */}
+          <div className="fixed inset-0 z-30 bg-ink/35" onClick={() => setOpen(false)} aria-hidden="true" />
+          <div
+            role="dialog"
+            aria-label={t(lang, "share.title")}
+            className={[
+              // anchored to the button that opened it, on every screen size; flipped up when it would fall off
+              "absolute right-0 z-40 w-[320px] max-w-[calc(100vw-24px)] bg-card text-ink b-ink rounded-r2 shadow-hard-6 p-3",
+              up ? "bottom-[calc(100%+10px)]" : "top-[calc(100%+10px)]",
+            ].join(" ")}
+            data-testid="share-popover"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-extrabold text-[14px]">{t(lang, "share.title")}</span>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="inline-grid place-items-center w-8 h-8 rounded-full b-ink-2 bg-card font-extrabold cursor-pointer"
+                aria-label={t(lang, "sources.close")}
+              >
+                ×
+              </button>
+            </div>
+            <ShareBar lang={lang} path="/" variant="compact" />
           </div>
-          <ShareBar lang={lang} path="/" variant="compact" />
-        </div>
+        </>
       ) : null}
     </div>
   );
