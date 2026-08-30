@@ -83,3 +83,5 @@ __pycache__/
 .DS_Store
 
 data_aggregator/pipeline/.scheduler.pid
+
+data_aggregator/pipeline/.run.lock/
