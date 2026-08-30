@@ -132,18 +132,9 @@ tail -n 5 pipeline/run.log
 
 ## 7. Deploying the site
 
-### 7.0 ⚠️ Domain — one DNS record still needed (as of 30 Aug 2026 01:30 UK)
+### 7.0 Domain
 
-`nepalfloodtracker.com` is registered at **Squarespace** and attached to the Vercel project (apex + `www`). The `www` CNAME to Vercel is in place, but the **apex A records still point at Squarespace's parking IPs** (198.49.23.x / 198.185.159.x), so `https://nepalfloodtracker.com` shows Squarespace's "Coming Soon" while `https://www.nepalfloodtracker.com` and `https://nepalfloodtracker.vercel.app` serve the site.
-
-Fix (Squarespace → Domains → nepalfloodtracker.com → DNS settings), numbered:
-
-1. Delete the four Squarespace `A` records for `@` (198.49.23.144/145, 198.185.159.144/145).
-2. Add one `A` record: host `@`, value **`76.76.21.21`** (Vercel's apex IP; the Vercel dashboard → Project → Domains shows the exact value it wants — use that if it differs).
-3. Keep the existing `www` CNAME → `cdcfa0c2711adf6d.vercel-dns-016.com.`
-4. Wait 5–30 min, then `curl -sI https://nepalfloodtracker.com/en | grep -i server` should say `Vercel`, and `vercel domains inspect nepalfloodtracker.com` shows no ✘.
-
-Until then share the `www.` link — it is the same deployment.
+`nepalfloodtracker.com` is registered at Squarespace and attached to the Vercel project (apex A → Vercel `216.150.1.1`, `www` CNAME → `cdcfa0c2711adf6d.vercel-dns-016.com`). Both were set on 30 Aug 2026; a resolver that still shows Squarespace IPs (198.49.23.x / 198.185.159.x) for the apex is serving a stale cache — check with `dig @8.8.8.8 nepalfloodtracker.com A` and `vercel domains inspect nepalfloodtracker.com`.
 
 
 
