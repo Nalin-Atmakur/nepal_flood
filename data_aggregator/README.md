@@ -97,7 +97,7 @@ Python is always the pipeline venv: `pipeline/.venv/bin/python` (PEP 668 blocks 
 | understand access control | `db/docs/05-rls.md` |
 | run or extend the pull script | `pipeline/README.md` → `pipeline/docs/pull_external_data/01-overview.md` … `07-failure-modes.md`; per-source notes in `05-sources.md` (wave 1), `05a-…` (wave 2 official), `05b-…` (wave 2 geospatial + text) |
 | understand a processing step | `pipeline/docs/process_data/00-anonymise.md` … `07-digest.md`, `03b-press-figures.md`, `10-timeline-and-trends.md`; then `08-llm-budget.md`, `09-failure-modes.md` (numbers match `process_data.py`) |
-| work on the site | `web/README.md` → `web/docs/01-architecture.md` … `13-story-and-digest.md`; the flood-simulation spec for the corridor is `14-flood-sim.md` |
+| work on the site | `web/README.md` → `web/docs/01-architecture.md` … `13-story-and-digest.md`; the corridor simulation is `14-flood-sim.md` (how it works, tuning) + `16-corridor-v2-plan.md` (the brief, status); `15-sources-page.md`; the site's information architecture is `17-information-architecture.md` |
 | see which sources exist | `docs/sources.md` (generated from `sources.yaml`) |
 | operate it: schedule, secrets, backups, outages | `docs/runbook.md` |
 | know why something is the way it is | `docs/decisions-log.md`, `PLAN.md` |
