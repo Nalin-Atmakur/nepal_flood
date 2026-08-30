@@ -33,6 +33,7 @@ HEADLINE_METRICS = {"dead": "dead", "missing": "out of contact", "rescued": "res
                     "tourists_missing": "tourists out of contact", "tourists_rescued": "tourists rescued"}
 HELP_METRICS = ("help_requests_open", "help_requests_critical", "people_affected_reported")
 MIN_BULLETS, MAX_BULLETS = 5, 10
+MAX_FIGURE_BULLETS = 4
 MAX_NEWS = 3
 EVENT_DAY = date(2026, 8, 26)
 
@@ -106,7 +107,7 @@ def build_bullets(*, day: date, latest: list[dict[str, Any]], previous: dict[tup
         if parts:
             fig.append({"text": f"{pub}: " + " · ".join(parts[:3]), "kind": "figure", "source_url": url, "_w": biggest})
     fig.sort(key=lambda b: -b["_w"])
-    for b in fig:
+    for b in fig[:MAX_FIGURE_BULLETS]:   # leave room for rescuers / help / context / gauge / watch / news within MAX_BULLETS
         b.pop("_w", None)
         bullets.append(b)
     headline_src = next((p for p in ("NDRRMA", "Nepal Police", "Nepal Police (UDB)", "Nepal Police (via press)", "MoFA") if nat.get((p, "dead"))), None)

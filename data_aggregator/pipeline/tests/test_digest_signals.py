@@ -61,3 +61,16 @@ def test_rescuers_bullet_ignores_district_rollups():
                                  gauges_now={}, gauges_before={}, articles=[])
     r = [b for b in bullets if b["kind"] == "rescuers"][0]
     assert "Rasuwa" not in r["text"] and "Timure (1,104)" in r["text"] and "1 of 1 tracked places" in r["text"]
+
+
+def test_a_news_bullet_survives_when_every_signal_kind_is_present():
+    latest = [{"publisher": p, "metric": "dead", "scope": "national", "value": 600 + i, "url": None}
+              for i, p in enumerate(["NDRRMA", "Nepal Police", "MoFA", "Dept of Tourism (via press)", "NTB (via press)"])]
+    latest += [{"publisher": "OPMCM portal", "metric": "help_requests_open", "scope": "national", "value": 5, "url": None},
+               {"publisher": "Nepal Red Cross", "metric": "dead_quoted", "scope": "national", "value": 579, "url": None}]
+    today = {"timure": {"expected": 3, "confirmed_reached": 0, "unknown": 3, "status_label": "mostly_unknown"}}
+    _, bullets = D.build_bullets(day=DAY, latest=latest, previous={}, places_today=today, places_before={}, place_names={},
+                                 gauges_now={"Galchhi": True}, gauges_before={}, articles=[{"title": "Bridge reopens", "publisher": "KP", "url": "u"}],
+                                 watch={"flying_window": "30 Aug 06–11 NPT · Dhunche"})
+    kinds = [b["kind"] for b in bullets]
+    assert len(bullets) <= D.MAX_BULLETS and kinds.count("figure") <= D.MAX_FIGURE_BULLETS and "news" in kinds
