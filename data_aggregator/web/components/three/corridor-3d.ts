@@ -6,7 +6,7 @@
  *   mountCorridor(el, opts)
  *     ctx      = createContext(renderer)          scene/context.ts   (sim, bed, groundAt, flowAt)
  *     terrain  = createTerrain(ctx)               scene/terrain.ts   (look, sky, lights, river, lakes, rock, stain, x-ray)
- *     water    = createWater(ctx, terrain)        scene/water.ts     (wet-only sheet, spray, debris)
+ *     water    = createWater(ctx, terrain)        scene/water.ts     (level-fill sheet, translucency, spray, waterfall, debris)
  *     markers  = createMarkers(ctx)               scene/markers.ts   (settlement clusters, labels + names toggle)
  *     objects  = createObjects(ctx, onEvent)      scene/objects.ts   (catalogue + piece physics)
  *     camera   = createCamera(ctx, el)            scene/camera.ts    (fit, orbit, pan, ride, shake, impact)
@@ -339,6 +339,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     if (Math.abs(hx - xray) > 0.01) {
       xray = hx;
       terrain.setXray(hx);
+      water.setXray(hx);
       opts.onXray?.(hx);
     }
     renderer.render(ctx.scene, camera.cam);

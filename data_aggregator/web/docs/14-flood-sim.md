@@ -61,6 +61,7 @@ Overview from above (no chase camera); the run auto-plays 0.7 s after the scene 
 on desktop it is an overlay column bottom-left. A plain sentence under the heading explains what the panel is
 ("The 72 km the flood travelled on 26 August, replayed from above — press ▶, drop something in its path…").
 - **12:30 pass (owner's screenshots):** place names are small pills with a **Names** toggle top-right (off = the damage alone); no discs under anything — the real bridges had kept the object foundation pad + ring, now removed; an object the flood takes lifts off *whole*, rides the crest tumbling for up to 6 s, breaks on a hard hit, and its pieces are carried on down the corridor — over the plate's east edge as a waterfall if the water goes that far; the story feed shows up to six rows when the panel has room.
+- **13:00 pass:** the water is a *level fill* of the valley — its surface extends sideways until it meets the walls at its own height, so from the side it moulds to the mountain instead of standing on the bed with edges in the air; it is translucent (denser than the X-ray mountain, thinner as the view tilts) so the carried objects show through; the mud line stains the walls up to the water line; wheel/pinch zoom goes toward the point under the cursor.
 
 ## 2. Architecture (v2, 30 Aug 10:00 — see 16-corridor-v2-plan.md for the brief)
 
@@ -134,7 +135,7 @@ the camera never sinks below the water surface, and the X-ray amount follows `ho
 - The handle also exposes `debug()` (state, water visibility, draw count, max depth, front, objects, swept,
   injected); `?debug=1` puts the handle on `window.__corridor` for Playwright.
 
-## 3. Tuning knobs (v2 values, 30 Aug 12:30)
+## 3. Tuning knobs (v2 values, 30 Aug 13:00)
 
 | Knob | Where | Value | Effect |
 |---|---|---|---|
@@ -143,7 +144,9 @@ the camera never sinks below the water surface, and the X-ray amount follows `ho
 | `g` / `friction` | createSim | 9.8 / 0.9 | front speed: Syabrubesi ≈ 4 s, Betrawati ≈ 11 s, Galchhi ≈ 18 s, Devghat ≈ 24 s |
 | `DEFAULT_SCENARIO.breachSeconds` | lib/flood-sim.ts | 4 (UI: sudden 4 / slow 12) | how fast the lake empties |
 | `VIS_AMP` | scene/context.ts | 3.2 | visual depth exaggeration (the overview needs it) |
-| wet dilation | scene/water.ts | 0.7 × neighbour depth | the sheet reads as a flood, not a hairline, from above |
+| level fill | lib/water-fill.ts (`fillLevels`) | `FILL_RADIUS` 6 cells · `FILL_FALLOFF` 0.25/cell (Manhattan) · `FILL_LIP` 0.05 | the sheet is the highest nearby surface level, extended sideways until it meets the terrain at its own height — it moulds to the mountain (replaces the 1-cell dilation; D-059) |
+| water opacity | scene/water.ts | `OPACITY_TOP` 0.94 − `OPACITY_XRAY` 0.36 × X-ray amount (0.83 by default, 0.58 from the side; the mountain goes 0.82 → 0.4) | translucent, always denser than the mountain; what it carries shows through |
+| zoom | scene/camera.ts · lib/corridor-camera.ts (`zoomToward`) | wheel: toward the point under the cursor · pinch: toward the midpoint | zooming into a part of the corridor goes to that part (D-060) |
 | `BLUE_X0` / `BROWN_RUN` | scene/water.ts | breach + 6 / 42 units | deep blue at the breach → mud downstream |
 | foam | scene/water.ts | crest band × 0.85, speed term (v − 18)/22 × 0.35 | foam only where the sheet drops |
 | `XRAY_DEFAULT` | corridor-3d.ts | 0.3 (→ 1 with tilt; depth-write off above 0.1) | see the surge through the near wall |

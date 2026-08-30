@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { FOV_DEG, RAD_MAX, RAD_MIN, clampOrbit, corridorBounds, fitCamera, horizontality, orbitPosition, panTarget } from "@/lib/corridor-camera";
+import { FOV_DEG, RAD_MAX, RAD_MIN, clampOrbit, corridorBounds, fitCamera, horizontality, orbitPosition, panTarget, zoomToward } from "@/lib/corridor-camera";
 
 function projectsInside(o: ReturnType<typeof fitCamera>, aspect: number): boolean {
   // every corner of the corridor box must land inside the frustum: check with the pinhole model
@@ -61,5 +61,23 @@ describe("corridor camera", () => {
     const b = corridorBounds();
     expect(far.target.x).toBeGreaterThanOrEqual(b.minX);
     expect(far.target.x).toBeLessThanOrEqual(b.maxX);
+  });
+  it("zooms toward a point: the point keeps its offset ratio and the radius shrinks by the same factor", () => {
+    const o = fitCamera(2.5);
+    const p = { x: o.target.x - 30, z: o.target.z + 4 };
+    const z = zoomToward(o, p, 0.5);
+    expect(z.rad).toBeCloseTo(o.rad * 0.5, 6);
+    expect(z.target.x).toBeCloseTo(p.x + (o.target.x - p.x) * 0.5, 6);
+    expect(z.target.z).toBeCloseTo(p.z + (o.target.z - p.z) * 0.5, 6);
+    expect(z.target.y).toBe(o.target.y);
+    // at the radius floor the target stops sliding too (the applied factor is 1)
+    const floor = zoomToward({ ...o, rad: RAD_MIN }, p, 0.5);
+    expect(floor.rad).toBe(RAD_MIN);
+    expect(floor.target.x).toBeCloseTo(o.target.x, 6);
+    // and it never leaves the corridor
+    const far = zoomToward(o, { x: 1e6, z: 1e6 }, 1.5);
+    const b = corridorBounds();
+    expect(far.target.x).toBeLessThanOrEqual(b.maxX);
+    expect(far.target.z).toBeLessThanOrEqual(b.maxZ);
   });
 });

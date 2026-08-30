@@ -1,9 +1,13 @@
 /**
- * WaterModule (web/docs/16-corridor-v2-plan.md §2.1, §2.3): the wet-only water sheet over the shared grid, three
- * mud tones + foam by speed + a crest band where the sheet drops ahead, turbulence jitter, the terrain stain,
- * foam spray at the front, and debris riding the surface.
+ * WaterModule (web/docs/16-corridor-v2-plan.md §2.1, §2.3): the water over the shared grid as a *level fill* of
+ * the valley (lib/water-fill.ts — the surface extends sideways until it meets the terrain at its own height, so
+ * it moulds to the mountain instead of hanging in the air), three mud tones + foam by speed + a crest band where
+ * the sheet drops ahead, turbulence jitter, the terrain stain up to the water line, foam spray at the front, the
+ * fall off the plate's east edge, and debris riding the surface. The sheet is translucent: denser than the X-ray
+ * mountain, thinner as the view goes to the side (`setXray`), so what it carries shows through.
  *
- *   sim.depth/vx/vz ──► sheet: vertex y = bed + depth·visAmp (+ jitter), colour by depth/speed/crest,
+ *   sim.depth/vx/vz ──► fill:  level per cell = max nearby (bed + depth·visAmp) − falloff·distance
+ *                       sheet: vertex y = fill (+ jitter) where fill > bed + lip, colour by effective depth/speed/crest,
  *                              index rebuilt each frame with only the triangles that touch a wet vertex
  *                       spray: 900-point pool spawned in fast deep cells, ballistic, 0.5–1 s; plus the fall off
  *                              the plate's east edge (the sim's open boundary) — the corridor ends in a waterfall
@@ -31,11 +35,15 @@ function sprayTexture(): THREE.Texture | null {
 }
 import { cellCentre } from "@/lib/flood-sim";
 import { WATER } from "@/lib/terrain-colours";
+import { FILL_LIP, fillLevels } from "@/lib/water-fill";
 import { makeGridGeometry } from "./terrain";
 import type { SceneCtx, TerrainModule, WaterModule } from "./types";
 
 const WET = 0.05;
 const STAIN_DEPTH = 0.25;
+/** sheet opacity looking down, and how much the side view takes off (the mountain goes 1 → 0.4; water stays denser) */
+const OPACITY_TOP = 0.94;
+const OPACITY_XRAY = 0.36;
 
 export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule {
   const { scene, sim, bed, grid } = ctx;
@@ -71,7 +79,9 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
       metalness: 0.12,
       emissive: 0x2a1a0c,
       emissiveIntensity: 0.28,
-      transparent: false, opacity: 1,
+      transparent: true,
+      opacity: OPACITY_TOP,
+      depthWrite: true,
     }),
   );
   const mesh = new THREE.Mesh(geo, mat);
@@ -85,6 +95,8 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
   const BLUE_X0 = BREACH.x + 6;
   const BROWN_RUN = 42;
   const nx = ctx.grid.nx;
+  const fill = new Float32Array(bed.length);
+  const fillScratch = new Float32Array(bed.length);
   const deep = WATER.mudDeep;
   const body = WATER.mudBody;
   const shallow = WATER.mudShallow;
@@ -98,21 +110,27 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
     const t = ctx.time;
     const amp = ctx.visAmp;
     anyWet = false;
+    // the level fill: where the water stands, extended sideways to the walls (D-059)
+    if (!fillLevels(grid, bed, d, amp, fill, fillScratch, { wet: WET })) {
+      mesh.visible = false;
+      for (let v = 0; v < pos.count; v++) wetV[v] = 0;
+      return;
+    }
     for (let v = 0; v < pos.count; v++) {
       const c = vertCell[v];
       if (c < 0) {
         wetV[v] = 0;
         continue;
       }
-      // dilate by one cell so the sheet reads as a flood from the overview, not a hairline
-      const dep0 = d[c];
-      const dep = Math.max(dep0, 0.85 * Math.max(c > 0 ? d[c - 1] : 0, c + 1 < d.length ? d[c + 1] : 0, c >= nx ? d[c - nx] : 0, c + nx < d.length ? d[c + nx] : 0));
-      if (dep > WET) {
+      const level = fill[c];
+      // effective depth: what the visitor sees standing above this ground (equals the sim's depth on wet cells)
+      const dep = (level - bed[c]) / amp;
+      if (level > bed[c] + FILL_LIP) {
         anyWet = true;
         wetV[v] = 1;
-        if (dep > STAIN_DEPTH) terrain.stain(c);
+        if (dep > STAIN_DEPTH) terrain.stain(c); // the mud line goes up the wall to the water line
         const jitter = 0.12 * Math.sin(vx0[v] * 1.7 + t * 9) * Math.sin(vz0[v] * 2.3 - t * 7) * Math.min(1, dep);
-        pos.setY(v, bed[c] + dep * amp + jitter);
+        pos.setY(v, level + jitter);
         const speed = Math.hypot(vx[c], vz[c]);
         // depth ramp: shallow → body → deep
         let r: number;
@@ -361,6 +379,10 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
   return {
     mesh,
     visible: () => mesh.visible,
+    setXray(amount: number) {
+      const k = Math.max(0, Math.min(1, amount));
+      mat.opacity = OPACITY_TOP - OPACITY_XRAY * k;
+    },
     update(dt: number) {
       const every = low ? 2 : 1;
       if (ctx.frame % every === 0) updateSheet();

@@ -1,12 +1,13 @@
 import * as THREE from "three";
-import { FOV_DEG, POL_MAX, POL_MIN, RAD_MAX, RAD_MIN, clampOrbit, fitCamera, horizontality, orbitPosition, panTarget, type Orbit } from "@/lib/corridor-camera";
+import { FOV_DEG, POL_MAX, POL_MIN, RAD_MAX, RAD_MIN, clampOrbit, fitCamera, horizontality, orbitPosition, panTarget, zoomToward, type Orbit } from "@/lib/corridor-camera";
 import { bedH, meander } from "@/lib/corridor-terrain";
 import type { CameraModule, CameraMode, RunInfo, SceneCtx } from "./types";
 
 /**
  * The camera (web/docs/16-corridor-v2-plan.md §1.2): an orbit (target · radius · polar · azimuth) with
  *   - fit: frame the whole corridor for the panel's aspect (exact, from lib/corridor-camera),
- *   - orbit: one-finger / left-drag; pan: right-drag, shift-drag, two fingers, arrow keys; wheel / pinch zooms,
+ *   - orbit: one-finger / left-drag; pan: right-drag, shift-drag, two fingers, arrow keys; wheel / pinch zooms
+ *     toward the point under the cursor / between the fingers (lib/corridor-camera `zoomToward`),
  *   - ride: while a run is on and the visitor hasn't taken over, chase the front down the channel from above,
  *   - a floor: never below the water surface or the ground near the camera,
  *   - shake (impact, bridges), impact cam (desktop punch-in), reveal (nudge to keep a placed object in frame),
@@ -116,6 +117,21 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
   let onTapCb: ((px: number, py: number) => void) | null = null;
   let canvasEl: HTMLCanvasElement | null = null;
 
+  /** where a screen point meets the plane of the target's height (the ground the visitor is looking at) */
+  const pickRay = new THREE.Raycaster();
+  const pickNdc = new THREE.Vector2();
+  const pickPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+  const pickOut = new THREE.Vector3();
+  const pointUnder = (clientX: number, clientY: number): { x: number; z: number } | null => {
+    if (!canvasEl) return null;
+    const r = canvasEl.getBoundingClientRect();
+    pickNdc.set(((clientX - r.left) / Math.max(1, r.width)) * 2 - 1, -((clientY - r.top) / Math.max(1, r.height)) * 2 + 1);
+    pickRay.setFromCamera(pickNdc, cam);
+    pickPlane.constant = -goal.target.y;
+    const hit = pickRay.ray.intersectPlane(pickPlane, pickOut);
+    return hit ? { x: hit.x, z: hit.z } : null;
+  };
+
   const takeOver = () => {
     userTook = true;
     drift = false;
@@ -149,9 +165,12 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
       const mx = (a.x + b.x) / 2;
       const my = (a.y + b.y) / 2;
       takeOver();
-      const rad = Math.max(RAD_MIN, Math.min(RAD_MAX, (gesture.rad * gesture.dist) / Math.max(1, dist)));
-      const panned = panTarget({ ...goal, target: gesture.target, rad }, mx - gesture.x, my - gesture.y, H());
-      setGoal({ rad, target: panned.target });
+      // zoom toward the pinch midpoint, then pan by how far the midpoint moved
+      const factor = gesture.dist / Math.max(1, dist);
+      const under = pointUnder(mx, my);
+      const zoomed = under ? zoomToward({ ...goal, target: gesture.target, rad: gesture.rad }, under, factor) : { ...goal, target: gesture.target, rad: Math.max(RAD_MIN, Math.min(RAD_MAX, gesture.rad * factor)) };
+      const panned = panTarget(zoomed, mx - gesture.x, my - gesture.y, H());
+      setGoal({ rad: zoomed.rad, target: panned.target });
       return;
     }
     const dx = e.clientX - gesture.x;
@@ -183,7 +202,12 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
   const onWheel = (e: WheelEvent) => {
     e.preventDefault();
     takeOver();
-    setGoal({ rad: Math.max(RAD_MIN, Math.min(RAD_MAX, goal.rad * (1 + e.deltaY * 0.0012))) });
+    const factor = 1 + e.deltaY * 0.0012;
+    const under = pointUnder(e.clientX, e.clientY);
+    if (under) {
+      const z = zoomToward(goal, under, factor);
+      setGoal({ rad: z.rad, target: z.target });
+    } else setGoal({ rad: Math.max(RAD_MIN, Math.min(RAD_MAX, goal.rad * factor)) });
   };
   const onKey = (e: KeyboardEvent) => {
     const stepPx = 60;

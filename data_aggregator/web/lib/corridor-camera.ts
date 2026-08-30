@@ -129,3 +129,17 @@ export function panTarget(o: Orbit, dxPx: number, dyPx: number, viewportH: numbe
     target: { x: Math.max(b.minX, Math.min(b.maxX, x)), y: o.target.y, z: Math.max(b.minZ, Math.min(b.maxZ, z)) },
   };
 }
+
+/**
+ * Zoom toward a point on the ground (the one under the cursor or the pinch midpoint): the radius scales by
+ * `factor` and the target slides toward the point by the same factor, so the point stays put on screen and the
+ * visitor zooms into *that* part of the corridor rather than the centre. Clamped like a pan.
+ */
+export function zoomToward(o: Orbit, point: { x: number; z: number }, factor: number): Orbit {
+  const rad = Math.max(RAD_MIN, Math.min(RAD_MAX, o.rad * factor));
+  const f = rad / o.rad; // the factor actually applied after clamping
+  const b = corridorBounds();
+  const x = point.x + (o.target.x - point.x) * f;
+  const z = point.z + (o.target.z - point.z) * f;
+  return { ...o, rad, target: { x: Math.max(b.minX, Math.min(b.maxX, x)), y: o.target.y, z: Math.max(b.minZ, Math.min(b.maxZ, z)) } };
+}

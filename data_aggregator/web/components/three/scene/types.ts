@@ -4,7 +4,7 @@
  *   corridor-3d.ts (orchestrator) ──► context.ts  (ctx: renderer, scene, sim, bed, ground/flow sampling)
  *        │                             │
  *        ├── terrain.ts   TerrainModule (terrain colours, sky, lights, river ribbon, extent band, lakes, rock, dust, stain)
- *        ├── water.ts     WaterModule   (wet-only water sheet, spray, debris)
+ *        ├── water.ts     WaterModule   (level-fill water sheet, translucency, spray, waterfall, debris)
  *        ├── markers.ts   MarkersModule (settlement clusters, kind shapes, status roofs, labels + names toggle, pick targets)
  *        ├── objects.ts   ObjectsModule (catalogue objects, placement, break-up, piece physics via lib/flood-physics)
  *        └── camera.ts    CameraModule  (fit, orbit, pan, ride, shake, impact cam, picking rays)
@@ -64,6 +64,8 @@ export interface TerrainModule {
 export interface WaterModule {
   mesh: THREE.Mesh;
   visible(): boolean;
+  /** translucency follows the terrain X-ray amount (0…1) but the water always stays denser than the mountain */
+  setXray(amount: number): void;
   update(dt: number): void;
   reset(): void;
   drawCount(): number;

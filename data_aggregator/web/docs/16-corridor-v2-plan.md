@@ -150,6 +150,10 @@ Estimated effort: P1 ≈ 1.5 h, P2 ≈ 2.5 h, P3 ≈ 2.5 h, P4 ≈ 1 h. Each pha
 - **X-ray terrain** (owner's idea, from the side view): terrain opacity eases from solid (top-down) to ≈ 40 %
   (side view) with the ridgeline kept as a faint outline, plus an "X-RAY VIEW" chip — so looking *through* the
   mountain at the channel is a feature, not a glitch (`horizontality(pol)` in `lib/corridor-camera.ts` drives it).
+- **Water moulds to the mountain** (owner, 12:20, from the side view): the sheet is a level fill of the valley
+  (`lib/water-fill.ts`) and translucent, tracking the X-ray amount but always denser than the terrain (D-059).
+- **Zoom goes where you point** (owner, 12:40): wheel and pinch zoom toward the point under the cursor / between
+  the fingers (`zoomToward`, D-060).
 - **Robustness contract**: every mesh, object, piece and the camera sample the same bilinear ground
   (`makeGroundSampler`), pieces are integrated by `lib/flood-physics.ts` whose invariant (never below ground + r)
   is unit-tested; objects stand directly on the ground aligned to its normal (foundation pads and rings were
@@ -164,11 +168,11 @@ Sound; a DEM; real hydraulics; multiplayer/leaderboards; saving scenarios; WebGP
 3. Object catalogue: the 11 above, or add "school" and "temple" for local resonance? (**add both**, cheap)
 
 
-## 8. Status (30 Aug 12:30 BST)
+## 8. Status (30 Aug 13:00 BST)
 
 | phase | state |
 |---|---|
 | 1 · layout & camera | ✅ story feed under the canvas on phones; exact fit (`lib/corridor-camera.ts`), pan/pinch/keys, Frame button; chip tap places in the path with a pulsing marker; SWEPT/PLACED pops; **overview-only camera** (owner's call — no chase) |
 | 2 · the look | ✅ re-authored landscape (V-gorge → plains), colour ramp, sky/fog/lights, river ribbon + extent band, water blue→brown with crest foam, spray, debris, settlement clusters on their own ground (no pads), status roofs, labels, X-ray on by default |
 | 3 · objects & physics | ✅ 14-kind catalogue, `lib/flood-physics.ts` (never below ground — asserted in e2e), **taken → carried whole → broken → wreck** (12:30: an object rides the crest as one body for up to 6 s, tumbling, then breaks on a hard hit; pieces inherit its motion, are pulled back to the channel and carried on — off the east edge as a waterfall), impact cam on desktop, shake tiers |
-| 4 · polish | ▶ ongoing with the owner's eyes: 12:30 — small name pills + Names toggle, discs gone (object pads), feed 3–6 rows; next: wave prominence in the overview, fallback PNG regeneration for the new landscape |
+| 4 · polish | ▶ ongoing with the owner's eyes: 12:30 — small name pills + Names toggle, discs gone (object pads), feed 3–6 rows; 13:00 — level-fill translucent water, zoom to cursor; next: wave prominence in the overview, fallback PNG regeneration for the new landscape |
