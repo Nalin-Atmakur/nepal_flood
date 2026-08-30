@@ -11,6 +11,8 @@ import ShareBar from "./ShareBar";
  */
 export default function ShareMenu({ lang, size = "md", label }: { lang: Lang; size?: "md" | "sm" | "cta"; label?: string }) {
   const [open, setOpen] = useState(false);
+  /** the panel opens upward when the button sits near the bottom of the window (owner, 30 Aug) */
+  const [up, setUp] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,6 +35,8 @@ export default function ShareMenu({ lang, size = "md", label }: { lang: Lang; si
 
   /** Always the pills: WhatsApp via wa.me gets the hook *and* a preview; the native sheet is "More…" in the pills (docs/19 #10). */
   function onClick() {
+    const r = boxRef.current?.getBoundingClientRect();
+    if (r) setUp(window.innerHeight - r.bottom < 230);
     setOpen((v) => !v);
   }
 
@@ -52,7 +56,10 @@ export default function ShareMenu({ lang, size = "md", label }: { lang: Lang; si
         <div
           role="dialog"
           aria-label={t(lang, "share.title")}
-          className="fixed md:absolute left-3 right-3 bottom-[84px] md:left-auto md:right-0 md:bottom-auto md:top-[calc(100%+8px)] z-40 md:min-w-[300px] bg-card b-ink rounded-r2 shadow-hard-3 p-3"
+          className={[
+            "fixed md:absolute left-3 right-3 bottom-[84px] md:left-auto md:right-0 z-40 md:min-w-[300px] bg-card b-ink rounded-r2 shadow-hard-3 p-3",
+            up ? "md:bottom-[calc(100%+8px)] md:top-auto" : "md:bottom-auto md:top-[calc(100%+8px)]",
+          ].join(" ")}
           data-testid="share-popover"
         >
           <div className="flex items-center justify-between mb-2 md:hidden">
