@@ -54,7 +54,33 @@ viral surface. Shipped 30 Aug 04:05 BST (pass 2 04:40); this file is the referen
 9. **Lake volume** slider (0.5–20 Mm³, seeded with the latest `figures_latest.barrier_lake_volume_m3` — China MWR
    published 2.0 Mm³) and **breach** speed change the next run.
 
-## 2. Architecture
+## 2. Architecture (v2, 30 Aug 10:00 — see 16-corridor-v2-plan.md for the brief)
+
+```
+ lib/ (pure, vitest)                          components/three/scene/ (three.js, one shared ctx)
+ ┌──────────────────────────┐                 ┌──────────────────────────────────────────────────────────┐
+ │ corridor-terrain.ts      │  bed, meander   │ context.ts   createContext(): scene, sim, bed, groundAt   │
+ │ flood-sim.ts             │  depth/velocity │              (bilinear height + normal), flowAt, surfaceAt│
+ │ object-catalogue.ts      │  14 kinds       │ terrain.ts   colours (lib/terrain-colours), sky, lights,  │
+ │ flood-physics.ts         │  piece bodies   │              river ribbon, extent band, lakes, rock, dust, │
+ │ corridor-camera.ts       │  fit, pan       │              stain, setXray                                │
+ │ terrain-colours.ts       │  ramp           │ water.ts     wet-only sheet, mud tones, crest, spray,     │
+ └──────────────────────────┘                 │              debris                                        │
+                                              │ markers.ts   settlement clusters, kind shapes, rings,     │
+   corridor-3d.ts (orchestrator)              │              labels, pick targets, reach cells            │
+     mountCorridor(el, opts) → CorridorHandle  │ objects.ts   catalogue objects on pads, placement marker, │
+     run state machine · sim step · events    │              break-up → physics bodies → wreckage          │
+                                              │ camera.ts    orbit/pan/pinch/keys, fit, ride, floor,      │
+   CorridorScene.tsx (React)                  │              shake, impact cam, reveal, rays              │
+     phone story feed under the canvas,       └──────────────────────────────────────────────────────────┘
+     desktop feed overlay, pops, controls
+```
+
+Invariants: every module samples the same ground (`ctx.groundAt`) — objects sit on pads aligned to the ground
+normal, pieces can never be below ground (`lib/flood-physics.ts`, unit-tested; `debug().belowGround` must be 0),
+the camera never sinks below the water surface, and the X-ray amount follows `horizontality(pol)`.
+
+## 2a. Architecture (v1, kept for reference)
 
 ```
  lib/corridor-terrain.ts (pure)        lib/flood-sim.ts (pure, typed arrays)        components/three/

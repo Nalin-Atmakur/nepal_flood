@@ -7,19 +7,15 @@ import {
   DEFAULT_SCENARIO,
   GRID,
   SIM_UNITS_PER_MM3,
-  CARRY_MAX_SPEED,
-  advect,
   breachVolume,
   cellCentre,
   cellIndex,
   clockForFrontX,
   createSim,
-  isSwept,
   minutesForKm,
   sampleBed,
-  snapToPath,
-  thresholdFor,
 } from "@/lib/flood-sim";
+import { catalogue, isSwept, snapToPath } from "@/lib/object-catalogue";
 
 /** Minimal RFC-4180 reader (quoted fields may contain commas). */
 function parseCsv(text: string): string[][] {
@@ -158,17 +154,11 @@ describe("flood sim", () => {
 
 describe("objects", () => {
   it("camp < bus < house < bridge", () => {
-    const d = ["camp", "bus", "house", "bridge"].map((k) => thresholdFor(k as never).depth);
+    const d = ["camp", "bus", "house", "bridge"].map((k) => catalogue(k as never).threshold.depth);
     expect(d).toEqual([...d].sort((a, b) => a - b));
     expect(isSwept("camp", 0.2, 0.5)).toBe(true);
     expect(isSwept("bridge", 0.2, 0.5)).toBe(false);
     expect(isSwept("house", 1, 0.1)).toBe(false);
-  });
-  it("advect moves with the flow, capped at CARRY_MAX_SPEED", () => {
-    const p = advect({ x: 0, z: 0 }, { vx: 2, vz: -1 }, 0.5, 1);
-    expect(p).toEqual({ x: 1, z: -0.5 });
-    const fast = advect({ x: 0, z: 0 }, { vx: 30, vz: 0 }, 1, 1);
-    expect(fast.x).toBeCloseTo(CARRY_MAX_SPEED, 6);
   });
   it("taps near the channel snap into the path", () => {
     expect(snapToPath("bridge", 3, 4, 1)).toEqual({ x: 3, z: 1 });

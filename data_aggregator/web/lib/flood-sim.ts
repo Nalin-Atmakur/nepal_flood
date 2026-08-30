@@ -277,50 +277,8 @@ export function breachVolume(total: number, T: number, t: number, dt: number): n
 }
 
 // ---------------------------------------------------------------------------
-// Objects in the path (Turbo-Dismount rules)
-
-export type ObjectKind = "house" | "bridge" | "bus" | "camp";
-export const OBJECT_KINDS: ObjectKind[] = ["house", "bridge", "bus", "camp"];
-export const MAX_OBJECTS = 24;
-
-/** Depth × speed a standing object survives. Order: camp < bus < house < bridge. */
-export function thresholdFor(kind: ObjectKind): { depth: number; speed: number } {
-  switch (kind) {
-    case "camp":
-      return { depth: 0.1, speed: 0.4 };
-    case "bus":
-      return { depth: 0.3, speed: 0.9 };
-    case "house":
-      return { depth: 0.5, speed: 1.2 };
-    case "bridge":
-      // a small lake should spare the bridges: this needs a real flood
-      return { depth: 0.9, speed: 2.5 };
-  }
-}
-
-/** True when the flow at this cell is enough to take the object. */
-export function isSwept(kind: ObjectKind, depth: number, speed: number): boolean {
-  const t = thresholdFor(kind);
-  return depth >= t.depth && speed >= t.speed;
-}
-
-/** Fastest a carried object travels (scene units/s) — the sim's front runs at 20–30, far too fast to read. */
-export const CARRY_MAX_SPEED = 5;
-
-/** Move a carried object with the flow (velocity in scene units/s, capped at CARRY_MAX_SPEED). */
-export function advect(pos: { x: number; z: number }, v: { vx: number; vz: number }, dt: number, scale = 0.9): { x: number; z: number } {
-  const sp = Math.hypot(v.vx, v.vz);
-  const k = sp > CARRY_MAX_SPEED ? CARRY_MAX_SPEED / sp : 1;
-  return { x: pos.x + v.vx * k * dt * scale, z: pos.z + v.vz * k * dt * scale };
-}
-
-/** Taps near the channel snap into the path (bridges exactly on it) so a rough tap still lands "in the way". */
-export function snapToPath(kind: ObjectKind, x: number, z: number, channelZ: number, band = 5): { x: number; z: number } {
-  const dz = z - channelZ;
-  if (kind === "bridge") return { x, z: channelZ };
-  if (Math.abs(dz) <= band) return { x, z: channelZ + Math.sign(dz || 1) * Math.min(Math.abs(dz), 0.9) };
-  return { x, z };
-}
+// Objects: the catalogue, sweep thresholds, snapping and piece physics live in lib/object-catalogue.ts and
+// lib/flood-physics.ts (corridor v2). The sim only provides depth / velocity fields.
 
 // ---------------------------------------------------------------------------
 // The clock: where the front is → what time it was on 26 Aug 2026 (NPT), from the seeded event timeline
