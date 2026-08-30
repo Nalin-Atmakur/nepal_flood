@@ -9,12 +9,17 @@ scheduler.py — the pipeline on a plain serial loop, run explicitly in a termin
     .venv/bin/python scheduler.py --skip-first    # wait first, run later
 
 One tick = `pull_external_data.py` then `process_data.py` (the same two steps as run.sh), each as a subprocess with
-this interpreter, output streamed to the terminal and appended to run.log. Between ticks the loop simply sleeps
-(`time.sleep`) for the interval measured from the *start* of the tick, so a 4-hour cadence stays on the hour marks
-even when a tick takes ten minutes. A tick that fails (non-zero exit) is logged and the loop carries on.
+this interpreter, output streamed to the terminal and appended to run.log. A tick that fails (non-zero exit) is
+logged and the loop carries on.
+
+**The wait is measured on the wall clock, not `time.monotonic()`.** macOS stops the monotonic clock while the
+machine is asleep, so a lid closed for two hours pushed the next tick two hours later than the time the log had
+promised — the loop looked stuck (owner, 30 Aug). The deadline is now an absolute timestamp: if the machine wakes
+up past it, the next tick starts immediately, and the log says the wait overran.
 
 Nothing is installed anywhere: no launchd, no cron, no background process. Keep the terminal open (or run it
-inside `tmux`/`screen`); the machine must stay awake (`caffeinate -i` in another terminal).
+inside `tmux`/`screen`). `make schedule` wraps this in `caffeinate -i` on macOS so an idle machine does not sleep
+underneath it; on a closed lid nothing runs at all until the machine wakes.
 See docs/runbook.md §1.
 """
 from __future__ import annotations
@@ -30,6 +35,11 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 LOG = HERE / "run.log"
 STEPS = ["pull_external_data.py", "process_data.py"]
+
+
+def due_in(deadline: float, now_wall: float) -> float:
+    """Seconds still to wait, on the wall clock; never negative, so a late wake-up fires at once."""
+    return max(0.0, deadline - now_wall)
 
 
 def now() -> str:
@@ -88,18 +98,25 @@ def main() -> int:
     if args.skip_first and not args.once:
         time.sleep(interval)
     while not stop["now"]:
-        started = time.monotonic()
+        started = time.time()
         ok = tick(args.pull_args)
         log(f"tick {'ok' if ok else 'FAILED (see above)'}")
         if args.once:
             return 0 if ok else 1
-        wait = max(0.0, interval - (time.monotonic() - started))
-        nxt = (dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=wait)).strftime("%H:%M UTC")
-        log(f"sleeping {wait / 60:.0f} min — next tick ≈ {nxt} (Ctrl-C to stop)")
-        # sleep in small slices so Ctrl-C is honoured promptly
-        end = time.monotonic() + wait
-        while not stop["now"] and time.monotonic() < end:
-            time.sleep(min(30.0, end - time.monotonic()))
+        # the interval is measured from the start of the tick, so a 4-hour cadence keeps its marks even when a
+        # tick takes ten minutes; the deadline is absolute so sleeping the machine cannot push it back
+        deadline = started + interval
+        wait = due_in(deadline, time.time())
+        nxt = dt.datetime.fromtimestamp(deadline, dt.timezone.utc)
+        log(f"sleeping {wait / 60:.0f} min — next tick {nxt:%H:%M} UTC / {nxt.astimezone():%H:%M} local (Ctrl-C to stop)")
+        while not stop["now"]:
+            left = due_in(deadline, time.time())
+            if left <= 0:
+                break
+            time.sleep(min(30.0, left))
+        late = time.time() - deadline
+        if late > 120:
+            log(f"wait overran by {late / 60:.0f} min (the machine was probably asleep) — ticking now")
     log("scheduler stopped")
     return 0
 

@@ -48,6 +48,11 @@ Switching cadence — three coupled edits, one commit, one deploy:
 
 The two constants must always be equal, and match the loop's `--hours`.
 
+**If a tick never lands.** The wait is measured on the wall clock, so the next tick is an absolute time, not "four
+hours of CPU" — but a sleeping machine still runs nothing at all. `make schedule` wraps the loop in `caffeinate -i`
+so an idle Mac stays awake; a closed lid or a manual sleep still stops everything until it wakes, and the loop then
+logs `wait overran by N min (the machine was probably asleep) — ticking now` and catches up with a single tick.
+
 ## 2. Secrets
 
 | Variable | File | Used by | Public? |

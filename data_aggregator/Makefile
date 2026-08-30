@@ -50,7 +50,7 @@ deploy:          ## build + vercel --prod (site code only; data flows via the DB
 	cd web && vercel --prod --yes
 
 schedule:        ## run the pipeline every 4 h in this terminal (Ctrl-C to stop); HOURS=0.5 for 30 min
-	cd pipeline && .venv/bin/python scheduler.py --hours $(or $(HOURS),4)
+	cd pipeline && (command -v caffeinate >/dev/null && exec caffeinate -i .venv/bin/python scheduler.py --hours $(or $(HOURS),4) || exec .venv/bin/python scheduler.py --hours $(or $(HOURS),4))
 
 health:          ## 60-second health check of the live system
 	$(PY) scripts/health.py
