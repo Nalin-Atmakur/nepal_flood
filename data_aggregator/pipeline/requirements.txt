@@ -4,6 +4,7 @@ requests>=2.32
 feedparser>=6.0
 python-dateutil>=2.9
 pypdf>=4.0
+openpyxl>=3.1      # dao_nuwakot_rescued (wave 2): XLSX row counts
 openai>=1.40
 supabase>=2.0        # not used by lib/db.py (see its docstring) but kept for ad-hoc scripts
 pytest>=8.0

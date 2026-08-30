@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=1200"/> 
+<meta name="SiteName" content="水利部网站" />
+<meta name="SiteDomain" content="www.mwr.gov.cn"  />
+<meta name="SiteIDCode" content="bm20000001" />
+
+<meta name="ColumnName" content="水利要闻" />
+<meta name="ColumnDescription" content="水利要闻" />
+<meta name="ColumnKeywords" content="水利要闻" />
+<meta name="ColumnType" content="水利要闻" />
+
+
+<title>水利要闻</title>
+<link href="../../images/style.css" rel="stylesheet" type="text/css">
+<link href="../../images/common.css" rel="stylesheet" type="text/css">
+ 
+ 
+<link href="../../images/custom.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<!--[if lt IE 9]>
+
+<![endif]-->
+
+<div class="banner">
+<div class="top">
+   	 <div class="topc">
+     	<div class="fl"><span id="welcome">欢迎您来到水利部网站！</span><span id="time"></span></div>
+        
+		<div class="fr">
+		
+		<span class="padding0204"><a target="_blank" href="/english/">EN</a></span>
+		<span>|</span>
+		
+		<span class="padding0204"><a href="javascript:;" target="_self" onClick-del="toggleToolBar();" id="toolbarSwitch">无障碍阅读</a></span>　
+		
+		　
+		
+		
+		<a href="/qt/sjbwz/" target="_self"><img style="padding-top: 4px;" src="/images/mob_20170512.jpg" /></a>
+		<a href="/?from=pc" target="_self"><img style="padding-top: 2px;" src="/images/pc_20170512.jpg" /></a>
+		
+		</div>
+		
+		
+		
+        <div class="fr">
+        	<form name="MailForm" method="post" action="http://mail.mwr.gov.cn/login.ahtml?for_web=1" target="_blank" autocomplete="off">
+					<input type="hidden" name="F_domain" value="mwr.gov.cn" />
+					<input type="hidden" name="F_tm" value="98XXXXXXXX" />
+                    <input autocomplete="off" type="text" name="F_email" value placeholder="水利部邮箱用户名" />
+                    <input autocomplete="off" type="password" name="F_password" value placeholder="请输入密码" />
+               <button type="submit">登录</button>
+            </form>
+        </div>
+     </div>
+    </div>
+    	<div class="search" >
+      <input name="code" type="hidden" value="98XXXXXXXX" />
+      <input name="dataTypeId" type="hidden" value="26264" />
+      <input type="submit" value="确定" id="searchconfirm" onclick="esou()" />
+        <div class="searchconfirm1"><a href="http://jsearch.mwr.gov.cn/irs-c-web/search.shtml?code=98XXXXXXXX&dataTypeId=26264"><img src="/images_index/search_03.png" width="112" height="36" /></a></div>
+      <div class="input" id="searchbox">
+        <div id="searctitle">欢迎使用水利部<font color="#F0981D">智能搜索</font></div>
+
+        <input type="text" value autocomplete="off" name="searchWord" id="searchword" onkeydown="if(event.keyCode===13){esou()}" />
+      </div>
+
+
+
+     </div>
+        <div class="guohuilogo"><img src="/images/guohui20190411.png" width="596" height="107" /></div>	
+</div>
+<div class="main" style="height:1050px;margin-bottom:15px;">
+  
+
+<!--导航start-->
+<div class="nav" id="area_nav">
+      <ul>
+      <li class="navmenu navindex"><a href="/" class="navmenua1"><img src="/images_index/guowuyuan.png" width="57" height="28" /></a>
+      <li class="navmenu"><a href="/jg/" class="navmenua">机构</a>
+        <ul class="subnav">
+        <div class="sjtran sjtran1" ><img src="/images_index/sjbl.gif" width="20" height="20" /></div>
+        <p id="p1">
+          <a href="/jg/zzjg/">组织机构</a>
+          <a href="/jg/bzzc/">水利部领导</a>
+          <span><a href="/jg/bzzc/liguoying/">李国英</a></span>
+		  <span><a href="/jg/bzzc/zlm/">祖雷鸣</a></span>
+		  <span><a href="/jg/bzzc/cm/">陈敏</a></span>
+		  <span><a href="/jg/bzzc/lds/">刘冬顺</a></span>
+		  <span><a href="/jg/bzzc/wbe/">王宝恩</a></span>
+		  <span><a href="/jg/bzzc/szy/">孙志禹</a></span>
+
+          </p>
+        </ul>
+      </li>
+      <li class="navmenu"><a href="/xw/" class="navmenua">新闻</a>
+        <ul class="subnav">
+        <div class="sjtran sjtran2"><img src="/images_index/sjbl.gif" width="20" height="20" /></div>
+          <p id="p2"><a href="/xw/szyw/">时政要闻</a>
+          <a href="/xw/slyw/">水利要闻</a>
+          <a href="/xw/xwfbh/">新闻发布会</a>
+          <a href="/xw/sjzs/">司局直属</a>
+          <a href="/xw/dfss/">地方水事</a>
+          <a href="/xw/mtzs/">媒体之声</a>
+          <a href="/xw/ztbd/">专题报道</a>
+          <a href="/xw/wszt/">网上展厅</a>
+          <a href="http://vod.mwr.gov.cn/" target="_blank">视频库</a>
+          </p>
+        </ul>
+      </li>
+      <li class="navmenu"><a href="/zw/" class="navmenua">政务</a>
+        <ul class="subnav">
+        <div class="sjtran sjtran3"><img src="/images_index/sjbl.gif" width="20" height="20" /></div>
+          <p id="p3"><a href="/zw/zgzygwywj/">中共中央国务院文件</a>
+           <a href="/zw/zwxxgkzl/">政府信息公开</a>
+          <a href="/zw/tzgg/">通知公告</a>
+          <a href="/zw/slbgb/">水利部公报</a>
+		  <a href="/zw/zdhyxx/">重大会议信息</a>
+          <a href="/zw/ghjh/">规划计划</a>
+          <a href="/zw/zcfg/">政策法规</a>
+		  <a href="/zw/zcjd/">政策解读</a>
+          <a href="/zw/rsxx/">人事信息</a>
+          <a href="/zw/cwxx/">财务信息</a>
+          <a href="http://gjkj.mwr.gov.cn/jsjd1/bzcx/" target="_blank">技术标准</a>
+          <a href="/zw/qzqd/">权责清单</a></p>
+        </ul>
+      </li>
+	  <li class="navmenu navtext4"><a href="http://dflz.mwr.gov.cn/" class="navmenua">党风廉政</a></li>
+      <li class="navmenu"><a href="/fw/" class="navmenua">服务</a>
+        <ul class="subnav">
+        <div class="sjtran sjtran4"><img src="/images_index/sjbl.gif" width="20" height="20" /></div>
+          <p id="p4">
+          <a href="https://spjc.mwr.gov.cn/spjc/userlogin.do?ltype=nmLogin" target="_blank">审批服务大厅</a>
+          <a href="/fw/#xzspsx">行政审批事项</a>
+          <a href="/fw/spgg/">审批公告</a>
+          <a href="/fw/slgs/">受理公示</a>
+          <a href="/fw/slxf/">水利信访</a>
+          <a href="http://hfc.mwr.cn/" target="_blank">水情预警</a>
+          <a href="http://xxfb.mwr.cn/" target="_blank">实时水情</a>
+          <a href="/fw/fwxt/">服务系统</a>
+      <a href="http://jsearch.mwr.gov.cn/irs-c-web/search.shtml?code=98XXXXXXXX&dataTypeId=26264" target="_blank">水利易sou</a>
+      <a href="/fw/cjwt/" target="_blank">常见问题</a>
+          </p>
+        </ul>
+      </li>
+      <li class="navmenu"><a href="/hd/" class="navmenua">互动</a>
+        <ul class="subnav">
+        <div class="sjtran sjtran5" ><img src="/images_index/sjbl.gif" width="20" height="20" /></div>
+          <p id="p5">
+          <a href="/hd/zxft/">在线访谈</a>
+          <a href="/hd/gzzx/">公众咨询</a>
+          <a href="/hd/zqyj/">征求意见</a>
+          <a href="/hd/wsdt/">网上答题</a>
+          <a href="/hd/jjjb/">纪检举报</a>
+         </p>
+        </ul>
+      </li>
+      <li class="navmenu"><a href="/sj/" class="navmenua">数据</a> 
+         <ul class="subnav">
+        <div class="sjtran sjtran6"><img src="/images_index/sjbl.gif" width="20" height="20" /></div>
+         <p id="p6">
+        <a href="/sj/#tjgb">统计公报</a>
+          <a href="/sj/#jbjc">简报集萃</a></p>
+        </ul>
+      </li>
+      <li class="navmenu navtext3"><a href="/szs/" class="navmenua">水知识</a>
+        <ul class="subnav">
+        <div class="sjtran sjtran7"><img src="/images_index/sjbl.gif" width="20" height="20" /></div>
+          <p id="p7">
+          <a href="/szs/fxftzl/">水旱灾害防御</a>
+          <a href="/szs/sls/">水利史</a>
+          <a href="/szs/slgc/">水利工程</a>
+          <a href="/szs/slfjq/">水利风景</a>
+          <a href="/szs/sqjyjd/">水情教育基地</a>
+          <a href="/szs/slcs/">水利常识</a>
+          <a href="http://vod.mwr.gov.cn/jysp/">教育视频</a>
+          </p>
+        </ul>
+      </li>
+	  <li class="navmenu navtext4"><a href="http://supe.mwr.gov.cn/" class="navmenua">监督举报</a></li>
+    </ul>
+</div>
+<!--导航end-->
+  
+
+ 
+<div class="nav_layered"> 
+<span><a href="../../" title="首页" class="CurrChnlCls">首页</a>&gt;<a href="../" title="新闻" class="CurrChnlCls">新闻</a>&gt;<a href="./" title="水利要闻" class="CurrChnlCls">水利要闻</a></span> 
+</div>
+
+  <div  class="mainc">
+ <div class="subnavl" style="display:none">
+<h2>机构</h2>
+    <ul class="subnavlist">
+          <li class="act0"><a href="/jg/zzjg/">组织机构</a>
+          	<ul class="subnavlist2 subnavlist3" style="display:none;padding-left:8px;">
+			  <li><a href="/jg/zzjg/gyslb/">关于水利部</a></li>
+			  <li><a href="/jg/zzjg/jgsj/">机关司局</a></li>
+			  <li><a href="/jg/zzjg/zsdw/">直属单位</a></li>
+        	</ul>
+          </li>
+          <li class="act0"><a href="/jg/bzzc/" >水利部领导</a>
+          	<ul class="subnavlist2 subnavlist3" style="padding-left:8px;display:none;">
+				<li><a href="/jg/bzzc/liguoying/">李国英</a></li>
+				<li><a href="/jg/bzzc/zlm/">祖雷鸣</a></li>
+				<li><a href="/jg/bzzc/cm/">陈敏</a></li>
+				<li><a href="/jg/bzzc/lds/">刘冬顺</a></li>
+				<li><a href="/jg/bzzc/wbe/">王宝恩</a></li>
+				<li><a href="/jg/bzzc/szy/">孙志禹</a></li>
+
+          </ul>
+          </li>
+    </ul>
+</div>
+
+<div class="subnavl" style="display:none">
+	<h2>新闻</h2>
+    <ul class="subnavlist">
+          <li class="act0"><a href="/xw/szyw/">时政要闻</a></li>
+          <li class="act0"><a href="/xw/slyw/">水利要闻</a></li>
+          <li class="act0"><a href="/xw/xwfbh/">新闻发布会</a></li>
+          <li class="act0"><a href="/xw/sjzs/">司局直属</a></li>
+          <li class="act0"><a href="/xw/dfss/">地方水事</a></li>
+          <li class="act0"><a href="/xw/mtzs/">媒体之声</a></li>
+          <li class="act0"><a href="/xw/ztbd/">专题报道</a></li>
+		  <li class="act0"><a href="/xw/wszt/">网上展厅</a></li>
+		  <li class="act0"><a href="http://vod.mwr.gov.cn/" target="_blank">视频库</a></li>
+    </ul>
+</div>
+
+<div class="subnavl" style="display:none">
+<h2>政务</h2>
+    <ul class="subnavlist">
+          <li class="act0"><a href="/zw/zgzygwywj/">中共中央国务院文件</a></li>
+          <li class="act0"><a   href="/zw/zwxxgkzl/">政府信息公开</a></li>
+          <li class="act0"><a href="/zw/tzgg/">通知公告</a>
+			<ul class="subnavlist2 subnavlist3" style="display:none;padding-left:8px;">
+             <li><a href="/zw/tzgg/tzgs/">通知公示</a></li>
+             <li><a href="/zw/tzgg/zbgg/">招标公告</a></li>
+            </ul>
+          </li>
+          <li class="act0"><a href="/zw/slbgb/">水利部公报</a></li>
+		  <li class="act0"><a href="/zw/zdhyxx/">重大会议信息</a></li>
+          <li class="act0"><a href="/zw/ghjh/">规划计划</a></li>
+          <li class="act0"><a href="/zw/zcfg/">政策法规</a>
+		    <ul class="subnavlist2 subnavlist3" style="display:none;padding-left:8px;">
+              <li><a href="/zw/zcfg/fl/">法律</a></li>
+              <li><a href="/zw/zcfg/xzfghfgxwj/">行政法规和法规性文件</a></li>
+              <li><a href="/zw/zcfg/bmgz/">部门规章</a></li>
+			  <li><a href="/zw/zcfg/gfxwj/">规范性文件</a></li>
+            </ul>
+		  </li>
+          <li class="act0"><a href="/zw/zcjd/">政策解读</a></li>
+          <li class="act0"><a href="/zw/rsxx/">人事信息</a></li>
+          <li class="act0"><a href="/zw/cwxx/">财务信息</a></li>
+          <li class="act0"><a href="http://gjkj.mwr.gov.cn/jsjd1/bzcx/" target="_blank">技术标准</a></li>
+          <li class="act0"><a href="/zw/qzqd/">权责清单</a></li>
+    </ul>
+</div>
+
+
+<div class="subnavl" style="display:none">
+<h2>服务</h2>
+    <ul class="subnavlist">
+          <li class="act0"><a href="https://spjc.mwr.gov.cn/" target="_blank">审批服务大厅</a></li>
+		  <li class="act0"><a href="/fw/#xzspsx">行政审批事项</a></li>
+		  <li class="act0"><a href="/fw/spgg/">审批公告</a></li>
+          <li class="act0"><a href="/fw/slgs/">受理公示</a></li>
+          <li class="act0"><a href="/fw/slxf/">水利信访</a>
+		  	<ul class="subnavlist2 subnavlist3" style="display:none;padding-left:8px;">
+            	<li><a href="/fw/slxf/xffgjxgzd/">信访制度</a></li>
+            	<li><a href="/fw/slxf/wsxf/">网上信访</a></li>
+				<li><a href="/fw/slxf/xfzn/">信访指南</a></li>
+            	<li><a target="_blank" href="https://wsxf.mwr.gov.cn/#/xfj/cxmSearch">查询码查询</a></li>
+				<li><a href="/fw/slxf/xglj/">相关链接</a></li>
+          	</ul>
+		  </li>
+          <li class="act0"><a href="http://hfc.mwr.cn" target="_blank">水情预警</a></li>
+          <li class="act0"><a href="http://xxfb.mwr.cn/" target="_blank">实时水情</a></li>
+          <li class="act0"><a href="/fw/fwxt/">服务系统</a></li>
+          <li class="act0"><a href="http://jsearch.mwr.gov.cn/irs-c-web/search.shtml?code=98XXXXXXXX&dataTypeId=26264">水利易sou</a></li>
+          <li class="act0"><a href="/fw/cjwt/">常见问题</a></li>
+    </ul>
+</div>
+
+<div class="subnavl" style="display:none">
+<h2>互动</h2>
+    <ul class="subnavlist">
+          <li class="act0"><a href="/hd/zxft/">在线访谈</a></li>
+          <li class="act0"><a href="/hd/gzzx/">公众咨询</a></li>
+          <li class="act0"><a href="/hd/zqyj/">征求意见</a></li>
+          <li class="act0"><a href="/hd/wsdt/">网上答题</a></li>
+          <li class="act0"><a href="/hd/jjjb/">纪检举报</a></li>
+    </ul>
+</div>
+
+<div class="subnavl" style="display:none">
+<h2>数据</h2>
+    <ul class="subnavlist">
+          <li class="act0" style="padding-left:26px"><a href="/sj/tjgb/">统计公报</a>
+		    <ul class="subnavlist2 subnavlist3" style="display:none;padding-left:0px;">
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/dycqgslpcgb/">第一次全国水利普查公报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/slfztjgb/">水利发展统计公报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/szygb/">水资源公报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/zgswnb/">中国水文年报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/zghlnsgb/">中国河流泥沙公报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/zgshzhgb/">中国水旱灾害防御公报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/zgstbcgb/">中国水土保持公报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/sxgcgb/">三峡工程公报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/sqnb/">水情年报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/dxsdtyb/">地下水动态月报</a></li>
+				<li style="width:190px"><a style="font-size:14px" href="/sj/tjgb/wzndbg/">水利部政府网站工作年度报表</a></li>
+				
+            </ul>
+		  </li>
+          <li class="act0"><a href="/sj/jbjc/">简报集萃</a>
+		      	<ul class="subnavlist2 subnavlist3" style="display:none;padding-left:8px">
+					<li><a href="/sj/jbjc/slfpjb/">乡村振兴水利保障工作简报</a></li>
+                </ul>
+		  </li>
+    </ul>
+</div>
+
+<div class="subnavl" style="display:none">
+<h2>水知识</h2>
+    <ul class="subnavlist">
+          <li class="act0"><a href="/szs/fxftzl/">水旱灾害防御</a></li>
+          <li class="act0"><a href="/szs/sls/">水利史</a></li>
+          <li class="act0"><a href="/szs/slgc/">水利工程</a>
+		  <ul class="subnavlist2 subnavlist3" style="display:none;padding-left:8px;">
+            	<li><a href="/szs/slgc/gdzmslgc/">古代著名水利工程</a></li>
+            	<li><a href="/szs/slgc/zmfhgc/">著名防洪工程</a></li>
+          </ul>
+		  </li>
+          <li class="act0"><a href="/szs/slfjq/">水利风景</a></li>
+          <li class="act0"><a href="/szs/sqjyjd/">水情教育基地</a></li>
+          <li class="act0"><a href="/szs/slcs/">水利常识</a></li>
+          <li class="act0"><a href="http://vod.mwr.gov.cn/jysp/">教育视频</a></li>
+    </ul>
+</div>
+
+<div class="subnavl" style="display:none">
+<h2>特色专栏</h2>
+    <ul class="subnavlist">
+          <li class="act0"><a href="/tszl/mzyt/">每周一图</a></li>
+          <li class="act0">水利风景区</li>
+    </ul>
+</div>
+
+<div class="subnavl" style="display:none">
+<h2>其他</h2>
+    <ul class="subnavlist">
+          <li class="act0"><a href="/qt/fwltj/">访问量统计</a></li>
+          <li class="act0"><a href="/qt/phb/">排行榜</a></li>
+          <li class="act0"><a href="/qt/wzsm/">网站声明</a></li>
+          <li class="act0"><a href="/qt/wzdt/">网站地图</a></li>
+    </ul>
+</div>
+
+
+
+  <div class="newscontain" style="height:1020px;">
+    <div class="slnewscon autoHeight">
+      	<h2>水利要闻</h2>
+		
+    	<ul class="slnewsconlist">
+		    
+        	<li>
+			
+			
+			<span>2026-08-30</span>
+			
+			
+			<a href="./202608/t20260830_2140823.html">水利部持续滚动部署西藏吉隆泥石流灾害抢险救援水利支持工作</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-28</span>
+			
+			
+			<a href="./202608/t20260828_2140784.html">水利巡视工作培训班在京举办</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-28</span>
+			
+			
+			<a href="./202608/t20260828_2140782.html">水利部党组贯彻落实中央政治局会议精神</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-28</span>
+			
+			
+			<a href="./202608/t20260828_2140707.html">四川省内江市隆昌市发生5.1级地震 水利部迅即启动水利抗震救灾调度指挥机制</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-28</span>
+			
+			
+			<a href="./202608/t20260828_2140654.html">台风“沙德尔”在浙江台州登陆 水利部门有序有力应对</a></li>
+            
+			
+        </ul>
+       
+		
+    	<ul class="slnewsconlist">
+		    
+        	<li>
+			
+			
+			<span>2026-08-27</span>
+			
+			
+			<a href="./202608/t20260827_2140605.html">水利部滚动会商部署普热普强藏布堰塞湖险情处置水利支持工作</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-27</span>
+			
+			
+			<a href="./202608/t20260827_2140582.html">水利部针对西藏启动洪水防御Ⅳ级应急响应</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-27</span>
+			
+			
+			<a href="./202608/t20260827_2140523.html">水利部专题部署今年第18号台风“沙德尔”暴雨洪水防御工作</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-26</span>
+			
+			
+			<a href="./202608/t20260826_2140487.html">水利部迅即贯彻落实习近平总书记对西藏日喀则市吉隆县遭受泥石流灾害作出的重要指示精神</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-26</span>
+			
+			
+			<a href="./202608/t20260826_2140480.html">水利部迅即部署西藏吉隆泥石流灾害应急处置工作</a></li>
+            
+			
+        </ul>
+       
+		
+    	<ul class="slnewsconlist">
+		    
+        	<li>
+			
+			
+			<span>2026-08-25</span>
+			
+			
+			<a href="./202608/t20260825_2140261.html">水利部针对5省区启动洪水防御Ⅳ级应急响应</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-24</span>
+			
+			
+			<a href="./202608/t20260824_2140169.html">水利部会商部署西北华北地区暴雨洪水防御工作</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-24</span>
+			
+			
+			<a href="./202608/t20260824_2140167.html">水利部针对福建省启动洪水防御Ⅳ级应急响应</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-24</span>
+			
+			
+			<a href="./202608/t20260824_2140132.html">郁江发生2026年第2号洪水</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-23</span>
+			
+			
+			<a href="./202608/t20260823_2140032.html">左江发生2026年第1号洪水</a></li>
+            
+			
+        </ul>
+       
+		
+    	<ul class="slnewsconlist">
+		    
+        	<li>
+			
+			
+			<span>2026-08-22</span>
+			
+			
+			<a href="./202608/t20260822_2140026.html">水利部专题部署今年第19号台风“紫檀” 暴雨洪水防御工作</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-22</span>
+			
+			
+			<a href="./202608/t20260822_2140024.html">水利部针对广东广西海南启动洪水防御Ⅳ级应急响应</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-21</span>
+			
+			
+			<a href="./202608/t20260821_2139912.html">水利部党组和驻部纪检监察组召开2026年第一次全面从严治党专题会商会议</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-20</span>
+			
+			
+			<a href="./202608/t20260820_2139852.html">李国英主持召开水利部部务会议</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-19</span>
+			
+			
+			<a href="./202608/t20260819_2139700.html">李国英会见联合国粮农组织总干事屈冬玉</a></li>
+            
+			
+        </ul>
+       
+		
+    	<ul class="slnewsconlist">
+		    
+        	<li>
+			
+			
+			<span>2026-08-19</span>
+			
+			
+			<a href="./202608/t20260819_2139673.html">水利部专题部署太湖流域洪水防御工作</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-19</span>
+			
+			
+			<a href="./202608/t20260819_2139631.html">青海海西州发生5.6级地震  水利部迅即启动水利抗震救灾调度指挥机制</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-17</span>
+			
+			
+			<a href="./202608/t20260817_2139175.html">黑龙江发生2026年第2号洪水</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-16</span>
+			
+			
+			<a href="./202608/t20260816_2139116.html">河南省清潩河鄢陵县段溃口成功合龙</a></li>
+            
+			
+        	<li>
+			
+			
+			<span>2026-08-15</span>
+			
+			
+			<a href="./202608/t20260815_2139112.html">贾鲁河堤防溃口成功合龙</a></li>
+            
+			
+        </ul>
+       
+		
+        <br class="clear">	
+        <div class="fy"> </div>	
+    </div>
+    </div>
+  </div><br class="clear">
+</div>
+
+<div class="foot">
+  <div class="footl">
+    <p class="footlp"><span><a target="_blank" href="/qt/fwltj/">访问量统计</a> | </span><span><a target="_blank" href="/qt/phb/">排行榜</a> | </span><span><a target="_blank" href="/qt/wzsm/">网站声明</a> | </span><span><a href="/qt/wzdt/"> 网站地图</a></span></p>
+    <div class="footcontact">
+    <div class="footcontact1 fl">
+    <p><a style="padding:0;" href="https://beian.miit.gov.cn">京ICP备14010557号</a> &copy;中华人民共和国水利部版权所有&nbsp;&nbsp;主办：水利部办公厅&nbsp;&nbsp;承办：水利部信息中心</p>
+    <p>水利部总机：98XXXXXXXX&nbsp;&nbsp;网站联系电话：98XXXXXXXX&nbsp;&nbsp;地址：北京市西城区白广路二条2号 </p>
+    <p>政府网站标识码：bm20000001&nbsp;&nbsp;<a style="padding: 0;" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=98XXXXXXXX"><img src="/images/2018guohui03.png" style="vertical-align:text-top" />&nbsp;京公网安备98XXXXXXXX号</a>&nbsp;&nbsp;投稿信箱：webmaster@mwr.gov.cn</p>
+    </div>
+        <div class="footcontact2 fl"><a href="http://bszs.conac.cn/sitename?method=show&id=0726B189C5F03282E98XXXXXXXXACDB52"><img src="/images/dzjg.jpg" width="44" height="56" /></a>　<a href="https://zfwzgl.www.gov.cn/exposure/jiucuo.html?site_code=bm20000001&url=http%3A%2F%2Fwww.mwr.gov.cn%2F" target="_blank"><img src="/images/jiucuo.png" width="119" height="56" /></a></div>
+    </div>
+  </div>
+  <div class="footr">
+    <div class="fl marginr10">　　　　　　</div>
+
+    <div class="fl  margin_top_10"> <img src="/images/news_37.jpg" width="90" height="90" /></div>
+      <p class="margin_top_10">水利部官网</p>
+  </div>
+</div>
+
+<!-- 去掉解决信息公开显示两个无障碍 -->
+
+ 
+
+
+
+
+
+
+
+</body>
+</html>

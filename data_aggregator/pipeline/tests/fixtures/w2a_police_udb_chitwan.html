@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="np">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>     पहिचान नखुलेका शवहरू
+</title>
+    <link rel = "icon" href ="https://udb.nepalpolice.gov.np/assets/image/nepalpolice.png"
+          type = "image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <link href="https://udb.nepalpolice.gov.np/assets/nepali.datepicker.v4.0.8/css/nepali.datepicker.v4.0.8.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://udb.nepalpolice.gov.np/css/style.css">
+    <meta name="csrf-token" content="CEHnC1JsFpb5bJadI1Dugi6KEikclprsGr7Xzweb">
+
+
+
+</head>
+<body>
+<div id="app-wrapper">
+
+<div class="">
+    <div class="py-2" style="background-color: #004163">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-4">
+                    <div class="text-white text-center text-lg-start flex-nowrap">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <span class="ps-2"> प्रहरी कन्ट्रोल :</span>
+                        <span class="ps-2">१०० ,</span>
+                        <span class="ps-2"> टोल फ्री नं.: </span>
+                        <span class="ps-2">98XXXXXXXX</span>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="d-flex flex-lg-nowrap flex-wrap justify-content-lg-end justify-content-center align-items-center gap-3">
+
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="https://udb.nepalpolice.gov.np/lang/np"
+                            class="text-decoration-none text-warning fw-bold">
+                        नेपाली
+                        </a>
+
+                        <a href="https://udb.nepalpolice.gov.np/lang/en"
+                        class="position-relative d-inline-block rounded-pill bg-secondary"
+                        style="width: 46px; height: 24px;"
+                        title="Switch Language">
+
+                            <span class="position-absolute bg-white rounded-circle shadow-sm"
+                                style="width: 18px; height: 18px; top: 3px; transition: left 0.15s ease-in-out;
+                                        left: 3px;">
+                            </span>
+                        </a>
+
+                        <a href="https://udb.nepalpolice.gov.np/lang/en"
+                            class="text-decoration-none text-white">
+                            English
+                        </a>
+                    </div>
+
+
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="https://udb.nepalpolice.gov.np/toggle-bandwidth" class="btn btn-sm btn-link text-white text-decoration-none p-0 header-btn">
+                            न्यून व्यान्डविथ
+                        </a>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                                <button onclick="invertColor()" class="btn btn-sm btn-link text-white text-decoration-none p-0 header-btn">
+                        <i class="fa fa-adjust me-1"></i>
+                        Invert
+                    </button>
+
+                        <button onclick="changeFont('decrease')" class="btn btn-sm btn-link text-white text-decoration-none p-0 header-btn">
+                            A-
+                        </button>
+                        <button onclick="changeFont('original')" class="btn btn-sm btn-link text-white text-decoration-none p-0 header-btn">
+                            A
+                        </button>
+                            <button onclick="changeFont('increase')" class="btn btn-sm btn-link text-warning text-decoration-none p-0 fw-bold header-btn">
+                            A+
+                        </button>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3">
+                                <a href="https://www.facebook.com/NepalPolicePHQ/"
+                                class="text-white"
+                                target="_blank">
+                                <i class="fa fa-facebook-official"></i>
+                            </a>
+
+                            <a href="https://www.instagram.com/nepalpolice/"
+                            class="text-white"
+                            target="_blank">
+                                <i class="fa fa-instagram"></i>
+                            </a>
+
+                            <a href="https://twitter.com/policenp?lang=en"
+                            class="text-white"
+                            target="_blank">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+
+                            <a href="https://www.youtube.com/channel/UCMkrAY5yFo5eQ1SCj9aV28w"
+                            class="text-white"
+                            target="_blank">
+                                <i class="fa fa-youtube-play"></i>
+                            </a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg" style="background-color: #1e7fb2">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="https://udb.nepalpolice.gov.np/main">
+                <img class="" src="https://udb.nepalpolice.gov.np/assets/image/nepalpolice.png" alt="Your Company" style="width:70px"/>
+                <div class="ms-3 text-white">
+                    <small class=" font-semibold">अपराध अनुसन्धान विभाग</small> <br>
+                    <small class=" text-sm font-light">&quot;वस्तुनिष्ठ अपराध अनुसन्धान, मानव अधिकारको सम्मान&quot;</small>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto px-5">
+
+                    <li class="nav-item mx-3">
+                        <a href="https://udb.nepalpolice.gov.np/main"
+                           class="nav-link text-white ">
+                            गृहपृष्ठ
+                        </a>
+                    </li>
+
+                    <li class="nav-item mx-3">
+                        <a href="https://udb.nepalpolice.gov.np/dead-bodies-lists"
+                           class="nav-link text-white ">
+                            पहिचान नखुलेका शवहरू
+                        </a>
+                    </li>
+
+                    <li class="nav-item mx-3">
+                        <a href="https://udb.nepalpolice.gov.np/missing"
+                           class="nav-link text-white ">
+                            हराएका व्यक्तिहरू
+                        </a>
+                    </li>
+
+                    <li class="nav-item mx-3">
+                        <a href="https://udb.nepalpolice.gov.np/found"
+                           class="nav-link text-white ">
+                            अलपत्र भेटिएका व्यक्तिहरु
+                        </a>
+                    </li>
+
+                    <li class="nav-item mx-3">
+                        <a href="https://udb.nepalpolice.gov.np/disaster"
+                           class="nav-link text-white " style="color: yellow !important;">
+                        रसुवा जिल्लामा आएको बाढीसंग सम्बन्धित पहिचान नखुलेका शवहरूको विवरण
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</div>
+</div>
+
+<header>
+
+</header>
+    <div class="bg-light border-top border-bottom">
+    <div class="container py-3">
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb mb-0 small">
+
+                                    
+                        
+                        <li class="breadcrumb-item">
+
+                            <a href="https://udb.nepalpolice.gov.np/main"
+                               class="text-primary text-decoration-none fw-medium">
+
+                                                                    <i class="fa fa-home me-1"></i>
+                                
+                                गृहपृष्ठ
+                            </a>
+                        </li>
+                                                                                
+                        <li class="breadcrumb-item active fw-semibold text-dark"
+                            aria-current="page">
+                            पहिचान नखुलेका शवहरू
+                        </li>
+                                                </ol>
+        </nav>
+    </div>
+</div>
+<main id="site-main">
+    <div class="container my-5 rounded-md shadow-md">
+        <form action="https://udb.nepalpolice.gov.np/dead-bodies-lists" method="GET">
+            <div class="row p-3 bg-light rounded-3 shadow-sm border">
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                    <input
+                        type="text"
+                        name="value"
+                        value=""
+                        placeholder="नामको आधारमा खोज्नुहोस्"
+                        class="form-control"
+                    />
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+
+
+
+
+
+
+                    <select class="form-select select2" style="width:100%;" id="gender" name="gender"><option selected="selected" value="">लिङ्गको आधारमा खोज्नुहोस्</option><option value="male">Male</option><option value="female">Female</option><option value="other">other</option></select>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                    
+
+                    <select id="pradesh_id" name="province_id" class="form-select">
+                        <option value="" disabled selected>प्रदेशको आधारमा खोज्नुहोस्</option>
+                                                    <option
+                                 value="1">कोशी प्रदेश</option>
+                                                    <option
+                                 value="2">मधेश प्रदेश</option>
+                                                    <option
+                                selected value="3">बागमती प्रदेश</option>
+                                                    <option
+                                 value="4">गण्डकी प्रदेश</option>
+                                                    <option
+                                 value="5">लुम्बिनी प्रदेश</option>
+                                                    <option
+                                 value="6">कर्णाली प्रदेश</option>
+                                                    <option
+                                 value="7">सुदूरपश्चिम प्रदेश</option>
+                                            </select>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                    <select id="district_id" name="district_id" class="form-select">
+                        <option value="" disabled selected>जिल्लाको आधारमा खोज्नुहोस्</option>
+                        
+                        
+                        
+                    </select>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                    <input class="form-control" id="date_fromNP" placeholder="मिति देखि" autocomplete="off" name="date_fromNP" type="text">
+                    <input type="hidden" name="date_from" id="date_from">
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                    <input class="form-control" id="date_toNP" placeholder="मिति सम्म" autocomplete="off" name="date_toNP" type="text">
+                    <input type="hidden" name="date_to" id="date_to">
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                    <button class="btn btn-primary py-2 px-4 rounded-md text-white text-sm">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                        खोज्नुहोस्
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="row m-1" style="background: lightgray">
+            <h5 class="fw-bold pb-2 text-center mt-3">पहिचान नखुलेको शवको विवरण</h5>
+        </div>
+        <div class="rounded-md">
+            <div class="">
+                <table class="table table-striped table-bordered">
+                    <thead class="bg-slate-200">
+                    <tr class="border">
+                        <th class="text-center">क्र.सं.</th>
+                        <th class="text-center">फोटो</th>
+                        <th colspan="2" class="text-center">विवरण</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                                                                <tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2572">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2571">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2570">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2532">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2529">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="कारागार अगाडि उद्योगसंघको भवन, भरतपुर चितवन ।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2526">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2525">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2522">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2517">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="कारागार अगाडि उद्योगसंघको भवन, भरतपुर चितवन ।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2516">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2515">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2514">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="कारागार अगाडि उद्योगसंघको भवन, भरतपुर चितवन ।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2513">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2512">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2509">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2508">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="कारागार अगाडि उद्योगसंघको भवन, भरतपुर चितवन ।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2507">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED<b class="font-bold">REDACTED</b>REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="जिल्ला चितवन अस्पतालमा रहेको।"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2506">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="कारागार अगाडि उद्योगसंघको भवन"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2505">REDACTED</a>REDACTED</td>REDACTED</tr>REDACTED<tr class=" ">REDACTED<th class="text-center">REDACTED</th>REDACTED<td>REDACTED<div class="avatar d-flex justify-content-center align-items-center">REDACTED<a class="home-avatar-link"
+                                           href="#"
+                                           target="_blank"
+                                           style="display: inline-flex; flex-direction: column; align-items: center; text-decoration: none;">REDACTED<img loading="lazy"
+                                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;"
+                                                 src="#">REDACTED<span style="text-align: center; margin-top: 5px;">REDACTED</span>REDACTED</a>REDACTED</div>REDACTED</td>REDACTED<td>REDACTED<ul class="position-relative"
+                                    style="background:#fff8f8; border:2px solid #dc3545; border-left:5px solid #dc3545; border-radius:5px; padding:10px 10px 5px 10px; width:100%; box-sizing:border-box; margin:0;">REDACTED<span style="position:absolute; top:5px; right:5px; z-index:10; background:#dc3545; color:#fff; padding:3px 8px; border-radius:3px; font-size:11px; font-weight:bold; line-height:16px;">REDACTED</span>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold ">REDACTED</b>REDACTED<span class="ms-4">REDACTED</span>REDACTED<span>REDACTED<b class="font-bold">REDACTED</b>REDACTED<span>REDACTED</span>REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED</li>REDACTED<li class="mb-2 list-group-item"><b class="font-bold">REDACTED</b>REDACTED<span class="convert_date">REDACTED</span>REDACTED</li>REDACTED<li class="mb-2 list-group-item">REDACTED<b class="font-bold">REDACTED</b>REDACTED<span data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="कारागार अगाडि उद्योगसंघको भवन"
+                                                style="cursor: pointer;">REDACTED</span>REDACTED</li>REDACTED</ul>REDACTED</td>REDACTED<td>REDACTED<a class="btn btn-primary" href="https://udb.nepalpolice.gov.np/dead-bodies/2501">REDACTED</a>REDACTED</td>REDACTED</tr>
+                            
+                                        </tbody>
+                </table>
+
+                <div class="col-md-12 mb-3">
+        <div class="row d-flex">
+            <div class="col-md-6">
+                <span>Showing 1 out of 6 Pages</span>
+            </div>
+            <div class="col-md-6 pagination-controls"> <!-- Use 'ml-auto' to align to the right -->
+                                    <span class="btn btn-secondary btn-sm ml-2 disabled">&laquo; अघिल्लो</span>
+                
+                
+                                    <a class="btn btn-secondary btn-sm ml-2"
+                       href="https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=3&amp;district_id=35&amp;date_from=2026-08-26&amp;count=117&amp;page=1">1</a>
+                                    <a class="btn btn-secondary btn-sm ml-2"
+                       href="https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=3&amp;district_id=35&amp;date_from=2026-08-26&amp;count=117&amp;page=2">2</a>
+                                    <a class="btn btn-secondary btn-sm ml-2"
+                       href="https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=3&amp;district_id=35&amp;date_from=2026-08-26&amp;count=117&amp;page=3">3</a>
+                
+                                    <span class="ml-2">...</span>
+                    <a class="btn btn-secondary btn-sm ml-2" href="https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=3&amp;district_id=35&amp;date_from=2026-08-26&amp;count=117&amp;page=6">6</a>
+                
+                                    <a class="btn btn-secondary btn-sm ml-2"
+                       href="https://udb.nepalpolice.gov.np/dead-bodies-lists?province_id=3&amp;district_id=35&amp;date_from=2026-08-26&amp;count=117&amp;page=2"
+                       id="next">अर्को &raquo;</a>
+                                
+            </div>
+        </div>
+    </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+<footer id="site-footer">
+<div class="py-3" style="background-color: #164163">
+    <div class="container">
+        <div class="row">
+            <div class="text-white col-sm-4 col-xl-3">
+                <ul class="list footer-list" style="list-style: none">
+                    <h5><u>सम्पर्कको लागि</u></h5>
+                    <li>
+                        नेपाल प्रहरी प्रधान कार्यालय
+                    </li>
+                    <li>
+                        अपराध अनुसन्धान विभाग
+                    </li>
+
+                    <li>
+                        <span class="text-white">
+                            <i class="fa fa-map-marker"></i> &nbsp;
+                            नक्साल, काठमाण्डौ (7MV7P87H+VC)
+                        </span>
+
+                    </li>
+
+
+                    <li>
+                        <span class="text-white">
+                            <i class="fa fa-phone"></i> &nbsp;
+                            98XXXXXXXX
+                        </span>
+
+                    </li>
+
+
+                    <li>
+                        <span class="text-white">
+                            <i class="fa fa-envelope"></i> &nbsp;
+                            cicu@nepalpolice.gov.np
+                        </span>
+
+                    </li>
+
+                </ul>
+            </div>
+            <div class="text-white col-sm-4 col-xl-3">
+                <!-- Contact information here -->
+            </div>
+            <div class="text-white col-sm-4 col-xl-3 text-center m-5">
+                <p class="visitor-count">
+                </p>
+            </div>
+
+            
+
+
+        </div>
+        <hr style="color: white">
+        <div class="row">
+            <div class="col-lg-4">
+                <span class="text-white ps-3"> © 2026 - नेपाल प्रहरी । सर्वाधिकार सुरक्षित </span>
+            </div>
+            <div class="col-lg-4">
+
+                
+                
+                
+                
+                
+                
+            </div>
+            <div class="col-lg-4">
+                <span class="text-white ps-3 pull-right"><i class="fa fa-users"></i> &nbsp;पृष्ठ भ्रमण : 
+                    <span class="badge badge-primary" style="font-size: 18px;">
+                    ७४१५७९
+                    </span>
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</footer>
+</div>
+    
+</body>
+</html>

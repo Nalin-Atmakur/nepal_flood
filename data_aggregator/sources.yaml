@@ -107,13 +107,19 @@ sources:
 
 - id: volunteer_bulletin_repo
   family: s3   # raw.githubusercontent
-  url: https://raw.githubusercontent.com/nirajbhusal/rasuwa-flood-bulletin/main/   # ndrrma-rescue.csv, army-heli-rescue.csv, rasuwa-foreign-rescued.csv, family.json, dhm-rivers.json, ems927-grading.csv
+  url:   # contents listing + the count-bearing files (family.json / *.json name lists are deliberately not pulled)
+    - https://api.github.com/repos/nirajbhusal/rasuwa-flood-bulletin/contents/
+    - https://raw.githubusercontent.com/nirajbhusal/rasuwa-flood-bulletin/main/ndrrma-rescue.csv
+    - https://raw.githubusercontent.com/nirajbhusal/rasuwa-flood-bulletin/main/army-heli-rescue.csv
+    - https://raw.githubusercontent.com/nirajbhusal/rasuwa-flood-bulletin/main/rasuwa-foreign-rescued.csv
+    - https://raw.githubusercontent.com/nirajbhusal/rasuwa-flood-bulletin/main/rasuwa-hospital-dhunche.csv
+    - https://raw.githubusercontent.com/nirajbhusal/rasuwa-flood-bulletin/main/dhm-rivers.json
   auth: none
   cadence: 60m
   format: csv/json
   holds: normalised copies of official lists + family registry; 716-commit history of list changes
   pii: true
-  parser: row counts and rescued-location distributions; git history = timeline of official list revisions
+  parser: prestore() projects every CSV to {rows, columns, counts of safe columns}; figures = row counts, status/nationality/location distributions, dhm-rivers levels
   catalogue: A8
   verified: C
 
@@ -133,7 +139,7 @@ sources:
 
 - id: ndrrma_newsinfo
   family: json_api
-  url: https://ndrrma.gov.np/api/v1/pressnotenews/newsinfo/?ordering=-id
+  url: https://ndrrma.gov.np/api/v1/pressnotenews/newsinfo/?ordering=-id&limit=40
   auth: none
   cadence: 2h
   format: json (title + jpg)
@@ -144,7 +150,7 @@ sources:
 
 - id: ndrrma_bulletins
   family: json_api
-  url: https://ndrrma.gov.np/api/v1/bulletin/bulletins/?ordering=-id
+  url: https://ndrrma.gov.np/api/v1/bulletin/bulletins/?ordering=-id&limit=5
   auth: none
   cadence: daily
   format: json → pdf
@@ -166,10 +172,10 @@ sources:
 
 - id: heoc_sitreps
   family: html
-  url: https://heoc.mohp.gov.np/news/{sitrep-slug}/detail
+  url: https://heoc.mohp.gov.np/news   # listing; the featured card's detail page lists the other sitreps ("other news")
   auth: none
   cadence: daily
-  format: base64-embedded JPEG — OCR required
+  format: html listing → detail pages whose body is a base64-embedded JPEG (not OCR'd; articles only)
   holds: health-sector sitrep (treated/referred/deaths in care, facility damage)
   pii: false
   catalogue: A24
@@ -187,11 +193,11 @@ sources:
   verified: C
 
 - id: dao_nuwakot_rescued
-  family: pdf
+  family: html
   url: https://daonuwakot.moha.gov.np/post/ma-ta-bha-tha-ra-gata-sama-ma-utha-tha-ra-gara-eka-va-yaka-ta-hara-ka-va-varanae
   auth: none
   cadence: daily
-  format: xlsx + pdf
+  format: html post → xlsx (+ pdf); the xlsx is stored in Storage raw/dao_nuwakot/
   holds: rescued persons (~1,436) + rescued foreigners (~170) with rescue location
   pii: true
   parser: row counts + rescue-location distribution only
@@ -295,8 +301,9 @@ sources:
   auth: none
   cadence: 10m
   format: json 332 stations
-  holds: same as river-stations, direct from DHM
+  holds: same as river-stations, direct from DHM (no coordinates; silent stations have no timestamp)
   pii: false
+  parser: gauges station_id 'dhm:<id>'; corridor water_level_m by title match
   catalogue: B2
   verified: C
 
@@ -356,9 +363,10 @@ sources:
   verified: C
 
 - id: ntc_restoration_articles
-  family: rss   # via outlet feeds below; filter title/body for NTC|Ncell|tower|BTS
+  family: rss   # derived: no fetch — process_data ③ scans stored articles (last 3 days) for NTC|Ncell|टावर|tower|BTS + restoration wording
   url: (derived from outlet_rss_* sources)
   cadence: 60m
+  parser: normalisers/ntc_restoration_articles.scan_articles → figures 'NTC/Ncell via press' telecom_restored/telecom_outage scope place:<id>
   holds: site-by-site telecom restoration — best reached/unreached proxy
   pii: false
   catalogue: B1
@@ -374,6 +382,7 @@ sources:
   format: xml listing → geojson/gpkg/pmtiles
   holds: flood extent, destroyed features, helipads, health, police, admin, TM boundaries, Vantor mosaic
   pii: false
+  parser: keys modified since 26 Aug → 'dataset availability' articles (format variants collapsed per layer)
   catalogue: C2
   verified: C
 
@@ -385,6 +394,7 @@ sources:
   format: json
   holds: every HDX dataset touching the event (HOT, UNOSAT, EMSR927, Microsoft, HeiGIT, GLIDE)
   pii: false
+  parser: datasets modified since 26 Aug matching flood|rasuwa|… → 'dataset availability' articles publisher HDX
   catalogue: C1–C13
   verified: C
 
@@ -396,13 +406,13 @@ sources:
   format: json
   holds: AOI list, product versions/status, stats; products zip at https://rapidmapping.emergency.copernicus.eu/backend/EMSR927/EMSR927_products.zip (GET only)
   pii: false
-  parser: watch AOI04 status + products.zip last-modified
+  parser: per-AOI product stats → figures scope place:<aoi>; aoi_delivered watches AOI04
   catalogue: C1
   verified: C
 
 - id: nesra_bucket
   family: gcs
-  url: https://storage.googleapis.com/npl-flood-front/{summary.json|flood_zones.geojson|buildings_in_extent.geojson|roads_bridges_in_extent.geojson|cems_buildings.geojson|cems_roads.geojson}
+  url: https://storage.googleapis.com/npl-flood-front/{summary.json|bridges_to_inspect.geojson|buildings_in_extent.geojson}   # flood_zones / roads_bridges_in_extent / cems_* stay in the bucket, not pulled
   auth: none
   cadence: 6h
   format: json/geojson (+ S2 COGs under cog/)
@@ -451,7 +461,8 @@ sources:
   cadence: 6h
   format: json
   holds: drone/satellite uploads — watch for first post-event drone orthomosaic
-  pii: false
+  pii: contact/user fields hold a name + e-mail — never read
+  parser: uploads since 26 Aug → 'dataset availability' articles; figure post_event_uav_uploads
   catalogue: D7 / D8
   verified: C
 
@@ -485,6 +496,7 @@ sources:
   format: json
   holds: mapping/validation progress per project (63069, 63102, 63235, 63236)
   pii: false
+  parser: mapped_pct/validated_pct/contributors scope project:<id> + statistics sub-fetch (mappers, tasks_total)
   catalogue: C2
   verified: C
 
@@ -516,11 +528,23 @@ sources:
 
 - id: google_news_site_queries
   family: rss
-  url: https://news.google.com/rss/search?q=site:{domain}+flood+when:2d&hl=en&gl=US&ceid=US:en   # domains without RSS: thehimalayantimes.com, myrepublica.nagariknetwork.com, ekantipur.com (q=बाढी), setopati.com, nagariknews.nagariknetwork.com, english.news.cn, globaltimes.cn, apnews.com, theguardian.com, aljazeera.com, cbsnews.com
+  url:
+    - https://news.google.com/rss/search?q=site:kathmandupost.com+flood+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:thehimalayantimes.com+flood+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:myrepublica.nagariknetwork.com+flood+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:ekantipur.com+%E0%A4%AC%E0%A4%BE%E0%A4%A2%E0%A5%80+when:2d&hl=en&gl=US&ceid=US:en   # q=बाढी
+    - https://news.google.com/rss/search?q=site:setopati.com+%E0%A4%AC%E0%A4%BE%E0%A4%A2%E0%A5%80+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:nagariknews.nagariknetwork.com+%E0%A4%AC%E0%A4%BE%E0%A4%A2%E0%A5%80+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:english.news.cn+Nepal+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:globaltimes.cn+Nepal+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:apnews.com+Nepal+flood+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:theguardian.com+Nepal+flood+when:2d&hl=en&gl=US&ceid=US:en
+    - https://news.google.com/rss/search?q=site:aljazeera.com+Nepal+flood+when:2d&hl=en&gl=US&ceid=US:en
   auth: none
   cadence: 60m
-  format: rss (100/query; links are redirectors)
-  holds: enumerator for non-RSS outlets; also topic queries "Rasuwa flood", "Bhotekoshi", "Gyirong" in EN/HI/ZH editions
+  format: rss (100/query; links are redirectors — stored as-is when the id is the new AU_yqL… form)
+  holds: enumerator for non-RSS outlets (KP, THT, Republica, ekantipur, Setopati, Nagarik, Xinhua EN, Global Times, AP, Guardian, AJ)
+  parser: title '<headline> - <outlet>' split; publisher from <source>; relevance gate; dedupe on url across queries
   pii: false
   catalogue: F24
   verified: C
@@ -544,12 +568,15 @@ sources:
 
 - id: ekantipur_live
   family: html
-  url: https://ekantipur.com/news/2026/08/26/17877170054081721.html   # + homepage for new dated links
+  url:
+    - https://ekantipur.com/news/2026/08/26/17877170054081721.html   # live page: 360+ timestamped posts
+    - https://ekantipur.com/                                          # homepage: dated /<section>/2026/MM/DD/… links
   auth: none
   cadence: 30m
   format: html (364 timestamped sub-headlines)
   holds: richest Nepali per-place stream (Timure 48×, Dhunche 27×…)
-  pii: headlines sometimes name individuals
+  pii: headlines sometimes name individuals   # reporter bylines (<strong>- name</strong>) are stripped from bodies
+  parser: live posts → articles (url = page#slug, NPT data-date, exact gazetteer places); homepage links dated ≥ 26 Aug
   catalogue: F14
   verified: C
 
@@ -563,9 +590,10 @@ sources:
     - https://www.abc.net.au/news/2026-08-29/death-toll-rises-as-rescuers-work-through-flood-devastation/107092742
   auth: browser_ua (curl works; some block fetch tools)
   cadence: 60m
-  format: html
+  format: html (schema.org LiveBlogPosting.liveBlogUpdate[] on every page)
   holds: timestamped official quotes
-  pii: false
+  pii: false   # post authors are never read
+  parser: one article per post; title = headline or first sentence ≤ 140 chars; relevance gate
   catalogue: F19
   verified: C
 
@@ -578,18 +606,22 @@ sources:
   cadence: 2h
   format: json
   holds: Tibet-side coverage (the only side with Gyirong counts)
-  pii: some headlines name officers
+  pii: some headlines name officers   # editor/author fields are never read
+  parser: articles zh dated ≥ 26 Aug CST; People's Daily headlines with 死亡/失联/受伤 N人 → figures 'Xinhua/People’s Daily' scope country:china
   catalogue: F23
   verified: C
 
 - id: wikipedia_revisions
   family: mediawiki
-  url: https://en.wikipedia.org/w/api.php?action=query&prop=revisions|extlinks&titles=2026_Nepal_floods&rvlimit=50&format=json   # + Timeline article, zh, Wikidata Q141182413
+  url:
+    - https://en.wikipedia.org/w/api.php?action=query&prop=revisions|extlinks&titles=2026_Nepal_floods&rvlimit=50&rvprop=ids|timestamp|size&ellimit=500&format=json   # revision stream + every external link (no usernames)
+    - https://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=2026_Nepal_floods&rvslots=main&rvprop=ids|timestamp|content&rvlimit=1&format=json      # latest wikitext (infobox + citations)
   auth: none
   cadence: 60m
   format: json
   holds: curated timeline; 174 external links as crawl seeds; revision stream as change detector
-  pii: false
+  pii: false   # rvprop excludes user names
+  parser: infobox deaths/injuries/missing → figures 'Wikipedia (unattributed)' note 'do not cite'; {{cite}} templates → articles
   catalogue: F25
   verified: C
 
@@ -623,8 +655,9 @@ sources:
   auth: none
   cadence: 60m
   format: text
-  holds: independent confirmation of USGS events
+  holds: independent confirmation of USGS events (gfz2026qrfy Mw 5.69 landslide)
   pii: false
+  parser: pipe-delimited text → seismic_event per row
   catalogue: E5
   verified: C
 

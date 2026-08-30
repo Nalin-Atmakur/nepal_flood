@@ -250,3 +250,9 @@ feed summary (tags stripped, ≤ 2000 chars). `FETCH_BODIES = False` — article
 fetched. Items without a title or link are skipped; nothing else is filtered (① decides which
 articles mention corridor places). Fixture `outlet_rss_set.json` (13 parts × 8 items, bylines
 replaced by `EXAMPLE-PERSON-n`).
+
+Wave-2 official/government sources (setu_recordlist, police_udb, volunteer_bulletin_repo, heoc_sitreps, dao_nuwakot_rescued, dao_rasuwa_hub, ifrc_go, china_mwr, china_mfa_pressers, us_embassy_alerts, ndrrma_newsinfo, ndrrma_bulletins) are documented in [05a-sources-wave2-official.md](05a-sources-wave2-official.md).
+
+---
+
+Wave 2 (geospatial + text — NESRA, EMSR927, HOT TM, GEOFON, DHM river watch, Google News site queries, ekantipur live, live blogs, China search APIs, Wikipedia, NTC restoration, HDX / HOT S3 / OpenAerialMap availability): [05b-sources-wave2-geospatial-text.md](05b-sources-wave2-geospatial-text.md).
