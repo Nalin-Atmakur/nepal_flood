@@ -28,7 +28,12 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
   let shakeAmt = 0;
   let ease = 0.35; // goal-chasing rate (higher = snappier)
   let impact: { x: number; y: number; z: number; t: number } | null = null;
-  const RIDE = { rad: 44, pol: 0.5, az: -1.5 };
+  /** the cinematic shot: well back and high enough that the floor, the front and the next villages share the frame (D-075) */
+  const RIDE = { rad: 70, pol: 0.64, az: -1.45 };
+  const RIDE_LEAD = 10; // look this far ahead of the front
+  const RIDE_END_X = 34; // past here the plain is flat and wide: hand back to the overview
+  const OPEN_AZ = -0.9; // the opening shot looks at the lake from the south (from the west there is only the dam's back)
+  const SWING_SECONDS = 5; // …and swings round into the ride's along-the-corridor angle
   /**
    * The chase camera is opt-in (D-054: the default view is the overview; D-064: the **Cinematic** button turns the
    * ride on for one run — open on the lake, follow the front along the channel with a slow sway, ease back to the
@@ -90,17 +95,20 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
 
   function update(dt: number, run: RunInfo, allowRide: boolean): void {
     const k = 1 - Math.pow(1 - ease, dt * 8);
-    if (cinematic && !userTook && allowRide && run.state === "running" && Number.isFinite(run.frontX)) {
+    if (cinematic && !userTook && allowRide && run.state === "running" && Number.isFinite(run.frontX) && run.frontX < RIDE_END_X) {
       mode = "ride";
       rideT += dt;
-      // look a little ahead of the front, from behind and above, swaying slowly across the valley
-      const tx = Math.min(run.frontX + 4, 42);
+      // look ahead of the front, from behind and above, swaying slowly across the valley; the angle steepens as
+      // the valley opens (a low shot over the flat plain is mostly sky)
+      const tx = Math.min(run.frontX + RIDE_LEAD, RIDE_END_X + 2);
       const tz = meander(tx);
-      const sway = Math.sin(rideT * 0.35) * 0.45;
-      const bob = Math.sin(rideT * 0.23) * 0.06;
-      setGoal({ target: { x: tx, y: bedH(tx, tz) + 1.5, z: tz }, rad: RIDE.rad, pol: RIDE.pol + bob, az: RIDE.az + sway });
-      ease = 0.22;
-    } else if (!userTook && mode === "ride" && run.state !== "running") {
+      const along = Math.max(0, Math.min(1, (tx + 42) / 84));
+      const sway = Math.sin(rideT * 0.25) * 0.22;
+      const bob = Math.sin(rideT * 0.19) * 0.04;
+      const swing = Math.max(0, 1 - rideT / SWING_SECONDS);
+      setGoal({ target: { x: tx, y: bedH(tx, tz) + 2, z: tz }, rad: RIDE.rad + 10 * along, pol: RIDE.pol - 0.2 * along + bob, az: RIDE.az + (OPEN_AZ - RIDE.az) * swing + sway });
+      ease = 0.14; // slow, steady — a dolly, not a chase
+    } else if (!userTook && mode === "ride" && (run.state !== "running" || run.frontX >= RIDE_END_X)) {
       // the run ended: ease back to the fitted overview
       cinematic = false;
       fit(true);
@@ -252,7 +260,7 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
       mode = "ride";
       drift = false;
       rideT = 0;
-      Object.assign(cur, { target: { x: lake.x + 3, y: lake.y, z: lake.z }, rad: 30, pol: 0.85, az: -1.5 });
+      Object.assign(cur, { target: { x: lake.x + 6, y: lake.y, z: lake.z }, rad: 62, pol: 0.6, az: OPEN_AZ });
       setGoal(cur);
     },
     setCinematic(on) {

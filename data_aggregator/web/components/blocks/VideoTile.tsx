@@ -9,7 +9,7 @@ import { videoEmbed, videoThumb, videoWatch, type FloodVideo } from "@/lib/video
  * One clip (web/docs/18-flood-videos.md). Three states:
  *   poster  — YouTube's thumbnail + ▶; nothing from YouTube is loaded
  *   auto    — the tile is ≥ 60 % in view: the embed plays muted, looping (browsers only allow silent autoplay);
- *             a small "muted" badge says why; scrolling it out of view returns it to the poster
+ *             a "muted · tap the speaker" line under the player says why; scrolling it out returns it to the poster
  *   play    — the visitor tapped the poster: the embed plays with sound and stays
  * Autoplay is skipped for reduced-motion and Save-Data visitors.
  */
@@ -56,11 +56,6 @@ export default function VideoTile({ v, lang, placeName }: { v: FloodVideo; lang:
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
             />
-            {mode === "auto" ? (
-              <span className="absolute top-2 right-2 pointer-events-none arcade text-[8px] bg-card/90 text-ink b-ink-2 rounded-r2 px-2 py-1" aria-hidden="true">
-                {t(lang, "sec.videos_muted")}
-              </span>
-            ) : null}
           </>
         ) : (
           <button type="button" onClick={() => setMode("play")} className="absolute inset-0 w-full h-full cursor-pointer group" aria-label={`${t(lang, "sec.videos_play")}: ${caption}`}>
@@ -77,6 +72,12 @@ export default function VideoTile({ v, lang, placeName }: { v: FloodVideo; lang:
         )}
       </div>
       <div className="p-3 flex flex-col gap-[6px]">
+        {/* the muted note lives under the player, never over YouTube's own controls (owner, 30 Aug 16:05) */}
+        {mode === "auto" ? (
+          <p className="m-0 font-semibold text-[11px] text-amber-text lh-tight" aria-live="polite">
+            🔇 {t(lang, "sec.videos_muted")}
+          </p>
+        ) : null}
         <p className="m-0 font-extrabold text-[13.5px] lh-tight">{caption}</p>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-medium text-[11.5px] text-muted lh-body">
           {v.placeId && placeName ? (
