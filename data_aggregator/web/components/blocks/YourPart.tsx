@@ -89,9 +89,9 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
               </li>
             ))}
           </ol>
-          <div className="flex items-center justify-between gap-3 border-t-[2px] border-rule pt-3">
-            <span className="font-bold text-[12.5px] text-ink">{t(lang, "yours.goal_share")}</span>
-            <ShareMenu lang={lang} size="sm" />
+          <div className="flex flex-col gap-2 border-t-[2px] border-rule pt-3">
+            <span className="font-bold text-[12.5px] text-muted">{t(lang, "yours.goal_share")}</span>
+            <ShareMenu lang={lang} size="cta" label={t(lang, "yours.share_cta")} />
           </div>
         </aside>
       )}

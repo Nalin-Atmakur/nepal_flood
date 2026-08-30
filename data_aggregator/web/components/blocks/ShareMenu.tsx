@@ -9,7 +9,7 @@ import ShareBar from "./ShareBar";
  * Always the pills — on phones too: WhatsApp through wa.me carries the hook text and gets a link preview, which the
  * native share sheet does not give a text+URL share (docs/19 #10). The sheet is still there as "More…".
  */
-export default function ShareMenu({ lang, size = "md" }: { lang: Lang; size?: "md" | "sm" }) {
+export default function ShareMenu({ lang, size = "md", label }: { lang: Lang; size?: "md" | "sm" | "cta"; label?: string }) {
   const [open, setOpen] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
 
@@ -39,12 +39,14 @@ export default function ShareMenu({ lang, size = "md" }: { lang: Lang; size?: "m
   const cls =
     size === "sm"
       ? "inline-flex items-center justify-center min-h-[40px] px-3 rounded-r2 b-ink-2 bg-card font-bold text-[12.5px] text-ink cursor-pointer hover:bg-ground"
-      : "inline-flex items-center justify-center min-h-[44px] px-4 rounded-r2 b-ink-2 bg-card font-bold text-[14px] text-ink cursor-pointer hover:bg-ground";
+      : size === "cta"
+        ? "flex w-full items-center justify-center min-h-[52px] px-6 pt-[2px] rounded-r2 b-ink-2 bg-amber-fill text-ink font-extrabold text-[16px] shadow-hard-3 press-3 cursor-pointer"
+        : "inline-flex items-center justify-center min-h-[44px] px-4 rounded-r2 b-ink-2 bg-card font-bold text-[14px] text-ink cursor-pointer hover:bg-ground";
 
   return (
-    <div ref={boxRef} className="relative">
+    <div ref={boxRef} className={size === "cta" ? "relative w-full" : "relative"}>
       <button type="button" onClick={onClick} aria-expanded={open} aria-haspopup="dialog" className={cls} data-testid="share-menu">
-        ↗ {t(lang, "nav.share")}
+        ↗ {label ?? t(lang, "nav.share")}
       </button>
       {open ? (
         <div
