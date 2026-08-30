@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const LANGS = ["en", "ne", "hi"] as const;
-const HOME_BLOCKS = ["right-now", "corridor", "yours"] as const;
+const HOME_BLOCKS = ["right-now", "corridor", "videos", "yours"] as const;
 const NUMBERS_BLOCKS = ["yours", "side", "stats", "first-hours"] as const;
 const LATEST_BLOCKS = ["yours", "digest", "latest", "river"] as const;
 const WAIT = { timeout: 15_000 };
@@ -19,6 +19,15 @@ for (const lang of LANGS) {
       await expect(page.locator('[data-block="right-now"]').first()).toBeVisible(WAIT);
       await expect(page.getByText("LIVE", { exact: true }).first()).toBeVisible(WAIT);
       await expect(page.locator('nav[aria-label] a[aria-current="page"]').first()).toBeAttached(WAIT);
+    });
+
+    test("the footage block: nine click-to-play posters, no iframe until a tap", async ({ page }) => {
+      await page.goto(`/${lang}`);
+      const row = page.locator('[data-block="videos"] [data-testid="videos-row"]');
+      await expect(row).toBeAttached(WAIT);
+      await expect(row.locator("[data-video]")).toHaveCount(9);
+      await expect(row.locator("iframe")).toHaveCount(0);
+      await expect(page.locator('[data-block="videos"] [data-testid="videos-add"] a')).toHaveAttribute("href", new RegExp(`/${lang}/report`));
     });
 
     test("numbers and latest-news tabs render their blocks, each headed by Your part", async ({ page }) => {
