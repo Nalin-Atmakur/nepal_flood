@@ -120,9 +120,9 @@ CAPTIONS: dict[str, tuple[str, str, str]] = {
     "reports_total": ("have added what they know on this site.", "जनाले यस साइटमा आफूलाई थाहा भएको कुरा थपेका छन्।", "लोगों ने इस साइट पर अपनी जानकारी जोड़ी है।"),
     "reports_last_hour": ("reports added in the last hour.", "विवरण पछिल्लो एक घण्टामा थपिए।", "रिपोर्ट पिछले एक घंटे में जोड़ी गईं।"),
     "submissions_today": ("contributions submitted today (Nepal time).", "योगदान आज (नेपाली समय) पेश भए।", "योगदान आज (नेपाल समय) जमा हुए।"),
-    "duplicates_merged": ("people appear on more than one list — merged into a single record here.",
-                          "जना एकभन्दा बढी सूचीमा छन् — यहाँ एउटै अभिलेखमा मिलाइएको।",
-                          "लोग एक से अधिक सूची में हैं — यहाँ एक ही रिकॉर्ड में मिलाए गए।"),
+    "duplicates_merged": ("people listed more than once on the registers — the same name, age and nationality — merged into a single record here (matches with ages far apart are kept separate).",
+                          "दर्तामा एकभन्दा बढी पटक सूचीबद्ध व्यक्ति — उही नाम, उमेर र राष्ट्रियता — यहाँ एउटै अभिलेखमा जोडिएका (उमेर धेरै फरक भएका मिलान अलग राखिन्छन्)।",
+                          "रजिस्टरों में एक से अधिक बार दर्ज लोग — वही नाम, उम्र और राष्ट्रीयता — यहाँ एक ही रिकॉर्ड में जोड़े गए (जिनकी उम्र बहुत अलग है उन्हें अलग रखा गया है)।"),
     "last_pull": ("minutes since the last data pull.", "मिनेट अघि पछिल्लो डेटा तानिएको।", "मिनट पहले आखिरी डेटा खींचा गया।"),
 }
 LIVE_CAPTIONS = CAPTIONS   # name kept for callers of the previous version

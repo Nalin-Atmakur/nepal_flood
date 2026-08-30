@@ -14,6 +14,8 @@ Scoring `score(a, b)` (pure, unit-tested):
         same age band + same nationality                              0.6 … 0.9  (0.6 + 0.3·(jw−0.85)/0.15)
     same group_key and same place                                    +0.1
     conflicting sex, or age bands ≥ 2 apart                           −0.5
+    approximate ages both known and > 8 years apart (same band)       −0.5   (P9: same-name collisions)
+    approximate ages 4–8 years apart                                  −0.3   (→ grey zone)
 Thresholds: ≥ 0.9 merge · 0.6–0.9 → dedup_queue · < 0.6 distinct.
 Output: entities (one per cluster, status = most recent/strongest event: rescued > deceased > reported_safe >
 seen > missing > unknown), entity_events (one per source record), dedup_queue rows for the grey zone.
@@ -72,7 +74,31 @@ def score(a: dict[str, Any], b: dict[str, Any]) -> tuple[float, list[str]]:
     if ba is not None and bb is not None and abs(ba - bb) >= 2:
         s -= 0.5
         reasons.append("age bands far apart")
+    gap = age_gap(a.get("age"), b.get("age"))
+    if gap is not None and gap > AGE_GAP_DISTINCT:
+        s -= 0.5
+        reasons.append(f"ages {gap:.0f} years apart")
+    elif gap is not None and gap > AGE_GAP_GREY:
+        s -= 0.3
+        reasons.append(f"ages {gap:.0f} years apart")
     return max(0.0, min(1.0, round(s, 3))), reasons
+
+
+# P9 (30 Aug): a name + age band + nationality key collides for common names; when both records carry an
+# approximate age (a number, not PII) a wide gap says "two people", a moderate gap sends the pair to the queue.
+AGE_GAP_DISTINCT = 8.0
+AGE_GAP_GREY = 3.0
+
+
+def age_gap(a: Any, b: Any) -> float | None:
+    """|age_a − age_b| in years when both parse as numbers, else None."""
+    try:
+        fa, fb = float(a), float(b)
+    except (TypeError, ValueError):
+        return None
+    if fa <= 0 or fb <= 0:
+        return None
+    return abs(fa - fb)
 
 
 def decide(s: float) -> str:
@@ -190,7 +216,7 @@ def opmcm_records(ctx: ProcCtx) -> list[dict[str, Any]]:
             continue
         loc = str(it.get("locationText") or "")
         out.append({"source": "opmcm", "external_id": it.get("_id"), "person_key": it["person_key"], "key_strength": it.get("key_strength"),
-                    "group_key": None, "nationality": it.get("nationality"), "age_band": it.get("age_band"),
+                    "group_key": None, "nationality": it.get("nationality"), "age_band": it.get("age_band"), "age": it.get("approximateAge"),
                     "sex": (it.get("gender") or "").lower() or None, "place_id": ctx.gaz.resolve(loc) if loc else None,
                     "status": "rescued" if it.get("type") == "rescued" else "found" if it.get("type") == "found" else "lost",
                     "at": it.get("eventAt") or it.get("createdAt")})
@@ -218,7 +244,7 @@ def ndrrma_records(ctx: ProcCtx) -> list[dict[str, Any]]:
             loc_t = loc.get("title") if isinstance(loc, dict) else (r.get("remarks_place") or "")
             out.append({"source": "ndrrma", "external_id": r.get("id"), "person_key": r["person_key"], "key_strength": "name",
                         "group_key": None, "nationality": (r.get("country") or r.get("nationality") or None),
-                        "age_band": r.get("age_band"), "sex": (r.get("gender") or "").lower() or None,
+                        "age_band": r.get("age_band"), "age": r.get("age"), "sex": (r.get("gender") or "").lower() or None,
                         "place_id": ctx.gaz.resolve(str(loc_t)) if loc_t else None, "status": "rescued",
                         "at": r.get("rescued_date")})
     return out

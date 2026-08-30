@@ -90,3 +90,8 @@ is pure and `tests/test_dedup.py::test_merge_stats_and_idempotent_rebuild` pins 
 The whole step is one try/except (`dedup.failed`), returning `{"error"}` — ③ then runs on the
 previous run's entities. `--dry-run` clusters and reports counts without writing. A missing
 OPMCM/NDRRMA pull just means fewer records.
+
+
+## Approximate-age guard (P9, 30 Aug)
+
+Name + age band + nationality keys collide for common names. When both records carry an approximate age (OPMCM `approximateAge`, NDRRMA `age` — numbers, never PII), `score()` subtracts 0.5 for a gap > 8 years (distinct) and 0.3 for 4–8 years (grey zone → `dedup_queue`). Constants `AGE_GAP_DISTINCT` / `AGE_GAP_GREY` in `processing/dedup.py`; measured effect and precision in `docs/audit-2026-08-30.md` §P9 (merged 3,678 → 3,586; 200 pairs queued).

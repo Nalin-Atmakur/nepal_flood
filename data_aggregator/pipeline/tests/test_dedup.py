@@ -105,3 +105,35 @@ def test_input_hash_is_order_insensitive_and_status_sensitive():
     h = D.input_hash([a, b])
     assert h == D.input_hash([b, a]) and len(h) == 24
     assert h != D.input_hash([a, dict(b, status="rescued")]) and h != D.input_hash([a]) and h != D.input_hash([a, dict(b, place_id="dhunche")])
+
+
+# ---- P9: approximate-age gap guards same-name collisions -----------------------------------------------
+
+def _named(age=None, **kw):
+    base = {"source": "opmcm", "external_id": "x", "person_key": "k1", "key_strength": "name", "age_band": "18-39", "nationality": "Nepal"}
+    base.update(kw)
+    if age is not None:
+        base["age"] = age
+    return base
+
+
+def test_same_name_key_without_ages_still_merges():
+    s, reasons = D.score(_named(), _named(external_id="y"))
+    assert s == 0.9 and D.decide(s) == "merge"
+
+
+def test_wide_age_gap_makes_same_name_key_distinct():
+    s, reasons = D.score(_named(age=19), _named(external_id="y", age=35))
+    assert s == 0.4 and D.decide(s) == "distinct"
+    assert any("years apart" in r for r in reasons)
+
+
+def test_moderate_age_gap_goes_to_the_queue():
+    s, _ = D.score(_named(age=20), _named(external_id="y", age=25))
+    assert s == 0.6 and D.decide(s) == "queue"
+
+
+def test_close_ages_merge_and_bad_ages_are_ignored():
+    assert D.score(_named(age=30), _named(external_id="y", age=32))[0] == 0.9
+    assert D.score(_named(age="n/a"), _named(external_id="y", age=32))[0] == 0.9
+    assert D.age_gap(0, 30) is None and D.age_gap("21", 30.5) == 9.5
