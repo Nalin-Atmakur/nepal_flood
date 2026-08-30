@@ -34,6 +34,7 @@ export default async function SourcesPage({ params }: { params: Promise<{ lang: 
   return (
     <main data-page="sources" className="max-w-[1280px] mx-auto px-4 md:px-7 pt-6 pb-8">
       <SectionHead title={<span id="sources-title">{t(lang, "sources.title")}</span>} sub={t(lang, "sources.sub", { cadence })} />
+      <p className="md:hidden m-0 mt-2 font-semibold text-[11px] text-muted">{t(lang, "ui.swipe")}</p>
 
       {!sources || sources.length === 0 ? (
         <div className="mt-5">

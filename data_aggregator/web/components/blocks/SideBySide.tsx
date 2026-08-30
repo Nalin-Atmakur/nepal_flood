@@ -34,6 +34,7 @@ export default function SideBySide({ lang, figures, lastAttempt, series = null }
       <SectionHead n="04" title={<span id="sec-side">{t(lang, "sec.side")}</span>} sub={<span className="hidden md:inline">{t(lang, "sec.side_sub")}</span>} />
       {any ? (
         <TableBox className="mt-[14px]">
+          <p className="md:hidden m-0 px-3 py-[6px] font-semibold text-[11px] text-muted b-rule">{t(lang, "ui.swipe")}</p>
           <div className="scroll-x">
             <Table minWidth={640}>
               <THead>
@@ -63,10 +64,10 @@ export default function SideBySide({ lang, figures, lastAttempt, series = null }
                         <Td key={a.key} className="py-[10px] md:py-[14px] px-3 md:px-4">
                           <div className="font-extrabold text-[17px] md:text-[22px] leading-none num">{f ? fmtInt(f.value) : "—"}</div>
                           {pts.length >= 2 ? (
-                            <div className="flex items-center gap-[6px] mt-[4px]" data-testid="trend">
+                            <div className="flex flex-wrap items-center gap-x-[6px] gap-y-[2px] mt-[4px]" data-testid="trend">
                               <Sparkline values={pts.map((p) => Number(p.value))} label={t(lang, "trend.days", { d: pts.length })} />
                               {delta !== null ? (
-                                <span className={["arcade text-[8px] num whitespace-nowrap", delta > 0 && r.key !== "rescued" ? "text-amber-text" : "text-muted"].join(" ")}>
+                                <span className={["arcade text-[8px] num md:whitespace-nowrap", delta > 0 && r.key !== "rescued" ? "text-amber-text" : "text-muted"].join(" ")}>
                                   {t(lang, "trend.since_yesterday", { n: fmtDelta(delta) })}
                                 </span>
                               ) : null}

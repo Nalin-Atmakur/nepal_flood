@@ -168,8 +168,8 @@ export default async function PlacePage({ params }: { params: Promise<{ lang: st
                           {localised(row as unknown as Record<string, unknown>, "what", lang) || row.what_en}
                           {row.source_url ? (
                             <>
-                              {" "}
-                              <a href={row.source_url} target="_blank" rel="noopener noreferrer" className="text-[11px]">
+                              {"\u00a0"}
+                              <a href={row.source_url} target="_blank" rel="noopener noreferrer" className="text-[11px] whitespace-nowrap" aria-label={t(lang, "word.source")}>
                                 ↗
                               </a>
                             </>

@@ -403,5 +403,6 @@
   "place.now_empty": "Nothing new about this place in the last 36 hours — if you know something, add it.",
   "trend.since_yesterday": "{n} since yesterday",
   "trend.days": "{d} days",
-  "sources.derived": "derived"
+  "sources.derived": "derived",
+  "ui.swipe": "Swipe sideways for more columns →"
 }

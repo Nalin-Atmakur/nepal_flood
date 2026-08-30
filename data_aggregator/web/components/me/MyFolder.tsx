@@ -227,7 +227,7 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
 
         <aside className="flex flex-col gap-[14px] mt-4 md:mt-0">
           <Button href={href(lang, "/report")} variant="primary" size="md" shadow={3} block className="md:press-4 md:min-h-[52px] md:text-[16px]">
-            {t(lang, "me.another")}
+            {ordered.length ? t(lang, "me.another") : t(lang, "nav.add_short")}
           </Button>
 
           {ready && userId ? (
