@@ -290,7 +290,7 @@
   "phones.no": "no",
   "phones.partial": "partial",
   "sources.title": "Every source we pull",
-  "sources.sub": "fetched every {cadence} · reliability grades explained below",
+  "sources.sub": "60 registered sources, fetched every {cadence} · grades explained below · “derived” rows are computed from other sources",
   "sources.group.government": "Government",
   "sources.group.humanitarian": "UN / humanitarian",
   "sources.group.geospatial": "Geospatial",
@@ -372,6 +372,10 @@
   "og.no_data": "awaiting first data pull",
   "og.updated": "updated {ago}",
   "og.no_processed": "no processed data yet",
+  "og.run": "I watched {n} things and {b} real bridges go — play the breach yourself",
+  "run.title": "I watched {n} things and {b} real bridges go in the Bhote Koshi flood",
+  "run.description": "An illustrative replay of the 26 August 2026 breach on nepalfloodtracker.com — press play, drop something in the path, and add what you know.",
+  "run.go": "Open the corridor →",
   "sec.by_district": "By district",
   "sec.by_district_sub": "Registry totals recorded at district level (mostly the PM’s portal) — kept apart from the corridor places above",
   "corridor.play": "Play the breach",
@@ -405,5 +409,10 @@
   "trend.days": "{d} days",
   "sources.derived": "derived",
   "ui.swipe": "Swipe sideways for more columns →",
-  "og.sim": "▶ Watch the flood run the corridor — drop a house in its path"
+  "og.sim": "▶ Watch the flood run the corridor — drop a house in its path",
+  "about.sim_title": "The corridor animation",
+  "about.sim_body": "The 3D corridor on the home page replays the breach as an illustration, not a hydraulic model. Its clock follows the front as it was actually recorded (DHM river watch, USGS, ICIMOD): collapse 08:37, Timure 08:45, Betrawati 09:20, Galchhi 10:28, Devghat 13:00. The starting lake volume is the figure China’s Ministry of Water Resources published (2.0 million m³); the bridges on the path are the ones the HOT OSM damage survey recorded as washed out or damaged. The houses, buses and camps you can drop in are a toy to make the scale felt. Nothing in it is a forecast.",
+  "about.sim_link": "Where the numbers come from →",
+  "about.handling_5": "Sixty registered sources — government, UN/humanitarian, geospatial, signals, news and community — each shown with a reliability grade and its last fetch time. Figures that a report merely quotes from someone else are labelled as quotations and never used as headline numbers.",
+  "about.handling_6": "The per-place “What is happening now” line is written from counts, publisher names and headline titles only; no name, phone number or free text from a report ever reaches the model."
 }

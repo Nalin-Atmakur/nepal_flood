@@ -65,3 +65,12 @@ never queried from `web/` — `lib/queries.ts` is the complete list of reads.
 - `app/[lang]/layout.tsx` · `page.tsx` · `report/` · `me/` · `places/` · `places/[id]/` · `sources/` · `about/` · `not-found.tsx`.
 - `app/api/og/route.tsx` — share card.
 - `lib/` — see README table.
+
+## About & Sources copy (30 Aug)
+
+`/about` gained a card "The corridor animation" (keys `about.sim_*`) stating that the flood simulation is illustrative,
+that its clock follows the recorded front, that the lake volume and the bridges come from published figures
+(China MWR, HOT OSM survey) and that nothing is a forecast; "Data handling" has six checks (5: 60 sources across six
+groups, quoted figures never headline; 6: the per-place "now" line is built from counts/publishers/titles only —
+both verified against `pipeline/processing/place_now.py` and `pipeline/docs/process_data/04-figures-latest.md`).
+`sources.sub` names the 60 registered sources and explains "derived" rows.
