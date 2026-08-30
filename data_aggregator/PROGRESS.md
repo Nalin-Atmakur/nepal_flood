@@ -15,6 +15,9 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | 4–5 web (all pages, form, /me, 3D, OG, realtime) | ✅ deployed | e3606d2, b142b9e; lint/i18n/46 unit/11 e2e green; https://www.nepalfloodtracker.com |
 | 6 deploy + domain + schedule | ✅ all — launchd agent installed 240 min (01:35 BST) | apex A → Vercel (216.150.1.1), www CNAME; `scripts/install_schedule.sh` ready (launchd, 240 min) |
 
+## Cycle log
+- 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
+
 ## In flight (01:40 BST)
 - wave-2 source lanes A (official) and B (geospatial+text) and processing lane P3 launched; web timeline/digest agent still running.
 
