@@ -45,7 +45,7 @@ try {
       productOptions: await page.locator("#product-grid option").count(),
       statistics: await page.locator("#statistics dd").count(),
     };
-    if (defaultResult.title !== "Nepal Flood Topographic Change" || defaultResult.canvases < 1 || defaultResult.modes !== 4 || defaultResult.contextButtons !== 1 || defaultResult.productOptions !== 2 || defaultResult.statistics < 5) {
+    if (defaultResult.title !== "Nepal Flood Ortho-Parallax Height Residual" || defaultResult.canvases < 1 || defaultResult.modes !== 4 || defaultResult.contextButtons !== 1 || defaultResult.productOptions !== 2 || defaultResult.statistics < 5) {
       throw new Error(`Default viewer smoke failure: ${JSON.stringify(defaultResult)}`);
     }
     const screenshotRoot = path.join(WORK_ROOT, "screenshots");

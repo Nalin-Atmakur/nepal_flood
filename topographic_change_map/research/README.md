@@ -1,10 +1,16 @@
 # Topographic change map research
 
-This directory is the working specification for reconstructing and validating surface-elevation change after the August 2026 Nepal flood.
+This directory is the working specification for reconstructing and validating
+surface-elevation change after the August 2026 Nepal flood.
 
 The intended product is an evidence-backed map of where the surface became higher or lower. It may later be combined with existing building-damage data to identify buildings that could be surrounded or buried by deposited material.
 
-The first product must be described as a **surface-elevation change map**, not a debris-depth or burial map. Positive change can be caused by sediment, rock, vegetation, structures, processing error, or misregistration. Interpretation comes only after validation.
+A true product may be described as a **surface-elevation change map** only after
+a documented pre-event DSM is subtracted from a compatible, rigorously
+triangulated post-event DSM. The current public-ortho fallback does not meet
+that condition and must instead be described as a **relative post-event
+ortho-parallax height residual**. Neither product is automatically debris depth
+or burial depth.
 
 ## Project flow
 
@@ -43,6 +49,7 @@ Add buildings and an interactive viewer
 | [08-automation-architecture.md](08-automation-architecture.md) | Proposed automated system and data lifecycle |
 | [09-roadmap.md](09-roadmap.md) | Ordered execution plan and decision gates |
 | [10-open-questions.md](10-open-questions.md) | Questions that must be resolved explicitly |
+| [11-candidate-imagery-ranking.md](11-candidate-imagery-ranking.md) | Final evidence-backed candidate ranking after access checks and dense experiments |
 | [sources.md](sources.md) | Primary technical references and related repository research |
 
 ## Hard rules

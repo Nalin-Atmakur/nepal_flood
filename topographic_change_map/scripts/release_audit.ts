@@ -33,6 +33,7 @@ const requiredDocs = [
   "topographic_change_map/SCALES_AND_AOI.md",
   "topographic_change_map/PUBLICATION.md",
   "topographic_change_map/products/VALIDATION.md",
+  "topographic_change_map/research/11-candidate-imagery-ranking.md",
 ];
 check("durable-documentation", requiredDocs.every(exists), `${requiredDocs.length} canonical documents`);
 
@@ -87,6 +88,20 @@ const viewerFiles = [
   "docs/topographic-change-viewer/data/surface-grid-10m.json",
 ];
 check("static-viewer", viewerFiles.every(exists), "32 m and 10 m static viewer grids");
+const viewerHtml = fs.readFileSync(path.join(PROJECT_ROOT, "viewer/index.html"), "utf8");
+const candidateRanking = fs.readFileSync(
+  path.join(PROJECT_ROOT, "research/11-candidate-imagery-ranking.md"),
+  "utf8",
+);
+check(
+  "scientific-residual-terminology",
+  viewerHtml.includes("Post-event ortho-parallax height residual")
+    && viewerHtml.includes("not a proven flood-induced elevation change")
+    && !viewerHtml.includes('data-mode="change" class="active">Change<')
+    && candidateRanking.includes("not a direct pre-event DSM subtracted")
+    && candidateRanking.includes("B040001100881410 + B040001100881710"),
+  "viewer and final ranking distinguish relative residual from true pre/post change",
+);
 
 const imageryFiles = [
   "topographic_change_map/viewer/public/imagery/view-a.jpg",

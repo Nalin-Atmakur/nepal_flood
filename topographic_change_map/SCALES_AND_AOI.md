@@ -9,7 +9,7 @@ interchangeably.
 | 1 m | Common orthoimage co-registration grid |
 | 2 m | Downsampled RGB web previews for clicked-point visual inspection only |
 | 64–96 m | Local image neighbourhood used for phase correlation |
-| 32 m | Default validated change-product cell spacing |
+| 32 m | Default validated residual-product cell spacing |
 | 10 m | Separately validated experimental output spacing; research-only |
 | 1 km | Geographic reporting/indexing bin only |
 

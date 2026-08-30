@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-30T00:31:20.425Z",
+  "generatedAt": "2026-08-30T07:57:51.129Z",
   "passed": true,
   "scientificClass": "RESEARCH_ONLY",
   "checks": [
     {
       "id": "durable-documentation",
       "passed": true,
-      "evidence": "7 canonical documents"
+      "evidence": "8 canonical documents"
     },
     {
       "id": "ortho-change-v3-strict-bundle",
@@ -73,6 +73,11 @@
       "id": "static-viewer",
       "passed": true,
       "evidence": "32 m and 10 m static viewer grids"
+    },
+    {
+      "id": "scientific-residual-terminology",
+      "passed": true,
+      "evidence": "viewer and final ranking distinguish relative residual from true pre/post change"
     },
     {
       "id": "synchronized-satellite-evidence",

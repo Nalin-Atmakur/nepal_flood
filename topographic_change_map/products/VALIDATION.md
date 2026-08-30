@@ -8,8 +8,8 @@
 | Direct support | 1.282 km² |
 | Stable-terrain NMAD | 4.324 m |
 | Median per-cell uncertainty | 6.882 m |
-| Median change | +1.746 m |
-| P10 / P90 change | −5.487 m / +13.337 m |
+| Median residual Δh | +1.746 m |
+| P10 / P90 residual Δh | −5.487 m / +13.337 m |
 | Two-sigma significant cells | 132 of 1,252 (10.5%) |
 | Significant positive / negative | 115 / 17 |
 | Significant area | 0.135 km² |
@@ -43,8 +43,8 @@ GeoPera is a same-source reproducibility benchmark, not independent ground truth
 | Direct support | 0.688 km² |
 | Stable-terrain NMAD | 4.034 m |
 | Median per-cell uncertainty | 6.573 m |
-| Median change | +1.080 m |
-| P10 / P90 change | −5.916 m / +8.804 m |
+| Median residual Δh | +1.080 m |
+| P10 / P90 residual Δh | −5.916 m / +8.804 m |
 | Two-sigma significant cells | 284 of 6,882 (4.1%) |
 | Significant positive / negative | 230 / 54 |
 | Directly measured UNOSAT area | 0.248 km² (0.664% of full mask) |
@@ -100,7 +100,10 @@ Only four building records intersect a two-sigma significant cell. This is not e
 
 ## Interpretation boundary
 
-The output supports broad surface-change screening. It does not currently support precise debris depth, individual-building burial depth, or operational rescue decisions.
+The output supports screening of a relative post-event ortho-parallax height
+residual. It is not yet a proven flood-induced topographic-change layer and does
+not support precise debris depth, individual-building burial depth, or
+operational rescue decisions.
 
 The unknown orthorectification reference DEM is an additional systematic
 uncertainty not captured by the per-cell match uncertainty. `post_surface_estimate`

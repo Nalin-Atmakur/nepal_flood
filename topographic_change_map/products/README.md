@@ -1,20 +1,23 @@
-# Derived topographic-change products
+# Derived ortho-parallax residual products
 
 These are aggregate, non-personal research products derived from public Vantor imagery and Copernicus GLO-30. Source imagery is not redistributed.
 
 ## Default product
 
-`ortho-change-v3-strict/` is the default 32 m research layer. It uses the strong public Vantor pair `B040001100881410 + B040001100881710`, a 25% peak-sharpness reliability threshold, stable-terrain bias-plane correction, and direct-support-only output.
+`ortho-change-v3-strict/` is the legacy path for the default 32 m research
+residual layer. It uses the strong public Vantor pair
+`B040001100881410 + B040001100881710`, a 25% peak-sharpness reliability
+threshold, stable-terrain bias-plane correction, and direct-support-only output.
 
 | File | Meaning |
 |---|---|
-| `surface_change_32m.tif` | Estimated post-event surface change; positive is higher, negative is lower |
+| `surface_change_32m.tif` | Legacy filename containing relative residual Δh; positive/negative is not automatically deposition/erosion |
 | `uncertainty_32m.tif` | Per-cell uncertainty derived from stable-terrain residual scatter and match reliability |
 | `support_count_32m.tif` | Number of direct tie-point observations entering each cell |
 | `coverage_32m.tif` | `1` only where direct measurement support exists |
 | `significant_change_32m.tif` | `−1` significant loss, `0` measured but not significant, `+1` significant gain, `−128` nodata; two-sigma threshold |
 | `pre_glo30_32m.tif` | Coarse pre-event contextual surface |
-| `post_surface_estimate_32m.tif` | Pre-event context plus measured change, only at supported cells |
+| `post_surface_estimate_32m.tif` | Contextual GLO-30 plus residual Δh, only at supported cells; not an independently triangulated post DSM |
 | `measured-support.geojson` | WGS84 polygons of direct measurement support |
 | `mapped-tiles-1km.geojson` | 1 km reporting grid; not analysis resolution |
 | `MAPPED_TILES.md` | Latitude/longitude table for reporting tiles |

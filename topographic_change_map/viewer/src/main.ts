@@ -301,7 +301,7 @@ function updateGeometry(): void {
 
 function updateLegend(): void {
   const labels: Record<Mode, string> = {
-    change: "−20 m erosion ← 0 → +20 m deposition",
+    change: "−20 m negative residual ← 0 → +20 m positive residual",
     elevation: "Low elevation → high elevation",
     uncertainty: "Low uncertainty → high uncertainty",
     support: "Sparse support → repeated support",
@@ -361,7 +361,7 @@ function updateInspection(selection: Selection): void {
   const change = grid.surfaceChangeM[selection.index];
   const uncertainty = grid.uncertaintyM[selection.index];
   const support = grid.supportCount[selection.index] ?? 0;
-  inspection.textContent = `${selection.label} · ${selection.lat.toFixed(5)}°N, ${selection.lon.toFixed(5)}°E · elevation ${elevation?.toFixed(1) ?? "n/a"} m · change ${change?.toFixed(1) ?? "unsupported"} m · uncertainty ${uncertainty?.toFixed(1) ?? "n/a"} m · support ${support}`;
+  inspection.textContent = `${selection.label} · ${selection.lat.toFixed(5)}°N, ${selection.lon.toFixed(5)}°E · contextual elevation ${elevation?.toFixed(1) ?? "n/a"} m · residual Δh ${change?.toFixed(1) ?? "unsupported"} m · uncertainty ${uncertainty?.toFixed(1) ?? "n/a"} m · support ${support}`;
 }
 
 function selectUtm(
@@ -521,8 +521,14 @@ function build(data: GridData): void {
     );
     scene.add(buildingPoints);
   }
+  const statisticLabels: Record<string, string> = {
+    changeMedianM: "residual Δh median m",
+    changeP10M: "residual Δh p10 m",
+    changeP90M: "residual Δh p90 m",
+    significantCells: "two-sigma residual cells",
+  };
   stats.innerHTML = Object.entries(grid.statistics)
-    .map(([key, value]) => `<dt>${key.replace(/[A-Z]/g, (match) => ` ${match.toLowerCase()}`)}</dt><dd>${typeof value === "number" ? value.toFixed(key.includes("Fraction") ? 3 : 2) : "n/a"}</dd>`)
+    .map(([key, value]) => `<dt>${statisticLabels[key] ?? key.replace(/[A-Z]/g, (match) => ` ${match.toLowerCase()}`)}</dt><dd>${typeof value === "number" ? value.toFixed(key.includes("Fraction") ? 3 : 2) : "n/a"}</dd>`)
     .join("");
   controls.target.set(0, 0, 500);
   controls.update();

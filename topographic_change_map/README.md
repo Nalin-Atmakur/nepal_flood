@@ -1,14 +1,16 @@
 # Nepal flood topographic change map
 
-Research reconstruction of post-flood surface change in the upper Bhote Koshi corridor after the August 2026 Nepal flood.
+Research reconstruction of a post-event ortho-parallax height residual in the
+upper Bhote Koshi corridor after the August 2026 Nepal flood. A true pre/post
+topographic-change map remains the target once compatible DSMs exist.
 
 **Live review viewer:**
 <https://raw.githack.com/Nalin-Atmakur/nepal_flood/main/docs/topographic-change-viewer/>
 
 ## Current deliverable
 
-- Strict 32 m surface-change, uncertainty, support, coverage, pre-reference, and post-surface rasters.
-- Separately validated 10 m experimental surface-change bundle and building overlay.
+- Strict 32 m residual-height, uncertainty, support, coverage, pre-context, and contextual post-surface rasters.
+- Separately validated 10 m experimental residual-height bundle and building overlay.
 - Relaxed 32 m sensitivity layer.
 - Support-aware HOT/Copernicus building summaries.
 - Exact WGS84 processing extent and 1 km reporting-grid table.
@@ -66,6 +68,7 @@ directions. GLO-30 supplies the pre-event terrain context.
 - [products/release-audit.json](products/release-audit.json) — machine-readable release-completeness evidence and external gates
 - [products/viewer-evidence-validation.json](products/viewer-evidence-validation.json) — synchronized pin, imagery, popup, and direct-terrain interaction evidence
 - [research/README.md](research/README.md) — detailed research package
+- [research/11-candidate-imagery-ranking.md](research/11-candidate-imagery-ranking.md) — completed evidence-backed imagery table and acquisition order
 
 ## Test everything
 

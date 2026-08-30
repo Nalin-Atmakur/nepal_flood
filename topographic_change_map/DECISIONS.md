@@ -88,3 +88,12 @@ same-coordinate crops from `B040001100881410` and `B040001100881710`. Both are
 post-event opposite-look orthos acquired 82 seconds apart; they must never be
 labelled before/after. The committed 2 m RGB files are web previews only, while
 matching remains on the 1 m co-registered analysis grid.
+
+## 2026-08-30 — D22: Residual terminology supersedes change terminology
+
+The current public-ortho layer is a relative post-event ortho-parallax height
+residual because the orthorectification reference DEM and original cameras are
+unknown. User-facing text must not call it a direct topographic-change,
+deposition, or erosion map. Legacy filenames and JSON field names remain stable
+for reproducibility. A true change map requires compatible documented pre- and
+post-event DSMs.

@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "generatedAt": "2026-08-30T00:52:00+01:00",
   "scientificClass": "RESEARCH_ONLY",
+  "measurementType": "relative post-event ortho-parallax height residual; not direct pre/post DSM change",
   "defaultProduct": {
     "id": "ortho-change-v3-strict",
     "resolutionM": 32,
