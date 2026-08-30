@@ -28,17 +28,32 @@ export function buildPlaceIndex(refs: PlaceRef[] | null | undefined, lang: Lang)
   });
 }
 
-/** Rank: prefix matches on any key first, then substring matches. Empty query → []. */
+/** How well a place matches: 0 exact name · 1 a name starts with the query · 2 a word does · 3 substring · 4 none. */
+function matchRank(p: SearchablePlace, q: string): number {
+  let best = 4;
+  for (const k of p.keys) {
+    if (k === q) return 0;
+    if (k.startsWith(q)) best = Math.min(best, 1);
+    else if (k.split(" ").some((w) => w.startsWith(q))) best = Math.min(best, 2);
+    else if (k.includes(q)) best = Math.min(best, 3);
+  }
+  return best;
+}
+
+/**
+ * Rank: exact name, then names starting with the query, then words starting with it, then substrings; within a
+ * rank the shorter label wins, so "Dhunche" comes before "Dhunche Army relief camp". Empty query → [].
+ */
 export function searchPlaces(index: SearchablePlace[], query: string, limit = 8): SearchablePlace[] {
   const q = normaliseKey(query);
   if (!q) return [];
-  const prefix: SearchablePlace[] = [];
-  const inside: SearchablePlace[] = [];
+  const hits: { p: SearchablePlace; rank: number }[] = [];
   for (const p of index) {
-    if (p.keys.some((k) => k.startsWith(q) || k.split(" ").some((w) => w.startsWith(q)))) prefix.push(p);
-    else if (p.keys.some((k) => k.includes(q))) inside.push(p);
+    const rank = matchRank(p, q);
+    if (rank < 4) hits.push({ p, rank });
   }
-  return [...prefix, ...inside].slice(0, limit);
+  hits.sort((a, b) => a.rank - b.rank || a.p.label.length - b.p.label.length);
+  return hits.slice(0, limit).map((h) => h.p);
 }
 
 /** True when the row matches the query (table filtering keeps the caller's order). */

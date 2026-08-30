@@ -67,3 +67,5 @@ No multi-step form. One tap picks the chip set, then one textarea (plus mic) is 
 - `tests/e2e/smoke.spec.ts` opens `/report`, expects four cards, taps one and expects the textarea.
 - Manual: send a report → `/me` shows it as Received; run `process_data` → the chips appear on the success screen
   (if still open) and the trail on `/me` advances.
+
+> Picker ranking (30 Aug, lane W5): `searchPlaces` ranks exact name → name prefix → word prefix → substring, shorter label first, so "Dhunche" precedes "Dhunche Army relief camp" and "Timure" precedes "Timure health post" (`tests/places-search.test.ts`). NE/HI phone walkthrough of the whole flow (cards, chips per type, picker in both scripts, send, understood, folder, withdraw) passed with no layout defects.
