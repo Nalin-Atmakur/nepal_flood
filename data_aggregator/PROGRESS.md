@@ -15,6 +15,11 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | 4–5 web (all pages, form, /me, 3D, OG, realtime) | ✅ deployed | e3606d2, b142b9e; lint/i18n/46 unit/11 e2e green; https://www.nepalfloodtracker.com |
 | 6 deploy + domain + schedule | ✅ deploy/domain · ⏳ schedule (needs pipeline/run.sh) | apex A → Vercel (216.150.1.1), www CNAME; `scripts/install_schedule.sh` ready (launchd, 240 min) |
 
+## In flight (01:25 BST)
+- pipeline lane (agent, resumed): scripts + processing + tests + docs + first live run; asked to add article relevance gate and digest step ⑦.
+- web agent: home blocks "The first hours" (event_timeline, 17 rows seeded via 006 + seed) and "What changed today" (digest), OG "updated N min ago".
+- db: 006_story_and_digest.sql + 006_pipeline_additions.sql (trigger role fix) applied — commits 1c54104 + next.
+
 ## Immediate next steps (in order)
 1. When the pipeline lane reports: run `make health`; check figures_latest/gauges/articles/stats/place_status; fix anything broken; `pytest pipeline/tests`.
 2. `scripts/install_schedule.sh` (240 min) → confirm `run.log` + `launchctl print`.
