@@ -404,5 +404,6 @@
   "trend.since_yesterday": "{n} since yesterday",
   "trend.days": "{d} days",
   "sources.derived": "derived",
-  "ui.swipe": "Swipe sideways for more columns →"
+  "ui.swipe": "Swipe sideways for more columns →",
+  "og.sim": "▶ Watch the flood run the corridor — drop a house in its path"
 }

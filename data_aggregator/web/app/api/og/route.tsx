@@ -282,6 +282,26 @@ function Card({ lang, n }: { lang: Lang; n: OgNumbers }) {
           captionColor={colors.muted}
         />
       </div>
+        {/* the cornerstone: invite the viewer to play the breach */}
+        <div style={{ position: "absolute", left: 56, top: 414, display: "flex", alignItems: "center", gap: 12 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              minHeight: 40,
+              padding: "3px 18px 0",
+              background: colors.amberFill,
+              color: colors.amberText,
+              border: `2.5px solid ${colors.ink}`,
+              borderRadius: 4,
+              fontFamily: BALOO,
+              fontWeight: 800,
+              fontSize: 19,
+            }}
+          >
+            {t(lang, "og.sim")}
+          </div>
+        </div>
 
       {/* bottom row */}
       <div

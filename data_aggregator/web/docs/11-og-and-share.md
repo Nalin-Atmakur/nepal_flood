@@ -40,3 +40,7 @@ the report success screen (`variant="compact"`).
 1. `curl -s -o /tmp/og.png -w "%{content_type}\n" "https://nepalfloodtracker.com/api/og?lang=ne"` → `image/png`.
 2. Open the PNG: three numbers and LIVE must be legible at 300 px wide; nothing essential in the outer 24 px.
 3. Paste a page URL into a WhatsApp chat or an OG debugger; the card should show the live numbers of the last 5 minutes.
+
+## The invitation pill (30 Aug)
+
+Below the three cards an amber pill (`og.sim`, en/ne/hi) invites the viewer to play the breach — the flood simulation is the cornerstone of the home page (`14-flood-sim.md`). It is absolutely positioned at `top: 414` (root-relative; Satori resolves absolute children against the root here).
