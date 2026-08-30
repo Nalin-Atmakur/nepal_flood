@@ -38,6 +38,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 11:10 BST — /sources renders cards on phones (11f51a6; e2e 23) — deployed. One pipeline tick run by me (09:50–10:05 UTC) so live numbers are fresh; the owner starts the loop themselves.
 - 10:59 BST — V3 first-visit walkthrough landed + deployed (9efd2c5, f189a1e): home names the event in the first viewport, duplicated digest headline suppressed, compact Your part on sub-tabs, jargon removed ("since last update"), tab highlight fixed on /report, unknown-pill caption on place cards, h1s. Corridor: plain explainer under the heading, feed placeholder while loading (dc95dc2). One pipeline tick running on request-free basis to refresh numbers (scheduler.py --once).
 - 10:55 BST — Corridor polish: staggered pops, darker mud scar, spray only in fast deep cells (86831ee). Lane V3 (first-time-visitor walkthrough) running.
 - 10:35 BST — Corridor v2 polish deployed: portrait fit runs along the corridor; placement cue = big pulsing ring + name pill over the object; far-camera label thinning (top-8 only); fallback PNG re-rendered for the v2 landscape (183151e).
