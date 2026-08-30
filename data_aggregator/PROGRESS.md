@@ -16,6 +16,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | 6 deploy + domain + schedule | ✅ all — launchd agent installed 240 min (01:35 BST) | apex A → Vercel (216.150.1.1), www CNAME; `scripts/install_schedule.sh` ready (launchd, 240 min) |
 
 ## Cycle log
+- 02:35 BST — ⚠️ see decisions-log 02:30: rotate OpenAI + Supabase service-role keys in the morning (accidental Vercel upload of pipeline/, deleted). Fixed: gate ignores Kathmandu/district-only headlines; 3 flying-window days; gauge tiles match DHM names (667f9c3). Stats now 22 rows (P3 in progress).
 - 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
 
 ## In flight (01:40 BST)

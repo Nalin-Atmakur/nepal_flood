@@ -1,0 +1,2 @@
+# Nothing in this folder is ever deployed to Vercel (the site lives in web/). Guards against a `vercel` run from the wrong cwd.
+*

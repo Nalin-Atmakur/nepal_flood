@@ -44,3 +44,6 @@ Sources for the seed entries: `PLAN.md` (§0 principles, §2 zones, §12 open it
 - Wave-2 sources (tag pages, live blogs, Chinese search APIs, Wikipedia revisions, GDELT, geospatial catalogues, Setu, Police UDB, DAO lists) — each becomes a normaliser and a line here when it lands.
 
 - **2026-08-30 01:30** — Deployed the full site to production (Vercel). Domain nepalfloodtracker.com (apex + www) attached to Vercel by the owner at Squarespace; a stale local resolver briefly made the apex look unconfigured (see runbook §7.0).
+
+- **2026-08-30 02:30** — Incident: `vercel --prod` was run with the shell cwd still in `pipeline/`, which auto-created a Vercel project "pipeline" and uploaded that folder for ~10 minutes before it was deleted via the API (HTTP 204). Vercel CLI honours `.gitignore`, so `pipeline/.env` should not have been uploaded, but this cannot be proven after deletion. **Action for the owner in the morning: rotate the OpenAI key (platform.openai.com) and the Supabase service-role key (dashboard → Settings → API), then update `pipeline/.env`.** Guard added: `.vercelignore` with `*` in `data_aggregator/`, `db/`, `pipeline/`.
+

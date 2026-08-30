@@ -1,0 +1,2 @@
+# Only web/ is a Vercel project. Guards against a `vercel` run from this folder.
+*
