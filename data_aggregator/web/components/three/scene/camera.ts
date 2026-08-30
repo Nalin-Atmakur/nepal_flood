@@ -23,11 +23,13 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
   const target = new THREE.Vector3(cur.target.x, cur.target.y, cur.target.z);
   let mode: CameraMode = "overview";
   let userTook = false;
-  let drift = true;
+  let drift = false; // the overview holds still: a first-time viewer must not be moved around
   let shakeAmt = 0;
   let ease = 0.35; // goal-chasing rate (higher = snappier)
   let impact: { x: number; y: number; z: number; t: number } | null = null;
   const RIDE = { rad: 40, pol: 0.42, az: -1.5 };
+  /** Owner's call (30 Aug 10:30): the whole scene stays in view — no chase camera. Kept for a future "cinematic" toggle. */
+  const RIDE_ENABLED = false;
 
   const setGoal = (o: Partial<Orbit>) => {
     if (o.target) goal.target = { ...o.target };
@@ -81,7 +83,7 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
 
   function update(dt: number, run: RunInfo, allowRide: boolean): void {
     const k = 1 - Math.pow(1 - ease, dt * 8);
-    if (!userTook && allowRide && run.state === "running" && Number.isFinite(run.frontX)) {
+    if (RIDE_ENABLED && !userTook && allowRide && run.state === "running" && Number.isFinite(run.frontX)) {
       mode = "ride";
       const tx = Math.min(run.frontX + 3, 40);
       const tz = meander(tx);
@@ -97,9 +99,7 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
     cur.rad += (goal.rad - cur.rad) * k;
     cur.pol += (goal.pol - cur.pol) * k;
     cur.az += (goal.az - cur.az) * k;
-    if (drift && mode === "overview") {
-      goal.az += 0.0007 * dt * 60;
-    }
+    if (drift && mode === "overview") goal.az += 0.0007 * dt * 60;
     if (shakeAmt > 0) shakeAmt = Math.max(0, shakeAmt - dt * 2.2);
     if (impact) {
       impact.t += dt;
@@ -212,7 +212,7 @@ export function createCamera(ctx: SceneCtx, el: HTMLElement): CameraModule {
     mode: () => mode,
     fit,
     openOnLakes(lake) {
-      if (userTook) return;
+      if (!RIDE_ENABLED || userTook) return;
       mode = "ride";
       drift = false;
       Object.assign(cur, { target: { x: lake.x + 3, y: lake.y, z: lake.z }, rad: 26, pol: 0.8, az: -1.5 });

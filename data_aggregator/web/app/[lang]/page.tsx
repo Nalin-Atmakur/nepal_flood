@@ -35,9 +35,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   return (
     <main>
       <h1 className="sr-only">{t(lang, "site.name")}</h1>
+      <YourPart lang={lang} />
       <RightNow lang={lang} figures={figures} digest={digest} live={live} />
       <Corridor lang={lang} statuses={placeRows} refs={refs} lakeVolumeM3={lakeVolumeM3} lostBridges={lostBridges} />
-      <YourPart lang={lang} />
     </main>
   );
 }

@@ -88,11 +88,11 @@ export function createTerrain(ctx: SceneCtx): TerrainModule {
   // ---- sky, fog, lights ----------------------------------------------------------------------------------
   const sky = ctx.own(skyTexture());
   scene.background = sky;
-  scene.fog = new THREE.Fog(new THREE.Color().setRGB(WATER.foam[0], WATER.foam[1], WATER.foam[2]), 90, 230);
+  scene.fog = new THREE.Fog(new THREE.Color().setRGB(SKY.haze[0], SKY.haze[1], SKY.haze[2]), 180, 520);
   (scene.fog as THREE.Fog).color.setRGB(SKY.haze[0], SKY.haze[1], SKY.haze[2]);
-  const hemi = new THREE.HemisphereLight(0xcfdcec, 0x8a7458, 0.9);
+  const hemi = new THREE.HemisphereLight(0xcfdcec, 0x8a7458, 1.05);
   scene.add(hemi);
-  const sun = new THREE.DirectionalLight(0xffe6c4, 1.5); // low from the east: it was 08:37
+  const sun = new THREE.DirectionalLight(0xffe6c4, 2.0); // low from the east: it was 08:37
   sun.position.set(70, 34, -18);
   scene.add(sun);
   const fill = new THREE.DirectionalLight(0xbfd0e6, 0.35);

@@ -111,7 +111,7 @@ export function createObjects(ctx: SceneCtx, onEvent?: (e: ObjectEvent) => void)
   function build(kind: ObjectKind, real: boolean): Rec {
     const c = catalogue(kind);
     const group = new THREE.Group();
-    const scale = real ? c.scale * 0.95 : c.scale;
+    const scale = real ? c.scale * 0.55 : c.scale;
     const pad = new THREE.Mesh(padGeo, padMat);
     const footprint = Math.max(1.2, ...c.parts.map((p) => Math.max(p.size[0], p.size[2] ?? p.size[0]) / 2 + Math.hypot(p.at[0], p.at[2]))) * 0.95;
     pad.scale.set(footprint, 1, footprint);
@@ -141,12 +141,13 @@ export function createObjects(ctx: SceneCtx, onEvent?: (e: ObjectEvent) => void)
     const g = new THREE.Group();
     const ring = new THREE.Mesh(ringGeo, markerRingMat);
     ring.rotation.x = Math.PI / 2;
-    ring.scale.set(1.9, 1.9, 1);
+    ring.scale.set(3.2, 3.2, 1);
     ring.position.y = 0.3;
     g.add(ring);
     const arrow = new THREE.Mesh(markerArrowGeo, markerArrowMat);
     arrow.rotation.x = Math.PI;
-    arrow.position.y = 5.2;
+    arrow.scale.setScalar(1.8);
+    arrow.position.y = 7.5;
     g.add(arrow);
     g.position.copy(rec.group.position);
     g.userData.t = 0;
@@ -255,9 +256,9 @@ export function createObjects(ctx: SceneCtx, onEvent?: (e: ObjectEvent) => void)
         if (rec.marker) {
           rec.marker.userData.t += dt;
           const t = rec.marker.userData.t as number;
-          const s = 1.9 + Math.sin(t * 5) * 0.25;
+          const s = 3.2 + Math.sin(t * 5) * 0.4;
           rec.marker.children[0].scale.set(s, s, 1);
-          rec.marker.children[1].position.y = 5.2 + Math.sin(t * 6) * 0.5;
+          rec.marker.children[1].position.y = 7.5 + Math.sin(t * 6) * 0.8;
           if (t > 6) clearMarker(rec);
         }
         continue;

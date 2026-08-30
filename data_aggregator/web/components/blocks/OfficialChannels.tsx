@@ -10,7 +10,7 @@ import { t, type Lang } from "@/lib/i18n";
 export default function OfficialChannels({ lang }: { lang: Lang }) {
   const [police, tourist, mofa, redCross, neoc] = OFFICIAL_CHANNELS;
   return (
-    <div className="bg-card b-ink-b">
+    <div className="bg-[#e8f6ec] b-ink-b">
       {/* desktop */}
       <div className="hidden md:flex max-w-[1280px] mx-auto px-7 py-[9px] flex-wrap gap-x-[18px] gap-y-1 items-baseline font-medium text-[13px] lh-loose">
         <span>

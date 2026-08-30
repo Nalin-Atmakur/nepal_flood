@@ -317,8 +317,8 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     }
     objects.update(dt); // pieces settle and placement markers pulse even when idle
     terrain.update(dt, runInfo());
-    camera.update(dt, runInfo(), !armedKind);
-    markers.setRide(camera.mode() === "ride" && runState === "running");
+    camera.update(dt, runInfo(), false);
+    markers.setRide(false);
     markers.update(dt, camera.cam.position);
     const hx = horizontality(currentPol());
     if (Math.abs(hx - xray) > 0.01) {

@@ -49,7 +49,8 @@ describe("corridor camera", () => {
     expect(clampOrbit({ target: { x: 0, y: 0, z: 0 }, rad: 1, pol: 9, az: 0 }).rad).toBe(RAD_MIN);
     expect(horizontality(0.3)).toBe(0);
     expect(horizontality(1.42)).toBe(1);
-    expect(horizontality(1.06)).toBeGreaterThan(0.4);
+    expect(horizontality(0.9)).toBe(0);
+    expect(horizontality(1.25)).toBeGreaterThan(0.4);
   });
   it("pans the target on the ground and stays inside the corridor", () => {
     const o = fitCamera(2.5);

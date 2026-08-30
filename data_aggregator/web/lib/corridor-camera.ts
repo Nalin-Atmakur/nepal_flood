@@ -109,7 +109,7 @@ export function clampOrbit(o: Orbit): Orbit {
 
 /** How "horizontal" the view is, 0 (top-down) … 1 (side view) — drives the terrain X-ray. */
 export function horizontality(pol: number): number {
-  return Math.max(0, Math.min(1, (pol - 0.7) / (POL_MAX - 0.7)));
+  return Math.max(0, Math.min(1, (pol - 1.02) / (POL_MAX - 1.02)));
 }
 
 /** Pan the target across the ground plane by screen deltas (pixels → scene units at the target's distance). */
