@@ -143,6 +143,17 @@ on flat ground; a piece in a flow moves downstream and does not tunnel through t
 
 Estimated effort: P1 ≈ 1.5 h, P2 ≈ 2.5 h, P3 ≈ 2.5 h, P4 ≈ 1 h. Each phase deploys.
 
+## 5b. Decisions taken with the owner (09:45)
+- Object catalogue (14, no sensitive buildings): house · lodge · office building · bridge · bus · jeep · truck ·
+  fuel tanker · excavator · tent camp · shipping container · radio mast · boulder · tree (`lib/object-catalogue.ts`).
+- Portrait framing: corridor diagonal. Impact cam: on (desktop, not reduced-motion).
+- **X-ray terrain** (owner's idea, from the side view): terrain opacity eases from solid (top-down) to ≈ 40 %
+  (side view) with the ridgeline kept as a faint outline, plus an "X-RAY VIEW" chip — so looking *through* the
+  mountain at the channel is a feature, not a glitch (`horizontality(pol)` in `lib/corridor-camera.ts` drives it).
+- **Robustness contract**: every mesh, object, piece and the camera sample the same bilinear ground
+  (`makeGroundSampler`), pieces are integrated by `lib/flood-physics.ts` whose invariant (never below ground + r)
+  is unit-tested; objects sit on foundation pads aligned to the ground normal.
+
 ## 6. Out of scope (deliberately)
 Sound; a DEM; real hydraulics; multiplayer/leaderboards; saving scenarios; WebGPU.
 
