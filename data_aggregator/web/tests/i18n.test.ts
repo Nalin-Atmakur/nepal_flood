@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { LANGS, asLang, dictionariesForTests, href, stripLang, t } from "@/lib/i18n";
+import { LANGS, asLang, dictionariesForTests, href, stripLang, t, langFromPath } from "@/lib/i18n";
 
 const EN_ONLY = "__test.en_only";
 const BOTH = "__test.both";
@@ -82,3 +82,23 @@ describe("stripLang()", () => {
     expect(stripLang("/")).toBe("/");
   });
 });
+
+describe("language prefixes cover every language", () => {
+  it("strips and reads the prefix for all of LANGS, so switching language never doubles it", () => {
+    for (const l of LANGS) {
+      expect(stripLang(`/${l}`), l).toBe("/");
+      expect(stripLang(`/${l}/places/timure`), l).toBe("/places/timure");
+      expect(stripLang(`/${l}/report?type=family`), l).toBe("/report?type=family");
+      expect(langFromPath(`/${l}/places`), l).toBe(l);
+      // what the toggle builds: /{target}{stripLang(path)} — never /ne/zh
+      for (const target of LANGS) expect(`/${target}${stripLang(`/${l}/places`)}`).toBe(`/${target}/places`);
+    }
+  });
+
+  it("leaves paths that only look like a language alone", () => {
+    expect(stripLang("/english/places")).toBe("/english/places");
+    expect(stripLang("/zhongwen")).toBe("/zhongwen");
+    expect(langFromPath("/nepal")).toBe("en");
+  });
+});
+

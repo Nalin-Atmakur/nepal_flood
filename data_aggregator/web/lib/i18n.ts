@@ -75,9 +75,20 @@ export function tEnum(lang: Lang, prefix: string, value: string | null | undefin
   return hasKey(key) ? t(lang, key) : value;
 }
 
+/**
+ * The language prefix, built from LANGS so it can never fall behind them again: a hard-coded (en|ne|hi) meant
+ * that switching away from Chinese produced /ne/zh and a 404 (owner, 30 Aug).
+ */
+const LANG_PREFIX = new RegExp(`^/(${LANGS.join("|")})(?=/|$)`);
+
 /** Strip the language prefix from a pathname: /ne/places/timure → /places/timure */
 export function stripLang(pathname: string): string {
-  return pathname.replace(/^\/(en|ne|hi)(?=\/|$)/, "") || "/";
+  return pathname.replace(LANG_PREFIX, "") || "/";
+}
+
+/** The language a pathname is under: /zh/places → "zh"; anything else → English. */
+export function langFromPath(pathname: string): Lang {
+  return asLang(LANG_PREFIX.exec(pathname)?.[1]);
 }
 
 /** Build a localised href: href("ne", "/places/timure") → /ne/places/timure */

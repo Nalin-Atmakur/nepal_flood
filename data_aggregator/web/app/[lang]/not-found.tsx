@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { asLang, href, t } from "@/lib/i18n";
+import { href, langFromPath, t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
 
@@ -11,7 +11,7 @@ import EmptyState from "@/components/ui/EmptyState";
  */
 export default function NotFound() {
   const pathname = usePathname() || "/";
-  const lang = asLang(pathname.match(/^\/(en|ne|hi)(?=\/|$)/)?.[1]);
+  const lang = langFromPath(pathname);
   return (
     <main className="max-w-[1280px] mx-auto px-4 md:px-7 py-10">
       <h1 className="font-extrabold text-[28px] lh-tight">{t(lang, "error.not_found_title")}</h1>

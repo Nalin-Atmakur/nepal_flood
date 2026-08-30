@@ -1,5 +1,5 @@
 /**
- * GET /api/og?lang=en|ne|hi — the 1200×630 share card.
+ * GET /api/og?lang=en|ne|hi|zh — the 1200×630 share card.
  *
  * Reproduces design/Design form preferences/OG Card.dc.html with next/og (satori): ground #f2f3f6,
  * 3px ink borders, hard 6px shadows, quarter circles, logo circle, LIVE chip in Press Start 2P,

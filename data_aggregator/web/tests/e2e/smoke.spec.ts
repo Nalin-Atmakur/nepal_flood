@@ -36,6 +36,20 @@ for (const lang of LANGS) {
       await expect(page.locator('[data-block="corridor"] [data-testid="videos-add"]')).toHaveAttribute("href", new RegExp(`/${lang}/report`));
     });
 
+    test("switching language keeps you on the page you were reading", async ({ page }) => {
+      // the bug this guards: a hard-coded (en|ne|hi) prefix meant leaving Chinese produced /ne/zh and a 404
+      const other = lang === "ne" ? "hi" : "ne";
+      for (const path of ["/places", "/report"]) {
+        const res = await page.goto(`/${lang}${path}`);
+        expect(res?.status()).toBe(200);
+        const pill = page.locator(`nav[aria-label] a[hreflang="${other}"]:visible`).first();
+        await expect(pill).toHaveAttribute("href", `/${other}${path}`, WAIT);
+        await pill.click();
+        await expect(page).toHaveURL(new RegExp(`/${other}${path}$`));
+        await expect(page.locator("main")).toBeVisible(WAIT);
+      }
+    });
+
     test("the places map: pins on the real geography, tap one for its numbers and its page", async ({ page }) => {
       await page.goto(`/${lang}/places`);
       const map = page.locator('[data-testid="places-map"]');
