@@ -98,12 +98,12 @@ export const SKY = { top: "#c9d6e6", mid: "#dfe6ee", horizon: "#efe7dc", haze: h
 
 /** River, extent band, water tones, foam — the rest of the palette, in one place. */
 export const WATER = {
-  river: hex("#4d7d8f"),
+  river: hex("#2f8fb8"),
   riverFoam: hex("#e9f1f3"),
   extent: hex("#b8241a"),
-  mudDeep: hex("#3d2a18"),
-  mudBody: hex("#8a5a2b"),
-  mudShallow: hex("#c9a56a"),
+  mudDeep: hex("#33190a"),
+  mudBody: hex("#6b3a12"),
+  mudShallow: hex("#b07a3a"),
   foam: hex("#f6f1e8"),
   lake: hex("#5b7f8f"),
 } as const;

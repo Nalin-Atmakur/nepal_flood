@@ -94,8 +94,8 @@ export function fitCamera(aspect: number, margin = 0.0): Orbit {
   const o: Orbit = {
     target: { x: (b.minX + b.maxX) / 2, y: (b.minY + b.maxY) / 2, z: (b.minZ + b.maxZ) / 2 },
     rad: RAD_MIN,
-    pol: portrait ? 0.62 : 0.86,
-    az: portrait ? -0.62 : -0.9,
+    pol: portrait ? 0.42 : 0.5,
+    az: portrait ? -0.62 : -0.75,
   };
   while (o.rad < RAD_MAX && !boxFits(o, aspect, margin)) o.rad *= 1.03;
   o.rad = Math.min(RAD_MAX, o.rad);

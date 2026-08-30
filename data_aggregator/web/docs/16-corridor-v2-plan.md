@@ -161,3 +161,13 @@ Sound; a DEM; real hydraulics; multiplayer/leaderboards; saving scenarios; WebGP
 1. Portrait framing on phones: **corridor diagonal** vs vertical scroll-along? (diagonal fits more in one screen)
 2. Impact cam on desktop: **on** (0.7 s) — or off if it feels gimmicky?
 3. Object catalogue: the 11 above, or add "school" and "temple" for local resonance? (**add both**, cheap)
+
+
+## 8. Status (30 Aug 11:10 BST)
+
+| phase | state |
+|---|---|
+| 1 · layout & camera | ✅ story feed under the canvas on phones; exact fit (`lib/corridor-camera.ts`), pan/pinch/keys, Frame button; chip tap places in the path with a pulsing marker; SWEPT/PLACED pops; **overview-only camera** (owner's call — no chase) |
+| 2 · the look | ✅ re-authored landscape (V-gorge → plains), colour ramp, sky/fog/lights, river ribbon + extent band, water blue→brown with crest foam, spray, debris, settlement clusters on their own ground (no pads), status roofs, labels, X-ray on by default |
+| 3 · objects & physics | ✅ 14-kind catalogue, `lib/flood-physics.ts` (never below ground — asserted in e2e), break-up into pieces, wreckage, impact cam on desktop, shake tiers |
+| 4 · polish | ▶ ongoing with the owner's eyes: wave prominence in the overview, placement cue size, fallback PNG regeneration for the new landscape |

@@ -189,6 +189,7 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
     );
     for (const p of places) {
       const kind = kindOf(p);
+      if (p.km < -11) continue; // west of the collapse site — off the rendered plate
       const x0 = kmToX(p.km);
       const z0 = meander(x0) + p.side * (p.off ? 1 : 2.2);
       // settle on the flattest ground within 2.5 units (villages sit on terraces, not on cliff faces)

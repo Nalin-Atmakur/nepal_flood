@@ -92,7 +92,7 @@ export type CorridorHandle = {
 const SUBSTEPS = 2;
 const REACH_DEPTH = 0.2;
 const RUN_SECONDS = 34;
-const XRAY_DEFAULT = 0.45;
+const XRAY_DEFAULT = 0.3;
 
 /**
  * Mount the scene into `el` (which should be `position: relative` and sized by CSS).

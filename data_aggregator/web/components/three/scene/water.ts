@@ -70,8 +70,7 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
       metalness: 0.12,
       emissive: 0x2a1a0c,
       emissiveIntensity: 0.28,
-      transparent: true,
-      opacity: 0.94,
+      transparent: false, opacity: 1,
     }),
   );
   const mesh = new THREE.Mesh(geo, mat);
@@ -106,7 +105,7 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
       }
       // dilate by one cell so the sheet reads as a flood from the overview, not a hairline
       const dep0 = d[c];
-      const dep = Math.max(dep0, 0.55 * Math.max(c > 0 ? d[c - 1] : 0, c + 1 < d.length ? d[c + 1] : 0, c >= nx ? d[c - nx] : 0, c + nx < d.length ? d[c + nx] : 0));
+      const dep = Math.max(dep0, 0.7 * Math.max(c > 0 ? d[c - 1] : 0, c + 1 < d.length ? d[c + 1] : 0, c >= nx ? d[c - nx] : 0, c + nx < d.length ? d[c + nx] : 0));
       if (dep > WET) {
         anyWet = true;
         wetV[v] = 1;
@@ -141,8 +140,8 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
         const c2 = c + 2 < d.length ? d[c + 2] : c1;
         const drop = Math.max(dep - c1, dep - c2);
         const crest = Math.min(1, Math.max(0, (drop - 0.35) / 1.4));
-        const fast = Math.min(1, Math.max(0, (speed - 2) / 8));
-        const f = Math.max(fast, crest) * 0.9;
+        const fast = Math.min(1, Math.max(0, (speed - 18) / 22)) * 0.35;
+        const f = Math.max(fast, crest * 0.85);
         if (f > 0) {
           r += (foam[0] - r) * f;
           g += (foam[1] - g) * f;

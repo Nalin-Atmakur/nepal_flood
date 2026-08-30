@@ -152,7 +152,7 @@ export function createTerrain(ctx: SceneCtx): TerrainModule {
   scene.add(edges);
 
   // ---- river ribbon (the river before the wave) + extent band (the known flood path) ---------------------
-  const riverGeo = ctx.own(channelStrip(ctx, 1.1, 0.12, -10, 110));
+  const riverGeo = ctx.own(channelStrip(ctx, 2.6, 0.14, -10, 110));
   const riverMat = ctx.own(
     new THREE.MeshStandardMaterial({
       color: new THREE.Color().setRGB(WATER.river[0], WATER.river[1], WATER.river[2]),
@@ -175,12 +175,12 @@ export function createTerrain(ctx: SceneCtx): TerrainModule {
   foamEdges.renderOrder = 3;
   scene.add(foamEdges);
 
-  const bandGeo = ctx.own(channelStrip(ctx, 5.2, 0.08, -10, 110, 0.8));
+  const bandGeo = ctx.own(channelStrip(ctx, 7.5, 0.08, -10, 110, 0.8));
   const bandMat = ctx.own(
     new THREE.MeshBasicMaterial({
       color: new THREE.Color().setRGB(WATER.extent[0], WATER.extent[1], WATER.extent[2]),
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.5,
       depthWrite: false,
       polygonOffset: true,
       polygonOffsetFactor: -2,
@@ -284,7 +284,7 @@ export function createTerrain(ctx: SceneCtx): TerrainModule {
       mat.needsUpdate = true;
     }
     mat.opacity = 1 - 0.6 * k;
-    mat.depthWrite = k < 0.5; // let the wave show through the far wall when mostly transparent
+    mat.depthWrite = k < 0.1; // any X-ray at all: the wave must show through the near wall
     edges.visible = k > 0.05;
     edgeMat.opacity = 0.55 * k;
   };

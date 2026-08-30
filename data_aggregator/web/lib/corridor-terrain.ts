@@ -41,7 +41,7 @@ export const baseElev = (x: number): number => 14 * Math.pow(Math.max(0, (38 - x
 /** Half-width of the flat river floor: a slot in the gorge, a broad bed on the plain. */
 export const floorHalfWidth = (x: number): number => 1.0 + 6.0 * smooth(along(x));
 /** Height of the valley walls above the floor: towering in the north, low hills in the south. */
-export const wallHeight = (x: number): number => 34 - 26 * smooth(along(x));
+export const wallHeight = (x: number): number => 26 - 20 * smooth(along(x));
 /** Horizontal distance over which the wall climbs (steeper = smaller). */
 export const wallRun = (x: number): number => 6 + 14 * smooth(along(x));
 
