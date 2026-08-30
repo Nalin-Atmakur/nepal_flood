@@ -43,6 +43,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 06:45 BST — T1 landed + deployed (2a04a73): 41 NE / 34 HI strings made natural and consistent, glossary in web/docs/03-i18n.md. Five report/me strings that promised reports are "passed to the authorities" softened in all languages (8bd3d7c) — no export channel exists yet (owner's decision: none in this build).
 - 06:39 BST — Share text (WhatsApp/X/Telegram) now carries the hook and the ask in en/ne/hi (eeebb63, deployed). About page NE checked at 390 px. Launched T1: translation review of all 416 NE/HI strings for naturalness and consistent terms before distribution.
 - 06:33 BST — "Share this run" now links to `/{lang}/run?swept=N&bridges=M`, a tiny landing whose OG card reads "I watched N things and M real bridges go — play the breach yourself" (eb2fb13, deployed). W6 landed (bcf6962): About explains the animation, 60 sources, quoted figures and the now-line; `/sources` subtitle. Softened the design's "reports go to Police/MoFA" claim (no export tool exists yet — owner decision D: none in this build).
 - 06:28 BST — Chase camera settled (steeper, above the gorge walls; 45de82b) + doc 14 pass-3 notes. robots.txt + sitemap.xml (285 URLs) added (fa953bb). Launched W6: About page section on the simulation + data handling copy for 60 sources.
