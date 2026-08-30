@@ -24,6 +24,7 @@ export default function Corridor({
   refs,
   lakeVolumeM3 = null,
   lostBridges = [],
+  heading,
 }: {
   lang: Lang;
   statuses: PlaceStatusRow[] | null;
@@ -32,6 +33,8 @@ export default function Corridor({
   lakeVolumeM3?: number | null;
   /** HOT OSM washed-out / damaged bridges; placed on the path where they stood */
   lostBridges?: LostBridge[];
+  /** override the section head (the redesigned home calls this "Follow the flood's path") */
+  heading?: { title: string; sub: string };
 }) {
   const places = toCorridorPlaces(statuses, refs, lang);
   const bridges = toRealBridges(lostBridges, refs);
@@ -39,7 +42,7 @@ export default function Corridor({
 
   return (
     <section data-block="corridor" data-n="01" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-6" aria-labelledby="sec-corridor">
-      <SectionHead n="01" title={<span id="sec-corridor">{t(lang, "sec.corridor")}</span>} sub={t(lang, "sec.corridor_sub", { km: CORRIDOR_LENGTH_KM, x: CORRIDOR_HEIGHT_EXAGGERATION })}>
+      <SectionHead n="01" title={<span id="sec-corridor">{heading?.title ?? t(lang, "sec.corridor")}</span>} sub={heading?.sub ?? t(lang, "sec.corridor_sub", { km: CORRIDOR_LENGTH_KM, x: CORRIDOR_HEIGHT_EXAGGERATION })}>
         <Legend lang={lang} />
       </SectionHead>
       {/* the real footage leads, everywhere (owner, 30 Aug): a first-time viewer understands the clips instantly,
