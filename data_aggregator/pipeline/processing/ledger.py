@@ -350,7 +350,8 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
     db, gaz = ctx.db, ctx.gaz
     known = {p.id for p in gaz.all()} if gaz.source == "db" else set(r["id"] for r in db.select_all("places", {"select": "id"}))
     since = (ctx.now - timedelta(days=config.ARTICLE_LOOKBACK_DAYS)).isoformat()
-    reports = db.select_all("reports_anon", {"select": "id,place_id,subject_count,respondent_type,status,event_time,created_at"})
+    reports = (db.select_all("reports_anon", {"select": "id,place_id,subject_count,respondent_type,status,event_time,created_at"})
+               if ctx.family_report_processing_enabled else [])
     entities = db.select_all("entities", {"select": "id,probable_place_id,last_place_id,last_contact_at,status"})
     figs = db.select_all("figures", {"select": "publisher,metric,scope,value,as_of,fetched_at,note,url", "scope": "like.place:*",
                                      "fetched_at": f"gte.{since}", "order": "as_of.desc"})

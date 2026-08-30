@@ -21,7 +21,7 @@ export default function StrikingStats({ lang, stats }: { lang: Lang; stats: Stat
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[18px] md:gap-[22px] mt-4">
           {rows.map((s) => {
             const caption = localised(s as unknown as Record<string, unknown>, "caption", lang);
-            const label = s.source_url ? `${hostOf(s.source_url)}${s.as_of ? ` · ${fmtDay(s.as_of, lang)}` : ""}` : s.id === "reports_total" ? t(lang, "sec.stats_source_live") : s.as_of ? fmtDay(s.as_of, lang) : "";
+            const label = s.source_url ? `${hostOf(s.source_url)}${s.as_of ? ` · ${fmtDay(s.as_of, lang)}` : ""}` : s.as_of ? fmtDay(s.as_of, lang) : "";
             return (
               <Card key={s.id} shadow={4} tilt={s.rot} padding="px-5 py-[26px] md:py-[22px]" as="article">
                 <div className="font-extrabold text-[46px] md:text-[44px] leading-none tracking-[-0.01em] num">{s.value}</div>

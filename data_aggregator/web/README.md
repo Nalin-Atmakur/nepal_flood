@@ -19,7 +19,8 @@ no accounts, no names of affected people anywhere.
                        │  app/api/og/route.tsx     1200×630 share card (live numbers)    │
                        │                                                                 │
                        │  lib/queries.ts  ── every read ──▶  Supabase (anon key, RLS)    │
-                       │  lib/reports.ts  ── own writes ──▶  reports_archive, submissions_log, users
+                       │  lib/reports.ts  ── private archive ──▶ reports_archive, report-media
+                       │                  └─ activity only ────▶ submissions_log
                        │  lib/presence.ts ── Realtime ────▶  presence "site", INSERT on submissions_log
                        └─────────────────────────────────────────────────────────────────┘
                                           ▲ ISR 300 s                ▲ live (client islands)
@@ -77,7 +78,7 @@ no accounts, no names of affected people anywhere.
 | 04 | [docs/04-auth-and-identity.md](docs/04-auth-and-identity.md) | anonymous sessions, `users`, RLS from the browser's side |
 | 05 | [docs/05-home-blocks.md](docs/05-home-blocks.md) | every block: table/view it reads, empty state |
 | 06 | [docs/06-report-flow.md](docs/06-report-flow.md) | who → box → listening → understood; writes; rate limit |
-| 07 | [docs/07-my-folder.md](docs/07-my-folder.md) | own rows, status trail, withdraw, keep folder |
+| 07 | [docs/07-my-folder.md](docs/07-my-folder.md) | private archive, Received/Withdrawn, files, keep folder |
 | 08 | [docs/08-places.md](docs/08-places.md) | /places, /places/[id], search, static params |
 | 09 | [docs/09-live-scoreboard.md](docs/09-live-scoreboard.md) | presence, realtime inserts, polling, degradation |
 | 10 | [docs/10-3d-corridor.md](docs/10-3d-corridor.md) | the port, data shaping, fallback PNG |

@@ -20,13 +20,13 @@ to the Supabase project (PostgREST + Storage + Auth admin over HTTPS) and never 
                         ▼
    ┌──────────────────────────────────────────────────────────────────────────────┐
    │  process_data.py                                                            │
-   │  ⓪ anonymise      reports_archive ─▶ reports_anon (LLM, PII-free) + OPMCM   │
-   │  ① resolve_places articles.places · reports_anon.place_id                   │
-   │  ② dedup          entities · entity_events · dedup_queue                    │
-   │  ③ ledger         place_status · place_timeline                             │
+   │  ⓪ archive boundary no family read/write/model call + public OPMCM projection│
+   │  ① resolve_places public articles only                                      │
+   │  ② dedup          public registries → entities · events · queue              │
+   │  ③ ledger         public-source place_status · place_timeline                │
    │  ③b press_figures Police / Tourism counts quoted in articles ─▶ figures     │
    │  ④ figures_latest latest per publisher × metric × scope                     │
-   │  ⑤ stats          stats · report_counts                                     │
+   │  ⑤ stats          public-source stats (family report_counts dormant)         │
    │  ⑥ findings       findings                                                  │
    │  ⑦ digest         digest (day × en/ne/hi)                                   │
    │  ⑧ timeline       event_timeline (dated milestones)                         │
@@ -50,7 +50,8 @@ the OpenAI cost ledger. `run.log` is the structured log (no PII, secrets redacte
    ```
 2. **Environment** — copy `.env.example` to `.env` and fill in
    `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_PROJECT_REF`, `OPENAI_API_KEY`,
-   `OPENAI_BUDGET_USD=20`. `.env` is gitignored; never commit it and never print it
+   `OPENAI_BUDGET_USD=20`, `FAMILY_REPORT_PROCESSING_ENABLED=false`. The last setting is fail-closed;
+   missing or invalid values also mean false. `.env` is gitignored; never commit it and never print it
    (`lib/log.py` redacts anything that looks like a key). Optional: `PULL_INTERVAL_MINUTES`
    (default 240) — the same number drives the site's "AUTO-REFRESH EVERY N MIN" copy and the
    stale banner threshold (`STALE_AFTER_MINUTES = PULL_INTERVAL_MINUTES + 45`).
@@ -98,11 +99,10 @@ the OpenAI cost ledger. `run.log` is the structured log (no PII, secrets redacte
   (`64:ff9b::…`) that never connect; Python prefers IPv6 and hangs until timeout. The patch is
   applied on import by `lib/http.py` and `lib/db.py`. `lib/db.py` is a thin `requests`
   PostgREST wrapper for the same reason (supabase-py goes through httpx and hung).
-- **The PII rule.** Names, phones, passport numbers, photos and free text from reports exist
-  only in the ARCHIVE zone (`reports_archive`, `raw_pulls`) and in Storage bucket `raw`. Nothing
-  under RAW/DERIVED, no log line, no fixture may carry them. PII sources are projected to hashed
-  keys *before* storage (`prestore()`), reports are anonymised by ⓪ with code-side redaction as
-  a second net, fixtures are scrubbed (`EXAMPLE-PERSON-n`, `98XXXXXXXX`).
+- **The family archive boundary.** Names, phones, passport numbers, photos and free text from the
+  questionnaire exist only in `reports_archive` and private report Storage. With the default flag,
+  no processing step selects those rows, constructs a prompt, writes a projection or derives a metric.
+  Public-source PII has its separate `prestore()` minimisation rules; fixtures remain scrubbed.
 
 ## Layout
 

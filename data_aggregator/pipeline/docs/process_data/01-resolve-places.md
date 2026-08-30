@@ -1,5 +1,9 @@
 # 01 — ① resolve places (`processing/resolve_places.py`, `lib/places.py`)
 
+Archive-only mode resolves **public articles only**. `resolve_reports()` returns
+`skipped="archive_only"` before querying `reports_anon`; the report branch shown below is a
+dormant legacy path guarded by `ProcCtx.family_report_processing_enabled`.
+
 ```
    articles where extracted is null                      reports_anon where place_id is null
      and fetched_at ≥ now − ARTICLE_LOOKBACK_DAYS (14)      (limit 500)
@@ -51,7 +55,7 @@ Reports never use the LLM here (⓪ already asked).
 
 | inputs | writes | log |
 |---|---|---|
-| `articles` (title, body), `reports_anon` (place_text, text_redacted), `places` | `articles.places`, `articles.extracted`; `reports_anon.place_id` | `resolve_places.articles` (scanned, matched, llm), `resolve_places.reports` |
+| public `articles` (title, body), `places` | `articles.places`, `articles.extracted` | `resolve_places.articles` (scanned, matched, llm); report summary says archive-only |
 
 ## Failure behaviour
 

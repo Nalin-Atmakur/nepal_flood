@@ -1,7 +1,7 @@
 """
-processing/report_counts.py — part of step ⑤. See docs/process_data/05-stats.md ("report_counts").
-reports_anon ─▶ count per (hour bucket, respondent_type, place_id or 'unresolved') ─▶ upsert report_counts.
-No other columns, ever (the table is public).
+processing/report_counts.py — dormant family-publication path in step ⑤.
+Archive-only mode returns before reading reports_anon or writing the public table. The
+legacy bucketing implementation is retained for a future separately reviewed programme.
 """
 from __future__ import annotations
 
@@ -27,6 +27,9 @@ def counts(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def run(ctx: ProcCtx) -> dict[str, Any]:
+    if not ctx.family_report_processing_enabled:
+        log.info("report_counts.disabled", mode="archive_only")
+        return {"buckets": 0, "skipped": "archive_only"}
     rows = ctx.db.select_all("reports_anon", {"select": "created_at,respondent_type,place_id"})
     out = counts(rows)
     for o in out:

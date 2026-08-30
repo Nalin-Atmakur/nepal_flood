@@ -2,8 +2,8 @@
 processing/place_now.py — step ⑩: the per-place "what is happening now" line.
 docs/process_data/11-place-now.md.
 
-For every gazetteer place with any signal in the last PLACE_NOW_HOURS (36 h) — a place-scoped figure, an
-article resolved to it, an anonymised report, a place_timeline line — build ONE or TWO sentences in English
+For every gazetteer place with a public-source signal in the last PLACE_NOW_HOURS (36 h) — a place-scoped figure,
+article or public-source place_timeline line — build ONE or TWO sentences in English
 from counts, publisher names and headline titles only (never names, phones or free text from reports), then ask
 the model to polish the English and translate to Nepali and Hindi (batched, budget-guarded, capped per run).
 When the model is unavailable or refused, a deterministic trilingual template is written instead, so the
@@ -11,7 +11,7 @@ column is never empty where a signal exists.
 
     figures (scope place:<id>, 36 h)  ─┐
     articles (places ∋ id, 36 h)      ─┤
-    reports_anon (place_id, 36 h)     ─┼─▶ facts(place) ─▶ template_en / template_ne / template_hi
+    reports_anon (legacy mode only)   ─┼─▶ facts(place) ─▶ template_en / template_ne / template_hi
     place_timeline (day ≥ yesterday)  ─┤            │
     v_place_status_latest             ─┘            ▼  batches of PLACE_NOW_BATCH
                                               llm.complete_json("place_now") ─▶ {en, ne, hi} per place
@@ -229,7 +229,8 @@ def _run(ctx: ProcCtx) -> dict[str, Any]:
                                      "fetched_at": f"gte.{since}", "order": "as_of.desc"})
     arts = db.select_all("articles", {"select": "id,title,publisher,published_at,places", "places": "neq.{}",
                                       "fetched_at": f"gte.{since}", "order": "published_at.desc"})
-    reports = db.select_all("reports_anon", {"select": "place_id", "created_at": f"gte.{since}", "place_id": "not.is.null"})
+    reports = (db.select_all("reports_anon", {"select": "place_id", "created_at": f"gte.{since}", "place_id": "not.is.null"})
+               if ctx.family_report_processing_enabled else [])
     statuses = db.select_all("v_place_status_latest", {"select": "place_id,as_of,expected,confirmed_reached,unknown"})
     status_by = {s["place_id"]: s for s in statuses}
 

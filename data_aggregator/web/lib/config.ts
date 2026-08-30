@@ -166,7 +166,6 @@ export const STAT_CARDS: { id: string; min?: number }[] = [
   { id: "missing_counts_divergence", min: 2 },
   { id: "rescued_per_day", min: 1 },
   { id: "duplicates_merged", min: 50 },
-  { id: "reports_total", min: 5 },
   // fallback when the percentage row is missing (same fact, "145 of 198")
   { id: "towers_restored", min: 1 },
 ];
@@ -196,9 +195,6 @@ export const SOURCE_GROUPS: { grp: string; badge: string; labelKey: string }[] =
 
 /** Client-side rate limit for the report box. */
 export const RATE_LIMIT = { minGapSeconds: 20, perHour: 20 };
-
-/** How long the "We understood" screen polls for a summary, and how often. */
-export const UNDERSTOOD_POLL = { everyMs: 5000, forMs: 90000 };
 
 /** Scoreboard refresh cadence (v_live_counts poll). */
 export const SCOREBOARD_POLL_MS = 60000;

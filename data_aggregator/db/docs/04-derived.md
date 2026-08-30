@@ -1,23 +1,23 @@
 # 04 · DERIVED zone — `003_derived.sql`, `006_story_and_digest.sql`, `007_series.sql`
 
-What the website shows. Every table here is recomputed by `process_data`; nothing else writes it. Public tables are readable with the anon key; private tables are service-only. Columns: `docs/data-model.md` §4.
+What the website shows from public sources. Public tables are readable with the anon key; private operational tables are service-only. `report_counts` remains a reserved public table but is neither written nor rendered in archive-only mode.
 
 ## Which step writes what
 
 ```
    process_data.py
-        ⓪ anonymise        → reports_anon (RAW)                 [pipeline/docs/process_data/00-anonymise.md]
-        ① resolve places   → articles.places, reports_anon.place_id (RAW)          [01-resolve-places.md]
+        ⓪ archive boundary → no family write; public OPMCM projection              [00-anonymise.md]
+        ① resolve places   → public articles.places                                [01-resolve-places.md]
         ② dedup            → entities · entity_events · dedup_queue   (PRIVATE)     [02-dedup.md]
         ③ ledger           → place_status · place_timeline            (public)      [03-ledger.md]
         ③b press_figures   → figures (RAW; publishers "… (via press)")              [03b-press-figures.md]
         ④ figures_latest   → figures_latest                           (public)      [04-figures-latest.md]
-        ⑤ stats            → stats · report_counts                    (public)      [05-stats.md]
+        ⑤ stats            → public-source stats; report_counts dormant             [05-stats.md]
         ⑥ findings         → findings                                 (PRIVATE)     [06-findings.md]
         ⑦ digest           → digest                                   (public)      [07-digest.md]
         ⑧ timeline         → event_timeline (append) · place_timeline (public)      [10-timeline-and-trends.md]
         ⑨ trends           → figure_series                            (public)      [10-timeline-and-trends.md]
-        ...and sets reports_archive.status → processed | matched      (ARCHIVE)
+        ...never reads or updates reports_archive in archive-only mode
 ```
 
 ## Public tables
@@ -28,7 +28,7 @@ What the website shows. Every table here is recomputed by `process_data`; nothin
 | `place_status` | one row per place per run (`as_of`); latest via `v_place_status_latest` | Places table (§04), place pages, 3D corridor, mobile place list |
 | `place_timeline` | one line per place per day | place page "Status, day by day" |
 | `stats` | one row per striking number, keyed by `id` | What happened, in numbers (§02); River & weather counts |
-| `report_counts` | contributions per hour × respondent type × place | "N people have added what they know", `submissions_by_utm`-style analyses |
+| `report_counts` | reserved legacy grain: hour × type × place | not written or rendered in archive-only mode |
 | `event_timeline` | one dated milestone per row (seeded first hours + appended) | home block "The first hours" (§03), OG card context |
 | `digest` | one row per NPT day × language, `bullets` jsonb | "What changed today" card under the scoreboard |
 | `figure_series` | one value per publisher × metric × scope × NPT day | sparklines and "since yesterday" deltas |

@@ -168,3 +168,14 @@ def openai_budget_usd() -> float:
         return float(os.environ.get("OPENAI_BUDGET_USD", "20"))
     except ValueError:
         return 20.0
+
+
+def family_report_processing_enabled() -> bool:
+    """Whether private questionnaire rows may enter the automated pipeline.
+
+    Read this at runtime because ``process_data.py`` loads ``pipeline/.env`` after
+    importing this module. Missing, empty, and unrecognised values fail closed.
+    """
+    return os.environ.get("FAMILY_REPORT_PROCESSING_ENABLED", "false").strip().lower() in {
+        "1", "true", "yes", "on",
+    }

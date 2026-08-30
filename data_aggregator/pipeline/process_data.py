@@ -3,19 +3,19 @@
 process_data.py — ARCHIVE + RAW → DERIVED, in numbered steps (one module each under processing/).
 Docs: docs/process_data/00-anonymise.md … 07-digest.md, then 08-llm-budget.md, 09-failure-modes.md.
 
-    ⓪ anonymise        reports_archive → reports_anon · OPMCM projection        processing/anonymise.py
-    ① resolve_places   articles.places, reports_anon.place_id                    processing/resolve_places.py
+    ⓪ archive intake   family reports stay private · OPMCM projection             processing/anonymise.py
+    ① resolve_places   articles.places (family path dormant by default)            processing/resolve_places.py
     ② dedup            entities / entity_events / dedup_queue                   processing/dedup.py
     ③ ledger           place_status / place_timeline                            processing/ledger.py
     ③b press_figures   Police / Tourism counts quoted in articles → figures     processing/press_figures.py  (--step 3.5)
     ④ figures_latest   latest per publisher × metric × scope                    processing/figures_latest.py
-    ⑤ stats            striking + live numbers, report_counts                   processing/stats.py
+    ⑤ stats            striking + public-source live numbers                    processing/stats.py
     ⑥ findings         data-quality findings                                    processing/findings.py
     ⑦ digest           daily "what changed" bullets (EN/NE/HI)                  processing/digest.py
     ⑧ timeline         dated milestones appended to event_timeline              processing/timeline.py
     ⑨ trends           figure_series: one value per publisher × metric × day    processing/trends.py
     ⑩ place_now        per-place "what is happening now" line EN/NE/HI          processing/place_now.py
-    then reports_archive.status anonymised → processed (matched rows keep 'matched')
+    family processing is fail-closed; when explicitly enabled, the legacy projection/finaliser path runs
 
 Flags: --step N (repeatable; default all; 3.5 = ③b) · --dry-run (compute, write nothing) · --verbose ·
 --purge-irrelevant (one-off maintenance: drop stored articles that fail the relevance gate).
@@ -59,6 +59,8 @@ STEPS = [
 
 def finalise_statuses(ctx: ProcCtx) -> dict[str, int]:
     """anonymised → processed once every step has run (matched rows were set by ②)."""
+    if not ctx.family_report_processing_enabled:
+        return {"processed": 0, "archive_only": 1}
     rows = ctx.db.select("reports_archive", {"select": "id", "status": "eq.anonymised", "withdrawn_at": "is.null", "limit": 1000})
     if not ctx.dry_run:
         for r in rows:
@@ -85,8 +87,12 @@ def main(argv: list[str] | None = None) -> int:
     state = State()
     gaz = Gazetteer.load(db)
     llm = LLM(state)
-    ctx = ProcCtx(db=db, gaz=gaz, llm=llm, state=state, dry_run=args.dry_run, now=utcnow())
+    family_reports_enabled = config.family_report_processing_enabled()
+    ctx = ProcCtx(db=db, gaz=gaz, llm=llm, state=state,
+                  family_report_processing_enabled=family_reports_enabled,
+                  dry_run=args.dry_run, now=utcnow())
     log.info("process.start", dry_run=args.dry_run, steps=args.step or "all", places=len(gaz),
+             family_report_processing=family_reports_enabled,
              llm_spent_usd=round(llm.spent_usd, 4), llm_budget_usd=llm.budget_usd)
     summary: dict[str, object] = {}
     if args.purge_irrelevant:
@@ -109,6 +115,7 @@ def main(argv: list[str] | None = None) -> int:
     if not args.dry_run:
         state.mark_run("process", llm_usd=round(llm.spent_usd, 4))
         state.save()
+    summary["family_reports"] = {"mode": "processing" if family_reports_enabled else "archive_only"}
     summary["llm"] = {"calls_this_run": llm.calls_this_run, "refused": llm.refused, "spent_usd": round(llm.spent_usd, 4)}
     log.info("process.done", seconds=round(time.monotonic() - t0, 1), llm_calls=llm.calls_this_run, llm_usd=round(llm.spent_usd, 4))
     print(json.dumps(summary, ensure_ascii=False, indent=1, default=str))

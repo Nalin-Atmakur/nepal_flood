@@ -26,13 +26,16 @@
 
 ## Where calls happen
 
+Family reports are deliberately absent. `FAMILY_REPORT_PROCESSING_ENABLED=false` prevents the
+anonymisation caller from selecting a row or constructing a prompt. OpenAI is used only for
+public articles and public-source translation/polish in the current deployment.
+
 | step | purpose | per | max_tokens | typical cost |
 |---|---|---|---|---|
-| ⓪ anonymise | `anonymise` | one per new `reports_archive` row | 1200 | ~1.5–2 k prompt tokens (gazetteer list + text) ≈ $0.0005 |
 | ① resolve_places | `resolve_place` | one per article with no alias hit that mentions corridor keywords | 120 | ≈ $0.0003 |
 | ② dedup | none in v1 (grey-zone pairs go to `dedup_queue` for a human) | | | |
 
-At these prices $20 ≈ 30 000 reports. The guard exists for runaway loops, not for normal load.
+The guard exists for runaway public-source loops, not as a privacy control.
 
 ## Refusal semantics
 

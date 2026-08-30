@@ -1,5 +1,11 @@
 # Data model
 
+> **Current family-intake mode:** archive-only. The schema deliberately remains unchanged, but
+> `FAMILY_REPORT_PROCESSING_ENABLED=false` prevents `process_data` from selecting questionnaire
+> rows, writing `reports_anon`, generating family entities/counts/status/timelines, or updating
+> archive bookkeeping. `reports_anon`, `report_counts`, `summary_public`, `anonymised_at` and
+> legacy processing statuses are reserved compatibility structures, not current data flows.
+
 Every table and view in the Supabase project, read from `db/migrations/001…007` and checked against the live schema (`information_schema`, 30 Aug 2026 03:40 BST). The migrations are the truth; when they change, change this file in the same commit (see `CONTRIBUTING.md`, "Change the schema").
 
 Related: `db/README.md` (how to apply) · `db/docs/01-zones.md` … `07-applying-migrations.md` (one topic per file) · `runbook.md` (health checks).
@@ -18,9 +24,9 @@ Related: `db/README.md` (how to apply) · `db/docs/01-zones.md` … `07-applying
    ║  raw_pulls        submissions_log (public log) ║   ║  figures   gauges*  articles           ║
    ║  _migrations      (ledger, apply.py)           ║   ║  reports_anon                          ║
    ╚═══════════════════════╤════════════════════════╝   ╚═══════════════════╤═══════════════════╝
-                           │ ⓪ anonymise new rows ─────────────────────────►│
-                           │                                                │
-                           └──────────────── process_data (service key) ◄───┘
+                           │ family questionnaire boundary: no pipeline read │
+                           │ public raw_pulls only                            │
+                           └──────────────── process_data (service key) ◄────┘
                                  ① resolve ② dedup ③ ledger ③b press ④ latest ⑤ stats ⑥ findings
                                  ⑦ digest ⑧ timeline ⑨ trends
                                                           │
@@ -42,8 +48,8 @@ Related: `db/README.md` (how to apply) · `db/docs/01-zones.md` … `07-applying
 
 | Zone | Contains | Who writes | Who reads | Key used |
 |---|---|---|---|---|
-| ARCHIVE | verbatim submissions and raw pulls; may contain names, phones, photos | website (own rows) · `pull_external_data` (`raw_pulls`) · `process_data` (bookkeeping columns) | the owner (own `reports_archive`/`users` rows) · `process_data` | anon key (owner) · service key |
-| RAW | normalised rows with no PII; reference tables | `pull_external_data` · `process_data` ⓪ (`reports_anon`), ① (`articles.places`) · `db/apply.py` seeds | `process_data` · website only for `sources`, `places`, `gauges` and the views | service key · Management API |
+| ARCHIVE | verbatim submissions and raw pulls; may contain names, phones, photos | website (own rows) · `pull_external_data` (`raw_pulls`) | owner (minimum own questionnaire metadata); public-source pull processing only | anon key (owner) · service key |
+| RAW | normalised public-source rows; reference tables; dormant `reports_anon` | `pull_external_data` · public-source `process_data` · seeds | `process_data` · website only for safe references/views | service key · Management API |
 | DERIVED | what the site shows; computed each run | `process_data` | website (public tables) · `process_data` (private tables) | anon key · service key |
 
 Three principals exist:
@@ -89,14 +95,14 @@ The questionnaire, verbatim. One row per submission; corrections are new rows po
 | `photo_path` | text | Storage path `report-photos/<user_id>/<id>.jpg` |
 | `supersedes` | uuid → `reports_archive(id)` | set on a correction or "add more" row |
 | `fingerprint` | text | copy of the device fingerprint at submission |
-| `withdrawn_at` | timestamptz | soft withdraw; excluded from processing and counts; row retained |
-| `summary_public` | text | PII-free one-line "We understood: …", written by `process_data` ⓪; readable by the owner |
-| `anonymised_at` | timestamptz | null = not yet projected into `reports_anon` |
-| `status` | text, default `'received'`, check in (`received`,`anonymised`,`processed`,`matched`,`withdrawn`,`spam`) | the status trail shown on `/me` |
+| `withdrawn_at` | timestamptz | soft withdraw; row/files retained and barred from future review/handoff |
+| `summary_public` | text | reserved legacy column; null in archive-only mode |
+| `anonymised_at` | timestamptz | reserved legacy column; null in archive-only mode |
+| `status` | text, default `'received'`, legacy enum retained | current UI shows `received` or owner-set `withdrawn` only |
 
-Indexes: `(user_id, created_at desc)`; partial `(created_at) where anonymised_at is null` (the processing queue).
+Indexes: `(user_id, created_at desc)`; the partial `anonymised_at is null` index is reserved legacy structure and intentionally includes current active rows.
 
-Writes: owner inserts (policy requires `user_id = auth.uid()`, `status = 'received'`, `anonymised_at is null`); owner updates are reduced to a withdrawal by the trigger (section 6); `process_data` sets `anonymised_at`, `status`, `summary_public`. Reads: owner (own rows); `process_data`. No delete for users.
+Writes: owner inserts; owner updates are reduced to withdrawal by the trigger. In archive-only mode `process_data` neither reads nor writes this table. My Info selects minimum owner metadata and no raw text/contact. No delete for users.
 
 ### `raw_pulls`
 
@@ -258,9 +264,9 @@ Headlines and bodies from RSS, tag pages, live blogs and search APIs.
 
 Index `(published_at desc)`. Writes: `pull_external_data` (rows; news normalisers pass every item through the flood-relevance gate `normalisers/_rss.is_relevant` — keyword + corridor-place match, with district names and generic places such as Kathmandu not counting on their own), `process_data` ① (`places`, `extracted`). Reads: `process_data`; public only through `v_articles_recent`. RLS: table service only. `process_data.py --purge-irrelevant` is the one-off maintenance that drops stored rows failing the gate.
 
-### `reports_anon`
+### `reports_anon` — reserved legacy table
 
-The anonymised projection of `reports_archive`, written by `process_data` ⓪. No names, phones, passports, photos, contact.
+The schema for the former questionnaire projection is retained for a possible future authorised programme. It is not written or read while archive-only mode is active.
 
 | Column | Type | Meaning |
 |---|---|---|
@@ -288,7 +294,7 @@ The anonymised projection of `reports_archive`, written by `process_data` ⓪. N
 | `model` | text | model / prompt version that produced the row |
 | `anonymised_at` | timestamptz, default now() | |
 
-Indexes on `place_id`, `person_key`. Writes: `process_data` ⓪. Reads: `process_data` ①–③. RLS: service only.
+Indexes on `place_id`, `person_key`. Current writers/readers: none. RLS remains service-only.
 
 ## 4. DERIVED zone (`003_derived.sql`)
 
@@ -310,11 +316,11 @@ Indexes on `place_id`, `person_key`. Writes: `process_data` ⓪. Reads: `process
 |---|---|---|
 | `place_id` | text → `places(id)` | PK part |
 | `as_of` | timestamptz, default now() | PK part; the run time |
-| `expected` | int, default 0 | entities whose last-known / probable place is here, plus reports |
-| `confirmed_reached` | int, default 0 | NDRRMA rescued-/stationed-locations, rescuer reports |
+| `expected` | int, default 0 | public-register entities/public figures associated with the place |
+| `confirmed_reached` | int, default 0 | public NDRRMA rescued-/stationed figures |
 | `unknown` | int, default 0 | `expected − confirmed_reached` |
-| `reports_count` | int, default 0 | contributions resolved to this place |
-| `last_contact_at` | timestamptz | last **observed** contact from the place (entity contact, report `event_time`, place-scoped figure `as_of`, article mentioning the place, live gauge reading); null when nothing dated exists — never the run time |
+| `reports_count` | int, default 0 | legacy field; questionnaire contribution is always zero in archive-only mode |
+| `last_contact_at` | timestamptz | last observed contact/time from public-source figures/timeline; never questionnaire data or run time |
 | `telecom_restored` | boolean | from telecom figures/articles for the place (`ledger.py` phones hook) |
 | `phones` | text | display: `yes (since 28 Aug)` · `no` · null when unknown |
 | `access` | text | `road` · `road_partial` · `foot` · `helicopter_only` · `unknown` |
@@ -345,7 +351,7 @@ Index `(place_id, as_of desc)`.
 
 | Column | Type | Meaning |
 |---|---|---|
-| `id` | text PK | 22 rows live: `wave_time_to_port` · `wave_speed` · `galchhi_rise` · `bodies_downstream_km` · `missing_counts_divergence` · `missing_hydropower` · `bodies_by_district_top` · `rescued_total_ndrrma` · `rescued_per_day` · `heli_flights` · `personnel_deployed` · `towers_restored` · `places_reached` · `places_with_unknown` · `gauges_alive` · `next_flying_window` · `days_since_event` · `duplicates_merged` · `reports_total` · `reports_last_hour` · `submissions_today` · `last_pull`. The site ranks them with minimum thresholds (`web/lib/config.ts` `STAT_CARDS`) |
+| `id` | text PK | public-source statistic id. Legacy `reports_total`, `reports_last_hour` and copied `submissions_today` are not computed in archive-only mode and are not stat-card candidates |
 | `value` | text, not null | display string: `7 min`, `~193 km/h` |
 | `numeric` | numeric | the number behind it, when there is one |
 | `caption_en`, `caption_ne`, `caption_hi` | text | |
@@ -353,7 +359,7 @@ Index `(place_id, as_of desc)`.
 | `as_of` | timestamptz | |
 | `computed_at` | timestamptz, default now() | |
 
-**`report_counts`** — contributions by hour × type × place. Counts only; no other columns, ever.
+**`report_counts`** — reserved legacy table for contributions by hour × type × place. Archive-only mode returns before reading/writing it, and the website does not render it.
 
 | Column | Type | Meaning |
 |---|---|---|
@@ -507,7 +513,7 @@ Consequences: a migration file is immutable once applied — fix forward with `0
         └── anything else changed                                 → raise 'only withdrawal is permitted'
 ```
 
-So from the browser: `update reports_archive set withdrawn_at = now() where id = …` works and stamps `status = 'withdrawn'`; any attempt to edit `text`, `place_id`, `status` or `summary_public` is rejected; and setting `withdrawn_at` back to null re-stamps `now()`, so a user cannot un-withdraw (they submit a new row instead). `process_data` skips withdrawn rows and excludes them from counts on its next run (≤ one cadence). The archive row is retained.
+So from the browser: `update reports_archive set withdrawn_at = now() where id = …` works and stamps `status = 'withdrawn'`; any other edit is rejected. `process_data` never reads active or withdrawn questionnaire rows. The archive row/files are retained; withdrawn means barred from future review/processing/handoff, not deletion.
 
 ## 7. Realtime and Storage (`005_realtime_storage.sql`)
 

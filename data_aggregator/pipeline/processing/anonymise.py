@@ -1,7 +1,11 @@
 """
 processing/anonymise.py — step ⓪. See docs/process_data/00-anonymise.md.
 
-    reports_archive (anonymised_at is null, withdrawn_at is null)
+Default mode is archive-only: no questionnaire row is selected, transformed, sent to a
+model, or projected. The legacy family-processing functions below are dormant unless
+FAMILY_REPORT_PROCESSING_ENABLED is explicitly enabled after a coordinated review.
+
+    [explicit legacy mode only] reports_archive (anonymised_at is null, withdrawn_at is null)
         │  one LLM call per row (gpt-4o-mini, strict json schema, gazetteer id list in the prompt)
         ▼
     public fields ─▶ reports_anon (subject_count, place_id, event_time, status, nationality, age_band,
@@ -305,16 +309,21 @@ def retract_withdrawn(ctx: ProcCtx) -> dict[str, Any]:
 
 def run(ctx: ProcCtx) -> dict[str, Any]:
     out: dict[str, Any] = {}
-    try:
-        out["withdrawn"] = retract_withdrawn(ctx)
-    except Exception as e:  # noqa: BLE001
-        log.error("anonymise.retract_failed", error=f"{type(e).__name__}: {str(e)[:200]}")
-        out["withdrawn"] = {"error": type(e).__name__}
-    try:
-        out["reports"] = run_reports(ctx)
-    except Exception as e:  # noqa: BLE001
-        log.error("anonymise.reports_failed", error=f"{type(e).__name__}: {str(e)[:200]}")
-        out["reports"] = {"error": type(e).__name__}
+    if ctx.family_report_processing_enabled:
+        try:
+            out["withdrawn"] = retract_withdrawn(ctx)
+        except Exception as e:  # noqa: BLE001
+            log.error("anonymise.retract_failed", error=f"{type(e).__name__}: {str(e)[:200]}")
+            out["withdrawn"] = {"error": type(e).__name__}
+        try:
+            out["reports"] = run_reports(ctx)
+        except Exception as e:  # noqa: BLE001
+            log.error("anonymise.reports_failed", error=f"{type(e).__name__}: {str(e)[:200]}")
+            out["reports"] = {"error": type(e).__name__}
+    else:
+        out["withdrawn"] = {"skipped": "archive_only"}
+        out["reports"] = {"mode": "archive_only", "read": 0, "written": 0}
+        log.info("anonymise.family_reports_disabled", mode="archive_only")
     try:
         out["opmcm"] = project_opmcm(ctx)
     except Exception as e:  # noqa: BLE001

@@ -1,12 +1,12 @@
 # nepalfloodtracker.com — architecture and plan
 
-*Definitive version, 29 Aug 2026 ~22:30 UK. Supersedes the earlier draft. Planning document — nothing here is built yet.*
+*Current architecture, updated 30 Aug 2026. The original implementation narrative is retained where useful, but the archive-only family boundary below supersedes every earlier proposal to anonymise, match, count or publish questionnaire data.*
 
 ## 0. Principles
 
 1. **The database is the single source of truth.** Scraped, contributed and computed data all live in Supabase. The website is a portal into it; the scripts are readers and writers. Nothing exists only on a laptop or only on the site.
-2. **Two scripts, run every 15 minutes:** `pull_external_data` (external sites/APIs → raw) and `process_data` (raw + contributed → metrics, trends, dedup → derived).
-3. **Users contribute raw; the pipeline anonymises.** Submissions are stored verbatim in an **archive** zone. `process_data` anonymises only the rows it hasn't seen yet into the raw zone, then processes. Every user has a UUID and can see what *they* contributed.
+2. **Two scripts, run on the configured cadence:** `pull_external_data` (external sites/APIs → raw) and `process_data` (public-source raw → metrics, trends, dedup → derived).
+3. **Users contribute raw; the pipeline does not read it.** Submissions and attachments remain verbatim in the private **archive** zone. They are never projected, classified, summarised, matched, counted into derived metrics or sent to a model. Every user has a UUID and can manage what *they* contributed.
 4. **The website is functional and beautiful.** Functional: submit, see your own information. Beautiful: 3D, striking statistics, design people want to show someone. Virality = word of mouth on WhatsApp, X, LinkedIn.
 5. **Three languages, one toggle:** English · नेपाली · हिन्दी at the top of every page.
 
@@ -43,13 +43,13 @@
               ║                                                 entities (private)║
               ║                                                 findings          ║
               ╚═════════════╤═════════════════════════════════════════╤═══════════╝
-                            │ reads RAW + ARCHIVE                     │ reads DERIVED
+                            │ reads public-source RAW/ARCHIVE only    │ reads DERIVED
                             ▼                                         ▼
               ┌─────────────────────────────┐          ┌─────────────────────────────┐
               │ process_data.py             │          │ website (Next.js on Vercel) │
               │ every 15 min · laptop now,  │          │ ISR every 5 min             │
               │ cloud later                 │          │ deploy only on code change  │
-              │ anonymise new → resolve →   │          │ /  /report  /me  /places    │
+              │ public resolve → dedup →    │          │ /  /report  /me  /places    │
               │ dedup → ledger → stats      │          │ EN · NE · HI · live counts  │
               └──────────────┬──────────────┘          └──────────────┬──────────────┘
                              │ writes DERIVED                          │
@@ -67,10 +67,10 @@
  │ ZONE        │ WHO WRITES                │ WHO READS                        │
  ├─────────────┼───────────────────────────┼──────────────────────────────────┤
  │ ARCHIVE     │ website (user's own rows) │ the user (own rows, via auth.uid)│
- │ (PII)       │                           │ process_data (service role)      │
+ │ (PII)       │                           │ authorised manual access only    │
  ├─────────────┼───────────────────────────┼──────────────────────────────────┤
  │ RAW         │ pull_external_data        │ process_data                     │
- │ (anonymised)│ process_data (anonymiser) │ (never the public site)          │
+ │ (normalised)│ pull + public processing  │ (never the public site)          │
  ├─────────────┼───────────────────────────┼──────────────────────────────────┤
  │ DERIVED     │ process_data              │ the website (public, anon key)   │
  │ (public)    │                           │ except entities (service only)   │
@@ -87,7 +87,7 @@ Supabase is **database only**: Postgres + RLS + Storage for PDFs/photos. No edge
 
 - On first visit: `supabase.auth.signInAnonymously()` → a real Supabase user with a stable `auth.uid()`, persisted by the client library in localStorage. This **is** the user's UUID.
 - `users` row: `id`, `created_at`, `lang`, `fingerprint_hash` (UA + screen + timezone + language — a recovery/dedup hint, not auth), `contact` (optional, added later if the user wants to recover their folder on another device — Supabase can upgrade an anonymous user to email/phone without changing the id).
-- **My folder (`/me`)**: `select * from reports_archive where user_id = auth.uid()` — server-enforced. Shows every submission with its status (received → anonymised → processed → matched to place X), and lets the user add more or correct (a correction is a new row with `supersedes = <old id>`; process_data takes the latest).
+- **My info (`/me`)**: reads minimum metadata from `reports_archive where user_id = auth.uid()` under RLS. Shows `Received` or `Received → Withdrawn`, files, and correction/add-more actions. It never renders raw report text or claims automated processing.
 
 ---
 
@@ -105,30 +105,15 @@ Supabase is **database only**: Postgres + RLS + Storage for PDFs/photos. No edge
             └──► submissions_log ◄── (created_at, respondent_type, lang) — no PII; public;
                                      feeds the live counters (§8)
 
-   …then, on the next process_data run (≤15 min):
-
-   reports_archive where anonymised_at is null
+   process_data.py
             │
-            ▼
-   anonymise (step ⓪ of §6):
-       • drop: names, phones, passport, photo, reporter contact
-       • keep: respondent_type, places, times, counts, statuses, purpose, mode,
-               operator/project, nationality, age band, sex
-       • derive: person_key = sha256(normalised phone) if phone
-                             else sha256(normalised name + age + nationality)
-                 group_key  = normalised operator/project/pilgrim group
-       • free text → OpenAI: redact PII, extract {place, count, status, time},
-                 resolve place text → gazetteer id, detect language, translate to EN
-            │
-            ├──► reports_anon (RAW) ◄── anonymised row + extracted fields + archive_id
-            └──► reports_archive.anonymised_at = now()
+            └──► does not select reports_archive; no projection or derived write
 ```
 
-- The website does nothing privileged: no server action, no OpenAI key in the app. Simpler, and a submission is never lost because a model call failed — it just waits for the next run.
-- `person_key` is what lets dedup and cross-list matching work **without names in RAW**. Same phone on two submissions → same key. Name-based keys are weaker (spelling) — see §6.
-- Where a match genuinely needs the name (e.g. against OPMCM's free-text rows), `process_data` does it with the service role in the ARCHIVE zone and emits only entity ids and counts.
-- Corrections: a new archive row with `supersedes = <old id>`; the anonymiser copies the flag; the ledger takes the latest.
-- Photos: Storage `report-photos` (private); path in archive only.
+- `FAMILY_REPORT_PROCESSING_ENABLED` defaults to false and is resolved at runtime. Archive-only mode returns before the first family-table query in every processing stage.
+- Reports stay `received` with `anonymised_at` and `summary_public` null. Corrections remain new archive rows with `supersedes`; no automated code interprets the chain.
+- Withdraw marks the row `withdrawn`. Text and files remain private, and withdrawn rows are barred from any future review or handoff.
+- `reports_anon`, family keys and `report_counts` remain reserved schema/code only. Enabling them is a new reviewed programme, not an operational toggle.
 
 ---
 
@@ -161,16 +146,16 @@ Supabase is **database only**: Postgres + RLS + Storage for PDFs/photos. No edge
 ## 6. `process_data.py`
 
 ```
-   RAW (figures, gauges, articles, reports_anon, places)  +  ARCHIVE (reports_archive, raw_pulls)
+   RAW (figures, gauges, articles, places) + public-source ARCHIVE (raw_pulls)
         │
         ▼
-   ⓪ ANONYMISE NEW      reports_archive where anonymised_at is null → reports_anon (§4)
-        │                raw_pulls of PII sources not yet projected   → anonymised RAW rows
+   ⓪ ARCHIVE BOUNDARY   family reports: no read, no write, no model call
+        │                public OPMCM raw_pulls → minimised public-source figures
         │                (idempotent: marks each source row when done; re-runs are no-ops)
         ▼
    ① PLACE RESOLUTION    free text → gazetteer id
         │   • alias match (case/diacritic-insensitive, NE/HI/EN/ZH aliases)
-        │   • OpenAI, constrained to the gazetteer list, for prose (articles, form free text)
+        │   • OpenAI, constrained to the gazetteer list, for public article prose only
         │   • unresolved → null + logged for gazetteer growth
         ▼
    ② DEDUP / ENTITY RESOLUTION   (the serious part)
@@ -179,14 +164,13 @@ Supabase is **database only**: Postgres + RLS + Storage for PDFs/photos. No edge
         │               Devanagari↔Latin, Jaro-Winkler on normalised) 0.6–0.9 · same group +
         │               same last place +0.1 · conflicting sex/age −0.5
         │   thresholds: ≥0.9 auto-merge · 0.6–0.9 → dedup_queue (human) · <0.6 distinct
-        │   inputs:     reports_anon (+archive for name checks) · OPMCM · NDRRMA rescued ·
-        │               Setu · DAO lists · operator manifests (type D)
+        │   inputs:     public OPMCM · NDRRMA rescued · Setu · DAO/public lists
         │   output:     entities (canonical, status timeline, probable place, merged_from
         │               provenance) — PRIVATE; counts flow onward
         ▼
    ③ PER-PLACE LEDGER    per gazetteer place:
         │   expected         = entities whose last-known / probable place is here
-        │   confirmed_reached= NDRRMA rescued-locations + stationed + rescuer reports (type C)
+        │   confirmed_reached= public NDRRMA rescued-locations + stationed figures
         │   unknown          = expected − confirmed
         │   last_contact_at, telecom_restored, access, hazard(below lakes / in channel)
         │   phones / telecom_restored from NTC/Ncell restoration articles; last_contact_at is
@@ -200,8 +184,8 @@ Supabase is **database only**: Postgres + RLS + Storage for PDFs/photos. No edge
         │                 (the side-by-side: NDRRMA · Police · MoFA · DoT · OPMCM; each column
         │                  accepts several publisher spellings, web/lib/config.ts AGENCIES)
         ▼
-   ⑤ STATS               22 striking + live numbers, recomputed each run (ids in
-        │                 docs/data-model.md §4); report_counts
+   ⑤ STATS               public-source striking + live numbers, recomputed each run
+        │                 family report totals/buckets remain dormant
         ▼
    ⑥ FINDINGS            name collisions (Bhotekoshi RM ≠ Bhote Koshi river), entries absent
         │                 from Setu, duplicate rate, publisher divergence, unreached-by-record
@@ -306,19 +290,18 @@ Everything writes to DERIVED; one module per step under `pipeline/processing/` (
 - **Chips, not fields.** Tapping "when you last heard" inserts "Last heard from: " into the box at the cursor. The chip set changes with the respondent type (survivor: *where you were · who was with you · who else you saw · where they went · who is still there*; rescuer: *place reached · when · how many evacuated · how many remaining · not reached*; company: *group name · how many · itinerary · last contact · accounted / unaccounted*).
 - **Voice input** (Web Speech API, falls back silently) — speaking Nepali or Hindi into a phone is far easier than typing Devanagari.
 - **Two optional fields only:** place picker (nudged, because it's the join key) and contact (nudged: "so we can follow up").
-- **Extraction does the rest** (§6 ⓪): the full schema — name, phones, passport, last-communication place/time/channel, what was said, plans, group, operator, employer/project, already-reported-to, news since; or survivor/rescuer/agency equivalents — is populated from the text by the model into `reports_anon` (anonymised) and, for names/phones, kept only in `reports_archive`.
-- **Success screen closes the loop:** "We understood: 1 person · last at Timure · 26 Aug ~08:00 · in a group of 12 with an agency · phone given. Correct anything?" — one tap to fix, one tap to add more (opens the same box again, pre-typed with "Also: "). Then share buttons.
+- **No extraction occurs.** Form fields and attachments are stored exactly in the private archive; no model or derived table receives them.
+- **Success screen is a storage receipt:** it says the report is private, unprocessed, unpublished and not automatically shared. Correction/add-more actions remain.
 - **"Add more" is always another box**, never a form. Corrections are new archive rows with `supersedes`.
 - Official-channels line at the top. Honeypot + rate limit. Dates: whatever the person writes; the extractor normalises (hint shown once: "26 Aug = 10 Bhadra 2083").
 
-### Where OpenAI is used (only inside `process_data`; the website never calls it)
+### Where OpenAI is used (public material only)
 
 | Moment | Call |
 |---|---|
-| `process_data` ⓪ | on each new archive row: redact PII from free text · extract {place, count, status, time} · resolve place text → gazetteer id · detect language · translate free text to EN |
 | `process_data` ① | place resolution for article prose, constrained to the gazetteer list |
-| `process_data` ② | adjudicate ambiguous dedup pairs (0.6–0.9) with a structured yes/no + reason → still queued for a human if low confidence |
-| `process_data` ⑥ | daily trend narrative over articles + reports_anon |
+| `process_data` ③b | extract public-agency figures from public news articles when deterministic parsing misses them |
+| `process_data` ⑦/⑩ | translate/polish public-source digests and place summaries |
 
 ---
 
@@ -331,7 +314,7 @@ Everything writes to DERIVED; one module per step under `pipeline/processing/` (
    share buttons + "N people added"  ◄──  they see their place / add what they know
           ▲                                                               │
           │                                                               ▼
-   the page gets better  ◄── process_data folds it in within 15 min ◄── reports_archive/anon
+   private receipt shown ◄── report stays in ARCHIVE; public page remains source-driven
 ```
 
 ### Realtime counters (the "it's alive" signal)
@@ -348,7 +331,7 @@ Everything writes to DERIVED; one module per step under `pipeline/processing/` (
 | **People here now** | Supabase Realtime **Presence**: every open tab joins channel `site`; the presence state size is the viewer count. Client-only, no writes, no server. | live |
 | **Contributions last 10 min / today** | `submissions_log` (public, no PII; one row per submission written by the form alongside the archive row). Client subscribes to `INSERT` via Supabase Realtime and keeps a rolling count; initial value from a `v_live_counts` view. | live |
 | **Last data pull** | `pulls` latest `fetched_at`, via `v_live_counts`; polled every 60 s | ~1 min |
-| **Contributions folded in** | `report_counts` (DERIVED), refreshed by `process_data` | ≤15 min |
+| **Report contents folded in** | never; `report_counts` is dormant | — |
 
 Supabase Realtime is a database feature (Postgres changes + Presence), so this stays within "Supabase as database only". Vercel Analytics is the historical/UTM view; Presence is the live one.
 
@@ -366,7 +349,7 @@ Seed channels (from the crowd sweep): Telegram poshuknepal (4.3k Ukrainian famil
    │      (pipeline/.scheduler.pid; works without Full Disk Access)│           (a tick that finds a lock < 3 h old exits 0)
    │   2. launchd agent com.nepalfloodtracker.pipeline             │
    │      (takes over once /bin/bash has Full Disk Access)         │
-   │ pipeline/.env: SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY OPENAI_API_KEY OPENAI_BUDGET_USD
+   │ pipeline/.env: SUPABASE_URL · SERVICE_ROLE · OPENAI · FAMILY_REPORT_PROCESSING_ENABLED=false
    └──────────────────────────────────────────────────────────────┘
    cd web && vercel --prod --yes   ← only when site code changes; only from web/
 ```
@@ -374,7 +357,7 @@ Seed channels (from the crowd sweep): Telegram poshuknepal (4.3k Ukrainian famil
 - **Cadence:** `PULL_INTERVAL_MINUTES` (240 tonight) lives in `pipeline/lib/config.py` and `web/lib/config.ts` and must match the installed schedule; the site's "auto-refresh every N" line and stale threshold derive from it (`docs/runbook.md` §1).
 - **Secrets:** service-role + OpenAI only in `pipeline/.env` on the scheduler machine; Vercel holds only the anon key (the site has no server-side secret). Never in the repo (`.env*` gitignored repo-wide).
 - **Backups:** Supabase daily backups (Pro) or a nightly `pg_dump` from the laptop to a bucket.
-- **Failure modes:** a source goes down → pull skips it, page shows last-good with timestamp · OpenAI down → submission still archived; anonymisation retried by process_data · laptop closed → data stops updating, site stays up with stale timestamp (visible) · Vercel down → nothing lost, DB is truth.
+- **Failure modes:** a source goes down → pull skips it and the page shows last-good with timestamp · OpenAI down → public-source model-assisted steps fall back/skip; family intake is unaffected because it never calls the model · laptop closed → public data stops updating, site stays up with a stale timestamp · Vercel down → nothing is lost, DB is truth.
 - **Handoff:** from day one, a named Nepal-side co-owner (NAXA / YIL / hackathon lead) with access to DERIVED and `findings`; the scripts run anywhere with the two keys.
 
 ---
@@ -441,7 +424,9 @@ Conventions:
 - **Docs are generated where possible**: `docs/sources.md` from `sources.yaml`; `docs/data-model.md` checked against the migrations.
 - **No PII in the repo, ever**: fixtures are anonymised; `snapshots/` and `.env*` gitignored; a pre-commit grep for phone-number patterns.
 
-## 11. Build order (when you say go)
+## 11. Historical build order
+
+The sequence below records the original build. Step 5's questionnaire anonymisation is superseded by the archive-only decision in §§0–6.
 
 ```
  0  folder skeleton + READMEs + CONTRIBUTING (§10) so everyone builds in the same shape  ~30 min
@@ -449,7 +434,7 @@ Conventions:
  2  pull_external_data.py · wave-1 sources · first rows in RAW                        ~2 h
  3  web: layout + toggle + live counters + home numbers/places/river blocks + OG       ~2 h   → deploy
  4  questionnaire type A (EN · NE · HI) + /me                                          ~2 h   → deploy → distribution starts
- 5  process_data.py v1: anonymise ⓪ · figures_latest · stats · ledger from counts      ~1.5 h
+ 5  process_data.py v1: public-source projection · figures_latest · stats · ledger      ~1.5 h
  6  3D corridor · striking-stats treatment · share/UTM                                  day 2
  7  dedup ② proper · types B/C/D · wave-2 sources · trends ⑥                            day 2–3
 ```
@@ -457,7 +442,7 @@ Conventions:
 ## 12. Decisions still open
 
 1. Raw pulls as a Postgres `jsonb` table (recommended) vs Supabase Storage — affects nothing else.
-2. Age stored as a **band** (0–17 / 18–39 / 40–64 / 65+) in RAW, exact in ARCHIVE — recommended for anonymisation.
+2. Legacy family age-band projection remains dormant; any future use requires a new privacy design.
 3. Human dedup queue: who reviews it, and from which tool (a `/admin` route behind a password, or just a Supabase table view)?
 4. Hosting the 3D terrain tiles: pre-bake a low-poly mesh from Copernicus DEM into the repo (~2 MB) vs fetch tiles live — pre-bake recommended.
 5. Domain email for contact/about (e.g. hello@nepalfloodtracker.com).

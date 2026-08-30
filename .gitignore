@@ -21,6 +21,8 @@ data/**/*.json
 # Credentials & secrets
 .env
 .env.*
+!data_aggregator/pipeline/.env.example
+!data_aggregator/web/.env.example
 *.pem
 *.key
 *_rsa

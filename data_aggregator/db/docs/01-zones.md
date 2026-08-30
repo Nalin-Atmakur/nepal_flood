@@ -15,8 +15,8 @@ Everything in the project sits in one of three zones. The zone decides who may w
    │ submissions_log (public, PII-free)                    │  │ pulls · figures · articles · reports_anon│
    │ _migrations (apply.py ledger)                         │  │                                          │
    └───────────────────────────┬───────────────────────────┘  └────────────────────┬─────────────────────┘
-                               │            process_data.py ⓪ anonymise            │
-                               └───────────────────────────►────────────────────────┤
+                               │ family reports stop here; no process_data read     │
+                               │ raw_pulls only ── public-source projection ────────┤
                                                                                     │ ①②③④⑤⑥
                                                                                     ▼
                        ┌────────────────────────────── DERIVED ──────────────────────────────┐
@@ -36,14 +36,14 @@ Everything in the project sits in one of three zones. The zone decides who may w
 
 | Zone | Writes | Reads | Detail |
 |---|---|---|---|
-| ARCHIVE | website (own rows) · `pull_external_data` (`raw_pulls`) · `process_data` (bookkeeping) | owner (own rows) · `process_data` | `02-archive.md` |
+| ARCHIVE | website (own rows) · `pull_external_data` (`raw_pulls`) | owner (own report metadata) · public-source pull processing; questionnaire rows are not read by `process_data` | `02-archive.md` |
 | RAW | `pull_external_data` · `process_data` ⓪① · seeds | `process_data` · website (`sources`, `places`, `gauges`, views) | `03-raw.md` |
 | DERIVED | `process_data` | website (public tables + views) · `process_data` (private) | `04-derived.md` |
 
 Rules that follow from the zones:
 
-1. No cross-zone write except by the designated script. The website writes ARCHIVE only; `pull_external_data` writes RAW and `raw_pulls`; `process_data` writes RAW (`reports_anon`, `articles.places`) and DERIVED.
-2. PII enters ARCHIVE and stops there. RAW and DERIVED hold hashes (`person_key`), bands (`age_band`) and counts, never names, phones, passports or photos.
+1. No cross-zone write except by the designated script. The website writes ARCHIVE only; `pull_external_data` writes RAW and `raw_pulls`; `process_data` writes public-source RAW/DERIVED and leaves questionnaire rows untouched.
+2. Questionnaire PII enters ARCHIVE and stops there without even a hash/count projection. Public-source PII follows its separate fail-closed pre-storage minimisation path.
 3. The public reads DERIVED, the three reference/safe RAW tables, and views. Nothing else is granted to `anon`/`authenticated` (`05-rls.md`).
 4. Every number carries its `as_of` and a `url`. `figures` and `figures_latest` have no column for a figure without a publisher.
 

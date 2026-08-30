@@ -1,53 +1,45 @@
-# 07 · My folder — /me
+# 07 · My Info — the private device archive
 
-"this device · no account". Everything the visitor added from this browser, with what happened to it.
+`/[lang]/me` is an owner-only management view over the anonymous browser session.
 
-```
-  /[lang]/me  ── app/[lang]/me/page.tsx (server: loads `places` for name joins) ──▶ <MyFolder> (client)
-                                                                                      │
-       ensureSession() ──▶ user id ──▶ getOwnReports()  reports_archive (RLS: own rows, newest first)
-                                    └▶ getOwnUser()     users.contact (prefills "Keep this folder")
-                                                                                      │
-       item card ×n  ─ ItemBadge #  · type · place · submitted ─ summary_public | received placeholder
-                     ─ trail  Received → Anonymised → Processed → Matched to X | Not yet matched | … → Withdrawn
-                     ─ Add more detail · Correct this  (→ /report?supersedes=…&mode=…)   · Withdraw
-       aside         ─ Add another report · Keep this folder (users.contact) · PRIVACY
+```text
+ensureSession()
+    ├─ getOwnReports() → minimum reports_archive metadata under RLS
+    ├─ listReportFiles() → owner-only report_files
+    └─ getOwnUser() → optional folder contact
 ```
 
-## 1. The status trail (`components/me/MyFolder.tsx` → `deriveTrail`)
+## What is shown
 
-| Pill | Done when |
-|---|---|
-| Received | always |
-| Anonymised | `anonymised_at` set, or `status ∈ anonymised, processed, matched` |
-| Processed | `status ∈ processed, matched` |
-| Matched to X (amber) | `status = matched` and `place_id` set (X = localised place name) |
-| Not yet matched (grey) | otherwise |
-| Withdrawn | `withdrawn_at` set or `status = withdrawn` — replaces the tail; card dims; action buttons hide |
+- respondent type, selected place label and submission time;
+- a fixed statement that the original is stored privately and not analysed/published/shared;
+- attachment names/sizes with owner-authorised signed URLs;
+- correction/add-more links;
+- lifecycle: `Received`, or `Received → Withdrawn`.
 
-`status = spam` is shown like `received` (the visitor is never told a row was flagged).
+The query intentionally does not retrieve raw report text, report contact, `summary_public` or
+`anonymised_at`. Legacy processing status values remain in the TypeScript union because the schema
+is unchanged, but archive-only UI never presents Anonymised/Processed/Matched states.
 
-## 2. Actions
+## Withdrawal
 
-1. **Add more detail** → `/report?type=<type>&supersedes=<id>&mode=add[&place=<place_id>]` — the box opens prefilled "Also: ".
-2. **Correct this** → same with `mode=correct` — prefilled "Correction: ".
-3. **Withdraw** → `window.confirm(me.withdraw_confirm)` → `withdrawReport(sb, id)` = `update reports_archive set withdrawn_at = now()`
-   for the own row. The DB trigger (`db/migrations/004_rls.sql`) rejects any other change and sets `status = 'withdrawn'`.
-   The row stays in the folder, marked withdrawn; the pipeline drops it from the counts on its next run.
-4. **Keep this folder** → `saveContact(sb, userId, contact)` = `update users set contact` (empty clears). Never displayed anywhere else.
+The owner can set `withdrawn_at`; the database trigger forces `status='withdrawn'` and rejects any
+other report edit. The row and files remain private. The confirmation and status line explicitly
+say that withdrawal blocks future review/processing/handoff and is not deletion.
 
-## 3. What is never shown
+## Other retained behavior
 
-The raw `text` of a report is not rendered on /me (only `summary_public`, the PII-free line written by `process_data`,
-or the "Received —" placeholder). Contacts are not rendered. Nothing on this page is ever visible to another user
-because the reads run under the visitor's own anonymous session.
+- “Add more detail” and “Correct this” create a new report linked with `supersedes`.
+- “Keep this folder” continues to store optional contact on the owner `users` row.
+- The home-page “Your part” count reads the owner's rows and excludes withdrawn records.
+- A lost/cleared anonymous session still loses access to the folder under the existing auth model.
 
-## 4. States
+## States
 
 | State | UI |
 |---|---|
-| Supabase unconfigured / anonymous sign-in disabled | `EmptyState` "Your folder is not available right now." |
-| loading | "Opening your folder…" (role=status) |
-| no rows | dashed "Nothing in this folder yet." + "Add what you know — it takes five minutes." |
-| withdraw failed | inline alert `me.withdraw_failed` |
-| save failed | inline alert `me.save_failed` |
+| loading | “Opening your folder…” |
+| no rows | empty state + Add action |
+| active | Received |
+| withdrawn | Received → Withdrawn; actions hidden |
+| unavailable | configuration/session error state |

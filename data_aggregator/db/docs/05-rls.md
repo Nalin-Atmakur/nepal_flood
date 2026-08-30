@@ -1,5 +1,10 @@
 # 05 · Row-level security — `004_rls.sql`
 
+RLS remains unchanged for schema compatibility. The stronger current boundary is application-side:
+archive-only `process_data` never selects questionnaire rows even though its service-role credential
+could bypass RLS. Public policies on reserved `report_counts` do not create exposure because the
+table is empty before distribution and has no current writer or website reader.
+
 The entire access model is one short SQL file. Read it once; this page is the matrix version plus the reasoning.
 
 ```
@@ -41,7 +46,7 @@ Delete is granted to nobody but the service role. Users correct by inserting a n
 
 ## The insert policy, read carefully
 
-`reports_own_insert` has three conditions. `user_id = auth.uid()` stops one visitor writing into another's folder. `status = 'received'` and `anonymised_at is null` stop a client from pre-marking a row as processed or skipping anonymisation. The other bookkeeping columns (`summary_public`, `withdrawn_at`) can be sent on insert but are meaningless until `process_data` overwrites them; the model output always wins.
+`reports_own_insert` has three conditions. `user_id = auth.uid()` stops one visitor writing into another's folder. `status = 'received'` and `anonymised_at is null` preserve the archive-only initial state. The current browser never sends legacy bookkeeping fields such as `summary_public`; `process_data` does not overwrite them.
 
 ## The withdraw trigger
 
@@ -57,7 +62,7 @@ Postgres RLS cannot say "may update only column X". The `for update` policy ther
      else                                                                       → raise 'only withdrawal is permitted'
 ```
 
-Effects: the owner can set `withdrawn_at`; every other column reverts to its stored value in the same statement; `status` is forced to `withdrawn`; nulling `withdrawn_at` re-stamps `now()`, so withdrawal is one-way for the user. The service role and `apply.py` are exempt so `process_data` can keep writing `anonymised_at`, `status`, `summary_public`.
+Effects: the owner can set `withdrawn_at`; every other column reverts to its stored value; `status` is forced to `withdrawn`; nulling `withdrawn_at` re-stamps `now()`, so withdrawal is one-way. Service-role exemption remains for schema compatibility, but archive-only `process_data` performs no questionnaire update.
 
 ## Views run as their owner
 

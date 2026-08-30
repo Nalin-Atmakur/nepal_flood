@@ -6,7 +6,7 @@
  * query fails, so every block renders an EmptyState instead of crashing. The two "own rows" reads at
  * the bottom take a browser client because they depend on the visitor's anonymous session (RLS).
  *
- * Public reads only: figures_latest, place_status (+ v_place_status_latest), stats, report_counts,
+ * Public reads only: figures_latest, place_status (+ v_place_status_latest), stats,
  * place_timeline, places, sources (+ v_sources_status), gauges (+ v_gauges_latest), v_live_counts,
  * v_articles_recent, submissions_log, event_timeline, digest. Own-row reads: users, reports_archive.
  * Nothing else, ever.
@@ -158,19 +158,15 @@ export type SourceStatusRow = {
   last_error: string | null;
 };
 
-/** The visitor's own archive rows (RLS: user_id = auth.uid()). Never rendered for anyone else. */
+/** Minimum metadata needed to manage the visitor's own archive rows under RLS. */
 export type OwnReport = {
   id: string;
   created_at: string;
   lang: string;
   respondent_type: "family" | "survivor" | "rescuer" | "agency";
-  text: string;
   place_id: string | null;
-  contact: string | null;
   supersedes: string | null;
   withdrawn_at: string | null;
-  summary_public: string | null;
-  anonymised_at: string | null;
   status: "received" | "anonymised" | "processed" | "matched" | "withdrawn" | "spam";
 };
 
@@ -516,16 +512,11 @@ export async function getOgNumbers(): Promise<OgNumbers> {
 // ---------------------------------------------------------------------------
 
 const OWN_COLS =
-  "id, created_at, lang, respondent_type, text, place_id, contact, supersedes, withdrawn_at, summary_public, anonymised_at, status";
+  "id, created_at, lang, respondent_type, place_id, supersedes, withdrawn_at, status";
 
 export async function getOwnReports(sb: SupabaseClient): Promise<OwnReport[] | null> {
   const { data, error } = await sb.from("reports_archive").select(OWN_COLS).order("created_at", { ascending: false });
   return error ? null : (data as OwnReport[]);
-}
-
-export async function getOwnReport(sb: SupabaseClient, id: string): Promise<OwnReport | null> {
-  const { data, error } = await sb.from("reports_archive").select(OWN_COLS).eq("id", id).maybeSingle();
-  return error ? null : ((data as OwnReport | null) ?? null);
 }
 
 export async function getOwnUser(sb: SupabaseClient, id: string): Promise<OwnUser | null> {

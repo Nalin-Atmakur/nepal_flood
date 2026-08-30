@@ -83,7 +83,7 @@ export default function ReportFlow({ lang, places, initialType, initialPlaceId, 
           />
         </div>
       ) : (
-        <Understood lang={lang} id={lastId ?? ""} files={lastFiles} onCorrect={() => reopen("correct")} onAddMore={() => reopen("add")} />
+        <Understood lang={lang} files={lastFiles} onCorrect={() => reopen("correct")} onAddMore={() => reopen("add")} />
       )}
     </main>
   );

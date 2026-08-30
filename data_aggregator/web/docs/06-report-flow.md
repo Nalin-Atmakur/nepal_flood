@@ -1,103 +1,59 @@
-# 06 · Report flow — /report, the one box
+# 06 · Report flow — private archive intake
 
-No multi-step form. One tap picks the chip set, then one textarea (plus mic) is the whole report.
+`/[lang]/report` stores what the visitor submits and does not feed it into the automated/public
+pipeline.
 
-```
-  /[lang]/report?type=&place=&supersedes=&mode=      app/[lang]/report/page.tsx (server: validates params, loads places)
-          │
-          ▼
-  ReportFlow (client state machine)
-     "who" ──tap──▶ "box" ──Send──▶ "sent"
-      WhoAreYou      TheBox            Understood
-      4 cards        textarea+mic      check · "Thank you." · We understood: chips
-                     chips             Correct something / Add more ──▶ "box" again (supersedes = last id)
-                     PlacePicker       share pills · "See what you've added →" /me
-                     contact · Send
-          │
-          ▼ on Send
-  ensureSession() → insertReport() ─▶ reports_archive { user_id, lang, respondent_type, text, place_id, contact, fingerprint, supersedes }
-                    logSubmission() ─▶ submissions_log { respondent_type, lang }      (→ scoreboard, docs/09)
-                    recordSend()    ─▶ localStorage nft_sends                          (rate limit)
-          │
-          ▼ Understood polls
-  getOwnReport(id) every 5 s for 90 s → summary_public (written by process_data ⓪) → split " · " → amber chips
+```text
+WhoAreYou + TheBox + optional place/contact/files
+                 │
+                 ├─ reports_archive  original form under owner RLS
+                 ├─ report-media     original files in private owner folder
+                 └─ submissions_log  type/language activity event only
+                                      │
+                                      ▼
+                         immediate private-storage receipt
 ```
 
-## 1. Screens (`components/form/`)
+## Submission
 
-| File | Screen | Notes |
-|---|---|---|
-| `WhoAreYou.tsx` | 1 · "Who are you?" — inline selector on the SAME page as the box | four `button[role="radio"][data-testid="who-card"]`; "I'm looking for someone" is preselected; picking another only swaps the chip set (`RESPONDENT_TYPES`) |
-| `TheBox.tsx` | 2 · the box, 3 · listening | textarea `data-testid="the-box"`, mic, BS hint, chips, Where, contact, Send, footnote; desktop grid `1fr 380px` with the HOW IT WORKS dark card |
-| `PlacePicker.tsx` | Where? | listbox over `buildPlaceIndex(places)`; last option "other — describe in the box" (`place_id = null`); selected place → amber pill + 44px clear |
-| `Understood.tsx` | 4 · success | `data-testid="understood"`; chips or the received line; Correct / Add more; ShareBar compact; link to /me |
-| `ReportFlow.tsx` | orchestrator | keeps `type`, `placeId`, `lastId`; reopening sets `supersedes = lastId` and prefills "Correction: " / "Also: " |
+`TheBox.send()` keeps the existing validation, honeypot, client rate limit, microphone dictation,
+anonymous Supabase session, fingerprint, correction link and upload behavior. It inserts:
 
-## 2. Behaviour details
+- `reports_archive`: owner, language, respondent type, original text, optional selected place,
+  optional contact, fingerprint and optional `supersedes` id;
+- `report-media` + `report_files`: up to ten original files, owner-only;
+- `submissions_log`: respondent type/language for the deliberately retained public activity count.
 
-1. **Chips** insert `"<label>: "` at the caret (a newline first if the caret is mid-line), refocus the textarea, and turn
-   amber while the text still contains `"<label>:"`. Sets per type live in `TheBox.tsx` → `CHIPS`
-   (family · survivor · rescuer · agency, from the Report v2 artboard).
-2. **Mic** = Web Speech API with `lang = SPEECH_LANG[lang]` (`ne-NP`, `hi-IN`, `en-US`), `continuous`, `interimResults`.
-   Final transcripts are appended with a space; the interim transcript is shown greyed after the text. Listening state:
-   red 2.5px border + red hard shadow on the box, red pulsing mic button (`animate-micring`), LED + `LISTENING`
-   (Latin, arcade font) + "· नेपाली · tap to stop". No API → mic disabled + `report.mic_unsupported`; permission
-   refused → `report.mic_denied`.
-3. **Validation**: trimmed text ≥ 3 characters (`report.err_empty`); honeypot `input[name=website]` filled → fake
-   success, nothing stored; rate limit (`lib/ratelimit.ts`): 20 s between sends, 20 per hour, in `localStorage`.
-4. **Writes** (`lib/reports.ts`): `insertReport` (returns `{id}`; the DB forces `status='received'`),
-   `logSubmission` (best effort), `fingerprint()` = sha256(UA + screen + timezone + language).
-5. **Understood**: polls `reports_archive.summary_public` for the own row (`UNDERSTOOD_POLL` = 5 s × 90 s). Until it
-   arrives: "Received — the picture updates within 4 hours…"; after the window: "Processing runs every 4 hours —
-   check My folder later". An empty id (honeypot) never polls.
-6. **Corrections are new rows**: "Correct something" / "Add more" and the buttons on /me open the box with
-   `supersedes=<id>`; the pipeline treats the newest row in a chain as authoritative.
+The activity row never contains report text, contact, selected place, file data or report id.
 
-## 3. URL parameters (all validated server-side)
+## Receipt
 
-| Param | Accepts | Effect |
-|---|---|---|
-| `type` | `family \| survivor \| rescuer \| agency` | preselects the "Who are you?" card (default `family`) |
-| `place` | an existing `places.id` | preselects the place |
-| `supersedes` | a UUID | new row supersedes it; the box shows "Adding to / Correcting your earlier report" |
-| `mode` | `add \| correct` | prefix "Also: " / "Correction: " |
+`Understood` does not poll `summary_public` and has no timeout. It immediately says that the
+original was stored privately and is not analysed, summarised, published or automatically shared.
+Attachment successes/failures, Correct, Add more, Share and My Info actions remain available.
 
-## 4. Testing
+Corrections/additions are new archive rows linked by `supersedes`; no automated code interprets
+the chain. The selected place is stored as supplied and is not joined to the public map.
 
-- `tests/e2e/smoke.spec.ts` opens `/report`, expects four cards, taps one and expects the textarea.
-- Manual: send a report → `/me` shows it as Received; run `process_data` → the chips appear on the success screen
-  (if still open) and the trail on `/me` advances.
+## Processing boundary
 
-> Picker ranking (30 Aug, lane W5): `searchPlaces` ranks exact name → name prefix → word prefix → substring, shorter label first, so "Dhunche" precedes "Dhunche Army relief camp" and "Timure" precedes "Timure health post" (`tests/places-search.test.ts`). NE/HI phone walkthrough of the whole flow (cards, chips per type, picker in both scripts, send, understood, folder, withdraw) passed with no layout defects.
+With `FAMILY_REPORT_PROCESSING_ENABLED=false`, `process_data` never selects questionnaire rows,
+constructs a family prompt or writes a family-derived object. Reports remain `status='received'`,
+`anonymised_at=null`, `summary_public=null`; this is the intended steady state.
 
+OpenAI may still process public news/public-source summaries elsewhere in the pipeline. It never
+receives form fields or attachments. Browser microphone behavior remains a browser/OS feature and
+is not part of the application pipeline.
 
-## Attachments and the decluttered layout (30 Aug, owner's request)
+## Withdrawal and retention
 
-```
-  /report                                                          Supabase
-  ┌ HOW IT WORKS ── one slim banner at the top (not a form field) ┐
-  │ Who are you?  2×2 cards on phones, 4-up on desktop            │
-  │ THE box + mic · chips                                          │
-  │ Attach anything that helps ── [＋ Add files] [📷 Take photo]   │      report-media (private bucket)
-  │   photos · video · voice notes · screenshots · documents       │        <user_id>/<report_id>/NN-name
-  │ Where? · optional   |   Your contact · optional                │      report_files (ARCHIVE, own rows)
-  │ [ Send ]  footnote                                             │
-  └────────────────────────────────────────────────────────────────┘
-  Send → insertReport (row) → uploadReportFiles (one by one, progress "Uploading 2 of 3…") → Understood
-         "2 file(s) attached." · failures listed, the report itself is already saved
-  /me   → listReportFiles → chips per report; tap → signed URL (1 h) opens the file
-```
+Withdraw is a soft archive state. The owner update sets `withdrawn_at`; the database trigger sets
+`status='withdrawn'`. Text and files remain privately stored. The UI states that withdrawal is not
+deletion and means the record must not be reviewed, processed or handed off in the future.
 
-1. `components/form/Attach.tsx` holds `File[]` in memory (max 10, 50 MB each, `ACCEPT` mirrors the bucket's
-   `allowed_mime_types`); the camera/video shortcut uses `capture="environment"` on phones.
-2. `lib/uploads.ts`: `fileKind()` (mime, then extension — HEIC/M4A pickers send empty types), `safeName()`,
-   `objectPath(user, report, n, name)`, `uploadReportFiles()` (never throws; returns uploaded + failed),
-   `listReportFiles()`, `signedUrl()`.
-3. Access: `db/migrations/011_report_media.sql` — bucket policies let an anonymous authenticated user insert into
-   and read from their own folder only; `report_files` RLS = own rows, and the row's report must be theirs. The
-   service role (pipeline) can read everything; nothing is public and the site never renders a file.
-4. The pipeline ignores file contents (PII rule): `report_files` counts may appear in DERIVED later, bytes never.
-5. Withdraw: the report row is soft-withdrawn as before; files stay in ARCHIVE with it (the owner's archive
-   retention decision). A future purge job can delete `report-media/<user>/<report>/` for withdrawn reports.
-6. Tests: `tests/uploads.test.ts` (classification, names, paths, limits, sizes); e2e attaches and removes a file
-   before sending. Verified live on 30 Aug 09:20 BST: two files → rows → `/me` chips → cleaned up.
+## Tests
+
+- Web archive-only tests cover Received/Withdrawn state.
+- Message tests enforce EN/NE/HI key/placeholder parity.
+- Pipeline archive-only tests prove no family table/model access and no family-derived writes.
+- Upload tests continue to cover file classification, names, paths and limits.

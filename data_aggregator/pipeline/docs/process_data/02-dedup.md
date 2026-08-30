@@ -1,5 +1,9 @@
 # 02 — ② dedup / entity resolution (`processing/dedup.py`)
 
+Archive-only mode excludes questionnaire data completely: `form_records()` returns before a
+`reports_anon` query, and no `reports_archive.status='matched'` write can be produced. Entity
+resolution continues for separately ingested public/government registries.
+
 ```
    form_records      reports_anon                     {source:'form',   external_id:id,  person_key, key_strength:'phone'|None,
                                                         group_key, nationality, age_band, sex, place_id, status, at}
@@ -55,7 +59,7 @@ evidence available once names are hashed; conflicting sex still pulls it to 0.4 
 
 | inputs | writes | log |
 |---|---|---|
-| `reports_anon`, `raw_pulls` (OPMCM + NDRRMA projections), `places` | `entities` (upsert), `entity_events` (replace per entity), `dedup_queue` (insert new), `reports_archive.status='matched'` | `dedup.clustered` (records, clusters, merged, queued) |
+| public-source `raw_pulls` (OPMCM + NDRRMA projections), `places` | `entities` (upsert), `entity_events` (replace per entity), `dedup_queue` (insert new) | `dedup.clustered` (records, clusters, merged, queued) |
 
 ## Skip guard (the scheduler runs ② every 4 h; ~13k records take a few minutes)
 

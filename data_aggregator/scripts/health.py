@@ -8,7 +8,7 @@ Prints, using the Management API (no DB password):
   3. corridor gauges          v_gauges_latest alive/dead
   4. source freshness         v_sources_status: stale / failing sources
   5. pipeline state           last pull, last process, rows per table
-Exit code 1 if the last successful pull is older than 2 × PULL_INTERVAL_MINUTES.
+Exit code 1 if public data is stale or the archive-only family boundary has drifted.
 """
 from __future__ import annotations
 import sys
@@ -17,6 +17,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "db"))
 import mgmt  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pipeline"))
+from lib import config  # noqa: E402
 
 PULL_INTERVAL_MINUTES = 240  # keep in sync with pipeline/lib/config.py and web/lib/config.ts
 
@@ -29,6 +31,10 @@ def age_min(ts: str | None) -> float | None:
 
 
 def main() -> int:
+    config.load_env()
+    family_processing = config.family_report_processing_enabled()
+    print("0. family intake   ", "UNSAFE processing enabled" if family_processing else "archive_only")
+
     live = mgmt.query("select * from v_live_counts")[0]
     print("1. live counters  ", {k: live[k] for k in ("submissions_10m", "submissions_today", "submissions_total")},
           "| last pull", live["last_pull_at"], "| last processed", live["last_processed_at"])
@@ -55,9 +61,17 @@ def main() -> int:
     counts = mgmt.query("select 'raw_pulls' t, count(*) n from raw_pulls union all select 'figures', count(*) from figures "
                         "union all select 'gauges', count(*) from gauges union all select 'articles', count(*) from articles "
                         "union all select 'reports_archive', count(*) from reports_archive union all select 'reports_anon', count(*) from reports_anon "
+                        "union all select 'report_counts', count(*) from report_counts "
                         "union all select 'place_status', count(*) from place_status union all select 'stats', count(*) from stats "
                         "union all select 'entities', count(*) from entities union all select 'findings', count(*) from findings")
     print("5. rows:", ", ".join(f"{c['t']}={c['n']}" for c in counts))
+
+    by_table = {c["t"]: int(c["n"]) for c in counts}
+    if family_processing or by_table.get("reports_anon", 0) or by_table.get("report_counts", 0):
+        print("\nUNHEALTHY: archive-only boundary drift "
+              f"(flag={family_processing}, reports_anon={by_table.get('reports_anon', 0)}, "
+              f"report_counts={by_table.get('report_counts', 0)})")
+        return 1
 
     a = age_min(live["last_pull_at"])
     if a is None or a > 2 * PULL_INTERVAL_MINUTES:

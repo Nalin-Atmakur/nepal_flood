@@ -12,7 +12,7 @@ How to run the system locally and how to extend each part without breaking the s
    python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
    .venv/bin/python pull_external_data.py      # external → RAW   (local-only mode if SUPABASE_URL is unset: writes snapshots/, no DB)
    .venv/bin/python pull_external_data.py --only <id> --force --dry-run   # one source, ignore cadence, write nothing
-   .venv/bin/python process_data.py            # RAW + ARCHIVE → DERIVED   (--step N runs one step; 3.5 = press figures)
+   .venv/bin/python process_data.py            # public-source RAW → DERIVED; family ARCHIVE is not read
    .venv/bin/python -m pytest -q
    ```
 4. Website:
@@ -45,7 +45,7 @@ How to run the system locally and how to extend each part without breaking the s
 Steps are numbered in the code, the docs and the DERIVED tables they write (`db/docs/04-derived.md`).
 
 1. Create `pipeline/processing/<name>.py` and register it in the `STEPS` list in `process_data.py` at its number (fractional numbers are allowed for sub-steps: `press_figures` is 3.5 = ③b), exposing `run(ctx) -> dict` that is idempotent: re-running with no new input must be a no-op. Catch your own errors and return `{"error": …}`; the next step must still run.
-2. If it writes a new table or column: schema change first (section 6), DERIVED only. Never write ARCHIVE except the documented bookkeeping columns of `reports_archive`.
+2. If it writes a new table or column: schema change first (section 6), DERIVED only. `process_data` must not select or write `reports_archive` while archive-only mode is active.
 3. If it calls the model, go through `pipeline/lib/llm.py` only (budget guard, structured outputs, model name in one place). Never send names or phones to the model from RAW — they are not there; from ARCHIVE only inside ⓪ with redaction as the purpose.
 4. Add `pipeline/tests/test_<name>.py` with a fixture-driven input and the expected rows.
 5. Write `pipeline/docs/process_data/<nn>-<name>.md`: stage diagram, inputs → tables → outputs, failure behaviour. Numbers match the code (`03-ledger.md` ↔ `processing/ledger.py` ↔ step ③; `03b-press-figures.md` ↔ 3.5; `10-timeline-and-trends.md` ↔ ⑧ ⑨). `08-llm-budget.md` and `09-failure-modes.md` are cross-cutting.
@@ -92,15 +92,17 @@ One file per block; the home page composes them in the design's order.
 
 ## 8. The PII rule
 
-Names, phone numbers, passport numbers, photos and reporter contact details exist in exactly one zone: ARCHIVE (`reports_archive`, `raw_pulls`, the two private buckets). They never appear in:
+Questionnaire names, phone numbers, passport numbers, photos, free text and reporter contact details exist only in ARCHIVE (`reports_archive` and the private report buckets). The default archive-only boundary is stronger than anonymisation: `process_data` must not select questionnaire rows at all. They never appear in:
 
-- RAW or DERIVED tables (hashes, bands and counts instead: `person_key`, `age_band`, `subject_count`);
+- RAW or DERIVED tables, hashes, bands, counts, summaries, model prompts or public-source metrics;
 - test fixtures (anonymise before saving; keep the shape, replace the values; spreadsheets — `*.xlsx`, `*.csv` — are gitignored on purpose and stay local);
 - log lines (`run.log`, Vercel logs, browser console) — log ids and counts, not text (`pipeline/lib/log.py` masks 9–14-digit numbers as `[phone]` as a last line of defence);
 - the website, the OG card, share text, `docs/`;
 - commits (see the `.gitignore` firewall) or chat messages.
 
 If you are unsure whether a value is personal data, treat it as if it is. Suspected leak: stop, note the rows, tell the maintainer (`nepalfloodrescuers@gmail.com`), fix forward with a migration or a code change, and record it in `docs/decisions-log.md`.
+
+`FAMILY_REPORT_PROCESSING_ENABLED` defaults to `false`. Changing it to true is not routine configuration: it requires a named controller/receiver, consent and retention design, reviewed user copy, disclosure controls, end-to-end withdrawal tests and a new security review. Do not enable it merely to inspect or summarise a report.
 
 The site is volunteer-run and not an official source. Every page carries the official channels (Police 1155 · Tourist Police 1144 · MoFA ECR · Red Cross 1130 · Disaster hotline 1234 (NEOC)); nothing we build replaces reporting to them.
 

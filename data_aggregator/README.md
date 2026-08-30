@@ -1,6 +1,6 @@
 # nepalfloodtracker.com — data_aggregator
 
-Live aggregation site and questionnaire for the 26 August 2026 Bhote Koshi / Trishuli flood (Rasuwa → Nuwakot → Dhading → Chitwan). Volunteer-run. **Not an official source**: it collects what public registries, feeds and people already say, reconciles it, and shows it with its source and time; it does not replace reporting to Police 1155 · Tourist Police 1144 · MoFA ECR +977-9744441227 · Red Cross 1130 · Disaster hotline 1234 (NEOC).
+Live public-source aggregation site with a private questionnaire for the 26 August 2026 Bhote Koshi / Trishuli flood (Rasuwa → Nuwakot → Dhading → Chitwan). Volunteer-run. **Not an official source**: public figures come from registries and feeds with their source and time. Questionnaire contents stay in the private archive and do not enter the automated/public pipeline. This does not replace reporting to Police 1155 · Tourist Police 1144 · MoFA ECR +977-9744441227 · Red Cross 1130 · Disaster hotline 1234 (NEOC).
 
 Live: https://www.nepalfloodtracker.com (apex redirects to `www`). Tonight's build log and queue: `PROGRESS.md`.
 
@@ -28,31 +28,35 @@ Live: https://www.nepalfloodtracker.com (apex redirects to `www`). Tonight's bui
    ║ reports_archive   figures  gauges    figures_latest  stats   ║◄──────┘ form inserts verbatim    │ reads DERIVED
    ║ raw_pulls         articles places    place_status    digest  ║         into ARCHIVE (anon key)  │ + views (anon key)
    ║ users             sources  pulls     place_timeline          ║                                  │ ISR 5 min +
-   ║ submissions_log   reports_anon       event_timeline          ╠══════════════════════════════════╝ Realtime counters
+   ║ submissions_log   reports_anon*      event_timeline          ╠══════════════════════════════════╝ Realtime counters
    ║ _migrations                          figure_series           ║
    ║                                      report_counts           ║
    ║                                      private: entities ·     ║
    ║                                      entity_events ·         ║
    ║                                      dedup_queue · findings  ║
    ╚═════════╤════════════════════════════════════════════▲═══════╝
-             │ reads ARCHIVE + RAW                         │ writes DERIVED
+             │ reads public-source ARCHIVE + RAW only      │ writes DERIVED
              ▼                                             │
    ┌───────────────────────────────────────────────────────┴───────────────────────┐
-   │ process_data.py (scheduler, service key, OpenAI gpt-4o-mini, $20 guard)       │
-   │ ⓪ anonymise   ① resolve places   ② dedup   ③ ledger   ③b press figures (3.5)  │
+   │ process_data.py (scheduler, service key, OpenAI for public material only)     │
+   │ ⓪ archive-only + OPMCM  ① public places  ② public dedup  ③ public ledger      │
    │ ④ figures_latest   ⑤ stats   ⑥ findings   ⑦ digest   ⑧ timeline   ⑨ trends    │
    └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Every number on the site carries its publisher, `as_of` and a link. Names, phones and photos never leave the ARCHIVE zone.
+Every public disaster figure carries its publisher, `as_of` and a link; the separate live activity counter is explicitly labelled as this site's activity. Names, phones and photos never leave the ARCHIVE zone.
+
+`reports_anon` and `report_counts` are reserved legacy structures. With the fail-closed default
+`FAMILY_REPORT_PROCESSING_ENABLED=false`, questionnaire rows are never selected by `process_data`,
+never sent to a model, and never used in public or private derived calculations.
 
 ## The three components
 
 **Database (`db/`).** One Supabase project, used as a database only: Postgres with row-level security, a Realtime publication for the live counters, two private Storage buckets. Tables are partitioned into three zones — ARCHIVE (verbatim, PII, owner + service role), RAW (normalised and anonymised, service role), DERIVED (computed, public) — and RLS is the whole access model: the anon key in the browser can insert its own report, read its own rows, and read DERIVED; the service key exists only on the machine running the scheduler. Migrations `001`–`007` are applied with `db/apply.py` through the Management API and recorded in a `_migrations` ledger.
 
-**Pipeline (`pipeline/`).** Two scripts, one tick (`run.sh`, with a lock so ticks never overlap). `pull_external_data.py` reads `sources.yaml`, fetches each due source with ETag/body-hash change detection, stores the verbatim response in `raw_pulls`, and dispatches to one normaliser per source that emits `figures`, `gauges`, `articles` with PII stripped at the door and a flood-relevance gate on news. `process_data.py` runs eleven numbered steps: anonymise new questionnaire rows into `reports_anon`, resolve free-text places against the 90-place gazetteer, deduplicate people across the form and the official registries into private `entities`, write the per-place ledger, lift Police/Tourism counts quoted in the press into `figures`, compute the latest figure per publisher, the striking numbers, data-quality findings, the daily "what changed" digest (EN/NE/HI), appended event-timeline milestones, and per-day figure series. A budget guard stops model calls at $20.
+**Pipeline (`pipeline/`).** Two scripts, one tick (`run.sh`, with a lock so ticks never overlap). `pull_external_data.py` reads `sources.yaml`, fetches each due source with ETag/body-hash change detection, stores the verbatim response in `raw_pulls`, and dispatches to one normaliser per source that emits `figures`, `gauges`, `articles` with PII stripped at the door and a flood-relevance gate on news. `process_data.py` runs eleven numbered public-source steps: OPMCM projection, article place resolution, official-register deduplication, the place ledger, press figures, latest figures, statistics, findings, the daily digest, timeline, trends and per-place summaries. Questionnaire processing is disabled before the first archive query. OpenAI remains available only for public articles and public-source summaries, behind the $20 guard.
 
-**Website (`web/`).** Next.js on Vercel, three languages on route (`/en`, `/ne`, `/hi`), ISR every 5 minutes, reading DERIVED and the public reference tables through `web/lib/queries.ts`. The home page is the viral surface (live scoreboard via Realtime Presence + `submissions_log`, "what changed today", the first hours, 3D corridor, numbers side by side, places, river & weather, latest, share buttons with a live OG card). `/report` is one page: who-are-you cards and one text box with chips and a microphone; submissions insert verbatim into `reports_archive` under the visitor's anonymous Supabase identity. `/me` shows what this device contributed, its status trail, and a withdraw button. No server-side secret exists in the app.
+**Website (`web/`).** Next.js on Vercel, three languages on route (`/en`, `/ne`, `/hi`), ISR every 5 minutes, reading DERIVED and public reference tables through `web/lib/queries.ts`. The home page is the viral surface (Realtime Presence + submission-activity counters, public-source changes, 3D corridor, numbers, places, weather, news and sharing). `/report` stores the original text/contact/place and attachments privately under the visitor's anonymous Supabase identity; its receipt explicitly says the content is not analysed, published or automatically shared. `/me` shows only the owner's Received/Withdrawn archive state. No server-side secret exists in the app.
 
 ## Folder map
 
@@ -81,11 +85,11 @@ Gitignored and never committed: `pipeline/.env`, `web/.env.local`, `pipeline/sna
 Python is always the pipeline venv: `pipeline/.venv/bin/python` (PEP 668 blocks system pip). `make help` lists every target below.
 
 1. **Database** — `cp pipeline/.env.example pipeline/.env`, set `SUPABASE_PROJECT_REF`; `supabase login` (or `export SUPABASE_ACCESS_TOKEN=sbp_…`); `pipeline/.venv/bin/python db/apply.py --dry-run` to preview, then `make db` (migrations, then seeds); enable anonymous sign-ins once (`db/README.md` §1). Verify: `make db-test` (RLS + view tests against the live project).
-2. **Pipeline** — fill the rest of `pipeline/.env` (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, `OPENAI_BUDGET_USD`); `make setup` once (venv + deps); `make pipeline` (= `pipeline/run.sh`: pull, then process). Flags: `pull_external_data.py --only <id> --force --dry-run`; `process_data.py --step N` (3.5 = press figures). Verify: `make pipeline-test` (offline, fixture-backed) and `make health`.
+2. **Pipeline** — fill the rest of `pipeline/.env` (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, `OPENAI_BUDGET_USD`, `FAMILY_REPORT_PROCESSING_ENABLED=false`); `make setup` once (venv + deps); `make pipeline` (= `pipeline/run.sh`: pull, then process). The family flag is fail-closed and must not be enabled as an operational shortcut. Flags: `pull_external_data.py --only <id> --force --dry-run`; `process_data.py --step N` (3.5 = press figures). Verify: `make pipeline-test` and `make health`.
 3. **Schedule** — `cd pipeline && .venv/bin/python scheduler.py` (`make schedule`): a plain serial loop you run in a terminal — one tick (pull → process), sleep 4 h, repeat; `--hours 0.5` for the live phase, `--once` for a single tick, Ctrl-C to stop. Nothing is installed in the OS. Details: `docs/runbook.md` §1.
 4. **Web** — `cp web/.env.example web/.env.local`, set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`; `make web-dev`; open http://localhost:3000/en, `/ne`, `/hi`; submit a test report and see it on `/me` (then withdraw it). Gates: `cd web && npm run lint && npm run i18n:check && npm test && npm run build && npm run e2e`.
 5. **Deploy** — **only from `web/`**: `cd web && vercel --prod --yes` (`make deploy` is the same command). `curl -sI https://www.nepalfloodtracker.com/en` → 200. Data changes never need a deploy.
-6. **Check health any time** — `make health` (`scripts/health.py`: live counters, headline figures, gauges, failing sources, row counts; exit 1 if the last pull is older than 2 × `PULL_INTERVAL_MINUTES`).
+6. **Check health any time** — `make health` (`scripts/health.py`: archive-only tripwire, public counters/figures/gauges/sources and row counts; exit 1 on stale public data, an enabled family flag, or any family projection/bucket row).
 
 ## Where to read next
 
@@ -100,6 +104,7 @@ Python is always the pipeline venv: `pipeline/.venv/bin/python` (PEP 668 blocks 
 | work on the site | `web/README.md` → `web/docs/01-architecture.md` … `13-story-and-digest.md`; the corridor simulation is `14-flood-sim.md` (how it works, tuning) + `16-corridor-v2-plan.md` (the brief, status); `15-sources-page.md`; the site's information architecture is `17-information-architecture.md` |
 | see which sources exist | `docs/sources.md` (generated from `sources.yaml`) |
 | operate it: schedule, secrets, backups, outages | `docs/runbook.md` |
+| understand the security decision and its limits | `../docs/SECURITY_ASSESSMENT.md` + `../docs/SECURITY_REMEDIATION_ARCHIVE_ONLY.md` |
 | know why something is the way it is | `docs/decisions-log.md`, `PLAN.md` |
 | add anything | `CONTRIBUTING.md` |
 | the corridor places | `gazetteer/README.md` |
@@ -107,7 +112,7 @@ Python is always the pipeline venv: `pipeline/.venv/bin/python` (PEP 668 blocks 
 
 ## Two rules
 
-**PII.** Names, phone numbers, passport numbers, photos and reporter contacts live only in the ARCHIVE zone (`reports_archive`, `raw_pulls`, the private buckets). They never appear in RAW or DERIVED tables, fixtures, logs, docs, the site, or a commit. RAW carries hashes (`person_key`), bands (`age_band`) and counts instead. Details: `CONTRIBUTING.md` §8.
+**PII.** Questionnaire names, phone numbers, passport numbers, photos, free text and reporter contacts live only in the private ARCHIVE zone (`reports_archive` and private buckets). `process_data` does not read or transform them. Public-source pulls have their own fail-closed minimisation rules. Personal data never belongs in fixtures, logs, docs, the public site or a commit. Details: `CONTRIBUTING.md` §8.
 
 **Official channels first.** Every page shows the official numbers; the site is volunteer-run and not an official source. If you are looking for someone, report to Nepal Police 1155 or Tourist Police 1144 and the MoFA Emergency Contact Room; the site is additive, not a substitute.
 

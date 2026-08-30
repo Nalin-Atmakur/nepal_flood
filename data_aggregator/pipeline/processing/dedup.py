@@ -2,7 +2,7 @@
 processing/dedup.py — step ②. See docs/process_data/02-dedup.md.
 
 Records (all PII-free, keys are sha256 hashes):
-    form     reports_anon rows            {source:'form',  external_id:id, person_key, group_key, nationality, age_band, sex, place_id, status, at}
+    form     reports_anon rows (legacy mode only; archive-only mode never reads them)
     opmcm    latest OPMCM projection      {source:'opmcm', external_id:_id, person_key, age_band, sex, nationality, place_id, status('lost'|…), at}
     ndrrma   latest NDRRMA persons proj.  {source:'ndrrma',external_id:id,  person_key, age_band, sex, nationality, place_id(rescued_location), status:'rescued', at}
 
@@ -190,6 +190,8 @@ def entity_from_cluster(cl: list[dict[str, Any]]) -> dict[str, Any]:
 # ---- record loaders --------------------------------------------------------------
 
 def form_records(ctx: ProcCtx) -> list[dict[str, Any]]:
+    if not ctx.family_report_processing_enabled:
+        return []
     rows = ctx.db.select_all("reports_anon", {"select": "id,person_key,group_key,nationality,age_band,sex,place_id,status,event_time,created_at,respondent_type"})
     out = []
     for r in rows:

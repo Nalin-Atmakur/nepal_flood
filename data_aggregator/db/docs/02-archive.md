@@ -1,6 +1,6 @@
 # 02 · ARCHIVE zone — `001_archive.sql`
 
-Verbatim data that may contain personal information. Two writers: the website (a visitor's own rows) and `pull_external_data` (raw response bodies). Two readers: the owner of a row, and `process_data` with the service key.
+Verbatim data that may contain personal information. The website writes a visitor's own questionnaire rows/files; `pull_external_data` writes separate raw response bodies. Owners read minimum metadata for their own rows. Although the service role can bypass RLS, archive-only `process_data` never selects questionnaire rows.
 
 Tables: `users` · `reports_archive` · `raw_pulls` · `submissions_log` · `_migrations`. Columns: `docs/data-model.md` §2.
 
@@ -16,18 +16,11 @@ Tables: `users` · `reports_archive` · `raw_pulls` · `submissions_log` · `_mi
         │  supabase.from('submissions_log').insert({ respondent_type, lang })
         └──────────────────────────────────► submissions_log   (public; Realtime → scoreboard)
 
-   …next process_data run (≤ one cadence):
-
-   reports_archive where anonymised_at is null and withdrawn_at is null
-        │
-        ▼
-   ⓪ anonymise → reports_anon (RAW)          [03-raw.md]
-        │
-        └─► reports_archive.anonymised_at = now(), status = 'anonymised', summary_public = "We understood: …"
-            later: status = 'processed' | 'matched'
+   process_data.py ──X──► reports_archive
+   rows remain status='received', anonymised_at=null, summary_public=null
 ```
 
-The website never calls OpenAI and has no privileged path. If the model is down, the row waits in the archive for the next run; nothing is lost.
+The website never calls OpenAI and has no privileged path. Model availability is irrelevant to questionnaire intake because the row is permanently archive-only.
 
 ## `users`
 
@@ -37,19 +30,17 @@ One row per auth user, upserted on first visit. `id` is `auth.uid()`. `lang` is 
 
 One row per submission; the box text verbatim plus the two optional fields (`place_id`, `contact`) and an optional `photo_path`.
 
-Status trail (`status` column), as shown on `/me`:
+Current status trail, as shown on `/me`:
 
 ```
-   received ──► anonymised ──► processed ──► matched          (set by process_data)
-       │
-       └──► withdrawn   (set by the owner via the trigger)      spam (set by process_data)
+   received ──► withdrawn   (set by the owner via the trigger)
 ```
 
-Corrections and "add more" are new rows with `supersedes = <old id>`; the anonymiser copies the flag and the ledger takes the latest. There is no delete for users.
+The other enum values remain for dormant legacy compatibility. Corrections and "add more" are new rows with `supersedes = <old id>`; automated code does not interpret the chain. There is no delete for users.
 
-The owner's only permitted update is a withdrawal: `update reports_archive set withdrawn_at = now() where id = …`. The trigger `reports_archive_guard` discards every other change and stamps `status = 'withdrawn'` (`05-rls.md`). Withdrawn rows are skipped by `process_data` and drop out of counts at the next run; the row is retained.
+The owner's only permitted update is a withdrawal: `update reports_archive set withdrawn_at = now() where id = …`. The trigger discards every other change and stamps `status = 'withdrawn'`. The row/files remain private; withdrawal means they must not be reviewed, processed or handed off later and is not deletion.
 
-`summary_public` is the one PII-free column written back into this zone: the "We understood: …" line the success screen and `/me` show. `process_data` writes it; the owner reads it through `reports_own_select`.
+`summary_public` and `anonymised_at` are reserved legacy columns and remain null in archive-only mode.
 
 ## `raw_pulls`
 
@@ -70,7 +61,7 @@ Deliberately tiny — `created_at`, `respondent_type`, `lang` — so it can be p
 | Index | Why |
 |---|---|
 | `reports_archive_user_idx (user_id, created_at desc)` | `/me` lists own rows newest first |
-| `reports_archive_pending_idx (created_at) where anonymised_at is null` | the ⓪ queue is a partial index, so it stays small |
+| `reports_archive_pending_idx (created_at) where anonymised_at is null` | reserved legacy index; all active archive-only rows intentionally qualify |
 | `raw_pulls_source_idx (source_id, fetched_at desc)` | "previous pull for this source" hash comparison |
 | `submissions_log_created_idx (created_at desc)` | the 10-minute and today windows |
 

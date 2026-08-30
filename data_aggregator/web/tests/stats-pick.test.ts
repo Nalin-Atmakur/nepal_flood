@@ -13,11 +13,10 @@ describe("pickStatCards", () => {
     expect(ids).toEqual(["wave_time_to_port", "wave_speed", "galchhi_rise", "bodies_downstream_km", "personnel_deployed", "towers_restored_pct"]);
     expect(ids).not.toContain("reports_total");
   });
-  it("includes reports_total once it passes its threshold and alternates rotations", () => {
+  it("never promotes the private intake count into public stat cards", () => {
     const rows = [row("wave_time_to_port", 7), row("reports_total", 12)];
     const picked = pickStatCards(rows);
-    expect(picked.map((r) => r.id)).toEqual(["wave_time_to_port", "reports_total"]);
-    expect(picked[0].rot).not.toEqual(picked[1].rot);
+    expect(picked.map((r) => r.id)).toEqual(["wave_time_to_port"]);
   });
   it("tolerates empty input", () => {
     expect(pickStatCards(null)).toEqual([]);

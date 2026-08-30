@@ -1,5 +1,8 @@
 # ⑩ place_now — the per-place "what is happening now" line
 
+Archive-only mode never queries `reports_anon`; form-report counts are always zero. The generated
+line and any model polish use public figures, public headlines and the public-source ledger only.
+
 `processing/place_now.py` · `process_data.py --step 10` · writes `place_status.now_en / now_ne / now_hi / now_sources / now_as_of`
 (migration `db/migrations/008_place_now.sql`; the columns ride along in `v_place_status_latest`).
 

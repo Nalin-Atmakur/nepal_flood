@@ -6,7 +6,7 @@ processing/resolve_places.py — step ①. See docs/process_data/01-resolve-plac
         │  no alias hit AND corridor keyword present AND budget left → LLM constrained to gazetteer ids
         ▼
     articles.places = [ids] · articles.extracted = {"resolved_at", "method", "matches"}
-    reports_anon (place_id is null, place_text not null) → place_id via aliases
+    [explicit legacy mode only] reports_anon (place_id is null, place_text not null) → aliases
 
 Every article is touched once (extracted is set even when nothing matched) so re-runs are cheap.
 The LLM path is capped by lib.llm's per-run cap and only fires for texts that mention the corridor.
@@ -62,6 +62,8 @@ def resolve_articles(ctx: ProcCtx, limit: int = 400) -> dict[str, Any]:
 
 
 def resolve_reports(ctx: ProcCtx) -> dict[str, Any]:
+    if not ctx.family_report_processing_enabled:
+        return {"scanned": 0, "resolved": 0, "skipped": "archive_only"}
     db = ctx.db
     rows = db.select("reports_anon", {"select": "id,place_text,text_redacted", "place_id": "is.null", "limit": 500})
     n = 0

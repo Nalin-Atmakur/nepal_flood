@@ -24,7 +24,7 @@ and what happens when it fails.
 
 | # | file | step | module |
 |---|---|---|---|
-| 00 | [process_data/00-anonymise.md](process_data/00-anonymise.md) | ⓪ | `processing/anonymise.py` |
+| 00 | [process_data/00-anonymise.md](process_data/00-anonymise.md) | ⓪ archive-only boundary + OPMCM | `processing/anonymise.py` |
 | 01 | [process_data/01-resolve-places.md](process_data/01-resolve-places.md) | ① | `processing/resolve_places.py` |
 | 02 | [process_data/02-dedup.md](process_data/02-dedup.md) | ② | `processing/dedup.py` |
 | 03 | [process_data/03-ledger.md](process_data/03-ledger.md) | ③ | `processing/ledger.py` |
@@ -46,9 +46,8 @@ There is no queue, no file and no RPC between the scripts: the database *is* the
 ```
   ZONE      table / view            written by                      read by
   ───────── ─────────────────────── ─────────────────────────────── ───────────────────────────────
-  ARCHIVE   reports_archive         website form (insert), ⓪ (anonymised_at, status, summary_public),
-                                    ② (status='matched'), finaliser (status='processed'),
-                                    owner (withdrawn_at)            ⓪, ⑤ (counts only), owner (own rows)
+  ARCHIVE   reports_archive         website form (insert),          owner (minimum own-row metadata)
+                                    owner (withdrawn_at)            process_data: NEVER in archive-only mode
   ARCHIVE   raw_pulls               pull (body / storage_path)       ⓪ (OPMCM projection → projected_at),
                                                                     ② ⑥ (latest OPMCM / NDRRMA projections)
   ARCHIVE   users, submissions_log  website                          v_live_counts
@@ -56,12 +55,13 @@ There is no queue, no file and no RPC between the scripts: the database *is* the
   RAW       figures                 pull (normalisers), ⓪ (OPMCM)   ③ ④ ⑤
   RAW       gauges                  pull (bipad_river_stations)      ③ ⑤ via v_gauges_latest, site
   RAW       articles                pull (rss, dhm, mofa, ndrrma)    ① (places, extracted), ③
-  RAW       reports_anon            ⓪ (insert), ① (place_id)        ② ③ ⑤ (report_counts)
+  RAW       reports_anon            dormant legacy path             dormant; empty before distribution
   RAW       places, sources         seeds (other lanes)              everything (gazetteer, FK)
   DERIVED   entities, entity_events, dedup_queue   ②                 ③ ⑥            (private)
   DERIVED   place_status, place_timeline           ③                 ⑤, site        (public)
   DERIVED   figures_latest                          ④                 site           (public)
-  DERIVED   stats, report_counts                    ⑤                 site           (public)
+  DERIVED   stats                                   ⑤                 site           (public)
+  DERIVED   report_counts                           dormant           not rendered   (reserved public table)
   DERIVED   findings                                ⑥                 list-holders   (private)
   views     v_live_counts · v_articles_recent · v_place_status_latest · v_sources_status · v_gauges_latest
 ```
@@ -73,8 +73,9 @@ Zones (from `db/migrations`): **ARCHIVE** = verbatim, may hold PII, service role
 `process_data.py` writes DERIVED. Nothing under RAW or DERIVED ever carries a name, phone,
 passport number or photo.
 
-Bookkeeping columns that make re-runs idempotent: `reports_archive.anonymised_at`,
-`raw_pulls.projected_at`, `raw_pulls.unchanged` + `body_hash`, `articles.extracted`
+Questionnaire rows intentionally remain `status='received'`, `anonymised_at = null` and
+`summary_public = null`; this is healthy archive-only state, not a backlog. Public-source
+bookkeeping that makes re-runs idempotent: `raw_pulls.projected_at`, `raw_pulls.unchanged` + `body_hash`, `articles.extracted`
 (set even when no place matched), the primary/unique keys of every DERIVED table
 (`figures_latest (publisher, metric, scope)`, `place_status (place_id, as_of)`,
 `place_timeline (place_id, day, what_en)`, `stats (id)`, `report_counts (bucket, respondent_type, place_id)`).

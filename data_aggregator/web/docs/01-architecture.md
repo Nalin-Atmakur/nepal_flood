@@ -1,5 +1,10 @@
 # 01 · Architecture
 
+Family intake is archive-only. The form stores the original row/files under owner RLS and writes
+a separate activity counter row, but the web app never waits for or presents a processing result.
+`process_data` does not read questionnaire rows, so every public place/status/digest value comes
+from public sources. `reports_anon` and `report_counts` remain reserved schema, not live inputs.
+
 The site is a thin, mostly static reader of the database plus three client islands (scoreboard, 3D corridor,
 report box). Nothing is computed on the server that the pipeline has not already written.
 
@@ -31,7 +36,7 @@ report box). Nothing is computed on the server that the pipeline has not already
 | Zone | Tables / views the anon key may read | Writes allowed |
 |---|---|---|
 | Reference | `places`, `sources`, `v_sources_status` | none |
-| DERIVED (public) | `figures_latest`, `place_status` / `v_place_status_latest`, `place_timeline`, `stats`, `report_counts`, `v_gauges_latest`, `v_articles_recent`, `v_live_counts`, `event_timeline`, `digest` | none |
+| DERIVED (public) | `figures_latest`, public-source `place_status` / `place_timeline`, `stats`, `v_gauges_latest`, `v_articles_recent`, `v_live_counts`, `event_timeline`, `digest` | none |
 | ARCHIVE (own rows) | `users` (own), `reports_archive` (own) | insert own report; set `withdrawn_at`; update own `users.lang/contact`; insert `submissions_log` |
 
 Everything else (raw pulls, `reports_anon`, `entities`, `figures`, `articles` bodies) is service-role only and is

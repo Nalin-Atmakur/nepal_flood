@@ -1,5 +1,9 @@
 # 05 · Home blocks
 
+All information blocks are public-source driven. The only intake signal on Home is the separate
+PII-free `submissions_log` activity count; report contents, selected place and status never enter
+stats, place cards, timelines or summaries. `reports_total` is not a stat-card candidate.
+
 > **Since 30 Aug (docs/17-information-architecture.md) the home page is three things:** `RightNow` (the headline
 > numbers + today's line), `Corridor` (the simulation, with `FloodVideos` — real footage — directly under it,
 > docs/18) and `YourPart` (the ask). Every other block below now lives

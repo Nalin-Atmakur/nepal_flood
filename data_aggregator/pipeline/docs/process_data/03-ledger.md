@@ -1,5 +1,9 @@
 # 03 — ③ per-place ledger (`processing/ledger.py`)
 
+The current ledger is public-source only. In archive-only mode the report input is an in-memory
+empty list and `reports_anon` is not queried. Formula references to reports below document the
+dormant explicitly enabled legacy path, not production behaviour.
+
 ```
    places (known ids)      reports_anon      entities        figures scope place:*      articles.places      v_gauges_latest
         │                       │                │            (last 14 d)                 (last 14 d)               │
@@ -81,7 +85,7 @@ all — the page shows the dashed empty state with "Add what you know".
 
 | inputs | writes | log |
 |---|---|---|
-| `places`, `reports_anon`, `entities`, `figures` (`scope like 'place:%'`, last 14 d), `articles` (`places <> '{}'`, last 14 d), `v_gauges_latest`, NDRRMA shelter figures | `place_status` (upsert on `place_id, as_of`), `place_timeline` (upsert on `place_id, day, what_en`) | `ledger.done` (places, timeline) |
+| `places`, public-register `entities`, public `figures`/`articles`, `v_gauges_latest`, NDRRMA shelter figures | `place_status` (upsert on `place_id, as_of`), `place_timeline` (upsert on `place_id, day, what_en`) | `ledger.done` (places, timeline) |
 
 Only ids present in `places` are written (foreign keys); scopes with a slug that is not a
 gazetteer id are ignored until the gazetteer grows.

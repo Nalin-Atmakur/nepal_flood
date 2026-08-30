@@ -1,5 +1,9 @@
 # 06 · Realtime and Storage — `005_realtime_storage.sql`
 
+Realtime `submissions_log` is intentionally retained as activity-only telemetry. It is not a
+family-content processing path: no report id, text, contact, place or file metadata enters it.
+Questionnaire files stay in private owner folders and are never opened by `process_data`.
+
 Two Supabase features beyond plain Postgres are used, and both stay inside "database only": a Realtime publication on one table, and two private Storage buckets created in SQL.
 
 ## Realtime: the live scoreboard
@@ -39,7 +43,7 @@ Free-tier limits that matter: 200 concurrent Realtime connections and 2 million 
 | Bucket | Path convention | Writes | Reads | Policy |
 |---|---|---|---|---|
 | `raw` | `raw/<source_id>/<date>/<time>.<ext>` — PDFs, images, spreadsheets from pulls; referenced by `raw_pulls.storage_path` | `pull_external_data` (service key) | `process_data` (service key) | none → service role only |
-| `report-photos` | `report-photos/<auth.uid()>/<report id>.jpg` — referenced by `reports_archive.photo_path` | the signed-in visitor, own folder only | `process_data` (service key) | `report_photos_own_insert`: `authenticated`, `bucket_id = 'report-photos'` and first folder segment = `auth.uid()::text` |
+| `report-photos` | legacy `report-photos/<auth.uid()>/<report id>.jpg` path | the signed-in visitor, own folder only | no current pipeline reader; service role is technically capable | `report_photos_own_insert`: authenticated owner folder |
 
 There is deliberately no select policy on `report-photos`, not even for the uploader: photos are personal data, are kept for the pipeline and official channels, and are never displayed on the site. A user who wants to see their photo again keeps their own copy.
 

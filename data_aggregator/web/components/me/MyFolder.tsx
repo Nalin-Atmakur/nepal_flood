@@ -9,7 +9,7 @@ import DarkCard from "@/components/ui/DarkCard";
 import EmptyState from "@/components/ui/EmptyState";
 import Pill, { type PillVariant } from "@/components/ui/Pill";
 import { RESPONDENT_TYPES } from "@/lib/config";
-import { fmtCadence, fmtDayTime } from "@/lib/format";
+import { fmtDayTime } from "@/lib/format";
 import { href, localised, t, type Lang } from "@/lib/i18n";
 import { getOwnReports, getOwnUser, type OwnReport, type PlaceRef } from "@/lib/queries";
 import { saveContact, withdrawReport } from "@/lib/reports";
@@ -17,9 +17,8 @@ import { fmtBytes, listReportFiles, signedUrl, type ReportFile } from "@/lib/upl
 import { browserClient, ensureSession, supabaseConfigured } from "@/lib/supabase";
 
 /**
- * /me — "My folder": everything this device has added, with what happened to it (My Folder artboards).
- * Rows come from reports_archive under RLS (own rows only). The raw `text` is never rendered here —
- * only summary_public (PII-free, written by process_data) or the "received" placeholder.
+ * /me — the private archive owned by this anonymous browser session. Family reports
+ * remain unprocessed; this page shows only storage/withdrawal state and never raw text.
  */
 
 type Phase = "loading" | "ready" | "failed";
@@ -27,27 +26,12 @@ type SaveState = "idle" | "saving" | "saved" | "failed";
 
 type TrailPill = { key: string; label: string; variant: PillVariant };
 
-const DONE_ANON = new Set<OwnReport["status"]>(["anonymised", "processed", "matched"]);
-const DONE_PROC = new Set<OwnReport["status"]>(["processed", "matched"]);
-
-/** Received → Anonymised → Processed → Matched to X / Not yet matched, or … → Withdrawn. */
-export function deriveTrail(r: OwnReport, placeName: string | null, lang: Lang): TrailPill[] {
+/** Archive-only lifecycle: Received, or Received → Withdrawn. */
+export function deriveTrail(r: OwnReport, lang: Lang): TrailPill[] {
   const withdrawn = r.status === "withdrawn" || !!r.withdrawn_at;
-  const anonDone = !!r.anonymised_at || DONE_ANON.has(r.status);
-  const procDone = DONE_PROC.has(r.status);
   const steps: TrailPill[] = [{ key: "received", label: t(lang, "me.trail.received"), variant: "done" }];
   if (withdrawn) {
-    if (anonDone) steps.push({ key: "anonymised", label: t(lang, "me.trail.anonymised"), variant: "done" });
-    if (procDone) steps.push({ key: "processed", label: t(lang, "me.trail.processed"), variant: "done" });
     steps.push({ key: "withdrawn", label: t(lang, "me.trail.withdrawn"), variant: "withdrawn" });
-    return steps;
-  }
-  steps.push({ key: "anonymised", label: t(lang, "me.trail.anonymised"), variant: anonDone ? "done" : "wait" });
-  steps.push({ key: "processed", label: t(lang, "me.trail.processed"), variant: procDone ? "done" : "wait" });
-  if (r.status === "matched" && r.place_id) {
-    steps.push({ key: "matched", label: t(lang, "me.trail.matched", { place: placeName ?? r.place_id }), variant: "matched" });
-  } else {
-    steps.push({ key: "not_matched", label: t(lang, "me.trail.not_matched"), variant: "wait" });
   }
   return steps;
 }
@@ -68,7 +52,6 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
   const [withdrawing, setWithdrawing] = useState<string | null>(null);
   const [withdrawFailed, setWithdrawFailed] = useState<string | null>(null);
 
-  const cadence = fmtCadence(lang);
   const placeNames = useMemo(() => {
     const m = new Map<string, string>();
     for (const p of places) m.set(p.id, localised(p, "name", lang) || p.name_en);
@@ -108,7 +91,7 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
   async function onWithdraw(r: OwnReport) {
     const sb = browserClient();
     if (!sb || withdrawing) return;
-    if (!window.confirm(t(lang, "me.withdraw_confirm", { cadence }))) return;
+    if (!window.confirm(t(lang, "me.withdraw_confirm"))) return;
     setWithdrawFailed(null);
     setWithdrawing(r.id);
     const ok = await withdrawReport(sb, r.id);
@@ -170,7 +153,7 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
               const colours = RESPONDENT_TYPES.find((x) => x.id === r.respondent_type) ?? RESPONDENT_TYPES[0];
               const placeName = r.place_id ? (placeNames.get(r.place_id) ?? r.place_id) : null;
               const withdrawn = r.status === "withdrawn" || !!r.withdrawn_at;
-              const trail = deriveTrail(r, placeName, lang);
+              const trail = deriveTrail(r, lang);
               return (
                 <Card key={r.id} as="article" shadow={3} padding="p-[14px] md:p-5" className={["md:shadow-hard-4", withdrawn ? "opacity-70" : ""].join(" ")}>
                   <div className="flex items-baseline gap-2 md:gap-[10px] flex-wrap">
@@ -183,7 +166,7 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
                     </span>
                   </div>
 
-                  <p className="font-medium text-[13px] md:text-[14px] text-muted-2 lh-body mt-[6px] m-0">{r.summary_public?.trim() || t(lang, "me.received_placeholder")}</p>
+                  <p className="font-medium text-[13px] md:text-[14px] text-muted-2 lh-body mt-[6px] m-0">{t(lang, "me.received_placeholder")}</p>
                   {files[r.id]?.length ? (
                     <ul className="list-none m-0 p-0 mt-2 flex flex-wrap gap-[6px]" aria-label={t(lang, "attach.title")}>
                       {files[r.id].map((f) => (
@@ -207,7 +190,7 @@ export default function MyFolder({ lang, places }: { lang: Lang; places: PlaceRe
                   ) : null}
                   {r.supersedes ? <p className="font-medium text-[11px] text-muted mt-1 m-0">{t(lang, "me.supersedes")}</p> : null}
                   {withdrawn ? (
-                    <p className="font-semibold text-[12px] text-muted mt-1 m-0">{t(lang, "me.withdrawn_line", { t: fmtDayTime(r.withdrawn_at, lang), cadence })}</p>
+                    <p className="font-semibold text-[12px] text-muted mt-1 m-0">{t(lang, "me.withdrawn_line", { t: fmtDayTime(r.withdrawn_at, lang) })}</p>
                   ) : null}
 
                   <div className="flex flex-wrap items-center gap-[6px] md:gap-[7px] mt-[10px] md:mt-3">

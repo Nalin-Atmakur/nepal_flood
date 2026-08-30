@@ -1,5 +1,9 @@
 # 04 · Auth and identity — "this device · no account"
 
+Auth owns the private archive; it is not a processing identity. Active reports remain
+`status='received'`, `anonymised_at=null`, `summary_public=null`. My Info reads minimum metadata,
+not raw text/contact, and renders only Received or Received → Withdrawn.
+
 Every visitor gets a stable anonymous identity so their reports and folder belong to them, without a login.
 
 ```

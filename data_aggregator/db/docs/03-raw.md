@@ -1,6 +1,6 @@
 # 03 · RAW zone — `002_raw.sql`
 
-Normalised rows with the PII already removed, plus two reference tables. Written by `pull_external_data` (every run) and `process_data` ⓪/① (anonymised reports, resolved places). Read by `process_data`; the public sees only `sources`, `places`, `gauges` and the views.
+Normalised public-source rows plus reference tables. Written by `pull_external_data` and public-source processing. `reports_anon` remains in the schema as a dormant legacy table; archive-only mode never writes or reads it.
 
 Tables: `sources` · `places` · `pulls` · `figures` · `gauges` · `articles` · `reports_anon`. Columns: `docs/data-model.md` §3.
 
@@ -26,8 +26,8 @@ Tables: `sources` · `places` · `pulls` · `figures` · `gauges` · `articles` 
                               └──► articles   (url)                                 │
                                                                                     │
    process_data.py                                                                  │
-        ⓪ reports_archive ──anonymise──► reports_anon ──── place_id ────────────────┤
-        ⓪ raw_pulls of PII sources ──project──► figures rows (counts by place/status/nationality)
+        ⓪ reports_archive ──X──► reports_anon (archive-only boundary)               │
+        ⓪ public raw_pulls ──minimise/project──► figures rows                        │
         ① articles.places, articles.extracted ◄── resolve_places (aliases, then model) ┘
 ```
 
@@ -59,9 +59,9 @@ One row per station per observation from BIPAD / DHM RiverWatch. `alive` is comp
 
 Headline, publisher, language, time, body. The body is service-only (models read it; the public sees `v_articles_recent` without it). `places` and `extracted` are filled by `process_data` ① — the one case where `process_data` writes to a table `pull_external_data` owns, limited to those two columns.
 
-## `reports_anon`
+## `reports_anon` (reserved/dormant)
 
-What ⓪ keeps from a submission:
+The unchanged schema can hold the following legacy projection, but no current code path reaches it while `FAMILY_REPORT_PROCESSING_ENABLED=false`:
 
 ```
    drop     names · phones · passport · photo · reporter contact · anything the model flags
@@ -73,6 +73,6 @@ What ⓪ keeps from a submission:
             employer_project · reported_to[] · extracted (json) · text_redacted · text_en · model
 ```
 
-`person_key` is what lets dedup (`process_data` ②) match a form row to an OPMCM or NDRRMA row without a name in RAW. Where a match genuinely needs the name, ② reads ARCHIVE with the service key and emits only entity ids and counts.
+Current deduplication uses public/government registry projections only. Re-enabling this table requires the full privacy/security review documented in the pipeline runbook.
 
 Next: `04-derived.md`.

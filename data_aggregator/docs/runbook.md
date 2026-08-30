@@ -12,7 +12,7 @@ installed (no launchd, no cron, no background process) — the owner's choice on
    terminal (or tmux)        pipeline/scheduler.py                              one tick
    ────────────────────►     while True:                                        ───────────────────────────────────
    .venv/bin/python            tick()  ──►  .venv/bin/python pull_external_data.py   (external → RAW)
-   scheduler.py                              .venv/bin/python process_data.py         (RAW + ARCHIVE → DERIVED)
+                               scheduler.py                              .venv/bin/python process_data.py         (public-source RAW → DERIVED)
                                sleep(N h − tick duration)      ← measured from the tick's start
                                (Ctrl-C stops after the current step)
 ```
@@ -57,11 +57,16 @@ The two constants must always be equal, and match the loop's `--hours`.
 | `SUPABASE_SERVICE_ROLE_KEY` | `pipeline/.env` — the cron machine only | both scripts; `db/tests` | **never** — bypasses RLS |
 | `OPENAI_API_KEY` | `pipeline/.env` | `process_data` via `lib/llm.py` | never |
 | `OPENAI_BUDGET_USD` | `pipeline/.env` (default 20) | `lib/llm.py` budget guard; spend is tracked in `pipeline/_state.json` | — |
+| `FAMILY_REPORT_PROCESSING_ENABLED` | `pipeline/.env`, must remain `false` | fail-closed questionnaire boundary in every processing stage | — |
 | `SUPABASE_ACCESS_TOKEN` | shell env only (optional; else the Supabase CLI keychain on the laptop) | `db/apply.py`, `db/tests` | never |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `web/.env.local` and Vercel project env | the website | yes — by design; RLS is the boundary |
 | Vercel login | `vercel` CLI credentials | deploy | never |
 
 Rules: `.env*` is gitignored repo-wide; never paste a key into a doc, a commit, a log line or a fixture. The website has no server-side secret at all.
+
+`FAMILY_REPORT_PROCESSING_ENABLED` is missing/invalid-safe: only `1`, `true`, `yes` or `on`
+enables the dormant legacy path. Do not enable it during incident debugging. Re-enablement requires
+the coordinated privacy/consent/UI/security programme documented in `pipeline/docs/process_data/00-anonymise.md`.
 
 Rotation:
 
@@ -100,7 +105,8 @@ The dump contains ARCHIVE data (names, phones). Keep it encrypted, off the repo,
 | Symptom | Where you see it | What is happening | Do |
 |---|---|---|---|
 | a source is down / changed shape | `/sources` shows a red last-fetched; `pulls.ok = false` with `error`; `run.log` | `pull_external_data` fails soft per source; the page keeps last-good rows with their `as_of` | nothing urgent. If the shape changed, fix `pipeline/normalisers/<id>.py` against a new fixture (`pipeline/docs/pull_external_data/07-failure-modes.md`) |
-| OpenAI budget hit | `run.log`: `llm: budget exhausted ($20.00 of $20)`; `reports_archive` rows stay `received` | `lib/llm.py` stops calling the model; submissions are archived and wait | raise `OPENAI_BUDGET_USD` in `pipeline/.env` (and top up the account) or leave it; nothing is lost. `/me` keeps showing "Received" |
+| OpenAI budget hit | `run.log`: `llm: budget exhausted` | public article extraction/translation/polish falls back or skips; family intake is unaffected | raise the budget only if public-source model assistance is operationally useful; never enable family processing |
+| family mode is not archive-only | process JSON/log says `family_reports.mode=processing` or `family_report_processing=true` | unsafe legacy flag was explicitly enabled | stop the scheduler, set `FAMILY_REPORT_PROCESSING_ENABLED=false`, restart, and record the incident; do not process the backlog |
 | Realtime connection cap hit (200) | scoreboard's "people here now" disappears; browser console shows channel error | Presence is dropped first by design; contribution counters fall back to polling `v_live_counts` | nothing; or upgrade the plan. Do not add Realtime to more tables |
 | Vercel build fails | `vercel --prod` output; the previous deployment keeps serving | usually a type error or a message-key parity failure | `cd web && npm run lint && npm run build && npm test` locally; fix; redeploy. The DB is unaffected |
 | migrations conflict | `apply.py`: `! 00N_x.sql changed since it was applied` | an applied file was edited | `git checkout` the file; put the change in a new `006_…sql` (`db/docs/07-applying-migrations.md`) |
@@ -109,7 +115,7 @@ The dump contains ARCHIVE data (names, phones). Keep it encrypted, off the repo,
 | irrelevant headline on the site | Latest block / digest shows an off-topic story (robots, exchange rates, "what's on in Kathmandu") | the relevance gate `pipeline/normalisers/_rss.is_relevant` let it through: a corridor place alias or keyword matched | add the word/place to the gate's exclusions (`GENERIC_PLACE_IDS`, district rule) with a test in `pipeline/tests`; run `process_data.py --purge-irrelevant` to drop stored rows; the digest picks it up on the next tick |
 | gauge tile shows "no data yet" | River & weather §06 | the station name pattern in `web/lib/config.ts` `GAUGE_STATIONS` no longer matches the DHM/BIPAD spelling, or the station really stopped reporting (`v_gauges_latest.alive = false` is shown as dead, not empty) | `select station_name, observed_at from v_gauges_latest`; fix the regex; redeploy |
 | "What changed today" is stale or empty | digest card under the scoreboard shows yesterday's date or nothing | `process_data` ⑦ did not run (crash logged in `run.log`), or the OpenAI budget is exhausted (the digest falls back to figure/gauge bullets without prose) | `tail run.log`; `process_data.py --step 7` by hand; check `digest` has today's NPT day for all three langs |
-| budget guard tripped | `run.log`: `llm … budget exhausted`; `_state.json` `openai_spend` ≥ `OPENAI_BUDGET_USD` | model calls stop; anonymisation, place fallback and digest prose pause; everything else continues | raise `OPENAI_BUDGET_USD` in `pipeline/.env` (and top up); or leave it |
+| budget guard tripped | `run.log`: `llm … budget exhausted`; `_state.json` spend ≥ `OPENAI_BUDGET_USD` | public article place fallback and digest/place prose pause; deterministic/public data continues | raise the budget if needed, or leave it; family intake never depends on it |
 | side-by-side column shows "—" although the figure exists | home §03 | the publisher spelling in `figures_latest` is not listed in `web/lib/config.ts` `AGENCIES[].publishers` (e.g. a new `… (via press)` publisher) | add the spelling to the column's list; `npm test`; redeploy |
 | form submissions fail | browser: `new row violates row-level security policy` or `401` | anonymous sign-ins disabled, or the insert violates `reports_own_insert` | `python -c "import mgmt; mgmt.set_anonymous_signins(True)"` from `db/`; check the insert sets `status='received'` and no `anonymised_at` |
 | numbers look stale but the schedule ran | `v_live_counts.last_processed_at` old, `last_pull_at` fresh | `process_data` failed after `pull_external_data` succeeded | `tail run.log`; run `python process_data.py` by hand and read the traceback |
@@ -118,7 +124,7 @@ The dump contains ARCHIVE data (names, phones). Keep it encrypted, off the repo,
 
 ## 6. Is it healthy? — 60 seconds
 
-`make health` from `data_aggregator/` runs `scripts/health.py` (live counters, headline figures per publisher, gauges, failing sources, row counts; exit 1 when the last pull is older than 2 × `PULL_INTERVAL_MINUTES`). The manual equivalent, through the Management API (`db/mgmt.py`):
+`make health` runs `scripts/health.py` (archive-only flag/projection tripwire, live counters, public figures, gauges, sources and row counts). It exits 1 when public data is stale, family processing is enabled, `reports_anon` is nonempty or `report_counts` is nonempty. The manual equivalent, through the Management API (`db/mgmt.py`):
 
 ```
 pipeline/.venv/bin/python - <<'EOF'
@@ -139,7 +145,8 @@ What good looks like:
 | `v_live_counts` | `last_pull_at` and `last_processed_at` within one cadence (+ a few minutes) of now; `submissions_total` not decreasing |
 | `figures_latest` | rows for `NDRRMA`, `Nepal Police (via press)`, `MoFA`, `OPMCM portal`, `Setu (NDRRMA)` at least (17 publishers on 30 Aug); `as_of` today or yesterday |
 | `v_gauges_latest` | Galchhi (5705) `alive = true`; Rasuwagadhi (4913) `alive = false` is expected (destroyed); no station with `observed_at` older than the DHM feed's last update |
-| `reports_archive` by status | no `received` rows older than one cadence unless the OpenAI budget is exhausted |
+| `reports_archive` by status | active reports remain `received` indefinitely; withdrawn reports are `withdrawn`; `anonymised`/`processed`/`matched` should remain zero before an authorised future programme |
+| `reports_anon`, `report_counts` | exactly zero; any row is an archive-boundary incident before distribution |
 | `v_sources_status` failures | a handful of `html`/`browser_ua` sources failing is normal; a `json_api` government source failing for > 2 h is worth a look |
 
 Then:

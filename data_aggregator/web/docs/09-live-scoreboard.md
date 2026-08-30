@@ -1,5 +1,10 @@
 # 09 · Live scoreboard
 
+The contribution cells are activity counters, not processed family data. Each submission adds one
+`submissions_log` row containing type/language and timestamp; the report body, contact, selected
+place, files and withdrawal state are not read. These counters remain visible by explicit product
+choice while all content-derived publication is disabled.
+
 people here now · contributions last 10 min · contributions today · minutes since last data pull · AUTO-REFRESH EVERY 4 H.
 
 ```

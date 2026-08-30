@@ -11,7 +11,7 @@ the rest are recomputed from the database every run — a stat that cannot be co
                 missing_hydropower · towers_restored · towers_restored_pct · heli_flights · personnel_deployed
     publishers  missing_counts_divergence (live: how many agencies, min → max; static fallback when < 2)
     ledger      places_reached · places_with_unknown · gauges_alive · next_flying_window
-    this site   reports_total · reports_last_hour · submissions_today · duplicates_merged · last_pull
+    this site   public submission activity stays in v_live_counts; only duplicates_merged · last_pull are materialised here
 
 Captions are templates (`{n}` placeholders) written here in all three languages; numbers stay in Latin digits.
 Each block is guarded on its own so one missing table never empties the others. Also runs report_counts.py.
@@ -273,16 +273,15 @@ def compute_live(ctx: ProcCtx) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = [days_since_event(ctx.now)]
 
     def site_counts() -> list[dict[str, Any]]:
-        total = db.count("reports_archive", {"withdrawn_at": "is.null", "status": "neq.spam"})
-        hour_ago = (ctx.now - timedelta(hours=1)).isoformat()
-        last_hour = db.count("reports_archive", {"withdrawn_at": "is.null", "status": "neq.spam", "created_at": f"gte.{hour_ago}"})
-        out = [live_row("reports_total", f"{total:,} {'person' if total == 1 else 'people'}", total, "/report", ctx.now),
-               live_row("reports_last_hour", str(last_hour), last_hour, "/report", ctx.now)]
-        lc = db.select("v_live_counts", {"select": "last_pull_at,submissions_today"})
+        out: list[dict[str, Any]] = []
+        if ctx.family_report_processing_enabled:
+            total = db.count("reports_archive", {"withdrawn_at": "is.null", "status": "neq.spam"})
+            hour_ago = (ctx.now - timedelta(hours=1)).isoformat()
+            last_hour = db.count("reports_archive", {"withdrawn_at": "is.null", "status": "neq.spam", "created_at": f"gte.{hour_ago}"})
+            out += [live_row("reports_total", f"{total:,} {'person' if total == 1 else 'people'}", total, "/report", ctx.now),
+                    live_row("reports_last_hour", str(last_hour), last_hour, "/report", ctx.now)]
+        lc = db.select("v_live_counts", {"select": "last_pull_at"})
         if lc:
-            st = lc[0].get("submissions_today")
-            if st is not None:
-                out.append(live_row("submissions_today", f"{int(st):,}", int(st), "/report", ctx.now))
             if lc[0].get("last_pull_at"):
                 lp = parse_ts(lc[0]["last_pull_at"])
                 mins = max(int((ctx.now - lp).total_seconds() // 60), 0)
