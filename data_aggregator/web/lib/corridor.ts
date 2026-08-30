@@ -23,6 +23,8 @@ export type CorridorPlace = {
   last: string | null;
   /** unknown / reported > 0.4 → amber marker */
   heavy: boolean;
+  /** the "what is happening now" line for this place in the page language, or null */
+  now: string | null;
 };
 
 /** A real bridge (HOT OSM survey) placed on the path by the simulation. */
@@ -74,6 +76,7 @@ export function toCorridorPlaces(statuses: PlaceStatusRow[] | null | undefined, 
       unknown,
       last: s.last_contact_at ? fmtDayTime(s.last_contact_at, lang) : null,
       heavy: unknown / Math.max(1, reported) > 0.4,
+      now: localised(s as unknown as Record<string, unknown>, "now", lang) || s.now_en || null,
     });
   }
   return out.sort((a, b) => a.km - b.km);

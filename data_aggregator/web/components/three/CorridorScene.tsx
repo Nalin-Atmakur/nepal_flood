@@ -267,7 +267,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
 
         {mode === "3d" && pick ? (
           <div
-            className="absolute z-20 min-w-[180px] bg-card b-ink-2 rounded-r2 shadow-hard-2 p-3 font-baloo text-[12px] text-ink lh-body"
+            className="absolute z-20 min-w-[180px] max-w-[290px] bg-card b-ink-2 rounded-r2 shadow-hard-2 p-3 font-baloo text-[12px] text-ink lh-body"
             style={{ left: pick.x, top: pick.y }}
             role="dialog"
             aria-label={pick.place.name}
@@ -284,6 +284,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
               </span>
             </div>
             <div className="text-muted mt-0.5">{t(lang, "sec.corridor_last", { t: pick.place.last ?? "—" })}</div>
+            {pick.place.now ? <div className="mt-1 max-w-[260px] text-[11.5px] lh-body">{pick.place.now}</div> : null}
             <Link href={href(lang, "/places/" + pick.place.id)} className="inline-block mt-1.5 font-semibold underline underline-offset-3">
               {cardLink}
             </Link>

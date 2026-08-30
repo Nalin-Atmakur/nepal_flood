@@ -90,6 +90,12 @@ export type PlaceStatusRow = {
   shelter: string | null;
   km: number | null;
   status_label: string | null;
+  /** the per-place "what is happening now" line (process_data step ⑩, 36 h window), per language, or null */
+  now_en?: string | null;
+  now_ne?: string | null;
+  now_hi?: string | null;
+  now_sources?: string[] | string | null;
+  now_as_of?: string | null;
   note: string | null;
   name_en: string;
   name_ne: string | null;
