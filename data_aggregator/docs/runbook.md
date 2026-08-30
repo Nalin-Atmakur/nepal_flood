@@ -4,36 +4,49 @@ How the system is kept running: the schedule, secrets, moving off the laptop, ba
 
 ## 1. Schedule
 
-The two scripts run on a timer on whichever machine holds `pipeline/.env`. On the Mac that is a **launchd agent** (survives logout, runs a missed job on wake, and the installer also pins the machine awake); on a Linux VM it is a crontab line. Both call the same `pipeline/run.sh`.
+The two scripts run on a plain **serial loop that you start yourself** on whichever machine holds `pipeline/.env`:
+`pipeline/scheduler.py` runs one tick (pull, then process), sleeps N hours, and repeats until Ctrl-C. Nothing is
+installed (no launchd, no cron, no background process) — the owner's choice on 30 Aug (D-049).
 
 ```
-   launchd agent (Mac)  ─┐                        pipeline/run.sh
-   com.nepalfloodtracker  │   every N minutes      ─────────────────────────────────────────────
-   .pipeline              ├──────────────────────► .venv/bin/python pull_external_data.py   (external → RAW)
-   crontab line (VM)     ─┘                        .venv/bin/python process_data.py         (RAW + ARCHIVE → DERIVED)
-                                                   exit code = first crash (per-source failures are logged, not fatal)
+   terminal (or tmux)        pipeline/scheduler.py                              one tick
+   ────────────────────►     while True:                                        ───────────────────────────────────
+   .venv/bin/python            tick()  ──►  .venv/bin/python pull_external_data.py   (external → RAW)
+   scheduler.py                              .venv/bin/python process_data.py         (RAW + ARCHIVE → DERIVED)
+                               sleep(N h − tick duration)      ← measured from the tick's start
+                               (Ctrl-C stops after the current step)
 ```
 
-Install / change / remove on the Mac — numbered:
+Run / change / stop — numbered:
 
-1. `scripts/install_schedule.sh` — installs BOTH mechanisms at **240 min** (tonight's cadence): a detached loop process (`pipeline/.scheduler.pid`) that runs immediately and then every N minutes, and a launchd agent (`~/Library/LaunchAgents/com.nepalfloodtracker.pipeline.plist`). It also starts `caffeinate -s -i` unless a caffeinate is already running.
-2. Why two: macOS TCC blocks a launchd-spawned `/bin/bash` from reading a repo under `~/Desktop` until Full Disk Access is granted — launchd then shows `last exit code = 78: EX_CONFIG` and never runs. The loop, started from a terminal, inherits the terminal's Desktop access and works at once; the launchd agent takes over (surviving logout) once you grant **System Settings → Privacy & Security → Full Disk Access → `/bin/bash`**. Overlap is harmless (idempotent upserts).
-3. `scripts/install_schedule.sh 15` — switch to the live-phase cadence (re-installs both).
-4. `scripts/install_schedule.sh --status` — loop pid, launchd state, last three run headers. `scripts/install_schedule.sh --remove` — uninstall both and stop caffeinate.
-5. Check: `tail -n 40 pipeline/run.log` shows `== … pull_external_data` … `== … done pull=0 process=0`; `make health` summarises the live state.
+1. `cd data_aggregator/pipeline && .venv/bin/python scheduler.py` — every 4 hours, first tick immediately. Keep the
+   terminal open (or run it inside `tmux`/`screen`) and keep the machine awake (`caffeinate -i` in another terminal;
+   a closed lid on battery still sleeps).
+2. `.venv/bin/python scheduler.py --hours 0.5` — every 30 minutes (a tick ≈ 11 min with 60 sources; ≈ $0.05 in model
+   calls; 15 min is possible but tight). `--once` runs a single tick and exits (same as `make pipeline`);
+   `--skip-first` waits one interval before the first tick; trailing arguments go to `pull_external_data.py`
+   (e.g. `scheduler.py --hours 1 --force`).
+3. Stop: Ctrl-C (the current step finishes, then the loop exits). Output streams to the terminal and is appended to
+   `pipeline/run.log`; `tail -n 40 pipeline/run.log` shows `== … start pull_external_data.py` … `== … tick ok`.
+4. Check: `make health` summarises the live state (last pull / last processed, sources failing, row counts).
 
-On a Linux VM instead: `crontab -e` and add `*/15 * * * * cd /path/to/data_aggregator/pipeline && ./run.sh >> run.log 2>&1` (cron uses UTC; the scripts write UTC timestamps, so nothing else changes).
+On a Linux VM the same script works unchanged (`nohup .venv/bin/python scheduler.py --hours 0.5 &` or a systemd
+unit); a crontab line calling `pipeline/run.sh` is the alternative there.
 
-Switching cadence — four coupled edits, one commit, one deploy:
+`scripts/install_schedule.sh` (detached loop + launchd agent) still exists for reference but is **not used**; it was
+removed on 30 Aug 08:50 BST at the owner's request. `run.sh` remains the single-tick entry point (`make pipeline`)
+and keeps its 3-hour lock against overlapping ticks.
 
-1. The schedule: `scripts/install_schedule.sh 15` (Mac) or the crontab field (VM).
-2. `pipeline/lib/config.py` — `PULL_INTERVAL_MINUTES = 15` (was 240). The scheduler uses it as the floor for every source's cadence and for the "unchanged" skip window.
-3. `web/lib/config.ts` — `PULL_INTERVAL_MINUTES = 15`. Drives the scoreboard line "AUTO-REFRESH EVERY N MIN" and the stale-banner threshold (1.5 × the interval), so the site never promises a cadence the schedule does not keep.
-4. `cd web && vercel --prod --yes` — the constant is baked at build time.
+Switching cadence — three coupled edits, one commit, one deploy:
 
-The two constants must always be equal.
+1. Restart the loop with the new `--hours`.
+2. `pipeline/lib/config.py` — `PULL_INTERVAL_MINUTES` (240 tonight; e.g. 30 for the live phase). The puller uses it as
+   the floor for every source's cadence and for the "unchanged" skip window.
+3. `web/lib/config.ts` — `PULL_INTERVAL_MINUTES` — drives the scoreboard line "AUTO-REFRESH EVERY N MIN" and the
+   stale-banner threshold (1.5 × the interval), so the site never promises a cadence the loop does not keep;
+   then `cd web && vercel --prod --yes` (the constant is baked at build time).
 
-macOS specifics: launchd agents only fire while the machine is awake — the installer's `caffeinate -s -i` prevents idle sleep on AC power, but a closed lid on battery still sleeps (System Settings → Battery → Options → "Prevent automatic sleeping on power adapter", and keep it plugged in). If `run.log` shows `Operation not permitted`, grant Full Disk Access to `/bin/bash` (System Settings → Privacy & Security → Full Disk Access) because the repo lives under `~/Desktop`.
+The two constants must always be equal, and match the loop's `--hours`.
 
 ## 2. Secrets
 
@@ -66,7 +79,7 @@ Any Linux box with Python 3.11+ and outbound HTTPS runs the pipeline; the interf
 3. `scp` the laptop's `pipeline/.env` **and** `pipeline/_state.json` to the same paths (the state file carries per-source last-fetched times, ETags and the OpenAI spend counter — without it the budget guard restarts from zero).
 4. `./run.sh` once by hand; confirm exit 0 and new rows (section 6).
 5. `crontab -e` on the VM with the live-phase line (paths adjusted). Cron on Linux uses UTC; the scripts write UTC timestamps, so nothing else changes.
-6. On the laptop, `scripts/install_schedule.sh --remove`. Two writers would not corrupt anything (upserts), but they would double the OpenAI spend.
+6. On the laptop, Ctrl-C the scheduler. Two writers would not corrupt anything (upserts), but they would double the OpenAI spend.
 7. For `db/apply.py` on the VM export `SUPABASE_ACCESS_TOKEN` (the keychain path is macOS-only).
 8. Record the handoff in `docs/decisions-log.md` with the VM's name and who holds its SSH key.
 

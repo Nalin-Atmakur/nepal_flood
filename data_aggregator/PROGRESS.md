@@ -17,7 +17,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 
 **Do in the morning (5 minutes)**
 - ⚠️ Rotate the OpenAI key and the Supabase service-role key (decisions-log 02:30: `pipeline/` was briefly uploaded to a Vercel project that I deleted). They live only in `pipeline/.env`.
-- Grant `/bin/bash` Full Disk Access so the launchd agent takes over from the detached loop (`scripts/install_schedule.sh --status`). The loop's next tick is 09:47 BST, then every 4 h.
+- **Start the pipeline loop yourself** (you asked for this at 08:45): `cd data_aggregator/pipeline && .venv/bin/python scheduler.py` (or `make schedule`) — one tick now, then every 4 h; `--hours 0.5` for the live phase; Ctrl-C stops it. The launchd agent and the overnight detached loop were removed at 08:50, so **nothing runs until you start it**. Keep `caffeinate -i` running.
 - When distribution starts: `scripts/install_schedule.sh 30` (a full run ≈ 11 min, ≈ $0.05; 30 min ≈ $2.40/day), set `PULL_INTERVAL_MINUTES = 30` in `pipeline/lib/config.py` and `web/lib/config.ts`, `cd web && vercel --prod --yes`, then `npm run smoke:live`.
 - Read `docs/reports/2026-08-30-morning.md` (trends, hotspots) and skim `docs/audit-2026-08-30.md`.
 - Copy note: nothing on the site now claims reports are passed to the authorities automatically (no export tool exists yet, per your decision) — re-word when the channel is agreed (D-048).
@@ -44,6 +44,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 08:50 BST — Owner (awake) asked to remove the "bash" login item and run the schedule explicitly: launchd agent + detached loop removed (`install_schedule.sh --remove`); new `pipeline/scheduler.py` (serial loop: pull → process → sleep N h; `--hours`, `--once`, `--skip-first`; Ctrl-C clean) + `make schedule`; runbook §1, README, decisions D-049 updated. Nothing runs until the owner starts it. Home places block capped at 12 rows with "Show all" (970df26).
 - 08:28 BST — P9 dedup precision (3096559; 285 tests): same-name merges 83 % (OPMCM) / 87 % (NDRRMA) strict, 97–99 % lenient; added an age-gap guard (> 8 years apart → distinct, 4–8 → queue), merged entities 3,678 → 3,586, 200 grey pairs queued, stat caption corrected in EN/NE/HI. Gap noted: OPMCM ↔ NDRRMA records never link yet (name normalisation differs) — a next step for the dedup, not tonight.
 - 07:24 BST — Foam spray at the wave front + foam tint thresholds fixed for real browser speeds (d752362, deployed). `npm run smoke:live` added (c61281b): 30 checks over every route × language, OG, sitemap, robots, apex redirect.
 - 07:00 BST — P8: the OPMCM jump (10,809 → 15,190 open lost-person reports) is the portal's own intake (+6,466 reports in 24 h; two endpoints agree; parser verbatim) — documented in docs/audit-2026-08-30.md (ff8e31e); the site's cell already says "open lost-person reports". No data changed.

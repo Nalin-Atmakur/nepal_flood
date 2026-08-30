@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# NOT USED since 30 Aug 08:50 BST (owner: "run it explicitly") — the schedule is pipeline/scheduler.py, a plain serial
+# loop started in a terminal. Kept for reference only; `--remove` still cleans up anything this installed.
 # Install the pipeline schedule on this Mac (docs/runbook.md → "Schedule").
 #
 #   scripts/install_schedule.sh [minutes]        # default 240 (tonight's cadence); 15 for the live phase
