@@ -84,6 +84,7 @@ no accounts, no names of affected people anywhere.
 | 11 | [docs/11-og-and-share.md](docs/11-og-and-share.md) | OG route, fonts, share links, utm |
 | 12 | [docs/12-deploy.md](docs/12-deploy.md) | Vercel, env, domain, local gotchas |
 | 13 | [docs/13-story-and-digest.md](docs/13-story-and-digest.md) | "The first hours" timeline, "What changed today" digest, adding an event |
+| 14 | [docs/14-flood-sim.md](docs/14-flood-sim.md) | the corridor flood simulation: sim maths, water mesh, objects, ride camera, clock, real bridges, tuning knobs |
 
 ## 6. Rules that hold everywhere
 

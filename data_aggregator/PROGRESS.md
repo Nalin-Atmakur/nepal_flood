@@ -4,6 +4,24 @@
 
 Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfly.md` · architecture: `PLAN.md` · runbook: `docs/runbook.md`.
 
+## ☀️ Morning handover (read this first — last updated 04:25 BST, keeps being updated until 10:00)
+
+**Live:** https://www.nepalfloodtracker.com (EN/NE/HI). Everything below is pushed to `origin/main`.
+
+**What changed overnight, in order of what you asked for**
+1. **The corridor is now the flood simulation** (your 02:15 brief) — auto-plays the breach on load, camera rides the wave, clock follows the recorded front (08:37 collapse → 13:00 Devghat), place cards pop as the front reaches them with live ledger numbers, drop houses/bridges/buses/camps and watch them tumble and sink, lake-volume/breach sliders (seeded with China MWR's 2.0 Mm³), the 10 bridges HOT OSM surveyed as washed-out/damaged are placed where they stood and go with the wave, "Share this run". Illustrative, labelled as such. Tuning knobs + how it works: `web/docs/14-flood-sim.md`.
+2. **All 51 catalogued sources have normalisers** (waves 2A/2B/3): 25+ publishers in `figures_latest`, hydrographs, help requests per place, bridges, imagery catalogues. `docs/sources.md`.
+3. **Processing**: press-quoted figures (Police/DoT columns filled), `figure_series` trends, timeline, digest v2, place_timeline 64/74 corridor places, 23 stats, 6-thread pull with backoff (≈2× faster). Per-place "now" line and a data-quality audit are in flight (lanes P5/Q1, see cycle log).
+4. **Docs reconciled** with what shipped (README, PLAN, runbook, data-model, decisions D-025+).
+
+**Do in the morning (5 minutes)**
+- ⚠️ Rotate the OpenAI key and the Supabase service-role key (decisions-log 02:30: `pipeline/` was briefly uploaded to a Vercel project that I deleted). Put them in `pipeline/.env`; nothing else holds them.
+- Grant `/bin/bash` Full Disk Access (System Settings → Privacy) so the launchd agent takes over from the detached loop (`scripts/install_schedule.sh --status`).
+- When distribution starts: `scripts/install_schedule.sh 15`, set `PULL_INTERVAL_MINUTES = 15` in `pipeline/lib/config.py` and `web/lib/config.ts`, `cd web && vercel --prod --yes`.
+- Skim `docs/audit-2026-08-30.md` (data-quality findings, once lane Q1 lands).
+
+**Spend:** OpenAI ≈ $0.03 of the $20 cap. Supabase free tier. Vercel hobby.
+
 ## Status by phase
 
 | Phase | State | Evidence |
