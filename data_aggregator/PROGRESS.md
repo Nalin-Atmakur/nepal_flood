@@ -13,16 +13,24 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | 2 pull_external_data + 13 normalisers | ✅ | 96 tests; live run 00:20 UTC: 933 figures / 9 publishers, 276 gauges, 283 articles (relevance-gated) |
 | 3 process_data ⓪–⑦ | ✅ | place_status 292 rows/73 places, stats 11, digest 3 langs, entities 9,903, findings 3 (DAO Sindhupalchok collision = 71 rows); spend $0.0038 |
 | 4–5 web (all pages, form, /me, 3D, OG, realtime) | ✅ deployed | e3606d2, b142b9e; lint/i18n/46 unit/11 e2e green; https://www.nepalfloodtracker.com |
-| 6 deploy + domain + schedule | ✅ all — launchd agent installed 240 min (01:35 BST) | apex A → Vercel (216.150.1.1), www CNAME; `scripts/install_schedule.sh` ready (launchd, 240 min) |
+| 6 deploy + domain + schedule | ✅ | apex A → Vercel (216.150.1.1) 308 → www; detached loop scheduler (pid in `pipeline/.scheduler.pid`, 240 min) — launchd blocked by TCC until Full Disk Access |
+| W2A official sources (12) | ✅ | a4a58bd, fa0a4e9 — Setu, Police UDB, DAO Nuwakot/Rasuwa, IFRC, China MWR/MFA, US Embassy, NDRRMA news/bulletins, HEOC, volunteer bulletin |
+| W2B geospatial + text (14) | ✅ | 95ade57 — NESRA, EMSR927, HOT TM, Google News, ekantipur live, live blogs, China search, Wikipedia, GEOFON, DHM riverwatch, NTC, HDX, HOT S3, OAM |
+| P3 processing | ✅ | 95ade57 — press_figures (3.5), timeline (8), figure_series (9, migration 007), stats 22, findings w/ summaries, dedup skip guard, digest v2 |
+| Web: publisher spellings | ✅ deployed | bb01050 — all 5 side-by-side columns filled from live publishers |
 
 ## Cycle log
+- 02:10 BST — context compacted (auto-compact now ON per owner). W2B + P3 tested (192 pass) and pushed 95ade57; web columns fixed + deployed bb01050. Owner asleep. Launching cycle 4: S3 sources (12 unbuilt ids), U3 web (mobile pass, trends, place timeline), P4 processing + pull efficiency, D docs reconcile.
 - 03:05 BST — launchd job never ran (EX_CONFIG: TCC blocks bash under ~/Desktop); replaced by a detached loop (pid in pipeline/.scheduler.pid, 240 min) + launchd kept for when the owner grants /bin/bash Full Disk Access. Runbook §1 updated.
 - 02:55 BST — stat cards ranked with thresholds (19f9f44); test rows purged from public counters; flying windows 3 days; gauge tiles fixed. Lanes W2A/W2B/P3 still running.
 - 02:35 BST — ⚠️ see decisions-log 02:30: rotate OpenAI + Supabase service-role keys in the morning (accidental Vercel upload of pipeline/, deleted). Fixed: gate ignores Kathmandu/district-only headlines; 3 flying-window days; gauge tiles match DHM names (667f9c3). Stats now 22 rows (P3 in progress).
 - 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
 
-## In flight (01:40 BST)
-- wave-2 source lanes A (official) and B (geospatial+text) and processing lane P3 launched; web timeline/digest agent still running.
+## In flight (02:10 BST) — cycle 4
+- S3 sources lane: opmcm_help_requests, opmcm_government_efforts, bipad_river_series, nesra_bridges, dor_rimes_bridges, microsoft_unosat_extent, outlet_tag_pages, gdelt_monitor, vantor_stac, planet_stac, cdse_catalogue, hf_fair_footprints.
+- U3 web lane: 390/1280 screenshots of every page, fix layout issues; figure_series trends on the site; place "Status, day by day" coverage; digest render check; deploy from web/ only.
+- P4 processing lane: pull efficiency (thread pool + per-source backoff), place_timeline coverage, divergence/dedup stats, help-request ledger fields once S3 lands.
+- D docs lane: README/runbook/PLAN/data-model/decisions-log reconciled with shipped reality (steps 3.5/8/9, loop scheduler, 007 tables).
 
 ## Previously in flight (01:25 BST)
 - pipeline lane (agent, resumed): scripts + processing + tests + docs + first live run; asked to add article relevance gate and digest step ⑦.
