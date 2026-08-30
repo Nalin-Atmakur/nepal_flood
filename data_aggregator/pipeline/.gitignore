@@ -1,0 +1,9 @@
+# pipeline/.gitignore — never commit secrets, state, logs or raw snapshots
+.env
+.venv/
+_state.json
+run.log
+snapshots/*
+!snapshots/.gitkeep
+__pycache__/
+.pytest_cache/

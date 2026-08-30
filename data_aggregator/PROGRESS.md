@@ -10,12 +10,15 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 |---|---|---|
 | 0 tree + docs + gazetteer | ✅ | README/CONTRIBUTING/docs, db/docs 01–07, gazetteer 90 places (19 tests) — commits 634db79, 901fe94 |
 | 1 db schema live | ✅ | 26 relations, RLS, realtime, buckets; anonymous auth on; 33 live tests — f4a3f9d |
-| 2 pull_external_data + 13 normalisers | 🔄 pipeline lane running (resumed after machine sleep) | lib/ + normalisers/ + fixtures on disk; scripts/tests/docs pending |
-| 3 process_data ⓪–⑥ | 🔄 same lane | — |
+| 2 pull_external_data + 13 normalisers | ✅ | 96 tests; live run 00:20 UTC: 933 figures / 9 publishers, 276 gauges, 283 articles (relevance-gated) |
+| 3 process_data ⓪–⑦ | ✅ | place_status 292 rows/73 places, stats 11, digest 3 langs, entities 9,903, findings 3 (DAO Sindhupalchok collision = 71 rows); spend $0.0038 |
 | 4–5 web (all pages, form, /me, 3D, OG, realtime) | ✅ deployed | e3606d2, b142b9e; lint/i18n/46 unit/11 e2e green; https://www.nepalfloodtracker.com |
-| 6 deploy + domain + schedule | ✅ deploy/domain · ⏳ schedule (needs pipeline/run.sh) | apex A → Vercel (216.150.1.1), www CNAME; `scripts/install_schedule.sh` ready (launchd, 240 min) |
+| 6 deploy + domain + schedule | ✅ all — launchd agent installed 240 min (01:35 BST) | apex A → Vercel (216.150.1.1), www CNAME; `scripts/install_schedule.sh` ready (launchd, 240 min) |
 
-## In flight (01:25 BST)
+## In flight (01:40 BST)
+- wave-2 source lanes A (official) and B (geospatial+text) and processing lane P3 launched; web timeline/digest agent still running.
+
+## Previously in flight (01:25 BST)
 - pipeline lane (agent, resumed): scripts + processing + tests + docs + first live run; asked to add article relevance gate and digest step ⑦.
 - web agent: home blocks "The first hours" (event_timeline, 17 rows seeded via 006 + seed) and "What changed today" (digest), OG "updated N min ago".
 - db: 006_story_and_digest.sql + 006_pipeline_additions.sql (trigger role fix) applied — commits 1c54104 + next.

@@ -1,0 +1,9 @@
+# pipeline/requirements.txt — install into pipeline/.venv (README.md step 1)
+pyyaml>=6.0
+requests>=2.32
+feedparser>=6.0
+python-dateutil>=2.9
+pypdf>=4.0
+openai>=1.40
+supabase>=2.0        # not used by lib/db.py (see its docstring) but kept for ad-hoc scripts
+pytest>=8.0

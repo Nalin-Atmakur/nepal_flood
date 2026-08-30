@@ -1,0 +1,66 @@
+# 03 — ③ per-place ledger (`processing/ledger.py`)
+
+```
+   places (known ids)      reports_anon      entities        figures scope place:*      articles.places      v_gauges_latest
+        │                       │                │            (last 14 d)                 (last 14 d)               │
+        └───────────────────────┴────────────────┴─────────────────┴──────────────────────────┴──────────────────────┘
+                                                        │ signal_places = every known place with any of these
+                                                        ▼
+        place_status (one row per place, as_of = run time)          place_timeline (place_id, day, what_en/ne/hi, dot)
+```
+
+## Formulas (pure functions, `tests/test_ledger.py`)
+
+```
+expected          = max( #entities whose probable_place_id or last_place_id is here,
+                         Σ max(subject_count, 1) over reports_anon rows placed here )
+confirmed_reached = latest NDRRMA `rescued` + latest NDRRMA `stationed` figures scoped place:<id>
+                    + Σ subject_count of rescuer/agency reports here with status rescued | reported_safe
+unknown           = max(expected − confirmed_reached, 0)
+reports_count     = number of reports_anon rows placed here (withdrawn reports never reach reports_anon)
+status_label      = no_data (expected = confirmed = 0) | mostly_unknown (unknown > expected / 2) | mostly_reached
+```
+
+Why `max` and not a sum: entities already include OPMCM/NDRRMA-derived people and form
+reports with a key; form reports without a key are only in `reports_anon`. Taking the larger of
+the two avoids counting the same person twice while never dropping unkeyed reports.
+
+| column | rule |
+|---|---|
+| `last_contact_at` | max of: entity `last_contact_at`, report `event_time`, `as_of` of place-scoped figures (Open-Meteo excluded), `published_at` of articles mentioning the place, and the gauge `observed_at` when alive; futures > now + 1 h dropped |
+| `telecom_restored` / `phones` | articles mentioning the place that match `TELECOM_RE` (NTC, Ncell, tower, BTS, telecom, टावर, सञ्चार, मोबाइल, …), newest first: `RESTORED_RE` (restor, resum, मर्मत, सञ्चालनमा, सुचारु, …) → `true`, `"yes (since <d Mon>)"`; `OUTAGE_RE` (still down, cut off, सञ्चारविहीन, सम्पर्कविहीन, बन्द, …) → `false`, `"no"`; else null |
+| `access` | `ACCESS_OBSERVED` (Sitrep #8, 29 Aug 18:30 NPT road bullets + HOT survey): dhunche `road_partial`; galchhi, malekhu, mugling, benighat, gajuri `road`; bidur, trishuli_bazar, battar, betrawati `road_partial`; syabrubesi, timure, mailung, ut1_mailung_camp, rasuwagadhi `helicopter_only`; langtang_village, kyanjin_gompa, lama_hotel, thulo_syabru `foot`. Otherwise: `helipad` kind → `helicopter_only`; a HOT `bridge_status` note "Washed out"/"Damaged" here → `road_partial`; else `unknown` |
+| `hazard` | `places.below_barrier_lakes` → `below_barrier_lakes`, else `places.in_channel` → `in_channel`, else null (observed flags only) |
+| `nearest_gauge` | corridor gauge nearest by km chainage (`GAUGE_KM`: rasuwagadhi 0, syabrubesi 16, dhunche 30, betrawati 46, galchhi 75, malekhu 90, bhorle 95, kali_khola 100, devghat 125): `"Galchhi — alive"` or `"Rasuwagadhi — dead since 26 Aug 08:40"` |
+| `shelter` | latest NDRRMA `stationed` figure at a `shelter`/`hospital`-kind place in the same district → `"<name>: N people"`; else the sitrep `shelter_people`/`shelter_sites` for the district → `"<District>: N people in M sites (NDRRMA)"` |
+| `km` | `places.km` |
+| `note` | `"N bridge(s) washed out/damaged (HOT survey)"` + first clause of `places.notes` |
+
+## Timeline (`place_timeline`, key `place_id, day, what_en`)
+
+| what | dot | template key |
+|---|---|---|
+| reports added that day | neutral | `reports` |
+| reports with status missing/unknown | unknown | `reports_missing` |
+| NDRRMA rescued / stationed figure | confirmed | `ndrrma_rescued`, `ndrrma_stationed` |
+| OPMCM `lost_reports` at the place | unknown | `opmcm_lost` |
+| Open-Meteo flying window good / poor | neutral | `flying_good`, `flying_poor` |
+| HOT bridges washed out/damaged | unknown | `bridge` |
+| gauge alive (today) / dead since | live / unknown | `gauge_alive`, `gauge_dead` |
+| article headline mentioning the place (≤ 15) | live | title in its own language for all three |
+
+`T` holds the EN / NE / HI templates (numbers stay Latin in all languages); days are NPT dates.
+
+## Inputs → tables → outputs
+
+| inputs | writes | log |
+|---|---|---|
+| `places`, `reports_anon`, `entities`, `figures` (`scope like 'place:%'`, last 14 d), `articles` (`places <> '{}'`, last 14 d), `v_gauges_latest`, NDRRMA shelter figures | `place_status` (upsert on `place_id, as_of`), `place_timeline` (upsert on `place_id, day, what_en`) | `ledger.done` (places, timeline) |
+
+Only ids present in `places` are written (foreign keys); scopes with a slug that is not a
+gazetteer id are ignored until the gazetteer grows.
+
+## Failure behaviour
+
+One try/except (`ledger.failed`); the site keeps showing the previous `place_status` rows
+(`v_place_status_latest` takes the newest `as_of` per place).
