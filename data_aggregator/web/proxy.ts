@@ -3,10 +3,10 @@ import { NextResponse, type NextRequest } from "next/server";
 /**
  * Locale redirect (Next 16 "proxy" convention — the renamed middleware file).
  * Every page path lives under /{lang}. Unprefixed paths redirect to the visitor's preferred
- * language from Accept-Language (ne → Nepali, hi → Hindi), else English.
+ * language from Accept-Language (ne → Nepali, hi → Hindi, zh → Chinese), else English.
  * See web/docs/03-i18n.md.
  */
-const LANGS = ["en", "ne", "hi"] as const;
+const LANGS = ["en", "ne", "hi", "zh"] as const;
 
 export function pickLang(acceptLanguage: string | null | undefined): (typeof LANGS)[number] {
   const accept = (acceptLanguage ?? "").toLowerCase();

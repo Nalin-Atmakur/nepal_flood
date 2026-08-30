@@ -72,7 +72,7 @@ One row per Supabase auth user. Written by the website on first visit (`AuthBoot
 |---|---|---|
 | `id` | uuid PK → `auth.users(id)` on delete cascade | the visitor's UUID; equals `auth.uid()` |
 | `created_at` | timestamptz, default now() | first visit |
-| `lang` | text, default `'en'`, check in (`en`,`ne`,`hi`) | last chosen language |
+| `lang` | text, default `'en'`, check in (`en`,`ne`,`hi`,`zh`) | last chosen language (013) |
 | `fingerprint` | text | sha256(UA + screen + timezone + language); a recovery/dedup hint, not authentication |
 | `contact` | text | optional; user-added so they can recover their folder on another device |
 

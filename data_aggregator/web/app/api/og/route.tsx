@@ -365,6 +365,7 @@ function Card({ lang, n, run, corridor }: { lang: Lang; n: OgNumbers; run?: { sw
           }}
         >
           {LANGS.map((l, i) => {
+            // Latin label for Chinese: the card has no CJK glyphs
             const active = l === lang;
             return (
               <div
@@ -380,7 +381,7 @@ function Card({ lang, n, run, corridor }: { lang: Lang; n: OgNumbers; run?: { sw
                   ...(i > 0 ? { borderLeft: `2.5px solid ${colors.ink}` } : {}),
                 }}
               >
-                {LANG_LABELS[l]}
+                {l === "zh" ? "ZH" : LANG_LABELS[l]}
               </div>
             );
           })}
@@ -396,7 +397,10 @@ function Card({ lang, n, run, corridor }: { lang: Lang; n: OgNumbers; run?: { sw
 
 export async function GET(req: Request) {
   const sp = new URL(req.url).searchParams;
-  const lang = asLang(sp.get("lang"));
+  const requested = asLang(sp.get("lang"));
+  // The card's fonts are Baloo 2 + Press Start 2P (Latin + Devanagari). Chinese would render as tofu, and a CJK
+  // webfont is ~10 MB per isolate — so the zh card shows the English text; the page's own meta is still Chinese.
+  const lang = requested === "zh" ? "en" : requested;
   const num = (k: string) => Math.max(0, Math.min(999, Number.parseInt(sp.get(k) ?? "", 10) || 0));
   const run = sp.has("swept") ? { swept: num("swept"), bridges: num("bridges") } : null;
 

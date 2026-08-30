@@ -200,10 +200,11 @@ export const RATE_LIMIT = { minGapSeconds: 20, perHour: 20 };
 export const SCOREBOARD_POLL_MS = 60000;
 
 /** Web Speech API language per route language. */
-export const SPEECH_LANG: Record<"en" | "ne" | "hi", string> = {
+export const SPEECH_LANG: Record<"en" | "ne" | "hi" | "zh", string> = {
   en: "en-US",
   ne: "ne-NP",
   hi: "hi-IN",
+  zh: "zh-CN",
 };
 
 /**

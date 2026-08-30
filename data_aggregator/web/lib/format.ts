@@ -16,6 +16,9 @@ const MONTHS: Record<Lang, string[]> = {
   en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   ne: ["जन", "फेब", "मार्च", "अप्रिल", "मे", "जुन", "जुलाई", "अग", "सेप्ट", "अक्टो", "नोभे", "डिसे"],
   hi: ["जन", "फ़र", "मार्च", "अप्रैल", "मई", "जून", "जुल", "अग", "सित", "अक्टू", "नव", "दिस"],
+  // Chinese writes the month before the day ("8月29日"), so fmtDay/fmtDayTime special-case it; these labels
+  // keep the table complete.
+  zh: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
 };
 
 /** 2498 → "2,498". Latin digits in every language. */
@@ -64,6 +67,7 @@ export function fmtDay(iso: string | Date | null | undefined, lang: Lang = "en")
   if (!iso) return "—";
   const p = parts(iso);
   if (!p) return "—";
+  if (lang === "zh") return `${p.month}月${p.day}日`;
   return `${p.day} ${MONTHS[lang][p.month - 1]}`;
 }
 
@@ -79,6 +83,7 @@ export function fmtDayTime(iso: string | Date | null | undefined, lang: Lang = "
   if (!iso) return "—";
   const p = parts(iso);
   if (!p) return "—";
+  if (lang === "zh") return `${p.month}月${p.day}日 ${p.hour}:${p.minute}`;
   return `${p.day} ${MONTHS[lang][p.month - 1]} ${p.hour}:${p.minute}`;
 }
 

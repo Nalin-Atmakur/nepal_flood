@@ -1,9 +1,10 @@
 import en from "@/messages/en.json";
 import ne from "@/messages/ne.json";
 import hi from "@/messages/hi.json";
+import zh from "@/messages/zh.json";
 
 /** See web/docs/03-i18n.md. */
-export const LANGS = ["en", "ne", "hi"] as const;
+export const LANGS = ["en", "ne", "hi", "zh"] as const;
 export type Lang = (typeof LANGS)[number];
 export const DEFAULT_LANG: Lang = "en";
 
@@ -11,19 +12,21 @@ export const LANG_LABELS: Record<Lang, string> = {
   en: "EN",
   ne: "नेपाली",
   hi: "हिन्दी",
+  zh: "中文",
 };
 
 export const LANG_NAMES: Record<Lang, string> = {
   en: "English",
   ne: "नेपाली",
   hi: "हिन्दी",
+  zh: "中文",
 };
 
 /** BCP-47 tags for <html lang>, hreflang and the Web Speech API. */
-export const LANG_TAGS: Record<Lang, string> = { en: "en", ne: "ne-NP", hi: "hi-IN" };
+export const LANG_TAGS: Record<Lang, string> = { en: "en", ne: "ne-NP", hi: "hi-IN", zh: "zh-CN" };
 
 type Dict = Record<string, string>;
-const dictionaries: Record<Lang, Dict> = { en, ne, hi };
+const dictionaries: Record<Lang, Dict> = { en, ne, hi, zh };
 
 export function isLang(x: string | undefined | null): x is Lang {
   return !!x && (LANGS as readonly string[]).includes(x);

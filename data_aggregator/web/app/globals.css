@@ -61,7 +61,8 @@
   --radius-none: 0;
 
   --font-*: initial;
-  --font-baloo: var(--font-baloo), "Baloo 2", system-ui, sans-serif;
+  /* Baloo 2 carries Latin + Devanagari; Chinese falls through to the platform CJK face (no 10 MB webfont) */
+  --font-baloo: var(--font-baloo), "Baloo 2", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", system-ui, sans-serif;
   --font-arcade: var(--font-arcade), "Press Start 2P", monospace;
 
   --breakpoint-*: initial;

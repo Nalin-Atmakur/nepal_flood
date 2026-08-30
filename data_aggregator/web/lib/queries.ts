@@ -17,6 +17,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { serverClient } from "./supabase";
 import { FLYING_METRIC, STAT_CARDS } from "./config";
 import { normaliseBullets, pickDigest } from "./story";
+import type { Lang } from "./i18n";
 
 // ---------------------------------------------------------------------------
 // Row types
@@ -448,7 +449,7 @@ export async function getEventTimeline(): Promise<EventTimelineRow[] | null> {
  * The latest day's digest in `lang`, else that day's EN row, else null. Only the two candidate languages
  * are fetched; the choice is made by lib/story.ts pickDigest so it can be unit-tested.
  */
-export async function getDigest(lang: "en" | "ne" | "hi"): Promise<DigestRow | null> {
+export async function getDigest(lang: Lang): Promise<DigestRow | null> {
   const sb = serverClient();
   if (!sb) return null;
   const langs = lang === "en" ? ["en"] : [lang, "en"];

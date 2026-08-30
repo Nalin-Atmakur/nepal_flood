@@ -15,7 +15,7 @@ export type FloodVideo = {
   id: string;
   kind: VideoKind;
   /** our caption, in the three site languages */
-  caption: { en: string; ne: string; hi: string };
+  caption: { en: string; ne: string; hi: string; zh: string };
   /** uploader's channel, as credited on YouTube */
   credit: string;
   creditUrl: string;
@@ -42,6 +42,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "CCTV at the border: the wave arrives from the Tibet side",
       ne: "सीमामा सीसीटीभी: तिब्बततर्फबाट बाढी आइपुग्दै",
       hi: "सीमा पर सीसीटीवी: तिब्बत की ओर से बाढ़ आती हुई",
+      zh: "边境监控画面：洪水从西藏一侧涌来",
     },
     credit: "NepalWatch",
     creditUrl: "https://www.youtube.com/@nepalwatch2022",
@@ -58,6 +59,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "The last three minutes before the water reached Trishuli Bazar",
       ne: "त्रिशूली बजारमा पानी आइपुग्नुअघिका अन्तिम तीन मिनेट",
       hi: "त्रिशूली बाज़ार तक पानी पहुँचने से पहले के आख़िरी तीन मिनट",
+      zh: "洪水抵达特里舒里集市前的最后三分钟",
     },
     credit: "NDTV",
     creditUrl: "https://www.youtube.com/@NDTV",
@@ -73,6 +75,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "Timure and Syabrubesi as the flood hits",
       ne: "बाढी आउँदा टिमुरे र स्याफ्रुबेसी",
       hi: "बाढ़ आते समय टिमुरे और स्याफ्रुबेसी",
+      zh: "洪水袭来时的蒂穆雷与夏布卢贝西",
     },
     credit: "Touch The Himalaya Treks & Expedition",
     creditUrl: "https://www.youtube.com/@tthimalaya",
@@ -90,6 +93,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "A bridge goes as the flood passes",
       ne: "बाढीले पुल बगाउँदै",
       hi: "बाढ़ में पुल बहता हुआ",
+      zh: "洪水冲垮一座桥",
     },
     credit: "CNA",
     creditUrl: "https://www.youtube.com/@channelnewsasia",
@@ -106,6 +110,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "The Rasuwa valley from the air after the wave",
       ne: "बाढीपछि रसुवा उपत्यकाको हवाई दृश्य",
       hi: "लहर के बाद रसुवा घाटी का हवाई दृश्य",
+      zh: "洪峰过后，空中俯瞰拉苏瓦河谷",
     },
     credit: "NewsX World",
     creditUrl: "https://www.youtube.com/@newsxworldlive",
@@ -122,6 +127,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "Houses swept away in Rasuwa, filmed as it happened",
       ne: "रसुवामा हेर्दाहेर्दै घरहरू बगे",
       hi: "रसुवा में देखते-देखते घर बह गए",
+      zh: "拉苏瓦：房屋在众目睽睽下被冲走",
     },
     credit: "Shilapatra",
     creditUrl: "https://www.youtube.com/@shilapatramedia",
@@ -137,6 +143,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "News18 report: the flood from Tibet hits Rasuwa",
       ne: "न्युज १८ रिपोर्ट: तिब्बतबाट आएको बाढीले रसुवामा क्षति",
       hi: "न्यूज़18 रिपोर्ट: तिब्बत से आई बाढ़ ने रसुवा को मारा",
+      zh: "News18 报道：来自西藏的洪水冲击拉苏瓦",
     },
     credit: "CNN-News18",
     creditUrl: "https://www.youtube.com/@cnnnews18",
@@ -152,6 +159,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "Straits Times: villages and roads washed away in Rasuwa",
       ne: "स्ट्रेट्स टाइम्स: रसुवामा गाउँ र सडक बगे",
       hi: "स्ट्रेट्स टाइम्स: रसुवा में गाँव और सड़कें बह गईं",
+      zh: "海峡时报：拉苏瓦的村庄与道路被冲毁",
     },
     credit: "The Straits Times",
     creditUrl: "https://www.youtube.com/@straitstimesonline",
@@ -167,6 +175,7 @@ export const FLOOD_VIDEOS: FloodVideo[] = [
       en: "Kantipur TV: where the damage is and what rescue is under way",
       ne: "कान्तिपुर टिभी: कहाँ कति क्षति, उद्धार के हुँदैछ",
       hi: "कान्तिपुर टीवी: कहाँ कितना नुकसान, बचाव कहाँ तक",
+      zh: "坎迪普尔电视台：哪里受损、救援进展如何",
     },
     credit: "Kantipur TV HD",
     creditUrl: "https://www.youtube.com/@KantipurTVHD",
