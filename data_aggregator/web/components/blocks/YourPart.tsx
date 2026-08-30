@@ -55,7 +55,30 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
 
   return (
     <section data-block="yours" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-4 md:mt-5" aria-labelledby="sec-yours">
-      <div className={compact ? "" : "grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-3 md:gap-4 items-stretch"}>
+      <div className={compact ? "" : "grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-3 md:gap-4 items-stretch"}>
+      {/* the three goals — their own simple card first, Your part beside it (owner, 30 Aug 13:26 / 14:15 "swap them"); About has the long version */}
+      {compact ? null : (
+        <aside className="b-ink rounded-r2 shadow-hard-3 md:shadow-hard-4 bg-card px-4 py-4 md:px-5 md:py-5 flex flex-col gap-3" data-testid="yours-goals" aria-labelledby="sec-goals">
+          <div>
+            <div className="arcade text-[8px] md:text-[9px] tracking-wide text-muted mb-1">{t(lang, "yours.goals_label")}</div>
+            <h2 id="sec-goals" className="font-extrabold text-[16px] md:text-[18px] lh-tight m-0">{t(lang, "yours.goals")}</h2>
+          </div>
+          <ol className="list-none m-0 p-0 flex flex-col gap-2 flex-1">
+            {(["1", "2", "3"] as const).map((k) => (
+              <li key={k} className="flex items-start gap-[10px] font-medium text-[13px] md:text-[13.5px] lh-body">
+                <span className="arcade text-[9px] text-white bg-ink rounded-full w-[22px] h-[22px] inline-grid place-items-center flex-none mt-[2px]" aria-hidden="true">
+                  {k}
+                </span>
+                <span>{t(lang, "yours.goal_" + k)}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="flex items-center justify-between gap-3 border-t-[2px] border-rule pt-3">
+            <span className="font-bold text-[12.5px] text-muted">{t(lang, "yours.goal_share")}</span>
+            <ShareMenu lang={lang} size="sm" />
+          </div>
+        </aside>
+      )}
       <div className={["b-ink rounded-r2 shadow-hard-3 md:shadow-hard-4 flex flex-col md:flex-row md:flex-wrap md:items-center gap-3 md:gap-x-6 md:gap-y-0", compact ? "px-4 py-3 md:px-5 md:py-3" : "px-4 py-4 md:px-6 md:py-5", has ? "bg-confirmed-fill" : "bg-amber-fill"].join(" ")} data-compact={compact || undefined}>
         <div className="flex-1 min-w-0">
           <div className="arcade text-[8px] md:text-[9px] tracking-wide text-amber-text mb-1">{t(lang, "yours.label")}</div>
@@ -109,29 +132,6 @@ export default function YourPart({ lang, live = null, compact = false }: { lang:
         </div>
       </div>
 
-      {/* the three goals — their own simple card beside Your part (owner, 30 Aug 13:26); About has the long version */}
-      {compact ? null : (
-        <aside className="b-ink rounded-r2 shadow-hard-3 md:shadow-hard-4 bg-card px-4 py-4 md:px-5 md:py-5 flex flex-col gap-3" data-testid="yours-goals" aria-labelledby="sec-goals">
-          <div>
-            <div className="arcade text-[8px] md:text-[9px] tracking-wide text-muted mb-1">{t(lang, "yours.goals_label")}</div>
-            <h2 id="sec-goals" className="font-extrabold text-[16px] md:text-[18px] lh-tight m-0">{t(lang, "yours.goals")}</h2>
-          </div>
-          <ol className="list-none m-0 p-0 flex flex-col gap-2 flex-1">
-            {(["1", "2", "3"] as const).map((k) => (
-              <li key={k} className="flex items-start gap-[10px] font-medium text-[13px] md:text-[13.5px] lh-body">
-                <span className="arcade text-[9px] text-white bg-ink rounded-full w-[22px] h-[22px] inline-grid place-items-center flex-none mt-[2px]" aria-hidden="true">
-                  {k}
-                </span>
-                <span>{t(lang, "yours.goal_" + k)}</span>
-              </li>
-            ))}
-          </ol>
-          <div className="flex items-center justify-between gap-3 border-t-[2px] border-rule pt-3">
-            <span className="font-bold text-[12.5px] text-muted">{t(lang, "yours.goal_share")}</span>
-            <ShareMenu lang={lang} size="sm" />
-          </div>
-        </aside>
-      )}
       </div>
     </section>
   );
