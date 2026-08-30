@@ -153,3 +153,4 @@ Priority order (value ÷ effort), each = sources.yaml entry (if missing) + `norm
 - 17:40 BST 30 Aug · Emotional framing + live urgency line on Your part and the goals card (D-074). Full check of the combined tree after the archive-only intake commit 0e93679: 127 web unit · 40 e2e · 288 Python · build clean. Deploying.
 - 18:00 BST 30 Aug · Goals card: big amber full-width "Share to save a life" button (ShareMenu `size="cta"`). 40 e2e green; deploying.
 - 18:20 BST 30 Aug · Cinematic reworked as a high dolly with a south-side opening and a hand-back at the plain (D-075); clip muted-note moved under the player. Deploying.
+- 18:50 BST 30 Aug · Hidden password-gated raw-reports page `/admin/reports` + CSV export (D-076); ADMIN_PASSWORD and SUPABASE_SERVICE_ROLE_KEY set in Vercel (Production) and .env.local. Building/deploying.

@@ -38,6 +38,6 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  // Everything except Next internals, API routes and static files.
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  // Everything except Next internals, API routes, the hidden admin routes and static files.
+  matcher: ["/((?!api|admin|_next|.*\\..*).*)"],
 };

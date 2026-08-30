@@ -20,6 +20,16 @@ export function serverClient(): SupabaseClient | null {
   });
 }
 
+/**
+ * Service-role client — bypasses RLS. Server only, and only for the password-gated raw-reports page
+ * (app/admin/reports); the key lives in `SUPABASE_SERVICE_ROLE_KEY` and is never sent to the browser.
+ */
+export function adminClient(): SupabaseClient | null {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key || typeof window !== "undefined") return null;
+  return createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+}
+
 let browser: SupabaseClient | null = null;
 
 /** Browser client (singleton). Persists the anonymous session in localStorage. */
