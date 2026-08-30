@@ -43,6 +43,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 06:15 BST — W5 landed + deployed (30a0770): report flow verified in NE/HI at 390 px (who-cards, chips per type, place picker in the reader's script, understood state, /me trail, withdraw); place-picker ranking fixed (exact name first); 89 web unit tests. All 8 test reports in the archive are withdrawn; public counters 0. Launched V2 (independent QA of the flood sim) and X1 (PII/secrets sweep before the morning).
 - 06:05 BST — OG share card now carries "▶ Watch the flood run the corridor — drop a house in its path" (en/ne/hi) under the three numbers (00465d1, deployed). Digest v3 confirmed live (help requests, NRCS context, gauges, watch, news). Lane W5 (report flow QA in NE/HI) running.
 - 06:05 BST — Scheduled tick 05:47 ran the new code end-to-end: pull 26 due sources ok (105 s), process all steps 567 s, 23 model calls ($0.047 total so far). Questionnaire path verified on the LIVE site with two marked test reports: submit → "We understood" → /me Received → anonymised by the run (summary "12 people · airlifted from Syabrubesi to Dhunche · 29 Aug · road to Timure cut", place syabrubesi_helipad, status rescued) → /me trail Received/Anonymised/Processed/Not yet matched. Test rows withdrawn, reports_anon rows deleted, submissions_log rows 3–4 deleted → counters 0.
 - 05:40 BST — P6 landed (1c6ca31, 0045c8c, f6d6f23; 274 tests): place_timeline PK (place, day, kind) via migration 010 — 311 duplicate rows gone; digest v3 adds help-request and "as quoted by NRCS" context bullets, districts excluded from gaps; `*_quoted` metrics guarded in stats/digest and by a web config test; figures_latest now 36 publishers.
@@ -62,7 +63,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - 02:35 BST — ⚠️ see decisions-log 02:30: rotate OpenAI + Supabase service-role keys in the morning (accidental Vercel upload of pipeline/, deleted). Fixed: gate ignores Kathmandu/district-only headlines; 3 flying-window days; gauge tiles match DHM names (667f9c3). Stats now 22 rows (P3 in progress).
 - 02:00 BST — live review: digest card + first-hours block live; fixed district rows swamping places table (web split, 14188e8); log redactor no longer masks dates; asked ledger lane for true last_contact_at semantics; asked P3 for press_figures (fill Police/DoT columns) + stricter digest news pick.
 
-## Cycle 4/5 lanes — S3 ✅ P4 ✅ D ✅ Q1 ✅ P5 ✅ W4 ✅ S4 ✅ V1 ✅ P6 ✅ · U3 ✗ (no output)
+## Cycle 4/5/6 lanes — S3 ✅ P4 ✅ D ✅ Q1 ✅ P5 ✅ W4 ✅ S4 ✅ V1 ✅ P6 ✅ W5 ✅ · V2 X1 running · U3 ✗ (no output)
 - S3 sources lane: opmcm_help_requests, opmcm_government_efforts, bipad_river_series, nesra_bridges, dor_rimes_bridges, microsoft_unosat_extent, outlet_tag_pages, gdelt_monitor, vantor_stac, planet_stac, cdse_catalogue, hf_fair_footprints.
 - U3 web lane: 390/1280 screenshots of every page, fix layout issues; figure_series trends on the site; place "Status, day by day" coverage; digest render check; deploy from web/ only.
 - P4 processing lane: pull efficiency (thread pool + per-source backoff), place_timeline coverage, divergence/dedup stats, help-request ledger fields once S3 lands.
