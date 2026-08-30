@@ -157,3 +157,32 @@ Priority order (value ÷ effort), each = sources.yaml entry (if missing) + `norm
 - 19:40 BST 30 Aug · **Pre-distribution QA fixed and shipped.** Agent report at scratchpad/qa/REPORT.md (all gates green; 3 FAILs, 3 WARNs). Fixed: OG cards fall back to English where Satori cannot shape the script (F1), 36px emergency-number targets + the audit selector that missed them (F2), anonymous sign-in only on /report and /me with 429 backoff + the project limit raised 30 → 500/hour/IP (F3), www host for canonical/OG/share (W1), double-submit latch (W2), noindex on /me and /run. Owner chose to leave the test rows in place.
 - 19:40 BST 30 Aug · **The redesign is the home page** (docs/22): event + numbers → share ask → footage → the path → your part; digest headline folded into the hero; /v2 redirects home. Places map at zoom 12 (3840×3072, 268 KB on phones), zoom capped at one image pixel per CSS pixel, ⌘/Ctrl + wheel to zoom so the page never fights the reader. Chinese live (D-078) after migration 013. Verified on production: a real Chinese submission → My info → withdraw all work; 84 pins; 146 unit · 53 e2e green.
 - 20:00 BST 30 Aug · **Distribution kit written** (`web/docs/23-distribution.md`): channel order (searching families → Nepali media → diaspora → humanitarian → wider), ready copy in EN/NE with utm-tagged links, NPT timing table, what to watch and what breaks first. Site green: 146 unit · 54 e2e · live smoke; data 2.1 h old. Pipeline loop must be started by the owner (`make schedule`) before seeding.
+
+---
+
+## Distribution begins — 30 Aug 2026 19:15 UTC (31 Aug 01:00 NPT)
+
+The site is live at https://www.nepalfloodtracker.com and the owner starts seeding it now, beginning with the
+West (diaspora and international press); the Nepal-facing push follows in the Nepali morning. Distribution runs
+through the owner's own engine — nothing is posted from this repo.
+
+**State at the moment we started**
+
+- Figures on the page: **675 dead · 2498 out of contact · 7514 rescued** (NDRRMA, as of 29 Aug 18:30 NPT).
+- Four languages: English, नेपाली, हिन्दी, 中文 — 530 keys each.
+- Home reads: the event and its numbers → the share ask → the real footage → the corridor simulation → your part.
+- Intake is archive-only: reports are stored raw and private, never processed, published or sent to a model.
+  `/admin/reports` is the volunteer team's window onto them.
+- Gates: 146 web unit · 54 e2e · 288 Python · types · lint · i18n 530 × 4 · build · live smoke — all green.
+- Pipeline: pulling every 4 hours, run manually by the owner.
+
+**Known and accepted at launch**
+
+- Share cards for ne/hi/zh render their text in English (Satori cannot shape those scripts); the numbers and the
+  page itself are correct in every language.
+- Anonymous sign-in is capped at 500/hour/IP and only happens on `/report` and `/me`.
+- The public activity counter includes the QA test submissions; the owner chose to leave them.
+
+**What matters from here:** someone reads `/admin/reports` the day a real report arrives, the pipeline keeps
+running, and any figure reported as wrong is fixed the same day. Channels, copy and failure modes: `web/docs/23-distribution.md`.
+
