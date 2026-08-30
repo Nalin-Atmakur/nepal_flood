@@ -2,7 +2,9 @@ import Link from "next/link";
 import { AGENCIES } from "@/lib/config";
 import { fmtAsOf, fmtCadence, fmtDayTime, fmtInt } from "@/lib/format";
 import { href, t, type Lang } from "@/lib/i18n";
-import { pickFigure, type FigureLatest } from "@/lib/queries";
+import { pickFigure, type FigureLatest, type SeriesPoint } from "@/lib/queries";
+import { deltaSinceYesterday, fmtDelta, seriesFor } from "@/lib/trends";
+import Sparkline from "@/components/ui/Sparkline";
 import EmptyState from "@/components/ui/EmptyState";
 import SectionHead from "@/components/ui/SectionHead";
 import { Table, TableBox, Td, Th, THead } from "@/components/ui/Table";
@@ -10,9 +12,10 @@ import { Table, TableBox, Td, Th, THead } from "@/components/ui/Table";
 /**
  * Section 04 — The numbers, side by side: figures_latest pivoted to
  * columns NDRRMA · Nepal Police · MoFA · Dept of Tourism · OPMCM portal × rows Dead · Missing/out of contact · Rescued.
- * Each cell = value + note + as-of; "—" when absent. Mobile: horizontal scroll with a sticky first column.
+ * Each cell = value + note + as-of; "—" when absent. The NDRRMA cells also carry a sparkline of the last days
+ * (figure_series) with "+N since yesterday". Mobile: horizontal scroll with a sticky first column.
  */
-export default function SideBySide({ lang, figures, lastAttempt }: { lang: Lang; figures: FigureLatest[] | null; lastAttempt: string | null }) {
+export default function SideBySide({ lang, figures, lastAttempt, series = null }: { lang: Lang; figures: FigureLatest[] | null; lastAttempt: string | null; series?: SeriesPoint[] | null }) {
   const rows: { key: "dead" | "missing" | "rescued"; labelKey: string }[] = [
     { key: "dead", labelKey: "row.dead" },
     { key: "missing", labelKey: "row.missing" },
@@ -54,9 +57,21 @@ export default function SideBySide({ lang, figures, lastAttempt }: { lang: Lang;
                     {AGENCIES.map((a) => {
                       const f = pickFigure(figures, a.publishers, a[r.key]);
                       const note = f?.note || (r.key !== "dead" && a.noteKey ? t(lang, a.noteKey) : "");
+                      const pts = a.key === "ndrrma" && f ? seriesFor(series, "NDRRMA", f.metric) : [];
+                      const delta = deltaSinceYesterday(pts);
                       return (
                         <Td key={a.key} className="py-[10px] md:py-[14px] px-3 md:px-4">
                           <div className="font-extrabold text-[17px] md:text-[22px] leading-none num">{f ? fmtInt(f.value) : "—"}</div>
+                          {pts.length >= 2 ? (
+                            <div className="flex items-center gap-[6px] mt-[4px]" data-testid="trend">
+                              <Sparkline values={pts.map((p) => Number(p.value))} label={t(lang, "trend.days", { d: pts.length })} />
+                              {delta !== null ? (
+                                <span className={["arcade text-[8px] num whitespace-nowrap", delta > 0 && r.key !== "rescued" ? "text-amber-text" : "text-muted"].join(" ")}>
+                                  {t(lang, "trend.since_yesterday", { n: fmtDelta(delta) })}
+                                </span>
+                              ) : null}
+                            </div>
+                          ) : null}
                           <div className="font-medium text-[9.5px] md:text-[10.5px] text-muted mt-[3px] whitespace-nowrap">
                             {f ? (
                               <>

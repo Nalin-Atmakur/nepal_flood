@@ -160,12 +160,14 @@ export const STAT_CARDS: { id: string; min?: number }[] = [
   { id: "bodies_downstream_km" },
   { id: "personnel_deployed", min: 1 },
   { id: "missing_hydropower", min: 1 },
-  { id: "towers_restored", min: 1 },
+  { id: "towers_restored_pct", min: 1 },
   { id: "heli_flights", min: 1 },
   { id: "missing_counts_divergence", min: 2 },
   { id: "rescued_per_day", min: 1 },
   { id: "duplicates_merged", min: 50 },
   { id: "reports_total", min: 5 },
+  // fallback when the percentage row is missing (same fact, "145 of 198")
+  { id: "towers_restored", min: 1 },
 ];
 export const STAT_ROTATIONS = [-0.6, 0.5, -0.4, 0.6, -0.5, 0.4];
 

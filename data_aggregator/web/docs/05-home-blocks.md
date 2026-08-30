@@ -78,6 +78,22 @@ Each block root carries `data-block="…"` (and `data-n="0N"` for numbered secti
 ### 08 Latest
 - Time shows `HH:MM` if published today (Nepal time) else `D Mon`. Rows link to the article; titles carry `lang`.
 
+## Sparklines in §04 (30 Aug)
+
+```
+ figure_series (NDRRMA · national · dead/missing/rescued · last 8 days)
+   └─ getHeadlineSeries() ──▶ page.tsx ──▶ <SideBySide series>
+        seriesFor(series, "NDRRMA", metric) → [d1…dn]  ──▶ <Sparkline values>   64×18 SVG: ink polyline, amber last point
+        deltaSinceYesterday → "+96 since yesterday"      (arcade 8px; amber when dead/missing rose)
+```
+
+Only the NDRRMA cells carry a trend (the other columns publish too irregularly for a daily series). Fewer than two
+days → nothing renders. Helpers are pure (`lib/trends.ts`, `tests/trends.test.ts`).
+
+Also in §04: the OPMCM "missing" cell is `lost_open` — a queue of *open lost-person reports*, not people — and its
+note prefix says so (`agency.note.open_reports`). §08 Latest renders one anchor per headline (responsive layout, one
+title in the markup). `/sources`: sources whose `url` is "(derived …)" show "derived" in grey instead of "not yet".
+
 ## Adding a block — see docs/01 step list.
 
 ### District rows are split out (added 30 Aug)

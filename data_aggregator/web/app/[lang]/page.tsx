@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { asLang, t } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { getArticles, getDigest, getEventTimeline, getFlyingWindows, getGauges, getLakeVolumeM3, getLiveCounts, getLostBridges, getNationalFigures, getPlaces, getPlaceStatuses, getStats } from "@/lib/queries";
+import { getArticles, getDigest, getEventTimeline, getFlyingWindows, getGauges, getHeadlineSeries, getLakeVolumeM3, getLiveCounts, getLostBridges, getNationalFigures, getPlaces, getPlaceStatuses, getStats } from "@/lib/queries";
 import AddCtas from "@/components/blocks/AddCtas";
 import Corridor from "@/components/blocks/Corridor";
 import Digest from "@/components/blocks/Digest";
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const lang = asLang((await params).lang);
-  const [live, statuses, refs, stats, figures, gauges, windows, articles, events, digest, lakeVolumeM3, lostBridges] = await Promise.all([
+  const [live, statuses, refs, stats, figures, gauges, windows, articles, events, digest, lakeVolumeM3, lostBridges, series] = await Promise.all([
     getLiveCounts(),
     getPlaceStatuses(),
     getPlaces(),
@@ -43,6 +43,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
     getDigest(lang),
     getLakeVolumeM3(),
     getLostBridges(),
+    getHeadlineSeries(),
   ]);
   const { places: placeRows } = splitDistricts(statuses);
   const lastAttempt = live?.last_pull_at ?? null;
@@ -55,7 +56,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <Corridor lang={lang} statuses={placeRows} refs={refs} lakeVolumeM3={lakeVolumeM3} lostBridges={lostBridges} />
       <StrikingStats lang={lang} stats={stats} />
       <FirstHours lang={lang} events={events} />
-      <SideBySide lang={lang} figures={figures} lastAttempt={lastAttempt} />
+      <SideBySide lang={lang} figures={figures} lastAttempt={lastAttempt} series={series} />
       <section data-block="places" data-n="05" className="max-w-[1280px] mx-auto px-4 md:px-7 mt-7" aria-labelledby="sec-places">
         <SectionHead n="05" title={<span id="sec-places">{t(lang, "sec.places")}</span>} sub={<span className="hidden md:inline">{t(lang, "sec.places_sub")}</span>} align="center" />
         <PlacesTable lang={lang} statuses={placeRows} refs={refs} />

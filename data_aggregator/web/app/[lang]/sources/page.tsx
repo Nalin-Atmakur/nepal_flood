@@ -92,16 +92,23 @@ export default async function SourcesPage({ params }: { params: Promise<{ lang: 
   );
 }
 
+/** A source that is computed from other sources' rows and never fetched itself (sources.yaml: url "(derived …)"). */
+export function isDerivedSource(s: Pick<SourceStatusRow, "url" | "family">): boolean {
+  return s.family === "derived" || !s.url || s.url.trim().startsWith("(");
+}
+
 function SourceRow({ s, lang, live, lastAttempt }: { s: SourceStatusRow; lang: Lang; live: number; lastAttempt: string | null }) {
   const isSite = s.id === "site_reports" || s.family === "site";
+  const derived = isDerivedSource(s);
   const mins = minutesSince(s.last_fetched_at);
   const ok = s.last_fetched_at !== null && s.last_ok !== false && mins !== null && mins < SOURCE_OK_MINUTES;
   let fetched: string;
   if (isSite) fetched = t(lang, "sources.live");
+  else if (derived) fetched = t(lang, "sources.derived");
   else if (!s.last_fetched_at) fetched = lastAttempt ? t(lang, "sources.empty", { t: fmtDayTime(lastAttempt, lang), cadence: fmtCadence(lang) }).split(".")[0] : t(lang, "sources.never");
   else if (s.last_ok === false) fetched = t(lang, "sources.failed", { ago: fmtAgo(s.last_fetched_at, lang) });
   else fetched = fmtAgo(s.last_fetched_at, lang);
-  const colour = isSite || ok ? "text-confirmed" : "text-amber-text";
+  const colour = isSite || ok ? "text-confirmed" : derived ? "text-muted" : "text-amber-text";
   const name = isSite ? t(lang, "sources.this_site") : prettySourceName(s.name, s.id);
   const holds = isSite ? t(lang, "sources.this_site_holds", { n: fmtInt(live) }) : (s.holds ?? s.family);
   return (
@@ -115,7 +122,7 @@ function SourceRow({ s, lang, live, lastAttempt }: { s: SourceStatusRow; lang: L
         {fetched}
       </Td>
       <Td className="py-[9px]">
-        {s.url ? (
+        {s.url && !derived ? (
           <a href={s.url} target="_blank" rel="noopener noreferrer">
             {t(lang, "sources.visit")}
           </a>

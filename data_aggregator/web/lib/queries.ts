@@ -298,6 +298,25 @@ export async function getLostBridges(): Promise<LostBridge[]> {
   return out;
 }
 
+/** One point of figure_series (process_data ⑨): a publisher's last value for a metric on an NPT day. */
+export type SeriesPoint = { publisher: string; metric: string; scope: string; day: string; value: number; as_of: string | null };
+
+/** The NDRRMA national dead / missing / rescued series for the last `days` days — the side-by-side sparklines. */
+export async function getHeadlineSeries(days = 8): Promise<SeriesPoint[] | null> {
+  const sb = serverClient();
+  if (!sb) return null;
+  const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
+  const { data, error } = await sb
+    .from("figure_series")
+    .select("publisher, metric, scope, day, value, as_of")
+    .eq("publisher", "NDRRMA")
+    .eq("scope", "national")
+    .in("metric", ["dead", "missing", "rescued"])
+    .gte("day", since)
+    .order("day", { ascending: true });
+  return error ? null : (data as SeriesPoint[]);
+}
+
 /** Flying-window forecast rows (metric = flying_window_quality, scope starts with place:<id>). */
 export async function getFlyingWindows(): Promise<FigureLatest[] | null> {
   const sb = serverClient();

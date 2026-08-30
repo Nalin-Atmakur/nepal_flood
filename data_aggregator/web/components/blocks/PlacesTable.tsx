@@ -38,6 +38,16 @@ type Row = {
   note: string;
 };
 
+/** The table's Note cell: the per-place "now" line (place_status.now_*, ≤ 140 chars) when it exists, else the ledger note. */
+export function noteFor(s: Pick<PlaceStatusRow, "note" | "now_en" | "now_ne" | "now_hi">, lang: Lang, max = 140): string {
+  const now = localised(s as unknown as Record<string, unknown>, "now", lang) || s.now_en || "";
+  // drop the short "As of 30 Aug 09:19:" / "30 अगस्ट 09:19 सम्म:" prefix (a time contains a colon of its own)
+  const text = (now || s.note || "").replace(/^[^:]{0,40}(?::\d\d)?:\s+/, "").trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  return cut.slice(0, Math.max(cut.lastIndexOf(" "), max - 30)) + "…";
+}
+
 /** Translate the display-oriented phones text ("yes (since 28 Aug)", "no", "partial") word by word. */
 function phonesText(lang: Lang, v: string | null): string {
   if (!v) return "—";
@@ -70,7 +80,7 @@ export default function PlacesTable({ lang, statuses, refs, placeholder, emptyRo
           last: s.last_contact_at ? fmtDayTime(s.last_contact_at, lang) : "—",
           phones: phonesText(lang, s.phones),
           access: tEnum(lang, "access", s.access),
-          note: s.note ?? "",
+          note: noteFor(s, lang),
         };
       })
       .sort((a, b) => b.unknown - a.unknown);

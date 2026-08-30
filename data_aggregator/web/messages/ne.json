@@ -339,7 +339,7 @@
   "agency.opmcm": "OPMCM पोर्टल",
   "agency.note.foreigners": "विदेशी ·",
   "agency.note.tourists": "पर्यटक ·",
-  "agency.note.open_reports": "खुला सूचना ·",
+  "agency.note.open_reports": "खुला हराएका-व्यक्ति रिपोर्ट ·",
   "time.as_of": "{t} सम्म",
   "time.as_of_unknown": "समय उल्लेख छैन",
   "time.never": "कहिल्यै छैन",
@@ -396,5 +396,12 @@
   "corridor.share_run": "यो रन साझा गर्नुहोस्",
   "corridor.share_text": "मैले 26 अगस्टको भोटेकोशी बाढीको बाटोमा {n} चीज राखेर बग्दै गरेको हेरेँ ({b} वास्तविक पुल पनि)। के भयो हेर्नुहोस् र आफूलाई थाहा भएको थप्नुहोस्:",
   "corridor.real_bridges": "वास्तविक पुल बगे",
-  "corridor.real_bridges_title": "HOT OSM क्षति सर्वेक्षणले बगेको वा क्षतिग्रस्त भनेका पुलहरू, जहाँ थिए त्यहीँ राखिएका"
+  "corridor.real_bridges_title": "HOT OSM क्षति सर्वेक्षणले बगेको वा क्षतिग्रस्त भनेका पुलहरू, जहाँ थिए त्यहीँ राखिएका",
+  "place.now_title": "अहिले के भइरहेको छ",
+  "place.now_asof": "{t} सम्मको",
+  "place.now_sources": "स्रोत: {s}",
+  "place.now_empty": "पछिल्लो 36 घण्टामा यो स्थानबारे नयाँ केही छैन — केही थाहा छ भने थप्नुहोस्।",
+  "trend.since_yesterday": "हिजोदेखि {n}",
+  "trend.days": "{d} दिन",
+  "sources.derived": "व्युत्पन्न"
 }

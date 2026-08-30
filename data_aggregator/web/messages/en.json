@@ -339,7 +339,7 @@
   "agency.opmcm": "OPMCM portal",
   "agency.note.foreigners": "foreigners ·",
   "agency.note.tourists": "tourists ·",
-  "agency.note.open_reports": "open reports ·",
+  "agency.note.open_reports": "open lost-person reports ·",
   "time.as_of": "as of {t}",
   "time.as_of_unknown": "time not stated",
   "time.never": "never",
@@ -396,5 +396,12 @@
   "corridor.share_run": "Share this run",
   "corridor.share_text": "I put {n} things in the path of the 26 Aug Bhote Koshi flood and watched them go ({b} real bridges too). See what actually happened, and add what you know:",
   "corridor.real_bridges": "real bridges lost",
-  "corridor.real_bridges_title": "Bridges the HOT OSM damage survey recorded as washed out or damaged, placed where they stood"
+  "corridor.real_bridges_title": "Bridges the HOT OSM damage survey recorded as washed out or damaged, placed where they stood",
+  "place.now_title": "What is happening now",
+  "place.now_asof": "as of {t}",
+  "place.now_sources": "Sources: {s}",
+  "place.now_empty": "Nothing new about this place in the last 36 hours — if you know something, add it.",
+  "trend.since_yesterday": "{n} since yesterday",
+  "trend.days": "{d} days",
+  "sources.derived": "derived"
 }

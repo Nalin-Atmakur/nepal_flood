@@ -17,7 +17,8 @@ import { StatusPill } from "@/components/ui/Badge";
 
 /**
  * /places/[id] — the place page (Places.dc.html): name + NE/HI, status pill, "district · km N · elev m",
- * four big cards, "Status, day by day", headlines mentioning the place, facts, CTA, "ON THE CORRIDOR".
+ * four big cards, "What is happening now" (place_status.now_*), "Status, day by day", headlines mentioning the place,
+ * facts, CTA, "ON THE CORRIDOR".
  * Statically generated for every gazetteer place; revalidates every 5 minutes; unknown ids → 404.
  */
 export const revalidate = 300;
@@ -80,6 +81,8 @@ export default async function PlacePage({ params }: { params: Promise<{ lang: st
   ];
   const asOf = status?.as_of ?? null;
   const last = status?.last_contact_at ?? null;
+  const nowLine = status ? localised(status as unknown as Record<string, unknown>, "now", lang) || status.now_en || "" : "";
+  const nowSources = Array.isArray(status?.now_sources) ? status.now_sources.join(" · ") : (status?.now_sources ?? "");
 
   return (
     <main data-page="place">
@@ -120,6 +123,28 @@ export default async function PlacePage({ params }: { params: Promise<{ lang: st
           </div>
         )}
         {status ? <div className="md:hidden font-medium text-[10.5px] text-muted mt-2 num">{t(lang, "place.all_src", { t: fmtDayTime(asOf, lang) })}</div> : null}
+
+        {/* What is happening now — process_data ⑩ (place_status.now_*), 36 h window */}
+        <div data-testid="place-now" className="mt-[14px] md:mt-5">
+        <Card padding="px-4 py-[14px] md:px-5 md:py-[18px]">
+          <h2 className="font-extrabold text-[15px] md:text-[17px]">{t(lang, "place.now_title")}</h2>
+          {nowLine ? (
+            <>
+              <p className="font-medium text-[14px] md:text-[15px] lh-body mt-2 mb-0">{nowLine}</p>
+              <div className="font-medium text-[11px] text-muted mt-2 num">
+                {status?.now_as_of ? t(lang, "place.now_asof", { t: fmtDayTime(status.now_as_of, lang) }) : null}
+                {nowSources ? ` · ${t(lang, "place.now_sources", { s: nowSources })}` : null}
+              </div>
+            </>
+          ) : (
+            <div className="mt-3">
+              <EmptyState action={t(lang, "place.no_status_action")} href={href(lang, `/report?place=${id}`)}>
+                {t(lang, "place.now_empty")}
+              </EmptyState>
+            </div>
+          )}
+        </Card>
+        </div>
 
         <div className="md:grid md:grid-cols-[1fr_380px] md:gap-6 mt-[14px] md:mt-6">
           {/* left: facts (mobile first), timeline, headlines */}

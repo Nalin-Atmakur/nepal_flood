@@ -32,6 +32,18 @@ one" under the table. Rows link to the place page.
    "Add what you know about {place}" → `/report?place=<id>`, and the dark "ON THE CORRIDOR" card.
    On mobile the facts card sits above the timeline and the CTA above the dark card, as in the mobile artboard.
 
+## 2b. "What is happening now" (30 Aug)
+
+`place_status.now_en/now_ne/now_hi/now_sources/now_as_of` (process_data ⑩, 36 h window, refreshed every run) render
+as a card straight under the four big cards: the localised line, "as of {time}", the source list; dashed empty state
+with the report CTA when null. The same line (prefix "As of …:" stripped, ≤ 140 chars, `noteFor()` in
+`PlacesTable.tsx`) fills the Note column on `/places` and the home places block, falling back to the ledger `note`.
+
+```
+ v_place_status_latest.now_*  ──▶ /places/[id]  card "What is happening now"  (line · as of · sources)
+                              └─▶ PlacesTable   Note cell = noteFor(row, lang)  (now-line | ledger note)
+```
+
 ## 3. Status pill (`lib/corridor.ts` → `statusTone`)
 
 | `status_label` | pill |
