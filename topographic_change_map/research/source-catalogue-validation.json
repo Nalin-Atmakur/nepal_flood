@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "generated_at": "2026-08-30T09:50:34.784471+01:00",
+  "source_count": 64,
+  "workbook": "research/Nepal_Flood_Topographic_Data_Source_Catalogue.xlsx",
+  "workbook_sha256": "5f8ccaa6080dc530481f827a4eed49f3e2e547d37f96bf58e1bd004b5af0b975",
+  "csv": "research/imagery-source-catalogue.csv",
+  "csv_sha256": "5234b09a7703c64aaf30ed205f93d6b451aeacc08773ad72dcaedae6cace6038",
+  "checks": [
+    {
+      "name": "catalogue size",
+      "passed": true,
+      "detail": "64 sources (minimum 60)"
+    },
+    {
+      "name": "unique source IDs",
+      "passed": true,
+      "detail": "64/64 unique"
+    },
+    {
+      "name": "all required fields",
+      "passed": true,
+      "detail": "all rows complete"
+    },
+    {
+      "name": "HTTPS references",
+      "passed": true,
+      "detail": "all populated URLs use HTTPS"
+    },
+    {
+      "name": "P0/P1 next actions",
+      "passed": true,
+      "detail": "all critical/high-value rows actionable"
+    },
+    {
+      "name": "workbook exists",
+      "passed": true,
+      "detail": "74811 bytes"
+    },
+    {
+      "name": "CSV exists",
+      "passed": true,
+      "detail": "69075 bytes"
+    },
+    {
+      "name": "workbook sheets",
+      "passed": true,
+      "detail": "Executive Summary, Prioritized Next Steps, Source Catalogue, Authentication Guide, Nepal Pair Evidence, Field Definitions, References"
+    },
+    {
+      "name": "catalogue row count",
+      "passed": true,
+      "detail": "64 workbook rows"
+    },
+    {
+      "name": "catalogue filter/freeze",
+      "passed": true,
+      "detail": "filter=A4:AH68, freeze=F5"
+    },
+    {
+      "name": "catalogue Excel table",
+      "passed": true,
+      "detail": "tables=['DataSourceCatalogue']"
+    },
+    {
+      "name": "summary chart",
+      "passed": true,
+      "detail": "1 chart"
+    },
+    {
+      "name": "reference hyperlinks",
+      "passed": true,
+      "detail": "official source links are clickable"
+    },
+    {
+      "name": "CSV row count",
+      "passed": true,
+      "detail": "64 rows"
+    },
+    {
+      "name": "no local credentials",
+      "passed": true,
+      "detail": "no local account values embedded"
+    }
+  ]
+}

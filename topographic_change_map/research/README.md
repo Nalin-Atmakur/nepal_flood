@@ -50,7 +50,27 @@ Add buildings and an interactive viewer
 | [09-roadmap.md](09-roadmap.md) | Ordered execution plan and decision gates |
 | [10-open-questions.md](10-open-questions.md) | Questions that must be resolved explicitly |
 | [11-candidate-imagery-ranking.md](11-candidate-imagery-ranking.md) | Final evidence-backed candidate ranking after access checks and dense experiments |
+| [Nepal_Flood_Topographic_Data_Source_Catalogue.xlsx](Nepal_Flood_Topographic_Data_Source_Catalogue.xlsx) | Team-shareable, filterable catalogue of 64 optical, SAR, DEM, historical, commercial, and institution-gated routes; includes authentication requirements, current state, next steps, evidence, and official references |
+| [imagery-source-catalogue.csv](imagery-source-catalogue.csv) | Machine-readable version of the 64-row source catalogue |
+| [source-catalogue-validation.json](source-catalogue-validation.json) | Automated workbook structure, completeness, hyperlink, and credential-safety checks |
 | [sources.md](sources.md) | Primary technical references and related repository research |
+
+## Rebuild the team workbook
+
+The source records and authentication profiles are maintained in
+`python/source_catalogue_data.py`. Rebuild the Excel, CSV, and validation report
+without editing the binary workbook by hand:
+
+```bash
+python -m venv .work/venv
+.work/venv/bin/pip install -r requirements-spreadsheet.txt
+.work/venv/bin/python python/build_source_spreadsheet.py
+.work/venv/bin/pytest -q test_python/test_source_catalogue.py
+```
+
+The generated workbook contains access requirements and generic authentication
+mechanisms only. It must never contain usernames, passwords, phone numbers,
+MFA codes, cookies, API keys, tokens, or client secrets.
 
 ## Hard rules
 

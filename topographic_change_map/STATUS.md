@@ -89,6 +89,7 @@ Completed:
 - User-facing terminology now identifies the coloured layer as a relative post-event ortho-parallax height residual, not direct pre/post topographic change, deposition, or erosion.
 - Final candidate table corrects the strongest WV3 scene ID, Planet AOI coverage, Planet entitlement, two empirical Vantor expansion failures, and the true pre-event DSM requirement.
 - `research/11-candidate-imagery-ranking.md` ranks 16 live candidates plus one rejected cross-epoch combination and records the exact next action for each.
+- `research/Nepal_Flood_Topographic_Data_Source_Catalogue.xlsx` expands the acquisition inventory to 64 researched optical, SAR, DEM, historical, commercial, institutional, and disaster-response routes. Its seven sheets separate current programme evidence, authentication and eligibility requirements, exact Nepal pair evidence, official references, and 13 ranked decision gates. A matching CSV and machine validation report are committed beside it; no credentials are stored.
 
 In progress: none within the achievable public-data release.
 

@@ -69,6 +69,8 @@ directions. GLO-30 supplies the pre-event terrain context.
 - [products/viewer-evidence-validation.json](products/viewer-evidence-validation.json) — synchronized pin, imagery, popup, and direct-terrain interaction evidence
 - [research/README.md](research/README.md) — detailed research package
 - [research/11-candidate-imagery-ranking.md](research/11-candidate-imagery-ranking.md) — completed evidence-backed imagery table and acquisition order
+- [research/Nepal_Flood_Topographic_Data_Source_Catalogue.xlsx](research/Nepal_Flood_Topographic_Data_Source_Catalogue.xlsx) — shareable 64-source decision workbook with access/authentication requirements and next steps
+- [research/imagery-source-catalogue.csv](research/imagery-source-catalogue.csv) — machine-readable catalogue export
 
 ## Test everything
 
