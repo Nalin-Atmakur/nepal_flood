@@ -22,7 +22,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - Read `docs/reports/2026-08-30-morning.md` (trends, hotspots) and skim `docs/audit-2026-08-30.md`.
 - Copy note: nothing on the site now claims reports are passed to the authorities automatically (no export tool exists yet, per your decision) — re-word when the channel is agreed (D-048).
 
-**Known limits / next ideas (all queued in the cycle log):** cross-register dedup (OPMCM ↔ NDRRMA) needs a shared name normalisation before those records link (audit §P9); gorge walls still crowd the chase camera's frame edges; no sound; the OG card is static per language except the "your run" variant; `raw_pulls` bodies for the wave-4 sources grow the free-tier storage — check Supabase usage in a week.
+**Known limits / next ideas (all queued in the cycle log):** the mobile home page is ~20,000 px tall (places + sources tables) — collapse to the top 10 with "show all"; cross-register dedup (OPMCM ↔ NDRRMA) needs a shared name normalisation before those records link (audit §P9); gorge walls still crowd the chase camera's frame edges; no sound; the OG card is static per language except the "your run" variant; `raw_pulls` bodies for the wave-4 sources grow the free-tier storage — check Supabase usage in a week.
 
 ## Status by phase
 
