@@ -326,7 +326,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
         </ul>
       </div>
 
-      {mode === "3d" ? (
+      {mode !== "fallback" ? (
         <>
           {/* phones: the story feed lives under the canvas so it never covers the view */}
           <div className="md:hidden border-t-[2.5px] border-ink bg-ground px-3 py-2 flex flex-col gap-[6px] min-h-[64px]" aria-live="polite" data-testid="corridor-feed">

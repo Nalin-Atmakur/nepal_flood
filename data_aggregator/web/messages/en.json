@@ -55,7 +55,7 @@
   "digest.kind.gauge": "gauge",
   "digest.kind.news": "news",
   "sec.corridor": "The corridor",
-  "sec.corridor_sub": "Gyirong border → Bharatpur · {km} km · height ×{x}",
+  "sec.corridor_sub": "The {km} km the flood travelled on 26 August, replayed from above — press ▶, drop something in its path, tap a village for its numbers.",
   "sec.corridor_caption": "Press ▶ to watch the breach run the corridor · drop something in its path · marker size = people believed there · tap a marker for the place card · drag to orbit",
   "sec.legend_unknown": "mostly unknown",
   "sec.legend_reached": "mostly reached",
