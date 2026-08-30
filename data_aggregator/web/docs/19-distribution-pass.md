@@ -31,5 +31,6 @@ Order: 1–3 and 7 (minutes) → 4 → 6 → 5 → 8 → 9–11 → 12 → deplo
 - D-066 three goals on Your part.
 
 ## Status
+- 15:40 · goals split out of Your part into their own card (owner, 13:26): desktop 3:2 side by side, phones stacked; the Share button closes the goals card ("#3 is you →"). About keeps the long version.
 - 15:00 · rows 8–11 built: three goals on Your part (home, with the Share button on #3); `share.hook` with the live NDRRMA numbers via `/api/share-numbers` (fetched only when a share UI mounts); WhatsApp always through `wa.me` (composer → preview), the device sheet as "More…" with the URL alone; phone share popover is a bottom sheet; OG card carries the corridor strip. Row 12: `tests/e2e/mobile.spec.ts` — 13 pages at 390 × 844: no sideways scroll anywhere; two undersized taps found and fixed (Names toggle 32 → 40 px, "Have footage?" link → pill).
 - 14:20 · rows 1–7 built: slow default, two-row controls, "Flood volume · the barrier lake the avalanche breached", device pixel ratio (cap 3), Overview + Cinematic (`setCinematic`, sway + bob, eases back at the end), three featured clips under the panel, "My info".
