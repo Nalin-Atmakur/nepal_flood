@@ -79,7 +79,12 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     const box = boxRef.current;
     const w = box?.clientWidth ?? 0;
     const h = box?.clientHeight ?? 0;
-    setPops((prev) => [...prev.slice(-3), { key, text, x: Math.max(8, Math.min(x - 40, w - 120)), y: Math.max(8, Math.min(y - 24, h - 40)), tone }]);
+    setPops((prev) => {
+      const kept = prev.slice(-3);
+      // stagger so simultaneous pops never sit on top of each other
+      const lift = kept.filter((p) => Math.abs(p.x - x) < 90 && Math.abs(p.y - y) < 60).length * 30;
+      return [...kept, { key, text, x: Math.max(8, Math.min(x - 40, w - 120)), y: Math.max(8, Math.min(y - 24 - lift, h - 40)), tone }];
+    });
     setTimeout(() => setPops((prev) => prev.filter((p) => p.key !== key)), POP_MS);
   }, []);
 
