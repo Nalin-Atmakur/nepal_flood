@@ -22,7 +22,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - Read `docs/reports/2026-08-30-morning.md` (trends, hotspots) and skim `docs/audit-2026-08-30.md`.
 - Copy note: nothing on the site now claims reports are passed to the authorities automatically (no export tool exists yet, per your decision) — re-word when the channel is agreed (D-048).
 
-**Known limits / next ideas (all queued in the cycle log):** gorge walls still crowd the chase camera's frame edges; no sound; the OG card is static per language except the "your run" variant; `raw_pulls` bodies for the wave-4 sources grow the free-tier storage — check Supabase usage in a week.
+**Known limits / next ideas (all queued in the cycle log):** cross-register dedup (OPMCM ↔ NDRRMA) needs a shared name normalisation before those records link (audit §P9); gorge walls still crowd the chase camera's frame edges; no sound; the OG card is static per language except the "your run" variant; `raw_pulls` bodies for the wave-4 sources grow the free-tier storage — check Supabase usage in a week.
 
 ## Status by phase
 
@@ -44,6 +44,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 08:40 BST — P9 dedup precision (3096559; 285 tests): same-name merges 83 % (OPMCM) / 87 % (NDRRMA) strict, 97–99 % lenient; added an age-gap guard (> 8 years apart → distinct, 4–8 → queue), merged entities 3,678 → 3,586, 200 grey pairs queued, stat caption corrected in EN/NE/HI. Gap noted: OPMCM ↔ NDRRMA records never link yet (name normalisation differs) — a next step for the dedup, not tonight.
 - 07:24 BST — Foam spray at the wave front + foam tint thresholds fixed for real browser speeds (d752362, deployed). `npm run smoke:live` added (c61281b): 30 checks over every route × language, OG, sitemap, robots, apex redirect.
 - 07:00 BST — P8: the OPMCM jump (10,809 → 15,190 open lost-person reports) is the portal's own intake (+6,466 reports in 24 h; two endpoints agree; parser verbatim) — documented in docs/audit-2026-08-30.md (ff8e31e); the site's cell already says "open lost-person reports". No data changed.
 - 06:52 BST — P7 landed (00f37c7; 281 tests): `make report` → `docs/reports/2026-08-30-morning.md` (headline deltas per publisher, where the unknowns are, help-request hotspots, rescue throughput, infrastructure, data quality). Flags: OPMCM open lost-person reports jumped 10,809 → 15,190 between pulls (lane P8 checking parser vs portal); no publisher has issued a new headline number today (24 h deltas ±0); 50 places with 1,553 people reported and no rescue/stationed record at all.
