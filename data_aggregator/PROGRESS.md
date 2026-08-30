@@ -43,6 +43,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 07:24 BST — Foam spray at the wave front + foam tint thresholds fixed for real browser speeds (d752362, deployed). `npm run smoke:live` added (c61281b): 30 checks over every route × language, OG, sitemap, robots, apex redirect.
 - 07:00 BST — P8: the OPMCM jump (10,809 → 15,190 open lost-person reports) is the portal's own intake (+6,466 reports in 24 h; two endpoints agree; parser verbatim) — documented in docs/audit-2026-08-30.md (ff8e31e); the site's cell already says "open lost-person reports". No data changed.
 - 06:52 BST — P7 landed (00f37c7; 281 tests): `make report` → `docs/reports/2026-08-30-morning.md` (headline deltas per publisher, where the unknowns are, help-request hotspots, rescue throughput, infrastructure, data quality). Flags: OPMCM open lost-person reports jumped 10,809 → 15,190 between pulls (lane P8 checking parser vs portal); no publisher has issued a new headline number today (24 h deltas ±0); 50 places with 1,553 people reported and no rescue/stationed record at all.
 - 06:45 BST — T1 landed + deployed (2a04a73): 41 NE / 34 HI strings made natural and consistent, glossary in web/docs/03-i18n.md. Five report/me strings that promised reports are "passed to the authorities" softened in all languages (8bd3d7c) — no export channel exists yet (owner's decision: none in this build).
