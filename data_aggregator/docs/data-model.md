@@ -32,7 +32,7 @@ Related: `db/README.md` (how to apply) · `db/docs/01-zones.md` … `07-applying
                        ╚══════════════════════════════╤══════════════════════════════╝
                                                       │
         views (public, read-only projections):        ▼
-        v_live_counts  v_articles_recent  v_place_status_latest  v_sources_status  v_gauges_latest — since `009_articles_recent_order.sql`: dated articles first (`published_at desc nulls last`), undated after them by `fetched_at`; `fetched_at` exposed.
+        v_live_counts  v_articles_recent  v_place_status_latest  v_sources_status  v_gauges_latest
                                                       │
                                                       ▼
                                         website (Next.js, anon key, ISR)
@@ -462,7 +462,7 @@ Views are created without `security_invoker`, so they run with the owner's (`pos
 | View | Columns | Built from | Used by |
 |---|---|---|---|
 | `v_live_counts` | `submissions_10m`, `submissions_today` (Asia/Kathmandu day), `submissions_total`, `last_pull_at` (max `pulls.fetched_at` where `ok`), `last_processed_at` (max `figures_latest.computed_at`) | `submissions_log`, `pulls`, `figures_latest` | scoreboard initial values, stale banner, OG card |
-| `v_articles_recent` | `id`, `source_id`, `url`, `title`, `publisher`, `lang`, `published_at`, `places` — newest 100 by `coalesce(published_at, fetched_at)` | `articles` (no `body`) | Latest block, place page headlines |
+| `v_articles_recent` | `id`, `source_id`, `url`, `title`, `publisher`, `lang`, `published_at`, `places`, `fetched_at` — newest 100, dated first (`published_at desc nulls last, fetched_at desc`; migration 009) | `articles` (no `body`) | Latest block, place page headlines |
 | `v_place_status_latest` | `place_status.*` for the latest `as_of` per place + `name_en`, `name_ne`, `name_hi`, `kind`, `district`, `lat`, `lon`, `side` | `place_status` ⋈ `places` | Places table, place pages, 3D corridor |
 | `v_sources_status` | `id`, `name`, `grp`, `family`, `url`, `reliability`, `holds`, `pii`, `cadence`, `last_fetched_at`, `last_ok`, `last_unchanged`, `last_error` | `sources` ⋈ lateral latest `pulls` row | `/sources` |
 | `v_gauges_latest` | `gauges.*` for the latest `observed_at` per station | `gauges` | River & weather block, place page nearest gauge |
