@@ -54,6 +54,13 @@ viral surface. Shipped 30 Aug 04:05 BST (pass 2 04:40); this file is the referen
 9. **Lake volume** slider (0.5–20 Mm³, seeded with the latest `figures_latest.barrier_lake_volume_m3` — China MWR
    published 2.0 Mm³) and **breach** speed change the next run.
 
+## 1b. What the visitor sees now (v2, 30 Aug 11:00)
+
+Overview from above (no chase camera); the run auto-plays 0.7 s after the scene boots; on phones the story feed
+(reached places, phase captions, SWEPT/PLACED) sits under the canvas with a placeholder line until the first event;
+on desktop it is an overlay column bottom-left. A plain sentence under the heading explains what the panel is
+("The 72 km the flood travelled on 26 August, replayed from above — press ▶, drop something in its path…").
+
 ## 2. Architecture (v2, 30 Aug 10:00 — see 16-corridor-v2-plan.md for the brief)
 
 ```
