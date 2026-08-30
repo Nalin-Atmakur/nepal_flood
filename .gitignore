@@ -85,3 +85,6 @@ __pycache__/
 data_aggregator/pipeline/.scheduler.pid
 
 data_aggregator/pipeline/.run.lock/
+
+# design tokens are code, not secrets (the token* rule above is for credentials)
+!data_aggregator/web/lib/tokens.ts
