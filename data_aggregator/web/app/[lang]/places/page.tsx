@@ -3,12 +3,13 @@ import { fmtDayTime } from "@/lib/format";
 import { asLang, t } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getLiveCounts, getPlaces, getPlaceStatuses } from "@/lib/queries";
+import PlacesMap from "@/components/blocks/PlacesMap";
 import PlacesTable from "@/components/blocks/PlacesTable";
 import YourPart from "@/components/blocks/YourPart";
 import SectionHead from "@/components/ui/SectionHead";
 import { splitDistricts } from "@/lib/places-split";
 
-/** /places — the same table as Home §04 on its own page, with search and the dashed empty-state row. */
+/** /places — the corridor on a real map (docs/21) and the same table as Home §04, with search and the dashed empty-state row. */
 export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -31,6 +32,10 @@ export default async function PlacesPage({ params }: { params: Promise<{ lang: s
         sub={<span className="hidden md:inline">{updated ? t(lang, "sec.places_updated", { t: fmtDayTime(updated, lang) }) : t(lang, "sec.places_sub")}</span>}
         align="center"
       />
+      <PlacesMap lang={lang} refs={refs} statuses={statuses} />
+      <div className="mt-8">
+        <SectionHead title={t(lang, "sec.places_list")} align="center" />
+      </div>
       <PlacesTable lang={lang} statuses={placeRows} refs={refs} placeholder={t(lang, "sec.places_search_ph2")} emptyRow />
       {districts.length ? (
         <section className="mt-8" data-block="districts">

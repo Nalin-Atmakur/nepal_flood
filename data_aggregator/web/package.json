@@ -12,7 +12,8 @@
     "i18n:check": "node scripts/i18n-check.mjs",
     "fallback": "node scripts/make-fallback.mjs",
     "smoke:live": "node scripts/live-smoke.mjs",
-    "icons": "node scripts/make-icons.mjs"
+    "icons": "node scripts/make-icons.mjs",
+    "map": "node scripts/make-map.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",

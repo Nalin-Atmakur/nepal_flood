@@ -26,6 +26,7 @@ for (const path of PAGES) {
         const r = el.getBoundingClientRect();
         const cs = getComputedStyle(el);
         if (r.width === 0 || r.height === 0 || cs.visibility === "hidden") continue; // hidden variants (desktop-only)
+        if (el.dataset.tapOk) continue; // map pins: a 36 px hit area that may overlap its neighbours; the same places are 44 px rows in the list below
         if (r.height < min) out.push(`${el.tagName.toLowerCase()}${el.dataset.testid ? `[${el.dataset.testid}]` : ""} "${(el.textContent ?? "").trim().slice(0, 30)}" ${Math.round(r.height)}px`);
       }
       return out;

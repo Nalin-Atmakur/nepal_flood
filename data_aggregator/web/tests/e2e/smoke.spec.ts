@@ -36,6 +36,22 @@ for (const lang of LANGS) {
       await expect(page.locator('[data-block="corridor"] [data-testid="videos-add"]')).toHaveAttribute("href", new RegExp(`/${lang}/report`));
     });
 
+    test("the places map: pins on the real geography, tap one for its numbers and its page", async ({ page }) => {
+      await page.goto(`/${lang}/places`);
+      const map = page.locator('[data-testid="places-map"]');
+      await expect(map).toBeVisible(WAIT);
+      const pins = map.locator("[data-pin]");
+      await expect.poll(async () => pins.count(), WAIT).toBeGreaterThanOrEqual(80);
+      // the basemap itself must load (a broken image would leave pins floating on nothing)
+      expect(await map.locator("img").first().evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(500);
+      await map.locator('[data-pin="betrawati"]').click({ force: true });
+      const card = page.locator('[data-testid="map-card"]');
+      await expect(card).toBeVisible(WAIT);
+      await expect(card.locator("a")).toHaveAttribute("href", new RegExp(`/${lang}/places/betrawati`));
+      await page.locator('[data-testid="map-fit"]').click();
+      await expect(card).toHaveCount(0);
+    });
+
     test("numbers and latest-news tabs render their blocks, each headed by Your part", async ({ page }) => {
       await page.goto(`/${lang}/numbers`);
       for (const block of NUMBERS_BLOCKS) await expect(page.locator(`[data-block="${block}"]`).first(), block).toBeAttached(WAIT);
