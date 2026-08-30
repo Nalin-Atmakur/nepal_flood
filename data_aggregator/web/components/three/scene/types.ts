@@ -5,7 +5,7 @@
  *        │                             │
  *        ├── terrain.ts   TerrainModule (terrain colours, sky, lights, river ribbon, extent band, lakes, rock, dust, stain)
  *        ├── water.ts     WaterModule   (wet-only water sheet, spray, debris)
- *        ├── markers.ts   MarkersModule (settlement clusters, kind shapes, status rings, labels, pick targets)
+ *        ├── markers.ts   MarkersModule (settlement clusters, kind shapes, status roofs, labels + names toggle, pick targets)
  *        ├── objects.ts   ObjectsModule (catalogue objects, placement, break-up, piece physics via lib/flood-physics)
  *        └── camera.ts    CameraModule  (fit, orbit, pan, ride, shake, impact cam, picking rays)
  *
@@ -82,8 +82,10 @@ export interface MarkersModule {
   anchor(placeId: string): THREE.Vector3 | null;
   /** camera is riding: thin + translucent so they do not crowd the wave */
   setRide(on: boolean): void;
-  /** the wave reached this place: ring turns amber-bright, label shows */
+  /** the wave reached this place: roofs turn amber-bright, label shows */
   markReached(placeId: string): void;
+  /** place names on/off (the visitor's toggle; off = see the damage, not the pills) */
+  setLabels(on: boolean): void;
   clearReached(): void;
   update(dt: number, camPos: THREE.Vector3): void;
   dispose(): void;
@@ -95,7 +97,8 @@ export type PlacedObject = {
   real: boolean;
   group: THREE.Group;
   home: { x: number; z: number };
-  state: "standing" | "broken" | "wreck";
+  /** standing → taken (carried whole) → broken (pieces) → wreck (all asleep) */
+  state: "standing" | "taken" | "broken" | "wreck";
 };
 
 export type ObjectEvent = { type: "hit"; obj: PlacedObject; x: number; y: number; z: number } | { type: "placed"; obj: PlacedObject };

@@ -431,6 +431,7 @@
   "corridor.obj.boulder": "boulder",
   "corridor.obj.tree": "tree",
   "corridor.frame": "Frame",
+  "corridor.names": "Names",
   "corridor.swept_pop": "SWEPT",
   "corridor.swept_feed": "The {obj} is gone.",
   "corridor.placed_pop": "{obj} placed",

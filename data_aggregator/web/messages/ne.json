@@ -431,6 +431,7 @@
   "corridor.obj.boulder": "ढुङ्गा",
   "corridor.obj.tree": "रूख",
   "corridor.frame": "पूरा हेर्नुहोस्",
+  "corridor.names": "नामहरू",
   "corridor.swept_pop": "SWEPT",
   "corridor.swept_feed": "{obj} बग्यो।",
   "corridor.placed_pop": "{obj} राखियो",

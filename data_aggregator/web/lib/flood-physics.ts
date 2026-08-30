@@ -1,16 +1,19 @@
 /**
  * Piece physics for things the flood breaks (web/docs/16-corridor-v2-plan.md §3.3). Pure, allocation-free per
  * step, unit-tested. A "piece" is a rigid body approximated by a sphere of radius r: gravity, drag toward the
- * flow, buoyancy toward the water surface, spin from the flow's shear, and a ground contact that can never be
- * tunnelled — the position is clamped to ground + r and the velocity is reflected against the ground normal.
+ * flow, buoyancy toward the water surface, a pull toward the channel centre while it is carried, spin from the
+ * flow's shear, and a ground contact that can never be tunnelled — the position is clamped to ground + r and the
+ * velocity is reflected against the ground normal. Off the grid (past the east edge of the plate) a body keeps
+ * flying and falls — the corridor's end is a waterfall, not a wall.
  *
  *   per step (dt ≤ 1/60):
- *     flow u at p (capped) · surface s = ground + depth·visAmp · inWater = p.y < s
- *     a = g + inWater ? drag·(u − v) + buoy·clamp(s − p.y, 0, 2r)·up : 0
+ *     flow u at p = FLOW_GAIN·flow (capped at FLOW_CAP) · surface s = ground + depth·visAmp · inWater = p.y < s + r
+ *     a = g + inWater ? drag·(u − v) + buoy·clamp(s − p.y + r, 0, 2r)·up + centre·(channelZ − p.z)·ẑ : 0
  *     v += a·dt; p += v·dt
  *     if p.y < ground + r:  p.y = ground + r; v ← reflect(v, n)·restitution; v ∥ ground *= (1 − friction)
  *     ω += shear·k·dt − ω·damp·dt
  *     asleep when |v| < SLEEP and not in water for SLEEP_SECONDS  → wreckage
+ *     off the grid: air drag only; asleep (retired) below FALL_FLOOR
  */
 export type Vec3 = { x: number; y: number; z: number };
 export type Ground = { y: number; nx: number; ny: number; nz: number };
@@ -34,18 +37,24 @@ export type World = {
   groundAt(x: number, z: number): Ground | null;
   flowAt(x: number, z: number): Flow;
   visAmp: number;
+  /** channel centre line (z for an x); when given, carried bodies are pulled toward it instead of beaching */
+  channelZ?(x: number): number;
 };
 
 export const G = -22; // scene units/s² (the terrain is 1.5× exaggerated; this reads right)
-export const DRAG = 3.2; // 1/s toward the flow velocity
+export const DRAG = 4.5; // 1/s toward the flow velocity — a carried thing matches the water within ~¼ s
 export const BUOY = 26; // upward acceleration per unit of submersion
-export const FLOW_CAP = 7; // units/s — the sim's peaks are 20–30, far too fast to read
+export const FLOW_GAIN = 0.85; // fraction of the sim's cell speed a body is pulled toward
+export const FLOW_CAP = 12; // units/s — the sim's peaks are 20–30, too fast to read; 12 crosses the plate in ~7 s
+export const CENTRE = 3.5; // 1/s² per unit of cross-channel offset while carried (keeps wreckage in the river)
 export const RESTITUTION = 0.28;
 export const FRICTION = 0.45;
 export const SPIN_DAMP = 1.6;
 export const SLEEP_SPEED = 0.08;
 export const SLEEP_SECONDS = 0.6;
-export const MAX_SPEED = 14;
+export const MAX_SPEED = 20;
+export const AIR_DRAG = 0.25; // 1/s once a body has left the plate
+export const FALL_FLOOR = -45; // below this a body that fell off the edge is retired
 
 export function makeBody(p: Vec3, r: number, m = 1): Body {
   return { p: { ...p }, v: { x: 0, y: 0, z: 0 }, w: { x: 0, y: 0, z: 0 }, rot: { x: 0, y: 0, z: 0 }, r, m, asleep: false, still: 0 };
@@ -65,7 +74,7 @@ export function kick(b: Body, flow: Flow, seed: number, strength = 1): void {
   b.still = 0;
 }
 
-/** One integration step. Returns true when the body touched the ground this step (for splashes/sounds). */
+/** One integration step. Returns true when the body hit the ground hard this step (for splashes/break-up). */
 export function step(b: Body, world: World, dt: number): boolean {
   if (b.asleep) {
     // wake if water arrives
@@ -80,15 +89,17 @@ export function step(b: Body, world: World, dt: number): boolean {
   let ay = G;
   let az = 0;
   if (inWater) {
-    const ux = Math.max(-FLOW_CAP, Math.min(FLOW_CAP, f.vx * 0.35));
-    const uz = Math.max(-FLOW_CAP, Math.min(FLOW_CAP, f.vz * 0.35));
+    const ux = Math.max(-FLOW_CAP, Math.min(FLOW_CAP, f.vx * FLOW_GAIN));
+    const uz = Math.max(-FLOW_CAP, Math.min(FLOW_CAP, f.vz * FLOW_GAIN));
     ax += DRAG * b.m * (ux - b.v.x);
     az += DRAG * b.m * (uz - b.v.z);
     const sub = Math.max(0, Math.min(2 * b.r, f.surface - b.p.y + b.r));
     ay += BUOY * sub * (0.6 + 0.4 * b.m) - 2.0 * b.v.y; // buoyancy + vertical damping in water
+    // carried by a real flood: stay in the river rather than beaching on the first bank
+    if (world.channelZ && f.depth > 0.3) az += CENTRE * (world.channelZ(b.p.x) - b.p.z) - 2.2 * b.v.z;
     // shear: the flow spins things about the axis perpendicular to it
-    b.w.z += (ux * 0.9) * dt;
-    b.w.x -= (uz * 0.9) * dt;
+    b.w.z += ux * 0.9 * dt;
+    b.w.x -= uz * 0.9 * dt;
   }
   b.v.x += ax * dt;
   b.v.y += ay * dt;
@@ -118,7 +129,7 @@ export function step(b: Body, world: World, dt: number): boolean {
         b.v.x -= (1 + RESTITUTION) * vn * g.nx;
         b.v.y -= (1 + RESTITUTION) * vn * g.ny;
         b.v.z -= (1 + RESTITUTION) * vn * g.nz;
-        touched = true;
+        touched = vn < -2.5;
       } else if (vn < 0) {
         // resting contact: remove the inward component
         b.v.x -= vn * g.nx;
@@ -129,8 +140,8 @@ export function step(b: Body, world: World, dt: number): boolean {
       const gt = -G * g.ny; // magnitude of the tangential pull scales with the slope
       b.v.x += gt * g.nx * dt;
       b.v.z += gt * g.nz * dt;
-      // kinetic friction on the ground every contact frame
-      const kf = Math.max(0, 1 - FRICTION * 10 * dt);
+      // kinetic friction on the ground every contact frame (lighter in water: the flood drags it along the bed)
+      const kf = Math.max(0, 1 - FRICTION * (inWater ? 3 : 10) * dt);
       b.v.x *= kf;
       b.v.z *= kf;
       // static friction: on gentle ground a slow body simply stops (no creeping)
@@ -142,10 +153,15 @@ export function step(b: Body, world: World, dt: number): boolean {
       }
     }
   } else {
-    // off the grid: keep it from falling forever
-    b.v.x = 0;
-    b.v.z = 0;
-    if (b.p.y < -20) b.asleep = true;
+    // off the plate: it keeps flying and falls (the east edge is a waterfall), then is retired well below
+    const ad = Math.max(0, 1 - AIR_DRAG * dt);
+    b.v.x *= ad;
+    b.v.z *= ad;
+    if (b.p.y < FALL_FLOOR) {
+      b.asleep = true;
+      b.v.x = b.v.y = b.v.z = 0;
+      return false;
+    }
   }
   // spin
   const damp = Math.max(0, 1 - SPIN_DAMP * dt);
@@ -156,7 +172,7 @@ export function step(b: Body, world: World, dt: number): boolean {
   b.rot.y += b.w.y * dt;
   b.rot.z += b.w.z * dt;
   // sleep
-  if (!inWater && Math.hypot(b.v.x, b.v.y, b.v.z) < SLEEP_SPEED) {
+  if (!inWater && g && Math.hypot(b.v.x, b.v.y, b.v.z) < SLEEP_SPEED) {
     b.still += dt;
     if (b.still > SLEEP_SECONDS) {
       b.asleep = true;

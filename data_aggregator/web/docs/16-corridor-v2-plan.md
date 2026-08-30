@@ -152,7 +152,8 @@ Estimated effort: P1 ≈ 1.5 h, P2 ≈ 2.5 h, P3 ≈ 2.5 h, P4 ≈ 1 h. Each pha
   mountain at the channel is a feature, not a glitch (`horizontality(pol)` in `lib/corridor-camera.ts` drives it).
 - **Robustness contract**: every mesh, object, piece and the camera sample the same bilinear ground
   (`makeGroundSampler`), pieces are integrated by `lib/flood-physics.ts` whose invariant (never below ground + r)
-  is unit-tested; objects sit on foundation pads aligned to the ground normal.
+  is unit-tested; objects stand directly on the ground aligned to its normal (foundation pads and rings were
+  removed on 30 Aug — they read as "random discs", D-056/D-058).
 
 ## 6. Out of scope (deliberately)
 Sound; a DEM; real hydraulics; multiplayer/leaderboards; saving scenarios; WebGPU.
@@ -163,11 +164,11 @@ Sound; a DEM; real hydraulics; multiplayer/leaderboards; saving scenarios; WebGP
 3. Object catalogue: the 11 above, or add "school" and "temple" for local resonance? (**add both**, cheap)
 
 
-## 8. Status (30 Aug 11:10 BST)
+## 8. Status (30 Aug 12:30 BST)
 
 | phase | state |
 |---|---|
 | 1 · layout & camera | ✅ story feed under the canvas on phones; exact fit (`lib/corridor-camera.ts`), pan/pinch/keys, Frame button; chip tap places in the path with a pulsing marker; SWEPT/PLACED pops; **overview-only camera** (owner's call — no chase) |
 | 2 · the look | ✅ re-authored landscape (V-gorge → plains), colour ramp, sky/fog/lights, river ribbon + extent band, water blue→brown with crest foam, spray, debris, settlement clusters on their own ground (no pads), status roofs, labels, X-ray on by default |
-| 3 · objects & physics | ✅ 14-kind catalogue, `lib/flood-physics.ts` (never below ground — asserted in e2e), break-up into pieces, wreckage, impact cam on desktop, shake tiers |
-| 4 · polish | ▶ ongoing with the owner's eyes: wave prominence in the overview, placement cue size, fallback PNG regeneration for the new landscape |
+| 3 · objects & physics | ✅ 14-kind catalogue, `lib/flood-physics.ts` (never below ground — asserted in e2e), **taken → carried whole → broken → wreck** (12:30: an object rides the crest as one body for up to 6 s, tumbling, then breaks on a hard hit; pieces inherit its motion, are pulled back to the channel and carried on — off the east edge as a waterfall), impact cam on desktop, shake tiers |
+| 4 · polish | ▶ ongoing with the owner's eyes: 12:30 — small name pills + Names toggle, discs gone (object pads), feed 3–6 rows; next: wave prominence in the overview, fallback PNG regeneration for the new landscape |

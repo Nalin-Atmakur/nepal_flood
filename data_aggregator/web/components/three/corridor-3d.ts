@@ -7,7 +7,7 @@
  *     ctx      = createContext(renderer)          scene/context.ts   (sim, bed, groundAt, flowAt)
  *     terrain  = createTerrain(ctx)               scene/terrain.ts   (look, sky, lights, river, lakes, rock, stain, x-ray)
  *     water    = createWater(ctx, terrain)        scene/water.ts     (wet-only sheet, spray, debris)
- *     markers  = createMarkers(ctx)               scene/markers.ts   (settlement clusters, rings, labels)
+ *     markers  = createMarkers(ctx)               scene/markers.ts   (settlement clusters, labels + names toggle)
  *     objects  = createObjects(ctx, onEvent)      scene/objects.ts   (catalogue + piece physics)
  *     camera   = createCamera(ctx, el)            scene/camera.ts    (fit, orbit, pan, ride, shake, impact)
  *     tick: sim step → water/objects/terrain/markers update → camera → render
@@ -72,6 +72,9 @@ export type CorridorHandle = {
   drop(kind: ObjectKind, x: number, z: number): void;
   /** Frame the whole corridor again. */
   frame(): void;
+  /** Place names on/off. */
+  setLabels(on: boolean): void;
+  labels(): boolean;
   objectCount(): number;
   state(): RunState;
   swept(): { visitor: number; real: number };
@@ -88,6 +91,13 @@ export type CorridorHandle = {
     spray: number;
     belowGround: number;
     xray: number;
+    labels: boolean;
+    /** objects currently carried whole by the flow */
+    carried: number;
+    /** the last visitor object: state and world position (tests trace the ride) */
+    last: { state: PlacedObject["state"]; x: number; y: number; z: number } | null;
+    /** deepest water in the plate's east column (the waterfall) */
+    edgeDepth: number;
   };
 };
 
@@ -167,6 +177,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   let phase: Phase = "after";
   let lowQuality = false;
   let xray = 0;
+  let labelsOn = true;
   const setState = (s: RunState) => {
     if (runState === s) return;
     runState = s;
@@ -360,17 +371,26 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     frame() {
       camera.fit(true);
     },
+    setLabels(on) {
+      labelsOn = on;
+      markers.setLabels(on);
+    },
+    labels: () => labelsOn,
     objectCount: () => objects.list().length,
     state: () => runState,
     swept: () => ({ visitor: sweptTotal, real: sweptReal }),
     debug() {
       let maxDepth = 0;
       for (let i = 0; i < sim.depth.length; i++) if (sim.depth[i] > maxDepth) maxDepth = sim.depth[i];
-      // the invariant the owner asked for: nothing below the ground
+      // the invariant the owner asked for: nothing below the ground (standing objects and carried ones — a carried
+      // object hangs halfH below its body, whose centre the physics keeps ≥ ground + halfH)
       let below = 0;
+      const wp = new THREE.Vector3();
       for (const o of objects.list() as PlacedObject[]) {
-        const g = ctx.groundAt(o.group.position.x, o.group.position.z);
-        if (g && o.group.position.y < g.y - 0.05) below++;
+        if (o.state === "broken" || o.state === "wreck") continue;
+        o.group.getWorldPosition(wp);
+        const g = ctx.groundAt(wp.x, wp.z);
+        if (g && wp.y < g.y - 0.05) below++;
       }
       return {
         state: runState,
@@ -385,6 +405,31 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         spray: water.sprayCount(),
         belowGround: below,
         xray,
+        labels: labelsOn,
+        carried: objects.list().filter((o) => o.state === "taken").length,
+        last: (() => {
+          const o = objects.last();
+          if (!o) return null;
+          if (o.state === "broken" || o.state === "wreck") {
+            // the mean of the visible pieces (they are re-parented to the scene when the object breaks)
+            let n = 0;
+            const m = new THREE.Vector3();
+            for (const c of ctx.scene.children) {
+              if (c.userData.pieceOf !== o.id || !c.visible) continue;
+              m.add(c.position);
+              n++;
+            }
+            if (n) m.divideScalar(n);
+            return { state: o.state, x: m.x, y: m.y, z: m.z };
+          }
+          o.group.getWorldPosition(wp);
+          return { state: o.state, x: wp.x, y: wp.y, z: wp.z };
+        })(),
+        edgeDepth: (() => {
+          let m = 0;
+          for (let k = 0; k < ctx.grid.nz; k++) for (let i = ctx.grid.nx - 3; i < ctx.grid.nx; i++) m = Math.max(m, sim.depth[k * ctx.grid.nx + i]);
+          return m;
+        })(),
       };
     },
     dispose() {

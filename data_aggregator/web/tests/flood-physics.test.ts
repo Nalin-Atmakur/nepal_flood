@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { GRID, sampleBed } from "@/lib/flood-sim";
 import { kmToX, meander } from "@/lib/corridor-terrain";
 import { makeGroundSampler } from "@/components/three/scene/context";
-import { belowGround, kick, makeBody, step, type Flow, type World } from "@/lib/flood-physics";
+import { FALL_FLOOR, MAX_SPEED, belowGround, kick, makeBody, step, type Flow, type World } from "@/lib/flood-physics";
 
 const bed = sampleBed(GRID);
 const groundAt = makeGroundSampler(GRID, bed);
@@ -71,7 +71,7 @@ describe("piece physics", () => {
     }
     expect(b.p.x).toBeGreaterThan(x0 + 5);
     expect(b.asleep).toBe(false);
-    expect(Math.hypot(b.v.x, b.v.z)).toBeLessThanOrEqual(14 + 1e-6);
+    expect(Math.hypot(b.v.x, b.v.z)).toBeLessThanOrEqual(MAX_SPEED + 1e-6);
   });
 
   it("spin decays and a sleeping body wakes when water arrives", () => {
@@ -88,5 +88,43 @@ describe("piece physics", () => {
     wet = true;
     step(b, w, 1 / 60);
     expect(b.asleep).toBe(false);
+  });
+
+  it("a carried body is pulled back toward the channel centre instead of beaching", () => {
+    const x0 = kmToX(30);
+    const zc = meander(x0);
+    const w: World = {
+      groundAt,
+      visAmp: 1.5,
+      channelZ: meander,
+      // the flow follows the channel (as the sim's does): vz ∝ the meander's slope
+      flowAt: (x, z) => {
+        const dm = meander(x + 0.5) - meander(x - 0.5);
+        return { depth: 2.5, vx: 14, vz: 14 * dm, speed: Math.hypot(14, 14 * dm), surface: (groundAt(x, z)?.y ?? 0) + 3.5 };
+      },
+    };
+    const g = groundAt(x0, zc + 3)!;
+    const b = makeBody({ x: x0, y: g.y + 1, z: zc + 3 }, 0.4);
+    for (let i = 0; i < 240; i++) {
+      step(b, w, 1 / 60);
+      expect(belowGround(b, w)).toBe(false);
+    }
+    expect(Math.abs(b.p.z - meander(b.p.x))).toBeLessThan(2);
+    expect(b.p.x).toBeGreaterThan(x0 + 8);
+  });
+
+  it("off the east edge of the plate it keeps flying, falls and is retired — no NaN, no hover", () => {
+    const w = world(() => dry);
+    const b = makeBody({ x: 47.5, y: 6, z: meander(47.5) }, 0.4);
+    b.v.x = 10;
+    let flewPast = false;
+    for (let i = 0; i < 900 && !b.asleep; i++) {
+      step(b, w, 1 / 60);
+      if (b.p.x > 48.5) flewPast = true;
+      expect(Number.isFinite(b.p.y)).toBe(true);
+    }
+    expect(flewPast).toBe(true);
+    expect(b.asleep).toBe(true);
+    expect(b.p.y).toBeLessThanOrEqual(FALL_FLOOR + 1e-6);
   });
 });

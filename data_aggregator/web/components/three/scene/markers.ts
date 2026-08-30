@@ -4,7 +4,8 @@
  * post, border post) — on a flat pad whose centre sits on the sampled ground and whose tilt follows the ground
  * normal, with a status ring on the pad carrying the legend colour (amber = mostly unknown, green = mostly
  * reached, grey = nothing reported). One InstancedMesh per shape family → one draw call each. Picking goes
- * through an invisible-but-raycastable sphere per place (`placeOf`).
+ * through an invisible-but-raycastable sphere per place (`placeOf`). Names are small pills the visitor can switch
+ * off (`setLabels`) to look at the damage alone.
  */
 import * as THREE from "three";
 import type { CorridorPlace } from "@/lib/corridor";
@@ -23,6 +24,8 @@ const PAD = 0x8f7a5a;
 const TENT = 0xffb800;
 const STEEL = 0x8d8a84;
 const RED = 0xe5484d;
+/** name pill height in scene units — small: the damage is the subject, the names are a key (D-058) */
+const LABEL_HEIGHT = 1.1;
 
 type Kind = "houses" | "dam" | "helipad" | "tents" | "health" | "border";
 
@@ -150,6 +153,7 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
   const byId = new Map<string, Record_>();
   const byPick = new Map<THREE.Object3D, Record_>();
   let ride = false;
+  let labelsOn = true;
 
   const up = new THREE.Vector3(0, 1, 0);
   const tmpQ = new THREE.Quaternion();
@@ -283,8 +287,8 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
       // label
       let label: THREE.Sprite | null = null;
       try {
-        label = createLabel(p.name, { height: 1.9 });
-        label.position.copy(centre).addScaledVector(n, 1.9 + (kind === "dam" ? 0.6 : 0));
+        label = createLabel(p.name, { height: LABEL_HEIGHT });
+        label.position.copy(centre).addScaledVector(n, 1.5 + (kind === "dam" ? 0.6 : 0));
         label.visible = false;
         scene.add(label);
       } catch {
@@ -314,6 +318,10 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
       ride = on;
       for (const f of families) f.setTranslucent(on);
     },
+    setLabels(on) {
+      labelsOn = on;
+      if (!on) for (const r of records) if (r.label) r.label.visible = false;
+    },
     markReached(id) {
       const r = byId.get(id);
       if (!r || r.reached >= 0) return;
@@ -329,7 +337,7 @@ export function createMarkers(ctx: SceneCtx): MarkersModule {
     update(dt, camPos) {
       for (const r of records) {
         if (r.reached >= 0) r.reached += dt;
-        if (!r.label) continue;
+        if (!r.label || !labelsOn) continue;
         const dx = camPos.x - r.x;
         const dz = camPos.z - r.z;
         const dist = Math.hypot(dx, dz, camPos.y - r.y);

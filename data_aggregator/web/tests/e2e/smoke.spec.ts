@@ -128,6 +128,13 @@ test("the corridor flood sim: controls render, a run advances the clock, an obje
   // nothing is ever below the ground
   expect(await page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { belowGround: number } } }).__corridor?.debug().belowGround)).toBe(0);
   await page.locator('[data-testid="corridor-frame"]').click();
+  // names toggle: off hides every place pill, on brings them back (persisted per device)
+  const names = page.locator('[data-testid="corridor-names"]');
+  await names.click();
+  await expect.poll(async () => page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { labels: boolean } } }).__corridor?.debug().labels)).toBe(false);
+  await expect(names).toHaveAttribute("aria-pressed", "false");
+  await names.click();
+  await expect.poll(async () => page.evaluate(() => (window as unknown as { __corridor?: { debug: () => { labels: boolean } } }).__corridor?.debug().labels)).toBe(true);
   // reset clears the counter
   await page.getByRole("button", { name: /Reset/ }).click();
   await expect(page.locator('[data-testid="corridor-swept"]')).toHaveText("0");

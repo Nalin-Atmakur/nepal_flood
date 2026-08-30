@@ -28,8 +28,12 @@ type Pop = { key: number; text: string; x: number; y: number; tone: "red" | "ult
 type NetInfo = { saveData?: boolean; effectiveType?: string };
 const SLOW = new Set(["slow-2g", "2g", "3g"]);
 const FEED_MAX = 12;
-const FEED_VISIBLE = 3;
+/** how many story rows show at once: 3 on the smallest panels, up to 6 when the screen permits (owner, 30 Aug) */
+const FEED_MIN = 3;
+const FEED_MAX_VISIBLE = 6;
+const FEED_ROW_PX = 50;
 const POP_MS = 1600;
+const NAMES_KEY = "nft.corridor.names";
 
 function slowConnection(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -67,6 +71,8 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
   const [flash, setFlash] = useState(false);
   const [armed, setArmed] = useState<ObjectKind | null>(null);
   const [xray, setXray] = useState(0);
+  const [names, setNames] = useState(true);
+  const [feedCap, setFeedCap] = useState(FEED_MIN);
   const seedMm3 = lakeVolumeM3 && lakeVolumeM3 > 0 ? Math.min(LAKE_MM3_MAX, Math.max(LAKE_MM3_MIN, lakeVolumeM3 / 1e6)) : DEFAULT_SCENARIO.lakeMm3;
   const [scenario, setScenario] = useState<Scenario>({ lakeMm3: seedMm3, breachSeconds: DEFAULT_SCENARIO.breachSeconds });
 
@@ -114,6 +120,18 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     handleRef.current?.setScenario(scenario);
   }, [scenario]);
 
+  // the feed shows as many rows as the panel has room for (desktop overlay: by canvas height; phones: five under it)
+  useEffect(() => {
+    const measure = () => {
+      const h = boxRef.current?.clientHeight ?? 0;
+      const cap = isMobile() ? 5 : Math.floor((h - 150) / FEED_ROW_PX);
+      setFeedCap(Math.max(FEED_MIN, Math.min(FEED_MAX_VISIBLE, cap)));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
   // Boot after first paint; fall back on slow networks or any WebGL failure; autoplay unless reduced motion.
   useEffect(() => {
     let cancelled = false;
@@ -158,6 +176,14 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
           objectLabel: (kind) => t(lang, "corridor.obj." + kind),
         });
         handleRef.current = h;
+        try {
+          if (window.localStorage.getItem(NAMES_KEY) === "0") {
+            h.setLabels(false);
+            setNames(false);
+          }
+        } catch {
+          /* storage unavailable */
+        }
         if (window.location.search.includes("debug=1")) (window as unknown as { __corridor?: CorridorHandle }).__corridor = h;
         setMode("3d");
         if (!reducedMotion()) autoplay = setTimeout(() => handleRef.current?.play(), 700);
@@ -225,6 +251,16 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
     setArmed(null);
     handleRef.current?.arm(null);
   };
+  const toggleNames = () => {
+    const next = !names;
+    setNames(next);
+    handleRef.current?.setLabels(next);
+    try {
+      window.localStorage.setItem(NAMES_KEY, next ? "1" : "0");
+    } catch {
+      /* storage unavailable */
+    }
+  };
   const shareRun = async () => {
     const url = pageUrl(lang, `/run?swept=${swept}&bridges=${sweptReal}`);
     const text = t(lang, "corridor.share_text", { n: String(swept), b: String(sweptReal) });
@@ -242,7 +278,7 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
   };
 
   const cardLink = t(lang, "sec.corridor_card_link");
-  const feedVisible = feed.slice(0, FEED_VISIBLE);
+  const feedVisible = feed.slice(0, feedCap);
 
   return (
     <div>
@@ -271,11 +307,23 @@ export default function CorridorScene({ places, lang, fallbackSrc, lakeVolumeM3,
               </span>
               <span className="font-semibold text-[10px] opacity-80">{t(lang, "corridor.clock_label")}</span>
             </div>
-            {xray > 0.35 ? (
-              <div className="absolute top-2 right-2 z-10 bg-card/90 b-ink-2 rounded-r2 px-[10px] py-[5px] arcade text-[8px] text-ink" data-testid="corridor-xray">
-                X-RAY VIEW
-              </div>
-            ) : null}
+            <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
+              {xray > 0.35 ? (
+                <div className="bg-card/90 b-ink-2 rounded-r2 px-[10px] py-[5px] arcade text-[8px] text-ink" data-testid="corridor-xray">
+                  X-RAY VIEW
+                </div>
+              ) : null}
+              <button
+                type="button"
+                onClick={toggleNames}
+                aria-pressed={names}
+                className={"inline-flex items-center gap-[6px] min-h-[32px] px-[10px] b-ink-2 rounded-r2 font-bold text-[11px] cursor-pointer shadow-hard-2 " + (names ? "bg-card text-ink" : "bg-board text-white")}
+                data-testid="corridor-names"
+                title={t(lang, "corridor.names")}
+              >
+                <span aria-hidden="true">{names ? "◉" : "○"}</span> {t(lang, "corridor.names")}
+              </button>
+            </div>
             <button
               type="button"
               onClick={() => handleRef.current?.frame()}

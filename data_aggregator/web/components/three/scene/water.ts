@@ -5,7 +5,8 @@
  *
  *   sim.depth/vx/vz ──► sheet: vertex y = bed + depth·visAmp (+ jitter), colour by depth/speed/crest,
  *                              index rebuilt each frame with only the triangles that touch a wet vertex
- *                       spray: 900-point pool spawned in fast deep cells, ballistic, 0.5–1 s
+ *                       spray: 900-point pool spawned in fast deep cells, ballistic, 0.5–1 s; plus the fall off
+ *                              the plate's east edge (the sim's open boundary) — the corridor ends in a waterfall
  *                       debris: 120 instanced boxes riding the surface with the flow (cap 6 u/s), spinning
  */
 import * as THREE from "three";
@@ -210,6 +211,23 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
       sprayVel[k * 3 + 2] = vz[i] * 0.15 + (Math.random() - 0.5) * 2.4;
       sprayLife[k] = 0.5 + Math.random() * 0.5;
       spawned++;
+    }
+    // the plate's east edge drains freely (the sim's open boundary): water that reaches it goes over as a fall
+    for (let kz = (ctx.frame * 3) % 2, edgeSpawned = 0; kz < grid.nz && edgeSpawned < 14; kz += 2) {
+      const i = kz * nx + nx - 2; // one cell in: the open boundary itself drains to ~0
+      const dep = d[i];
+      if (dep < 0.15) continue;
+      const k = sprayCursor;
+      sprayCursor = (sprayCursor + 1) % SPRAY_N;
+      const { x, z } = cellCentre(grid, i);
+      sprayPos[k * 3] = x + cell * 1.5;
+      sprayPos[k * 3 + 1] = bed[i] + dep * ctx.visAmp * Math.random();
+      sprayPos[k * 3 + 2] = z + (Math.random() - 0.5) * cell;
+      sprayVel[k * 3] = 4 + Math.max(0, vx[i]) * 0.25 + Math.random() * 2;
+      sprayVel[k * 3 + 1] = -1 - Math.random() * 3;
+      sprayVel[k * 3 + 2] = (Math.random() - 0.5) * 1.5;
+      sprayLife[k] = 1.4 + Math.random() * 0.8;
+      edgeSpawned++;
     }
     let n = 0;
     for (let k = 0; k < SPRAY_N; k++) {

@@ -431,6 +431,7 @@
   "corridor.obj.boulder": "चट्टान",
   "corridor.obj.tree": "पेड़",
   "corridor.frame": "पूरा देखें",
+  "corridor.names": "नाम",
   "corridor.swept_pop": "SWEPT",
   "corridor.swept_feed": "{obj} बह गया।",
   "corridor.placed_pop": "{obj} रखा गया",

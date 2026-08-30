@@ -60,6 +60,7 @@ Overview from above (no chase camera); the run auto-plays 0.7 s after the scene 
 (reached places, phase captions, SWEPT/PLACED) sits under the canvas with a placeholder line until the first event;
 on desktop it is an overlay column bottom-left. A plain sentence under the heading explains what the panel is
 ("The 72 km the flood travelled on 26 August, replayed from above — press ▶, drop something in its path…").
+- **12:30 pass (owner's screenshots):** place names are small pills with a **Names** toggle top-right (off = the damage alone); no discs under anything — the real bridges had kept the object foundation pad + ring, now removed; an object the flood takes lifts off *whole*, rides the crest tumbling for up to 6 s, breaks on a hard hit, and its pieces are carried on down the corridor — over the plate's east edge as a waterfall if the water goes that far; the story feed shows up to six rows when the panel has room.
 
 ## 2. Architecture (v2, 30 Aug 10:00 — see 16-corridor-v2-plan.md for the brief)
 
@@ -133,7 +134,7 @@ the camera never sinks below the water surface, and the X-ray amount follows `ho
 - The handle also exposes `debug()` (state, water visibility, draw count, max depth, front, objects, swept,
   injected); `?debug=1` puts the handle on `window.__corridor` for Playwright.
 
-## 3. Tuning knobs (v2 values, 30 Aug 10:35)
+## 3. Tuning knobs (v2 values, 30 Aug 12:30)
 
 | Knob | Where | Value | Effect |
 |---|---|---|---|
@@ -150,7 +151,11 @@ the camera never sinks below the water surface, and the X-ray amount follows `ho
 | `wallHeight` / `floorHalfWidth` | lib/corridor-terrain.ts | 26 → 6 · 1 → 7 | the gorge → plain profile |
 | `OBJECT_SCALE` (catalogue `scale`) / real bridges | lib/object-catalogue.ts · scene/objects.ts | 2.8 / × 0.55 | readability from the overview |
 | `thresholdFor` | lib/object-catalogue.ts | camp 0.1/0.4 … bridge 0.9/2.5 … boulder 1.2/3.0 | depth / speed an object survives |
-| physics | lib/flood-physics.ts | G −22 · drag 3.2 · restitution 0.28 · friction 0.45 · static-friction slope < 0.18 | pieces never below ground (tested) |
+| physics | lib/flood-physics.ts | G −22 · drag 4.5 · `FLOW_GAIN` 0.85 · `FLOW_CAP` 12 · `MAX_SPEED` 20 · `CENTRE` 3.5 · restitution 0.28 · friction 0.45 (÷3 in water) · static-friction slope < 0.18 · `FALL_FLOOR` −45 | bodies never below ground (tested); carried bodies match the water within ~¼ s and are pulled back to the channel; off the east edge they fly and fall |
+| carried phase | scene/objects.ts | `CARRY_SECONDS` 6 · `CARRY_MIN_SECONDS` 0.55 · break on a hard hit (vₙ < −2.5) | a taken object rides whole (one body of radius = half its height, pivot at its centre), then breaks; anchored kinds break in place |
+| waterfall | scene/water.ts | column nx−2, depth > 0.15, ≤ 14 drops/frame, life 1.4–2.2 s | water that reaches the plate's open east edge goes over as spray |
+| `LABEL_HEIGHT` | scene/markers.ts | 1.1 (was 1.9) + **Names** toggle (`setLabels`, persisted in `nft.corridor.names`) | names are a small key; off = look at the damage alone |
+| feed rows | CorridorScene.tsx | 3 → 6 by canvas height (`FEED_ROW_PX` 50); 5 under the canvas on phones | as many story rows as the panel has room for |
 | `SNOW_LINE` / `ROCK_SLOPE` / `SCREE_SLOPE` | lib/terrain-colours.ts | 36 / 0.72 / 0.52 | snow only on the high northern walls |
 
 Re-tune with `npx vitest run` (front ordering, physics invariants, camera fit must hold) and the screenshot loop in §5.
