@@ -3,7 +3,7 @@ import { GRID, createSim, sampleBed, type Grid } from "@/lib/flood-sim";
 import type { Flow, Ground, SceneCtx } from "./types";
 
 /** Visual exaggeration of water depth (the terrain is already ×1.5); the sim itself is untouched. */
-export const VIS_AMP = 3.2;
+export const VIS_AMP = 4.2;
 
 /**
  * Bilinear ground height and normal from the bed grid — the one truth every module uses so nothing ever sits

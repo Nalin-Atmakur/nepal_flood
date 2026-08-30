@@ -105,7 +105,7 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
       }
       // dilate by one cell so the sheet reads as a flood from the overview, not a hairline
       const dep0 = d[c];
-      const dep = Math.max(dep0, 0.7 * Math.max(c > 0 ? d[c - 1] : 0, c + 1 < d.length ? d[c + 1] : 0, c >= nx ? d[c - nx] : 0, c + nx < d.length ? d[c + nx] : 0));
+      const dep = Math.max(dep0, 0.85 * Math.max(c > 0 ? d[c - 1] : 0, c + 1 < d.length ? d[c + 1] : 0, c >= nx ? d[c - nx] : 0, c + nx < d.length ? d[c + nx] : 0));
       if (dep > WET) {
         anyWet = true;
         wetV[v] = 1;
