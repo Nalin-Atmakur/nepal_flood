@@ -3,7 +3,7 @@
 Owner's brief (30 Aug 02:15 BST): the 3D corridor is the first thing visitors see and must be captivating — an
 animated flood tearing through the landscape, interactive (change the conditions, drop objects in its path and watch
 them get destroyed, Turbo-Dismount style), with the statistics layered on afterwards. It is the cornerstone of the
-viral surface. Shipped 30 Aug ~05:30 BST; this file is the reference for how it works and how to tune it.
+viral surface. Shipped 30 Aug 04:05 BST (pass 2 04:40); this file is the reference for how it works and how to tune it.
 
 ## 1. What the visitor experiences
 
