@@ -16,6 +16,7 @@ and what happens when it fails.
 | 05a | [pull_external_data/05a-sources-wave2-official.md](pull_external_data/05a-sources-wave2-official.md) | wave 2 — 12 official/government sources |
 | 05b | [pull_external_data/05b-sources-wave2-geospatial-text.md](pull_external_data/05b-sources-wave2-geospatial-text.md) | wave 2 — 14 geospatial + text sources |
 | 05c | [pull_external_data/05c-sources-wave3.md](pull_external_data/05c-sources-wave3.md) | wave 3 — the last 12 ids (help requests, hydrograph, bridges, extents, listings, catalogues) |
+| 05d | [pull_external_data/05d-sources-wave4.md](pull_external_data/05d-sources-wave4.md) | wave 4 — beyond the catalogue: NRCS situation-update PDFs, BIPAD incident/loss records, 7 more feeds (ICIMOD, INSEC, Radio Nepal…), ReliefWeb full reports; the probed-and-rejected list |
 | 06 | [pull_external_data/06-adding-a-source.md](pull_external_data/06-adding-a-source.md) | numbered steps |
 | 07 | [pull_external_data/07-failure-modes.md](pull_external_data/07-failure-modes.md) | what breaks, what happens, where to see it |
 

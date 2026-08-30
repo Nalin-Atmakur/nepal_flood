@@ -258,3 +258,5 @@ Wave-2 official/government sources (setu_recordlist, police_udb, volunteer_bulle
 Wave 2 (geospatial + text — NESRA, EMSR927, HOT TM, GEOFON, DHM river watch, Google News site queries, ekantipur live, live blogs, China search APIs, Wikipedia, NTC restoration, HDX / HOT S3 / OpenAerialMap availability): [05b-sources-wave2-geospatial-text.md](05b-sources-wave2-geospatial-text.md).
 
 Wave 3 (the last 12 registry ids — OPMCM help requests + government notices, BIPAD hydrograph, NESRA/DoR bridges, UNOSAT extent, outlet tag pages, GDELT, Vantor / Planet / Copernicus / Hugging Face catalogues): [05c-sources-wave3.md](05c-sources-wave3.md). After it every id in `sources.yaml` has a normaliser.
+
+Wave 4 (beyond the catalogue, 30 Aug): `nrcs_situation_updates`, `bipad_incidents`, `outlet_rss_set_2`, `reliefweb_reports` — plus the probed candidates registered with `verified: false` (`dao_downstream_hubs`, `ntc_news`, `moha_notices`, `nea_notices`, `ippan_statements`). Details, shortlist and verdicts: [05d-sources-wave4.md](05d-sources-wave4.md).

@@ -232,6 +232,28 @@ class Db:
         self.upsert("articles", clean, on_conflict="url", ignore_duplicates=True)
         return len(clean)
 
+    def enrich_article_bodies(self, rows: list[dict[str, Any]]) -> int:
+        """
+        Replace body/publisher/published_at of articles that already exist by URL — only for sources flagged
+        `enrich_bodies: true` in sources.yaml (a source that fetches the full page behind a URL another feed
+        stored as a summary, e.g. reliefweb_reports). Never touches title, places, extracted or source_id.
+        """
+        n = 0
+        for a in rows:
+            url = (a.get("url") or "").strip()
+            body = a.get("body") or None
+            if not url or not body:
+                continue
+            patch = {"body": body}
+            if a.get("publisher"):
+                patch["publisher"] = a["publisher"]
+            if a.get("published_at"):
+                patch["published_at"] = a["published_at"]
+            self._req("PATCH", "/rest/v1/articles", params={"url": f"eq.{url}"}, json_body=_clean(patch),
+                      headers={"Prefer": "return=minimal"})
+            n += 1
+        return n
+
     # ---- storage / auth ----------------------------------------------------
     def storage_upload(self, path: str, body: bytes, content_type: str = "application/octet-stream",
                        bucket: str = config.STORAGE_BUCKET) -> str:

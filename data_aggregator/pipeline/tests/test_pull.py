@@ -22,7 +22,9 @@ def test_expand_alternatives():
 
 def test_requests_for_all_sources():
     srcs = P.load_sources()
-    assert len(srcs) == 51
+    assert len(srcs) == 60  # 55 with normalisers (waves 1–4) + 5 probed candidates marked verified: false
+    unverified = [s["id"] for s in srcs if s.get("verified") is False]
+    assert len(unverified) == 5
     for s in srcs:
         reqs = P.requests_for(s)
         for r in reqs:
@@ -62,3 +64,12 @@ def test_envelope_roundtrip():
     assert back[0].url == "a" and back[0].ok and back[1].status == 400 and not back[1].ok
     single = parts(b"plain body")
     assert len(single) == 1 and single[0].body == "plain body"
+
+
+def test_select_due_skips_unverified_candidates_unless_named(tmp_path):
+    st = State(tmp_path / "s.json")
+    now = datetime(2026, 8, 30, 5, 0, tzinfo=timezone.utc)
+    cand = {"id": "x_candidate", "url": "https://example.org/", "cadence": "60m", "verified": False}
+    live = {"id": "x_live", "url": "https://example.org/live", "cadence": "60m", "verified": "2026-08-30"}
+    assert [s["id"] for s in P.select_due([cand, live], st, now, only=[], force=True)] == ["x_live"]
+    assert [s["id"] for s in P.select_due([cand, live], st, now, only=["x_candidate"], force=False)] == ["x_candidate"]

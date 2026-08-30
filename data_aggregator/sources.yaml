@@ -687,6 +687,110 @@ sources:
   catalogue: E5
   verified: C
 
+# ── Wave 4 (30 Aug, lane S4): beyond the catalogue — see pipeline/docs/pull_external_data/05d-sources-wave4.md
+- id: nrcs_situation_updates
+  family: html
+  url: https://nrcs.org/
+  auth: none
+  cadence: 6h
+  format: html → pdf (text layer)
+  holds: Nepal Red Cross situation updates 1–3 + press release — relief, hospital beds, warehouses, personnel quoted from NDRRMA
+  pii: false
+  parser: PDF links on the homepage → ctx.fetch → pypdf → *_quoted figures + one article per PDF
+  catalogue: W4-1
+  verified: 2026-08-30
+- id: bipad_incidents
+  family: json_api
+  url: https://bipadportal.gov.np/api/v1/incident/?incident_on__gt=2026-08-25T00:00:00&limit=500&expand=loss&ordering=-incident_on
+  auth: none
+  cadence: 60m
+  format: json
+  holds: NEOC incident/loss records (dead/missing/injured/families/houses per ward) — the Bhote Koshi event is NOT entered yet (30 Aug); wired for when it is
+  pii: false
+  parser: prestore whitelists count fields; flood-family incidents since 26 Aug → figures per place + national sums
+  catalogue: W4-2
+  verified: 2026-08-30
+- id: outlet_rss_set_2
+  family: rss
+  url: ["https://www.icimod.org/feed/", "https://inseconline.org/en/feed", "https://radionepalonline.com/feed/", "https://www.khabarhub.com/feed/", "https://www.setopati.com/feed", "https://www.himalkhabar.com/feed", "https://deshsanchar.com/feed"]
+  auth: browser_ua
+  cadence: 60m
+  format: rss
+  holds: ICIMOD (cause/warning), INSEC (rights monitor — missing by home district), Radio Nepal NE, Khabarhub NE, Setopati NE, Himal, Deshsanchar
+  pii: false
+  parser: delegates to outlet_rss_set (relevance gate)
+  catalogue: W4-3
+  verified: 2026-08-30
+- id: reliefweb_reports
+  family: html
+  url: https://reliefweb.int/updates/rss.xml?search=rasuwa
+  auth: browser_ua
+  cadence: 60m
+  format: rss → html
+  holds: full text of OCHA flash updates, UN RC/HCT sitreps, WFP/IOM/WVI/NRCS updates (per-district and per-site numbers)
+  pii: false
+  parser: newest 8 /report/ links → ctx.fetch → JSON-LD + <article> text → article + *_quoted figures
+  enrich_bodies: true
+  catalogue: W4-4
+  verified: 2026-08-30
+- id: dao_downstream_hubs
+  family: html
+  url: ["https://daodhading.moha.gov.np/", "https://daochitwan.moha.gov.np/", "https://daogorkha.moha.gov.np/"]
+  auth: none
+  cadence: daily
+  format: html
+  holds: DAO Dhading / Chitwan / Gorkha homepages — same CMS as DAO Rasuwa; no flood posts found on 30 Aug
+  pii: mixed
+  parser: none yet (reuse dao_rasuwa_hub.parse_cards once a flood hub page appears)
+  catalogue: W4-5
+  verified: false
+  note: probed 30 Aug 04:55 UTC — 200 OK, no event content
+- id: ntc_news
+  family: html
+  url: https://ntc.net.np/news
+  auth: none
+  cadence: 6h
+  format: html (JS-rendered)
+  holds: NTC tower-restoration notices (the primary source behind ntc_restoration_articles)
+  pii: false
+  parser: none — page is client-rendered, no content in the HTML
+  catalogue: W4-6
+  verified: false
+  note: needs a headless browser; not worth it while outlets relay the same notices
+- id: moha_notices
+  family: html
+  url: https://moha.gov.np/
+  auth: none
+  cadence: daily
+  format: html
+  holds: MoHA notices (only the unclaimed-bodies management directive is flood-related so far)
+  pii: false
+  parser: none yet
+  catalogue: W4-7
+  verified: false
+- id: nea_notices
+  family: html
+  url: https://www.nea.org.np/notices
+  auth: none
+  cadence: daily
+  format: html
+  holds: NEA outage/restoration notices
+  pii: false
+  parser: none — bot protection (TSPD challenge page)
+  catalogue: W4-8
+  verified: false
+- id: ippan_statements
+  family: html
+  url: https://www.ippan.org.np/
+  auth: none
+  cadence: daily
+  format: html
+  holds: IPPAN (hydropower producers) — "934 unaccounted across 11 projects" reached the press, nothing published on the site
+  pii: false
+  parser: none yet
+  catalogue: W4-9
+  verified: false
+
 # ── Held data (not pollable; request via government channel) ─────────────────
 # See catalogue §I: DHM observation API key; NDRRMA/NTA consolidated tower-restoration table;
 # Army daily sortie log; helicopter operators' GPS logs; NEA feeder restoration log;

@@ -85,7 +85,7 @@ def is_due(state: State, src: dict[str, Any], now: datetime) -> bool:
 
 
 def select_due(sources: list[dict[str, Any]], state: State, now: datetime, *, only: list[str], force: bool) -> list[dict[str, Any]]:
-    """The sources this run will fetch: --only wins; else --force takes all; else cadence × backoff. Sources without a URL never run."""
+    """The sources this run will fetch: --only wins; else --force takes all; else cadence × backoff. Sources without a URL, or with `verified: false`, never run unless named in --only."""
     due: list[dict[str, Any]] = []
     for src in sources:
         sid = src["id"]
@@ -96,6 +96,10 @@ def select_due(sources: list[dict[str, Any]], state: State, now: datetime, *, on
             continue
         if not src.get("url") or (isinstance(src.get("url"), str) and not src["url"].startswith("http")):
             log.info("pull.skip_no_url", source=sid)
+            continue
+        if src.get("verified") is False and not only:
+            # registered candidate without a working parser yet (sources.yaml `verified: false`) — only on --only
+            log.debug("pull.skip_unverified", source=sid)
             continue
         due.append(src)
     return due
@@ -430,7 +434,9 @@ class Runner:
         n_f = self.db.upsert_figures(rows.figures) if rows.figures else 0
         n_g = self.db.upsert_gauges(rows.gauges) if rows.gauges else 0
         n_a = self.db.upsert_articles(rows.articles) if rows.articles else 0
-        log.info("pull.written", source=sid, figures=n_f, gauges=n_g, articles=n_a)
+        # sources that fetch the full page behind URLs another feed already stored as summaries (docs 05d §5)
+        n_e = self.db.enrich_article_bodies(rows.articles) if (rows.articles and src.get("enrich_bodies")) else 0
+        log.info("pull.written", source=sid, figures=n_f, gauges=n_g, articles=n_a, enriched=n_e)
 
     def _record_hints(self, sid: str, rows: NormalisedRows) -> None:
         """Unresolved place texts (no names — normalisers only pass location strings) → snapshots/place_hints.jsonl."""

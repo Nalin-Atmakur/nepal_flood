@@ -4,7 +4,7 @@ Everything the site shows comes out of these two scripts. They run on a schedule
 to the Supabase project (PostgREST + Storage + Auth admin over HTTPS) and never to the website.
 
 ```
-                 sources.yaml (51 sources; every id has a normaliser — waves 1–3)
+                 sources.yaml (60 registered: 55 with normalisers — waves 1–4 — and 5 probed candidates marked verified: false)
                         │
                         ▼
    ┌──────────────────────────────────────────────────────────────────────────────┐
@@ -56,7 +56,7 @@ the OpenAI cost ledger. `run.log` is the structured log (no PII, secrets redacte
    stale banner threshold (`STALE_AFTER_MINUTES = PULL_INTERVAL_MINUTES + 45`).
 3. **First run**
    ```
-   .venv/bin/python pull_external_data.py --force      # all 51 sources, ignore cadence/hashes (~5 min)
+   .venv/bin/python pull_external_data.py --force      # all pollable sources, ignore cadence/hashes (~5 min)
    .venv/bin/python process_data.py                    # steps ⓪–⑨
    ```
    Expect: a `pulls` row per source, `raw_pulls` bodies, ≥ 5 publishers in `figures`, ~280 gauge
