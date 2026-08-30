@@ -532,3 +532,32 @@ export async function getOwnUser(sb: SupabaseClient, id: string): Promise<OwnUse
   const { data, error } = await sb.from("users").select("id, lang, contact, created_at").eq("id", id).maybeSingle();
   return error ? null : ((data as OwnUser | null) ?? null);
 }
+
+// ---------------------------------------------------------------------------
+// /sources — exactly what was extracted per source (views from db/migrations/012_source_extracts.sql)
+// ---------------------------------------------------------------------------
+
+export type SourceCounts = { source_id: string; figures_total: number; articles_total: number; last_row_at: string | null };
+export type SourceFigure = { source_id: string; publisher: string; metric: string; scope: string; value: number; as_of: string | null; fetched_at: string; url: string | null; note: string | null };
+export type SourceArticle = { source_id: string; title: string | null; url: string; publisher: string | null; published_at: string | null; fetched_at: string };
+export type SourceExtract = { figures: SourceFigure[]; articles: SourceArticle[] };
+
+/** Per-source row counts for the /sources tables (server, ISR). */
+export async function getSourceCounts(): Promise<Record<string, SourceCounts>> {
+  const sb = serverClient();
+  if (!sb) return {};
+  const { data, error } = await sb.from("v_source_counts").select("source_id, figures_total, articles_total, last_row_at");
+  if (error || !data) return {};
+  const out: Record<string, SourceCounts> = {};
+  for (const r of data as SourceCounts[]) out[r.source_id] = r;
+  return out;
+}
+
+/** The newest figures (≤ 40) and article titles (≤ 8) one source produced — fetched on first expand, anon key. */
+export async function fetchSourceExtract(sb: SupabaseClient, sourceId: string): Promise<SourceExtract> {
+  const [f, a] = await Promise.all([
+    sb.from("v_source_figures_recent").select("source_id, publisher, metric, scope, value, as_of, fetched_at, url, note").eq("source_id", sourceId),
+    sb.from("v_source_articles_recent").select("source_id, title, url, publisher, published_at, fetched_at").eq("source_id", sourceId),
+  ]);
+  return { figures: (f.error ? [] : (f.data as SourceFigure[])) ?? [], articles: (a.error ? [] : (a.data as SourceArticle[])) ?? [] };
+}

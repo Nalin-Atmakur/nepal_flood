@@ -3,16 +3,18 @@ import { SOURCE_GROUPS, SOURCE_OK_MINUTES } from "@/lib/config";
 import { fmtAgo, fmtCadence, fmtDayTime, fmtInt, minutesSince, prettySourceName } from "@/lib/format";
 import { asLang, t, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { getLiveCounts, getSources, type SourceStatusRow } from "@/lib/queries";
+import { getLiveCounts, getSourceCounts, getSources, type SourceCounts, type SourceStatusRow } from "@/lib/queries";
+import SourceExtract from "@/components/blocks/SourceExtract";
 import { GradeCircle, NumberBadge } from "@/components/ui/Badge";
 import EmptyState from "@/components/ui/EmptyState";
 import SectionHead from "@/components/ui/SectionHead";
-import { Table, TableBox, Td, Th, THead } from "@/components/ui/Table";
+import { Table, TableBox, Th, THead } from "@/components/ui/Table";
 
 /**
  * /sources — every source we pull, grouped (Government, UN/humanitarian, Geospatial, Signals, News, Community),
  * with reliability circles A–E, last fetched coloured by staleness (green < 2 × PULL_INTERVAL, amber otherwise),
- * a link, the grade legend, and the dashed empty state.
+ * a link, the grade legend, and the dashed empty state. Every row has a "▸" disclosure that opens exactly what we
+ * extracted from that source (components/blocks/SourceExtract.tsx, views from migration 012; docs/15-sources-page.md).
  */
 export const revalidate = 300;
 
@@ -23,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export default async function SourcesPage({ params }: { params: Promise<{ lang: string }> }) {
   const lang = asLang((await params).lang);
-  const [sources, live] = await Promise.all([getSources(), getLiveCounts()]);
+  const [sources, live, counts] = await Promise.all([getSources(), getLiveCounts(), getSourceCounts()]);
   const cadence = fmtCadence(lang);
   const groups = SOURCE_GROUPS.map((g) => ({ ...g, rows: (sources ?? []).filter((s) => (s.grp ?? "").toLowerCase() === g.grp) }));
   const known = new Set(SOURCE_GROUPS.map((g) => g.grp));
@@ -52,9 +54,12 @@ export default async function SourcesPage({ params }: { params: Promise<{ lang: 
             {g.rows.length ? (
               <TableBox shadow={0} className="mt-[10px]">
                 <div className="scroll-x">
-                  <Table minWidth={720} className="text-[13.5px]">
+                  <Table minWidth={760} className="text-[13.5px]">
                     <THead>
-                      <Th className="w-[260px]">{t(lang, "sources.col.source")}</Th>
+                      <Th className="w-[44px]">
+                        <span className="sr-only">{t(lang, "sources.col.extract")}</span>
+                      </Th>
+                      <Th className="w-[240px]">{t(lang, "sources.col.source")}</Th>
                       <Th>{t(lang, "sources.col.holds")}</Th>
                       <Th className="w-[110px]">{t(lang, "sources.col.reliability")}</Th>
                       <Th className="w-[150px]">{t(lang, "sources.col.last")}</Th>
@@ -62,7 +67,7 @@ export default async function SourcesPage({ params }: { params: Promise<{ lang: 
                     </THead>
                     <tbody>
                       {g.rows.map((s) => (
-                        <SourceRow key={s.id} s={s} lang={lang} live={live?.submissions_total ?? 0} lastAttempt={lastAttempt} />
+                        <SourceRow key={s.id} s={s} lang={lang} live={live?.submissions_total ?? 0} lastAttempt={lastAttempt} counts={counts[s.id] ?? null} />
                       ))}
                     </tbody>
                   </Table>
@@ -98,7 +103,7 @@ export function isDerivedSource(s: Pick<SourceStatusRow, "url" | "family">): boo
   return s.family === "derived" || !s.url || s.url.trim().startsWith("(");
 }
 
-function SourceRow({ s, lang, live, lastAttempt }: { s: SourceStatusRow; lang: Lang; live: number; lastAttempt: string | null }) {
+function SourceRow({ s, lang, live, lastAttempt, counts }: { s: SourceStatusRow; lang: Lang; live: number; lastAttempt: string | null; counts: SourceCounts | null }) {
   const isSite = s.id === "site_reports" || s.family === "site";
   const derived = isDerivedSource(s);
   const mins = minutesSince(s.last_fetched_at);
@@ -113,24 +118,21 @@ function SourceRow({ s, lang, live, lastAttempt }: { s: SourceStatusRow; lang: L
   const name = isSite ? t(lang, "sources.this_site") : prettySourceName(s.name, s.id);
   const holds = isSite ? t(lang, "sources.this_site_holds", { n: fmtInt(live) }) : (s.holds ?? s.family);
   return (
-    <tr>
-      <Td className="font-bold text-[13.5px] py-[9px]">{name}</Td>
-      <Td className="text-muted-2 py-[9px]">{holds}</Td>
-      <Td className="py-[9px]">
-        <GradeCircle grade={s.reliability} />
-      </Td>
-      <Td className={["font-semibold py-[9px] whitespace-nowrap num", colour].join(" ")} title={s.last_fetched_at ? fmtDayTime(s.last_fetched_at, lang) : undefined}>
-        {fetched}
-      </Td>
-      <Td className="py-[9px]">
-        {s.url && !derived ? (
-          <a href={s.url} target="_blank" rel="noopener noreferrer">
-            {t(lang, "sources.visit")}
-          </a>
-        ) : (
-          "—"
-        )}
-      </Td>
-    </tr>
+    <SourceExtract
+      lang={lang}
+      counts={counts}
+      grade={<GradeCircle grade={s.reliability} />}
+      cells={{
+        id: s.id,
+        name,
+        holds,
+        fetched,
+        fetchedClass: colour,
+        fetchedTitle: s.last_fetched_at ? fmtDayTime(s.last_fetched_at, lang) : undefined,
+        url: s.url,
+        derived,
+        isSite,
+      }}
+    />
   );
 }

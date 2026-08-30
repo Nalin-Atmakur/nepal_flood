@@ -539,3 +539,10 @@ storage policies `report_media_own_insert` / `report_media_own_select` on the fi
 The pipeline never reads file contents. `reports_archive.photo_path` and the `report-photos` bucket from 005 are
 superseded by this table and unused.
 
+
+### v_source_counts · v_source_figures_recent · v_source_articles_recent (DERIVED views · migration 012)
+
+Public views for the `/sources` disclosure ("exactly what we extracted from this source"): per-source row counts
+and last row time; the newest ≤ 40 `figures` rows per `source_id` (publisher, metric, scope, value, as_of, url, note);
+the newest ≤ 8 `articles` per source (title, url, publisher, published_at). Readers: the site (anon). The underlying
+RAW tables stay revoked for anon. `gauges` carries no source id, so there is no per-source gauge count.

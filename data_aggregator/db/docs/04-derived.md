@@ -61,3 +61,8 @@ All five run as the view owner (`postgres`), which is what lets them read servic
 Every read the site makes is a function in `web/lib/queries.ts` against one of the public tables or views above, plus `places` and `sources`. Adding a column here means: migration → this file and `docs/data-model.md` → the writer in `pipeline/processing/` → the reader in `web/lib/queries.ts`. Nothing else needs to know.
 
 Next: `05-rls.md`.
+
+## 012 — per-source extract views
+
+`v_source_counts`, `v_source_figures_recent` (≤ 40 per source), `v_source_articles_recent` (≤ 8 per source) back the
+"▸" disclosure on `/sources`. Plain views owned by postgres over RAW; `grant select … to anon, authenticated`.
