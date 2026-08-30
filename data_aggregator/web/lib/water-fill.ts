@@ -9,7 +9,8 @@
  * sideways exactly until it meets the terrain at its own height.
  *
  *   level[c]  = bed[c] + depth[c]·amp      where depth > wet, else DRY
- *   fill[c]   = max over |di|,|dk| ≤ radius of level[c'] − falloff·(|di| + |dk|)     (separable: x pass, then z)
+ *   fill[c]   = max over |di|,|dk| ≤ radius of level[c'] − falloff·(max(0,|di|−flat) + max(0,|dk|−flat))   (x pass, then z)
+ *               — level for the first `flat` cells (a lake between the walls), then decaying (a plain floods only so far)
  *   drawn wet = fill[c] > bed[c] + lip
  *
  * Pure and allocation-free per call (the caller owns `out` and `scratch`), unit-tested.
@@ -17,7 +18,9 @@
 import type { Grid } from "./flood-sim";
 
 export const DRY = -1e9;
-export const FILL_RADIUS = 6;
+export const FILL_RADIUS = 8;
+/** no decay within this many cells: the surface is a level lake wall to wall, not a hump over the channel (D-071) */
+export const FILL_FLAT = 4;
 export const FILL_FALLOFF = 0.25;
 /** a cell is drawn wet when the fill stands at least this far above its ground */
 export const FILL_LIP = 0.05;
@@ -33,12 +36,13 @@ export function fillLevels(
   amp: number,
   out: Float32Array,
   scratch: Float32Array,
-  opts: { wet?: number; radius?: number; falloff?: number } = {},
+  opts: { wet?: number; radius?: number; falloff?: number; flat?: number } = {},
 ): boolean {
   const { nx, nz } = grid;
   const wet = opts.wet ?? 0.05;
   const R = opts.radius ?? FILL_RADIUS;
   const K = opts.falloff ?? FILL_FALLOFF;
+  const F = opts.flat ?? FILL_FLAT;
   const n = nx * nz;
   let any = false;
   for (let c = 0; c < n; c++) {
@@ -59,7 +63,7 @@ export function fillLevels(
       const i0 = Math.max(0, i - R);
       const i1 = Math.min(nx - 1, i + R);
       for (let j = i0; j <= i1; j++) {
-        const v = scratch[row + j] - K * Math.abs(j - i);
+        const v = scratch[row + j] - K * Math.max(0, Math.abs(j - i) - F);
         if (v > m) m = v;
       }
       out[row + i] = m;
@@ -72,7 +76,7 @@ export function fillLevels(
       const k0 = Math.max(0, k - R);
       const k1 = Math.min(nz - 1, k + R);
       for (let j = k0; j <= k1; j++) {
-        const v = out[j * nx + i] - K * Math.abs(j - k);
+        const v = out[j * nx + i] - K * Math.max(0, Math.abs(j - k) - F);
         if (v > m) m = v;
       }
       scratch[k * nx + i] = m;

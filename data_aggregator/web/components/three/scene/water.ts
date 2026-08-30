@@ -42,8 +42,8 @@ import type { SceneCtx, TerrainModule, WaterModule } from "./types";
 const WET = 0.05;
 const STAIN_DEPTH = 0.25;
 /** sheet opacity looking down, and how much the side view takes off (the mountain goes 1 → 0.4; water stays denser) */
-const OPACITY_TOP = 0.94;
-const OPACITY_XRAY = 0.36;
+const OPACITY_TOP = 0.97;
+const OPACITY_XRAY = 0.3;
 
 export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule {
   const { scene, sim, bed, grid } = ctx;
@@ -75,10 +75,10 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
     new THREE.MeshStandardMaterial({
       vertexColors: true,
       flatShading: true,
-      roughness: 0.42,
-      metalness: 0.12,
-      emissive: 0x2a1a0c,
-      emissiveIntensity: 0.28,
+      roughness: 0.32,
+      metalness: 0.04,
+      emissive: 0x0e2f66, // a blue glow from inside so shading never greys the sheet (D-071)
+      emissiveIntensity: 0.22,
       transparent: true,
       opacity: OPACITY_TOP,
       depthWrite: true,
@@ -91,9 +91,9 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
   scene.add(mesh);
 
   /** deep lake blue (#1b4a8f) and the run over which it turns to mud (scene units from the breach) */
-  const BLUE: [number, number, number] = [0.106, 0.29, 0.561];
+  const BLUE: [number, number, number] = [0.08, 0.31, 0.7]; // #144fb3 — unmistakably water (D-071)
   const BLUE_X0 = BREACH.x + 6;
-  const BROWN_RUN = 42;
+  const BROWN_RUN = 64; // blue holds through the gorge; mud takes over on the plain
   const nx = ctx.grid.nx;
   const fill = new Float32Array(bed.length);
   const fillScratch = new Float32Array(bed.length);
@@ -159,8 +159,8 @@ export function createWater(ctx: SceneCtx, terrain: TerrainModule): WaterModule 
         const c2 = c + 2 < d.length ? d[c + 2] : c1;
         const drop = Math.max(dep - c1, dep - c2);
         const crest = Math.min(1, Math.max(0, (drop - 0.35) / 1.4));
-        const fast = Math.min(1, Math.max(0, (speed - 18) / 22)) * 0.35;
-        const f = Math.max(fast, crest * 0.85);
+        const fast = Math.min(1, Math.max(0, (speed - 24) / 22)) * 0.25;
+        const f = Math.max(fast, crest * 0.45); // foam only on the steepest crests: the sheet must stay blue
         if (f > 0) {
           r += (foam[0] - r) * f;
           g += (foam[1] - g) * f;

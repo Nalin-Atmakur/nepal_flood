@@ -144,11 +144,11 @@ the camera never sinks below the water surface, and the X-ray amount follows `ho
 | `g` / `friction` | createSim | 9.8 / 0.9 | front speed: Syabrubesi ≈ 4 s, Betrawati ≈ 11 s, Galchhi ≈ 18 s, Devghat ≈ 24 s |
 | `DEFAULT_SCENARIO.breachSeconds` | lib/flood-sim.ts | 4 (UI: sudden 4 / slow 12) | how fast the lake empties |
 | `VIS_AMP` | scene/context.ts | 3.2 | visual depth exaggeration (the overview needs it) |
-| level fill | lib/water-fill.ts (`fillLevels`) | `FILL_RADIUS` 6 cells · `FILL_FALLOFF` 0.25/cell (Manhattan) · `FILL_LIP` 0.05 | the sheet is the highest nearby surface level, extended sideways until it meets the terrain at its own height — it moulds to the mountain (replaces the 1-cell dilation; D-059) |
-| water opacity | scene/water.ts | `OPACITY_TOP` 0.94 − `OPACITY_XRAY` 0.36 × X-ray amount (0.83 by default, 0.58 from the side; the mountain goes 0.82 → 0.4) | translucent, always denser than the mountain; what it carries shows through |
+| level fill | lib/water-fill.ts (`fillLevels`) | `FILL_RADIUS` 8 cells · `FILL_FLAT` 4 (level wall to wall, no decay) · `FILL_FALLOFF` 0.25/cell beyond (Manhattan) · `FILL_LIP` 0.05 | the sheet is the highest nearby surface level, extended sideways until it meets the terrain at its own height — it moulds to the mountain (replaces the 1-cell dilation; D-059) |
+| water opacity | scene/water.ts | `OPACITY_TOP` 0.97 − `OPACITY_XRAY` 0.3 × X-ray amount (0.88 by default, 0.67 from the side; the mountain goes 0.82 → 0.4) | translucent, always denser than the mountain; what it carries shows through |
 | zoom | scene/camera.ts · lib/corridor-camera.ts (`zoomToward`) | wheel: toward the point under the cursor · pinch: toward the midpoint | zooming into a part of the corridor goes to that part (D-060) |
-| `BLUE_X0` / `BROWN_RUN` | scene/water.ts | breach + 6 / 42 units | deep blue at the breach → mud downstream |
-| foam | scene/water.ts | crest band × 0.85, speed term (v − 18)/22 × 0.35 | foam only where the sheet drops |
+| `BLUE` / `BLUE_X0` / `BROWN_RUN` | scene/water.ts | #144fb3 / breach + 6 / 64 units | clear blue through the gorge → mud on the plain; emissive #0e2f66 × 0.22, roughness 0.32, metalness 0.04 so shading never greys it (D-071) |
+| foam | scene/water.ts | crest band × 0.45, speed term (v − 24)/22 × 0.25 | foam only on the steepest crests — the sheet stays blue |
 | `XRAY_DEFAULT` | corridor-3d.ts | 0.3 (→ 1 with tilt; depth-write off above 0.1) | see the surge through the near wall |
 | `fitCamera` | lib/corridor-camera.ts | landscape pol 0.5 az −0.75 · portrait pol 0.42 az −1.5 | overview-only camera (`RIDE_ENABLED = false`) |
 | `wallHeight` / `floorHalfWidth` | lib/corridor-terrain.ts | 26 → 6 · 1 → 7 | the gorge → plain profile |

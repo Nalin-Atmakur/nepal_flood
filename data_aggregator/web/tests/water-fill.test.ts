@@ -43,12 +43,16 @@ describe("water level fill", () => {
     depth[2 * 30 + 10] = 0.5; // one wet cell
     const out = new Float32Array(150);
     const scratch = new Float32Array(150);
-    fillLevels(grid, bed, depth, 4, out, scratch, { radius: 6, falloff: 0.25 });
+    fillLevels(grid, bed, depth, 4, out, scratch, { radius: 6, falloff: 0.25, flat: 0 });
     expect(out[2 * 30 + 10]).toBeCloseTo(2, 6);
     expect(out[2 * 30 + 13]).toBeCloseTo(2 - 0.75, 6);
     expect(out[2 * 30 + 16]).toBeCloseTo(2 - 1.5, 6);
     expect(out[2 * 30 + 17]).toBe(DRY);
     // the separable passes give a Manhattan falloff: (dx 3, dz 2) → 5 cells
     expect(out[0 * 30 + 13]).toBeCloseTo(2 - 1.25, 6);
+    // with a flat core the surface is level for the first cells, then decays
+    fillLevels(grid, bed, depth, 4, out, scratch, { radius: 6, falloff: 0.25, flat: 2 });
+    expect(out[2 * 30 + 12]).toBeCloseTo(2, 6);
+    expect(out[2 * 30 + 14]).toBeCloseTo(2 - 0.5, 6);
   });
 });
