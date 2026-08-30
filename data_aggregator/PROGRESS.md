@@ -12,7 +12,8 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 1. **The corridor is now the flood simulation** (your 02:15 brief) — auto-plays the breach on load, camera rides the wave, clock follows the recorded front (08:37 collapse → 13:00 Devghat), place cards pop as the front reaches them with live ledger numbers, drop houses/bridges/buses/camps and watch them tumble and sink, lake-volume/breach sliders (seeded with China MWR's 2.0 Mm³), the 10 bridges HOT OSM surveyed as washed-out/damaged are placed where they stood and go with the wave, "Share this run". Illustrative, labelled as such. Tuning knobs + how it works: `web/docs/14-flood-sim.md`.
 2. **All 51 catalogued sources have normalisers, plus 4 discovered beyond the catalogue (60 registered)** (waves 2A/2B/3/4): 25+ publishers in `figures_latest`, hydrographs, help requests per place, bridges, imagery catalogues. `docs/sources.md`.
 3. **Processing**: press-quoted figures (Police/DoT columns filled), `figure_series` trends, timeline, digest v2, place_timeline 64/74 corridor places, 23 stats, 6-thread pull with backoff (≈2× faster). Per-place "what is happening now" line (79/79 places, on place pages + tables + corridor cards), data-quality audit (`docs/audit-2026-08-30.md`), NDRRMA sparklines.
-4. **Docs reconciled** with what shipped (README, PLAN, runbook, data-model, decisions D-025+).
+4. **Docs reconciled** with what shipped (README, PLAN, runbook, data-model, decisions D-025–D-047); `docs/audit-2026-08-30.md` is the data-quality audit.
+5. **Verified end-to-end at 05:50**: a report submitted on the live site was anonymised by the scheduled run and its summary shown on `/me` (test rows withdrawn afterwards).
 
 **Do in the morning (5 minutes)**
 - ⚠️ Rotate the OpenAI key and the Supabase service-role key (decisions-log 02:30: `pipeline/` was briefly uploaded to a Vercel project that I deleted). Put them in `pipeline/.env`; nothing else holds them.
@@ -20,7 +21,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 - When distribution starts: `scripts/install_schedule.sh 15`, set `PULL_INTERVAL_MINUTES = 15` in `pipeline/lib/config.py` and `web/lib/config.ts`, `cd web && vercel --prod --yes`.
 - Skim `docs/audit-2026-08-30.md` (data-quality findings, once lane Q1 lands).
 
-**Spend:** OpenAI ≈ $0.03 of the $20 cap. Supabase free tier. Vercel hobby.
+**Spend:** OpenAI ≈ $0.05 of the $20 cap (a full run with 80 places ≈ $0.02–0.05). Supabase free tier. Vercel hobby.
 
 ## Status by phase
 
@@ -42,6 +43,7 @@ Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfl
 | D docs reconcile | ✅ | bf70c4b — README/PLAN/CONTRIBUTING/data-model/runbook/decisions D-025–D-039 |
 
 ## Cycle log
+- 06:05 BST — Scheduled tick 05:47 ran the new code end-to-end: pull 26 due sources ok (105 s), process all steps 567 s, 23 model calls ($0.047 total so far). Questionnaire path verified on the LIVE site with two marked test reports: submit → "We understood" → /me Received → anonymised by the run (summary "12 people · airlifted from Syabrubesi to Dhunche · 29 Aug · road to Timure cut", place syabrubesi_helipad, status rescued) → /me trail Received/Anonymised/Processed/Not yet matched. Test rows withdrawn, reports_anon rows deleted, submissions_log rows 3–4 deleted → counters 0.
 - 05:40 BST — P6 landed (1c6ca31, 0045c8c, f6d6f23; 274 tests): place_timeline PK (place, day, kind) via migration 010 — 311 duplicate rows gone; digest v3 adds help-request and "as quoted by NRCS" context bullets, districts excluded from gaps; `*_quoted` metrics guarded in stats/digest and by a web config test; figures_latest now 36 publishers.
 - 05:22 BST — V1 visual QA landed + deployed (36a564b): no overflow anywhere; swipe hints on wide tables, delta labels wrap, ↗ links no longer orphan, /me empty CTA. Corridor: solid caption chip, thinner stems while riding (4491400). Launched P6: collapse duplicate place_timeline rows per place×day×kind, digest check after the 05:41 run, guard that `*_quoted` metrics never headline.
 - 05:20 BST — S4 landed (cc8101a; 261 tests): ~40 candidates probed, 9 registered (sources.yaml 51 → 60), 4 built and live: NRCS situation updates (PDF text), BIPAD incident API (event not yet entered by NEOC), 7 more feeds (ICIMOD, INSEC, Radio Nepal, Khabarhub, Setopati NE, Himalkhabar, Deshsanchar), ReliefWeb report pages with full bodies. `*_quoted` metrics are labelled and never headline-mapped. docs/sources.md regenerated (60).
