@@ -4,7 +4,7 @@
 PY := pipeline/.venv/bin/python
 SHELL := /bin/bash
 
-.PHONY: help setup db db-seed db-test pull process pipeline pipeline-test web-dev web-build web-test web-e2e deploy health test all
+.PHONY: help setup db db-seed db-test pull process pipeline pipeline-test web-dev web-build web-test web-e2e deploy health report test all
 
 help:            ## list targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[1m%-16s\033[0m %s\n", $$1, $$2}'
@@ -51,6 +51,9 @@ deploy:          ## build + vercel --prod (site code only; data flows via the DB
 
 health:          ## 60-second health check of the live system
 	$(PY) scripts/health.py
+
+report:          ## morning trends report → docs/reports/<date>-morning.md (run after the day's first pipeline tick)
+	$(PY) scripts/morning_report.py
 
 test: db-test pipeline-test web-test  ## everything except e2e
 
