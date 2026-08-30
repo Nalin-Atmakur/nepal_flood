@@ -141,7 +141,7 @@ Chase camera along the channel with a water-surface floor and an opening shot on
 bottom-left column and only for places with people (`reported > 0`); arming a chip pauses the ride (`follow` =
 not dragged and not armed); real bridges ≥ 3 km apart; the wave leaves a mud stain on the terrain (vertex colours,
 cleared on Replay/Reset); camera shake on the rock impact and on every real-bridge loss; markers thin and translucent
-while riding; 40 px tap targets; the rock hides at impact. Known limits: the gorge walls still fill the frame edges
+while riding; 40 px tap targets; the rock hides at impact; foam spray (`THREE.Points`, 700-particle pool, spawned in cells with depth ≥ 0.3 and speed ≥ 3.5, skipped in low-quality mode). Known limits: the gorge walls still fill the frame edges
 at the chase distance; whitecap particles and the "your run" OG card remain queued.
 
 ## 6. Non-goals (do not over-engineer)
@@ -151,6 +151,4 @@ scenarios (the share bar already shares the page).
 
 ## 7. Ideas queued (not built)
 
-Whitecap particles at the front (a crest highlight where the sheet drops steeply is in); a "your run" OG card
-(swept count + scenario) via `/api/og`; sound (off by default); NESRA `bridges_to_inspect` as a second, lighter bridge
-class.
+Sound (off by default); NESRA `bridges_to_inspect` as a second, lighter bridge class; a top-down "map" camera option.

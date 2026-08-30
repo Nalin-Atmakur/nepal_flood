@@ -18,6 +18,7 @@ import {
   SIM_UNITS_PER_MM3,
   advect,
   breachVolume,
+  cellCentre,
   cellIndex,
   clockForFrontX,
   snapToPath,
@@ -70,7 +71,7 @@ export type CorridorHandle = {
   /** swept objects this run, split visitor / real bridges */
   swept(): { visitor: number; real: number };
   /** Introspection for tests and debugging (`?debug=1` exposes the handle as `window.__corridor`). */
-  debug(): { state: RunState; waterVisible: boolean; drawCount: number; maxDepth: number; frontX: number; objects: number; swept: number; injected: number; lowQuality: boolean };
+  debug(): { state: RunState; waterVisible: boolean; drawCount: number; maxDepth: number; frontX: number; objects: number; swept: number; injected: number; lowQuality: boolean; spray: number; fastCells: number };
 };
 
 const UNKNOWN_C = 0xb06a00;
@@ -225,7 +226,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         // foam where it runs fast, and a crest where the sheet drops steeply ahead (the wave's face)
         const ahead = c + 1 < d.length ? d[c + 1] : dep;
         const crest = Math.min(1, Math.max(0, (dep - ahead - 0.4) / 1.5));
-        const foam = Math.max(Math.min(1, Math.max(0, (speed - 5) / 14)), crest);
+        const foam = Math.max(Math.min(1, Math.max(0, (speed - 2) / 8)), crest);
         if (foam > 0) tmpC.lerp(FOAM, foam * 0.85);
         wcol.setXYZ(v, tmpC.r, tmpC.g, tmpC.b);
       } else {
@@ -256,6 +257,73 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     wpos.needsUpdate = true;
     wcol.needsUpdate = true;
     waterGeo.computeVertexNormals();
+  };
+
+  let frameNo = 0;
+
+  // ---- foam spray at the front: a small particle pool fed by fast, deep cells ---------------------------
+  const SPRAY_N = 700;
+  const sprayPos = new Float32Array(SPRAY_N * 3);
+  const sprayVel = new Float32Array(SPRAY_N * 3);
+  const sprayLife = new Float32Array(SPRAY_N); // seconds left; 0 = free
+  const sprayGeo = new THREE.BufferGeometry();
+  const sprayAttr = new THREE.BufferAttribute(sprayPos, 3);
+  sprayGeo.setAttribute("position", sprayAttr);
+  sprayGeo.setDrawRange(0, 0);
+  const sprayMat = new THREE.PointsMaterial({ color: 0xf4f7fb, size: 1.3, sizeAttenuation: true, transparent: true, opacity: 0.9, depthWrite: false });
+  const spray = new THREE.Points(sprayGeo, sprayMat);
+  spray.frustumCulled = false;
+  spray.visible = false;
+  scene.add(spray);
+  let sprayCursor = 0;
+  const updateSpray = (dt: number) => {
+    const d = sim.depth;
+    const vx = sim.vx;
+    const vz = sim.vz;
+    // spawn: walk a strided subset of cells each frame so the cost stays flat
+    let spawned = 0;
+    for (let i = (frameNo * 7) % 11; i < d.length && spawned < 40; i += 11) {
+      const dep = d[i];
+      if (dep < 0.3) continue;
+      const sp = Math.hypot(vx[i], vz[i]);
+      if (sp < 3.5) continue;
+      const k = sprayCursor;
+      sprayCursor = (sprayCursor + 1) % SPRAY_N;
+      const { x, z } = cellCentre(GRID, i);
+      sprayPos[k * 3] = x + (Math.random() - 0.5) * cell;
+      sprayPos[k * 3 + 1] = bed[i] + dep * VIS_AMP + 0.3;
+      sprayPos[k * 3 + 2] = z + (Math.random() - 0.5) * cell;
+      sprayVel[k * 3] = vx[i] * 0.15 + (Math.random() - 0.5) * 2;
+      sprayVel[k * 3 + 1] = 3 + Math.random() * 4;
+      sprayVel[k * 3 + 2] = vz[i] * 0.15 + (Math.random() - 0.5) * 2;
+      sprayLife[k] = 0.5 + Math.random() * 0.5;
+      spawned++;
+    }
+    // integrate + compact live particles to the front of the buffer for the draw range
+    let n = 0;
+    for (let k = 0; k < SPRAY_N; k++) {
+      if (sprayLife[k] <= 0) continue;
+      sprayLife[k] -= dt;
+      sprayVel[k * 3 + 1] -= 12 * dt; // gravity
+      sprayPos[k * 3] += sprayVel[k * 3] * dt;
+      sprayPos[k * 3 + 1] += sprayVel[k * 3 + 1] * dt;
+      sprayPos[k * 3 + 2] += sprayVel[k * 3 + 2] * dt;
+      if (k !== n) {
+        sprayPos[n * 3] = sprayPos[k * 3];
+        sprayPos[n * 3 + 1] = sprayPos[k * 3 + 1];
+        sprayPos[n * 3 + 2] = sprayPos[k * 3 + 2];
+        sprayVel[n * 3] = sprayVel[k * 3];
+        sprayVel[n * 3 + 1] = sprayVel[k * 3 + 1];
+        sprayVel[n * 3 + 2] = sprayVel[k * 3 + 2];
+        sprayLife[n] = sprayLife[k];
+        sprayLife[k] = 0;
+      }
+      n++;
+    }
+    sprayCursor = n % SPRAY_N;
+    sprayGeo.setDrawRange(0, n);
+    sprayAttr.needsUpdate = true;
+    spray.visible = n > 0;
   };
 
   // ---- flood path (known extent) draped on the bed ------------------------------------------------------
@@ -734,6 +802,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   const play = () => {
     sim.reset();
     clearStain();
+    clearSpray();
     runT = 0;
     injectedFrac = 0;
     reached.clear();
@@ -754,9 +823,15 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     setPhase("collapse");
     setState("running");
   };
+  const clearSpray = () => {
+    sprayLife.fill(0);
+    sprayGeo.setDrawRange(0, 0);
+    spray.visible = false;
+  };
   const resetAll = () => {
     sim.reset();
     clearStain();
+    clearSpray();
     runT = 0;
     injectedFrac = 0;
     reached.clear();
@@ -779,7 +854,6 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
   // Adaptive quality: a slow device (long frames) gets one sim substep and a water-mesh update every other frame.
   let slowFrames = 0;
   let lowQuality = false;
-  let frameNo = 0;
   const tick = (now: number) => {
     if (!alive) return;
     raf = requestAnimationFrame(tick);
@@ -794,6 +868,7 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
     if (active) {
       simStep(dtReal, lowQuality ? 1 : SUBSTEPS);
       if (!lowQuality || frameNo % 2 === 0) updateWater();
+      if (!lowQuality) updateSpray(dtReal);
       updateObjects(dtReal);
       if (runState === "done") {
         // let the tail drain for a while after the run
@@ -842,6 +917,12 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
         swept: sweptTotal,
         injected: sim.injected(),
         lowQuality,
+        spray: sprayGeo.drawRange.count,
+        fastCells: (() => {
+          let n = 0;
+          for (let i = 0; i < sim.depth.length; i++) if (sim.depth[i] >= 0.3 && Math.hypot(sim.vx[i], sim.vz[i]) >= 3.5) n++;
+          return n;
+        })(),
       };
     },
     dispose() {
@@ -871,6 +952,8 @@ export function mountCorridor(el: HTMLElement, opts: MountOptions): CorridorHand
       lakeMat.dispose();
       rockGeo.dispose();
       rockMat.dispose();
+      sprayGeo.dispose();
+      sprayMat.dispose();
       scene.clear();
       renderer.dispose();
       renderer.forceContextLoss();
