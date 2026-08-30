@@ -1,7 +1,7 @@
 # 15 · /sources — every source, and exactly what we extracted from it
 
 ```
-  sources ⋈ pulls ──────────── v_sources_status ─┐   (server, ISR 5 min)
+  sources ⋈ pulls ──────────── v_sources_status ─┐   (server, ISR 5 min)          row (md+) · card (phones)
   figures / articles counts ── v_source_counts ───┤──▶ app/[lang]/sources/page.tsx  ──▶ SourceRow (server: strings, grade)
                                                   │                                        └─▶ SourceExtract (client)
   newest ≤ 40 figures/source ─ v_source_figures_recent ─┐  fetched on first "▸"                 ▸ button (aria-expanded)
@@ -16,7 +16,10 @@
    columns: derived sources show their "computed from" note; "this site" shows its holds line; others fetch once via
    `fetchSourceExtract()` (`lib/queries.ts`) and list metric · scope · value · as-of · link (+ note) and the headline
    titles. Empty → the dashed empty state with the cadence. The counts line under "What it holds" is server-rendered.
-3. **Mobile** — the table scrolls sideways inside its frame (swipe hint above); the panel is a full-width cell
-   with its own vertical scroll for long figure lists (max 360 px).
+3. **Phones (below `md`)** — no table: each source is a card (`SourceExtract layout="card"`, same data and the same
+   panel body as the row) — grade circle · name · last-fetched in the staleness colour · what it holds · counts line ·
+   visit · a 44 px ▸ that opens the extract panel full-width under the card. The table (`hidden md:block`) is what
+   renders from `md` up. `tests/e2e/sources-cards.spec.ts` asserts cards at 390 px, ≥44 px toggles, two open panels,
+   `scrollWidth === innerWidth` and Latin digits; long figure lists scroll vertically inside the panel (max 360 px).
 4. **Adding a source** changes nothing here: any normaliser that writes `figures`/`articles` with its `source_id`
    appears automatically.

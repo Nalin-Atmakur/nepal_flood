@@ -15,6 +15,7 @@ import { Table, TableBox, Th, THead } from "@/components/ui/Table";
  * with reliability circles A–E, last fetched coloured by staleness (green < 2 × PULL_INTERVAL, amber otherwise),
  * a link, the grade legend, and the dashed empty state. Every row has a "▸" disclosure that opens exactly what we
  * extracted from that source (components/blocks/SourceExtract.tsx, views from migration 012; docs/15-sources-page.md).
+ * Below `md` each source is a card (the table would scroll sideways and clip on phones).
  */
 export const revalidate = 300;
 
@@ -36,7 +37,6 @@ export default async function SourcesPage({ params }: { params: Promise<{ lang: 
   return (
     <main data-page="sources" className="max-w-[1280px] mx-auto px-4 md:px-7 pt-6 pb-8">
       <SectionHead as="h1" title={<span id="sources-title">{t(lang, "sources.title")}</span>} sub={t(lang, "sources.sub", { cadence })} />
-      <p className="md:hidden m-0 mt-2 font-semibold text-[11px] text-muted">{t(lang, "ui.swipe")}</p>
 
       {!sources || sources.length === 0 ? (
         <div className="mt-5">
@@ -52,7 +52,14 @@ export default async function SourcesPage({ params }: { params: Promise<{ lang: 
               </h2>
             </div>
             {g.rows.length ? (
-              <TableBox shadow={0} className="mt-[10px]">
+              <>
+                {/* phones: one card per source (no sideways table, nothing clipped) */}
+                <div className="md:hidden mt-[10px] flex flex-col gap-[10px]" data-testid="source-cards">
+                  {g.rows.map((s) => (
+                    <SourceRow key={s.id} s={s} lang={lang} live={live?.submissions_total ?? 0} lastAttempt={lastAttempt} counts={counts[s.id] ?? null} layout="card" />
+                  ))}
+                </div>
+              <TableBox shadow={0} className="hidden md:block mt-[10px]">
                 <div className="scroll-x">
                   <Table minWidth={760} className="text-[13.5px]">
                     <THead>
@@ -73,6 +80,7 @@ export default async function SourcesPage({ params }: { params: Promise<{ lang: 
                   </Table>
                 </div>
               </TableBox>
+              </>
             ) : (
               <div className="mt-[10px]">
                 <EmptyState>{t(lang, "sources.empty_group")}</EmptyState>
@@ -103,7 +111,7 @@ export function isDerivedSource(s: Pick<SourceStatusRow, "url" | "family">): boo
   return s.family === "derived" || !s.url || s.url.trim().startsWith("(");
 }
 
-function SourceRow({ s, lang, live, lastAttempt, counts }: { s: SourceStatusRow; lang: Lang; live: number; lastAttempt: string | null; counts: SourceCounts | null }) {
+function SourceRow({ s, lang, live, lastAttempt, counts, layout = "row" }: { s: SourceStatusRow; lang: Lang; live: number; lastAttempt: string | null; counts: SourceCounts | null; layout?: "row" | "card" }) {
   const isSite = s.id === "site_reports" || s.family === "site";
   const derived = isDerivedSource(s);
   const mins = minutesSince(s.last_fetched_at);
@@ -120,6 +128,7 @@ function SourceRow({ s, lang, live, lastAttempt, counts }: { s: SourceStatusRow;
   return (
     <SourceExtract
       lang={lang}
+      layout={layout}
       counts={counts}
       grade={<GradeCircle grade={s.reliability} />}
       cells={{
