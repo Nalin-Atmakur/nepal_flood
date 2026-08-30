@@ -144,3 +144,4 @@ Priority order (value ÷ effort), each = sources.yaml entry (if missing) + `norm
 - 15:40 BST 30 Aug · Goals split into their own card beside Your part (3:2 desktop, stacked on phones; D-066 revised). 40 e2e green; deploying.
 - 15:55 BST 30 Aug · Clips autoplay muted in view, poster out of view, sound on tap (D-067). Deploying.
 - 16:05 BST 30 Aug · favicon.ico regenerated from icon.svg (the scaffold's Vercel triangle was still linked first; D-068).
+- 16:15 BST 30 Aug · contact@ removed everywhere (no mailbox; D-069); About points agencies at the form's “Agency” path.

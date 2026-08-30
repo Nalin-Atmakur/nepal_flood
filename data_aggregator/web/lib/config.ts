@@ -14,7 +14,8 @@ export const SOURCE_OK_MINUTES = PULL_INTERVAL_MINUTES * 2;
 
 export const SITE_URL = "https://nepalfloodtracker.com";
 export const SITE_HOST = "nepalfloodtracker.com";
-export const CONTACT_EMAIL = "contact@nepalfloodtracker.com";
+/** No mailbox exists yet (30 Aug, D-069): contact goes through the report form's "Agency" path. */
+export const CONTACT_EMAIL: string | null = null;
 
 /** All times on the site are shown in Nepal time. */
 export const TIME_ZONE = "Asia/Kathmandu";

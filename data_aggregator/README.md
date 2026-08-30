@@ -111,4 +111,4 @@ Python is always the pipeline venv: `pipeline/.venv/bin/python` (PEP 668 blocks 
 
 **Official channels first.** Every page shows the official numbers; the site is volunteer-run and not an official source. If you are looking for someone, report to Nepal Police 1155 or Tourist Police 1144 and the MoFA Emergency Contact Room; the site is additive, not a substitute.
 
-Contact: contact@nepalfloodtracker.com.
+Contact: through the site's form (pick “Agency”) — there is no mailbox yet.

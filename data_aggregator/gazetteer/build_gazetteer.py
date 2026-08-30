@@ -44,7 +44,7 @@ COLUMNS = [
     "below_barrier_lakes", "notes",
 ]
 
-USER_AGENT = "nepalfloodtracker-gazetteer/1.0 (contact@nepalfloodtracker.com)"
+USER_AGENT = "nepalfloodtracker-gazetteer/1.0 (+https://nepalfloodtracker.com)"
 NOMINATIM = "https://nominatim.openstreetmap.org/search"
 NDRRMA_RESCUED = "https://ndrrma.gov.np/api/v1/rescues/rescued-locations/"
 NDRRMA_STATIONED = "https://ndrrma.gov.np/api/v1/rescues/stationed-locations/"
