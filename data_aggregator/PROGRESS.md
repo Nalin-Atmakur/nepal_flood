@@ -143,3 +143,4 @@ Priority order (value ÷ effort), each = sources.yaml entry (if missing) + `norm
 - 15:10 BST 30 Aug · Distribution pass groups 2–3 (docs/19 rows 8–12; D-065/066): three goals on Your part, share hook with live numbers (`/api/share-numbers`), WhatsApp via wa.me + "More…" sheet, phone share bottom sheet, OG card with the corridor strip, mobile audit e2e (13 pages, no sideways scroll, tap targets ≥ 36 px). Deploying.
 - 15:40 BST 30 Aug · Goals split into their own card beside Your part (3:2 desktop, stacked on phones; D-066 revised). 40 e2e green; deploying.
 - 15:55 BST 30 Aug · Clips autoplay muted in view, poster out of view, sound on tap (D-067). Deploying.
+- 16:05 BST 30 Aug · favicon.ico regenerated from icon.svg (the scaffold's Vercel triangle was still linked first; D-068).
