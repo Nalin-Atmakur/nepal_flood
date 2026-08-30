@@ -4,24 +4,25 @@
 
 Plan of record: `/Users/aryaask/.claude/plans/ok-cool-it-s-in-validated-dragonfly.md` · architecture: `PLAN.md` · runbook: `docs/runbook.md`.
 
-## ☀️ Morning handover (read this first — last updated 04:25 BST, keeps being updated until 10:00)
+## ☀️ Morning handover (read this first — final version written 07:55 BST; the loop keeps running until 10:00)
 
-**Live:** https://www.nepalfloodtracker.com (EN/NE/HI). Everything below is pushed to `origin/main`.
+**Live:** https://www.nepalfloodtracker.com (EN / नेपाली / हिन्दी). All work is on `origin/main` (111 commits tonight). Last full validation 07:52 BST: 52 db+gazetteer · 281 pipeline · 90 web unit · 15 e2e · 30 live smoke checks · `make health` OK (60 sources, 0 failing). Model spend ≈ $0.05 of $20.
 
-**What changed overnight, in order of what you asked for**
-1. **The corridor is now the flood simulation** (your 02:15 brief) — auto-plays the breach on load, camera rides the wave, clock follows the recorded front (08:37 collapse → 13:00 Devghat), place cards pop as the front reaches them with live ledger numbers, drop houses/bridges/buses/camps and watch them tumble and sink, lake-volume/breach sliders (seeded with China MWR's 2.0 Mm³), the 10 bridges HOT OSM surveyed as washed-out/damaged are placed where they stood and go with the wave, "Share this run". Illustrative, labelled as such. Tuning knobs + how it works: `web/docs/14-flood-sim.md`.
-2. **All 51 catalogued sources have normalisers, plus 4 discovered beyond the catalogue (60 registered)** (waves 2A/2B/3/4): 25+ publishers in `figures_latest`, hydrographs, help requests per place, bridges, imagery catalogues. `docs/sources.md`.
-3. **Processing**: press-quoted figures (Police/DoT columns filled), `figure_series` trends, timeline, digest v2, place_timeline 64/74 corridor places, 23 stats, 6-thread pull with backoff (≈2× faster). Per-place "what is happening now" line (79/79 places, on place pages + tables + corridor cards), data-quality audit (`docs/audit-2026-08-30.md`), NDRRMA sparklines.
-4. **Docs reconciled** with what shipped (README, PLAN, runbook, data-model, decisions D-025–D-047); `docs/audit-2026-08-30.md` is the data-quality audit.
-5. **Verified end-to-end at 05:50**: a report submitted on the live site was anonymised by the scheduled run and its summary shown on `/me` (test rows withdrawn afterwards).
+**What you asked for, and where it is**
+1. **The corridor is the flood simulation** (your 02:15 brief; three passes + an independent review) — auto-plays the breach on load, opens on the collapse, the camera chases the front down the channel, the clock follows the recorded front (08:37 → 13:00 Devghat), place cards pop with live ledger numbers, foam spray and a mud stain, the 10 bridges HOT OSM surveyed as washed-out/damaged stand where they stood and go with the wave ("real bridges lost 7/10"), drop houses/bridges/buses/camps and watch them tumble and sink, lake-volume (seeded with China MWR's 2.0 Mm³) and breach sliders, "Share this run" → a landing whose preview card says "I watched N things and M real bridges go". Labelled illustrative everywhere; the About page explains it. How it works + every tuning knob: `web/docs/14-flood-sim.md`.
+2. **Sources:** all 51 catalogued sources built (waves 2A/2B/3) plus 9 discovered beyond the catalogue (4 built: Red Cross situation updates, BIPAD incidents, 7 more Nepali feeds, ReliefWeb report bodies) — 60 registered, 55 with normalisers; `docs/sources.md`. Pull runs 6-wide with backoff (≈ 2 min for 60 sources).
+3. **Processing:** per-place "What is happening now" line (79/79 places, on place pages, tables and corridor cards), digest v3 (help requests, quoted third-party context), press-quoted figures fill the Police/Tourism columns, `figure_series` sparklines "+N since yesterday", place timelines keyed per day×kind, findings, 23 stats. **Trends report:** `make report` → `docs/reports/2026-08-30-morning.md` (today's is in the repo).
+4. **Questionnaire:** verified end-to-end on the live site in EN/NE/HI — submit → "We understood" → anonymised by the scheduled run → summary on `/me` → withdraw. All 9 test reports are withdrawn and their counter rows deleted (public counters read 0).
+5. **Quality passes:** data audit (`docs/audit-2026-08-30.md`, incl. the OPMCM +6,500-reports jump explained), visual QA at 390/1280, NE/HI translation review (glossary in `web/docs/03-i18n.md`), PII/secrets sweep (clean), docs reconciled, decisions D-025–D-048.
 
 **Do in the morning (5 minutes)**
-- ⚠️ Rotate the OpenAI key and the Supabase service-role key (decisions-log 02:30: `pipeline/` was briefly uploaded to a Vercel project that I deleted). Put them in `pipeline/.env`; nothing else holds them.
-- Grant `/bin/bash` Full Disk Access (System Settings → Privacy) so the launchd agent takes over from the detached loop (`scripts/install_schedule.sh --status`).
-- When distribution starts: `scripts/install_schedule.sh 30` (a full run is now ≈ 11 min — pull 60 sources ≈ 2 min + process ≈ 9 min — and costs ≈ $0.05 in model calls, so 30 min ≈ $2.40/day; 15 min is possible but tight), set `PULL_INTERVAL_MINUTES = 30` in `pipeline/lib/config.py` and `web/lib/config.ts`, `cd web && vercel --prod --yes`.
-- Read `docs/reports/2026-08-30-morning.md` (trends: deltas, hotspots, unknowns; regenerate any time with `make report`) and skim `docs/audit-2026-08-30.md` (data-quality findings).
+- ⚠️ Rotate the OpenAI key and the Supabase service-role key (decisions-log 02:30: `pipeline/` was briefly uploaded to a Vercel project that I deleted). They live only in `pipeline/.env`.
+- Grant `/bin/bash` Full Disk Access so the launchd agent takes over from the detached loop (`scripts/install_schedule.sh --status`). The loop's next tick is 09:47 BST, then every 4 h.
+- When distribution starts: `scripts/install_schedule.sh 30` (a full run ≈ 11 min, ≈ $0.05; 30 min ≈ $2.40/day), set `PULL_INTERVAL_MINUTES = 30` in `pipeline/lib/config.py` and `web/lib/config.ts`, `cd web && vercel --prod --yes`, then `npm run smoke:live`.
+- Read `docs/reports/2026-08-30-morning.md` (trends, hotspots) and skim `docs/audit-2026-08-30.md`.
+- Copy note: nothing on the site now claims reports are passed to the authorities automatically (no export tool exists yet, per your decision) — re-word when the channel is agreed (D-048).
 
-**Spend:** OpenAI ≈ $0.05 of the $20 cap (a full run with 80 places ≈ $0.02–0.05). Supabase free tier. Vercel hobby.
+**Known limits / next ideas (all queued in the cycle log):** gorge walls still crowd the chase camera's frame edges; no sound; the OG card is static per language except the "your run" variant; `raw_pulls` bodies for the wave-4 sources grow the free-tier storage — check Supabase usage in a week.
 
 ## Status by phase
 
