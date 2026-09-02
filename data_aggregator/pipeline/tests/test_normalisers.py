@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 
 import pytest
 import yaml
@@ -88,6 +89,45 @@ def test_ndrrma_rescues(ctx, now):
     hints = {h["text"]: h["place_id"] for h in r.place_hints}
     assert hints["टिमुरे"] == "timure" and hints["धुन्चे"] == "dhunche"
     assert hints["Syabrubesi Temporary Shelter"] == "syabrubesi_shelter"
+
+
+def test_ndrrma_numbered_sitreps_are_never_filed_as_name_lists():
+    """Sitrep #10's Nepali title contains "विवरण"; it was filed as PII and dropped, freezing the headline figures."""
+    sitrep10 = {"id": 393, "title": "Rasuwa Flood Situation Report No. 10",
+                "title_ne": "रसुवा बाढीसम्बन्धी खोज, उद्धार तथा राहतको स्थिति प्रतिवेदन विवरण",
+                "publication_type": {"pub_type": "Situation Report"}}
+    patients = {"id": 392, "title": "काठमाडौं ल्याइएको घाइतेहरुको विवरण", "publication_type": {"pub_type": "Notice"}}
+    assert NP.is_pii_publication(sitrep10) is False and NP.is_sitrep(sitrep10) is True
+    assert NP.is_pii_publication(patients) is True          # an actual list of people stays protected
+    assert NP.is_pii_publication({"id": 373, "title": "x"}) is True   # the explicit id list still wins
+    assert NP.sitrep_number("Situation Report No. 10") == 10
+    assert NP.sitrep_number("स्थिति प्रतिवेदन # ११") == 11
+
+
+def test_ndrrma_sitrep10_headline_figures():
+    text = load_fixture("ndrrma_publications_sitrep10.txt").decode("utf-8")
+    s = NP.parse_sitrep_text(text, title="Rasuwa Flood Situation Report No. 10", date="2026-08-31", url="u",
+                             fetched_at=datetime(2026, 9, 2, tzinfo=timezone.utc), pub_id=393)
+    got = {(f["metric"], f["scope"]): f["value"] for f in s.figures}
+    # mixed Latin/Devanagari digits in the source: "9३९", "3,925", "5९२"
+    assert got[("dead", "national")] == 939
+    assert got[("missing", "national")] == 3925
+    assert got[("rescued", "national")] == 11379
+    assert got[("foreigners_missing", "national")] == 592
+    assert s.figures[0]["as_of"].astimezone(config.KTM).strftime("%Y-%m-%d %H:%M") == "2026-08-31 19:00"
+
+
+def test_ndrrma_english_sitrep_is_read_too():
+    """NDRRMA publishes the same report in English; the Nepali patterns find nothing in it."""
+    text = load_fixture("ndrrma_publications_sitrep11_en.txt").decode("utf-8")
+    assert NP.looks_english(text) is True
+    s = NP.parse_sitrep_text(text, title="Rasuwa_Flood_SitRep_Temp_ENG_01_01092026", date="2026-09-01", url="u",
+                             fetched_at=datetime(2026, 9, 2, tzinfo=timezone.utc), pub_id=395)
+    got = {f["metric"]: f["value"] for f in s.figures}
+    assert got["missing"] == 3916 and got["rescued"] == 11814 and got["personnel"] == 21011
+    assert s.figures[0]["as_of"].astimezone(config.KTM).strftime("%Y-%m-%d %H:%M") == "2026-09-01 09:00"
+    # the Nepali edition must still parse as Nepali
+    assert NP.looks_english(load_fixture("ndrrma_publications_sitrep8.txt").decode("utf-8")) is False
 
 
 def test_ndrrma_publications_list_and_sitrep(ctx, now):

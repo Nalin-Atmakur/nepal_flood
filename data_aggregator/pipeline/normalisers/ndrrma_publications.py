@@ -55,6 +55,25 @@ HEADLINE = [
     ("telecom_towers_restored", re.compile(r"मम\s*\S*\s*त\s*\S*\s*छ\s*" + _NUM + r"\s*वटा\s*सञ्चालनमा")),
     ("heli_flights_total", re.compile(r"हे\s*लकप्टरबाट\s*" + _NUM + r"\s*हवाई\s*उडान")),
 ]
+# The English edition (e.g. "Rasuwa_Flood_SitRep_Temp_ENG_…") states the same headline figures as prose bullets.
+EN_HEADLINE = [
+    ("missing", re.compile(r"Missing\s+individuals\s+([0-9,]+)", re.I)),
+    ("missing", re.compile(r"([0-9,]+)\s+individuals?\s+(?:are\s+)?(?:reported\s+)?missing", re.I)),
+    ("rescued", re.compile(r"([0-9,]+)\s+individuals\s+have\s+been\s+rescued", re.I)),
+    ("personnel", re.compile(r"Deployed\s+([0-9,]+)\s+security\s+personnel", re.I)),
+    ("foreigners_rescued_air", re.compile(r"rescued\s+([0-9,]+)\s+foreign\s+nationals", re.I)),
+    ("dead", re.compile(r"(?:human\s+remains|bodies)\s+(?:found|recovered)\s*:?\s*([0-9,]+)", re.I)),
+]
+EN_DATE_RE = re.compile(r"Date:\s*(\d{1,2}\s+\w+\s+20\d\d)\s*Time:\s*(\d{1,2}:\d{2})\s*([AP]M)", re.I)
+
+
+def looks_english(text: str) -> bool:
+    """More Latin letters than Devanagari: the English edition of the same sitrep."""
+    latin = sum(ch.isascii() and ch.isalpha() for ch in text)
+    deva = sum("\u0900" <= ch <= "\u097f" for ch in text)
+    return latin > deva * 2
+
+
 SHELTER_RE = re.compile(r"(नुवाकोट|रसुवा)[^\n]{0,60}?" + _NUM + r"\s*वटा[\s\S]{0,60}?आश्रयस्थल[\s\S]{0,15}?कुल\s*" + _NUM)
 MISSING_CATS = [
     ("missing", "category:security_forces_police", re.compile(r"नेपाल\s*प्रहर\S*\s*[:ः]\s*" + _NUM + r"\s*जना")),
@@ -74,8 +93,11 @@ def _n(s: str) -> int | None:
     return to_int(nepali_digits(s).replace(",", ""))
 
 
+SITREP_NUMBER_RE = re.compile(r"(?:#|No\.?|नं\.?)\s*([0-9०-९]+)", re.I)
+
+
 def sitrep_number(title: str) -> int | None:
-    m = re.search(r"#\s*([0-9०-९]+)", nfc(title))
+    m = SITREP_NUMBER_RE.search(nfc(title))
     return _n(m.group(1)) if m else None
 
 
@@ -95,6 +117,22 @@ def parse_sitrep_text(text: str, *, title: str, date: str | None, url: str | Non
         if value is not None:
             out.figure(publisher=PUBLISHER, metric=metric, value=value, scope=scope, as_of=as_of, url=url,
                        note=(f"{tag} · {note}" if note else tag), source_id=SOURCE_ID, fetched_at=fetched_at)
+
+    if looks_english(text):
+        m = EN_DATE_RE.search(text)
+        if m:
+            stamp = parse_dt(f"{m.group(1)} {m.group(2)} {m.group(3)}", default_tz=config.KTM)
+            if stamp is not None:
+                as_of = stamp
+        seen_en: set[str] = set()
+        for metric, rx in EN_HEADLINE:
+            if metric in seen_en:
+                continue
+            hit = rx.search(text)
+            if hit:
+                fig(metric, _n(hit.group(1)))
+                seen_en.add(metric)
+        return out
 
     got: set[str] = set()
     for metric, rx in HEADLINE:
@@ -149,8 +187,22 @@ def is_pii_publication(pub: dict[str, Any]) -> bool:
             return True
     except (TypeError, ValueError):
         pass
+    if numbered_sitrep(pub):
+        return False
     title = f"{pub.get('title') or ''} {pub.get('title_ne') or ''}"
     return bool(config.NDRRMA_PII_TITLE_RE.search(title))
+
+
+def numbered_sitrep(pub: dict[str, Any]) -> bool:
+    """
+    A Situation Report with a number in its title: aggregate by definition, so the PII title words never apply.
+    Sitrep #10's Nepali title contains "विवरण" ("details"), which had it filed as a name list and dropped — the
+    site's headline figures then sat two days behind the authority (owner, 2 Sept).
+    """
+    pt = pub.get("publication_type") or {}
+    typed = "situation" in ((pt.get("pub_type") if isinstance(pt, dict) else str(pt)) or "").lower()
+    title = nfc(f"{pub.get('title') or ''} {pub.get('title_ne') or ''}")
+    return typed and bool(SITREP_NUMBER_RE.search(title))
 
 
 def is_sitrep(pub: dict[str, Any]) -> bool:
