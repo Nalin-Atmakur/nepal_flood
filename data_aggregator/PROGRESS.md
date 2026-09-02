@@ -186,3 +186,15 @@ through the owner's own engine — nothing is posted from this repo.
 **What matters from here:** someone reads `/admin/reports` the day a real report arrives, the pipeline keeps
 running, and any figure reported as wrong is fixed the same day. Channels, copy and failure modes: `web/docs/23-distribution.md`.
 
+- 02:00 BST 2 Sept · **Headline figures were two days stale — fixed.** The site showed 781 / 2,502 / 9,435 from
+  Sitrep #9 (30 Aug) while NDRRMA had published #10 (31 Aug) and #11 (1 Sept). Cause: `is_pii_publication` matched
+  `/list|विवरण|नामावली/` against publication titles, and Sitrep #10's Nepali title contains विवरण ("details"), so it
+  was stored as a PDF and never parsed — then marked seen, so it was never retried. A numbered Situation Report is
+  now exempt from that rule (a real patient list, which is untyped, still is not), `sitrep_number` reads
+  "No. 10" as well as "#११", and the English edition NDRRMA also publishes is parsed with its own patterns
+  (the Nepali regexes match nothing in it). Fixtures and tests from the real documents; 294 Python tests green.
+  **Live now: 939 dead (Sitrep #10, 31 Aug) · 3,916 out of contact · 11,814 rescued (English sitrep, 1 Sept).**
+  The owner's 3-hourly loop is running and picks up the fix on its next tick.
+  Still unparsed: the Nepali Sitrep #11 PDF (397) extracts as mangled glyphs, so its figures come from the English
+  edition instead; and NDRRMA's scanned morning updates remain image-only (they would need OCR).
+
