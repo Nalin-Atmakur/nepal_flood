@@ -9,12 +9,13 @@ import { href, stripLang, t, type Lang } from "@/lib/i18n";
  * Desktop (≥ md): a row under the header. Phones: a fixed bottom bar with the primary action ("Add") in the centre,
  * safe-area padding, 44 px targets, `aria-current="page"` on the active tab.
  */
-type Tab = { key: "home" | "numbers" | "places" | "latest" | "more"; path: string; icon: string };
+type Tab = { key: "home" | "numbers" | "places" | "latest" | "sediment" | "more"; path: string; icon: string };
 const TABS: Tab[] = [
   { key: "home", path: "/", icon: "⌂" },
   { key: "numbers", path: "/numbers", icon: "#" },
   { key: "places", path: "/places", icon: "◎" },
   { key: "latest", path: "/latest", icon: "≡" },
+  { key: "sediment", path: "/sediment", icon: "〰" },
   { key: "more", path: "/about", icon: "⋯" },
 ];
 
@@ -24,14 +25,15 @@ const MORE: { key: string; path: string; label: string }[] = [
   { key: "me", path: "/me", label: "nav.me" },
 ];
 
-/** Phone bottom bar: Home · Numbers · [＋ Add] · Places · Latest — "More" (Sources · About · Share) stays in the phone header. */
-const BOTTOM: Tab[] = [TABS[0], TABS[1], TABS[2], TABS[2], TABS[3]];
+/** Phone bottom bar: Home · Numbers · [＋ Add] · Latest · Sediment */
+const BOTTOM: Tab[] = [TABS[0], TABS[1], TABS[2], TABS[3], TABS[4]];
 
 function activeKey(rest: string): Tab["key"] | "none" {
   if (rest === "/" || rest === "") return "home";
   if (rest.startsWith("/numbers")) return "numbers";
   if (rest.startsWith("/places")) return "places";
   if (rest.startsWith("/latest")) return "latest";
+  if (rest.startsWith("/sediment")) return "sediment";
   if (rest.startsWith("/report") || rest.startsWith("/run")) return "none";
   return "more";
 }

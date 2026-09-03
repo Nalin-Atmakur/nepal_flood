@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { PlaceRef, PlaceStatusRow } from "@/lib/queries";
 
 const SedimentMap = dynamic(
   () => import("./SedimentMap").then((m) => m.SedimentMap),
@@ -14,6 +15,6 @@ const SedimentMap = dynamic(
   }
 );
 
-export default function SedimentMapLoader() {
-  return <SedimentMap />;
+export default function SedimentMapLoader({ refs, statuses }: { refs: PlaceRef[]; statuses: PlaceStatusRow[] }) {
+  return <SedimentMap refs={refs} statuses={statuses} />;
 }

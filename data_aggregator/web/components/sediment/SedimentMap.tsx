@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import * as maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import type * as L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import { queryDepthAtCoordinate, type SedimentReading } from "@/lib/sediment-query";
+import { statusTone } from "@/lib/corridor";
+import { colors } from "@/lib/tokens";
+import type { PlaceRef, PlaceStatusRow } from "@/lib/queries";
 
-// Full flood corridor nav bounds
-const CORRIDOR_BOUNDS: [number, number, number, number] = [
-  84.8, 27.5, 86.2, 28.6,
-];
-
-const INITIAL_CENTER: [number, number] = [85.35, 28.18];
+const INITIAL_CENTER: [number, number] = [28.18, 85.35]; // Leaflet uses [lat, lon]
 const INITIAL_ZOOM = 12;
+const DATA_BOUNDS: [[number, number], [number, number]] = [
+  [28.1108, 85.2788],
+  [28.3178, 85.4226],
+];
 
 type DepthState =
   | { status: "idle" }
@@ -19,15 +21,94 @@ type DepthState =
   | { status: "nodata" }
   | { status: "done"; lat: number; lon: number; reading: SedimentReading };
 
+type RawPoint = [number, number, number, number | null]; // [lon, lat, dh_m, uncertainty_m]
 
-export function SedimentMap() {
+function dhToColor(dh: number): string {
+  if (dh < -3) return "#0044dd";
+  if (dh < -0.5) return "#55aaff";
+  if (dh < 0.5) return "#ffdd00";
+  if (dh < 3) return "#ff8800";
+  return "#cc0000";
+}
+
+// Leaflet custom canvas layer
+function createSedimentLayer(
+  LLib: typeof L,
+  points: RawPoint[]
+): L.Layer {
+  const CanvasLayer = LLib.Layer.extend({
+    _canvas: null as HTMLCanvasElement | null,
+
+    onAdd(map: L.Map) {
+      const canvas = document.createElement("canvas");
+      canvas.style.cssText = "position:absolute;top:0;left:0;pointer-events:none;";
+      canvas.style.zIndex = "300";
+      (map.getPanes().overlayPane as HTMLElement).appendChild(canvas);
+      this._canvas = canvas;
+      this._map = map;
+
+      map.on("moveend zoomend resize", this._redraw, this);
+      this._redraw();
+    },
+
+    onRemove(map: L.Map) {
+      this._canvas?.remove();
+      this._canvas = null;
+      map.off("moveend zoomend resize", this._redraw, this);
+    },
+
+    _redraw() {
+      const map: L.Map = this._map;
+      const canvas: HTMLCanvasElement = this._canvas;
+      if (!map || !canvas) return;
+
+      const size = map.getSize();
+      canvas.width = size.x;
+      canvas.height = size.y;
+      // Align canvas with map origin
+      const topLeft = map.containerPointToLayerPoint([0, 0]);
+      LLib.DomUtil.setPosition(canvas, topLeft);
+
+      const ctx = canvas.getContext("2d")!;
+      ctx.clearRect(0, 0, size.x, size.y);
+
+      const zoom = map.getZoom();
+      // Radius large enough that neighbours (~50 m apart) overlap and fill gaps
+      const r = zoom < 10 ? 1.5 : zoom < 11 ? 2.5 : zoom < 12 ? 3.5 : zoom < 13 ? 5 : zoom < 14 ? 7.5 : zoom < 15 ? 11 : 16;
+      const pad = r + 2;
+
+      // Draw to offscreen canvas at full opacity, then stamp at low opacity.
+      // This prevents circles from stacking up where they overlap.
+      const off = new OffscreenCanvas(size.x, size.y);
+      const octx = off.getContext("2d")!;
+      for (const [lon, lat, dh] of points) {
+        const pt = map.latLngToContainerPoint([lat, lon]);
+        if (pt.x < -pad || pt.x > size.x + pad || pt.y < -pad || pt.y > size.y + pad) continue;
+        octx.beginPath();
+        octx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
+        octx.fillStyle = dhToColor(dh);
+        octx.fill();
+      }
+      ctx.globalAlpha = 0.35;
+      ctx.drawImage(off, 0, 0);
+      ctx.globalAlpha = 1;
+    },
+  });
+
+  return new (CanvasLayer as new () => L.Layer)();
+}
+
+
+export function SedimentMap({ refs, statuses }: { refs: PlaceRef[]; statuses: PlaceStatusRow[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<maplibregl.Map | null>(null);
-  const markerRef = useRef<maplibregl.Marker | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const markerRef = useRef<L.Marker | null>(null);
+  const leafletRef = useRef<typeof L | null>(null);
   const [depth, setDepth] = useState<DepthState>({ status: "idle" });
   const [gpsError, setGpsError] = useState<string | null>(null);
   const [coordInput, setCoordInput] = useState("");
   const [coordError, setCoordError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const probe = useCallback(async (lat: number, lon: number) => {
     setDepth({ status: "loading" });
@@ -44,9 +125,8 @@ export function SedimentMap() {
       const map = mapRef.current;
       if (!map) return;
       markerRef.current?.remove();
-      markerRef.current = new maplibregl.Marker({ color: "#ef4444" })
-        .setLngLat([lon, lat])
-        .addTo(map);
+      if (!leafletRef.current) return;
+      markerRef.current = leafletRef.current.marker([lat, lon]).addTo(map);
       probe(lat, lon);
     },
     [probe]
@@ -55,106 +135,80 @@ export function SedimentMap() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: {
-        version: 8,
-        sources: {
-          topo: {
-            type: "raster",
-            tiles: ["https://tile.opentopomap.org/{z}/{x}/{y}.png"],
-            tileSize: 256,
-            attribution: "© OpenTopoMap contributors, © OpenStreetMap contributors",
-          },
-        },
-        layers: [{ id: "topo", type: "raster", source: "topo", paint: { "raster-saturation": -1 } }],
-      },
-      center: INITIAL_CENTER,
-      zoom: INITIAL_ZOOM,
-      maxBounds: [
-        [CORRIDOR_BOUNDS[0] - 0.5, CORRIDOR_BOUNDS[1] - 0.5],
-        [CORRIDOR_BOUNDS[2] + 0.5, CORRIDOR_BOUNDS[3] + 0.5],
-      ],
-    });
+    // Dynamically import Leaflet to avoid SSR issues
+    import("leaflet").then((LLib) => {
+      if (!containerRef.current || mapRef.current) return;
+      leafletRef.current = LLib;
 
-    map.addControl(new maplibregl.NavigationControl(), "top-left");
+      console.log("[sediment] initialising Leaflet map");
 
-    map.on("load", () => {
+      const map = LLib.map(containerRef.current, {
+        center: INITIAL_CENTER,
+        zoom: INITIAL_ZOOM,
+        zoomControl: true,
+      });
+
+      LLib.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+        maxZoom: 19,
+      }).addTo(map);
+
+      // Place pins from the places map
+      const byId = new Map(statuses.map((s) => [s.place_id, s]));
+      for (const ref of refs) {
+        if (ref.lat === null || ref.lon === null) continue;
+        const tone = statusTone(byId.get(ref.id) ?? null);
+        const fillColor = tone === "reached" ? colors.confirmed : tone === "unknown" ? colors.markerUnknown : colors.deadDot;
+        LLib.circleMarker([ref.lat, ref.lon], {
+          radius: 6,
+          fillColor,
+          fillOpacity: 0.9,
+          color: "#fff",
+          weight: 1.5,
+        }).bindTooltip(ref.name_en, { direction: "top", offset: [0, -6] }).addTo(map);
+      }
+
+      map.on("click", (e: L.LeafletMouseEvent) => {
+        placeMarker(e.latlng.lat, e.latlng.lng);
+      });
+
+      mapRef.current = map;
+
       const tileUrl = process.env.NEXT_PUBLIC_SEDIMENT_TILES_URL;
+      console.log("[sediment] NEXT_PUBLIC_SEDIMENT_TILES_URL =", tileUrl ?? "(unset — canvas overlay)");
 
       if (tileUrl) {
-        // Production: XYZ tiles from Supabase Storage
-        map.addSource("sediment", {
-          type: "raster",
-          tiles: [`${tileUrl}/{z}/{x}/{y}.png`],
-          tileSize: 256,
+        // Production: XYZ raster tile overlay
+        LLib.tileLayer(`${tileUrl}/{z}/{x}/{y}.png`, {
           attribution: "GeoPera / WorldView-3, CC BY-NC",
-        });
-        map.addLayer({
-          id: "sediment-layer",
-          type: "raster",
-          source: "sediment",
-          paint: { "raster-opacity": 0.85 },
-        });
+          opacity: 0.85,
+          maxZoom: 19,
+        }).addTo(map);
+        console.log("[sediment] raster tile layer added");
       } else {
-        // Local dev: load stereo_dh.json as GeoJSON circles coloured by dh_m
+        // Dev: canvas overlay from local JSON
+        console.log("[sediment] fetching /stereo_dh.json");
         fetch("/stereo_dh.json")
-          .then((r) => r.json())
-          .then((pts: [number, number, number, number | null][]) => {
-            map.addSource("sediment-pts", {
-              type: "geojson",
-              data: {
-                type: "FeatureCollection",
-                features: pts.map(([lon, lat, dh]) => ({
-                  type: "Feature",
-                  geometry: { type: "Point", coordinates: [lon, lat] },
-                  properties: { dh },
-                })),
-              },
-            });
-
-            map.addLayer({
-              id: "sediment-layer",
-              type: "circle",
-              source: "sediment-pts",
-              paint: {
-                "circle-radius": [
-                  "interpolate", ["linear"], ["zoom"],
-                  10, 3,
-                  13, 6,
-                  15, 10,
-                ] as maplibregl.ExpressionSpecification,
-                "circle-color": [
-                  "interpolate", ["linear"], ["get", "dh"],
-                  -25, "#0000ff",
-                  -10, "#6699ff",
-                  -2,  "#cce0ff",
-                   2,  "#ffddcc",
-                  10,  "#ff6600",
-                  25,  "#cc0000",
-                ] as maplibregl.ExpressionSpecification,
-                "circle-opacity": 0.85,
-                "circle-stroke-width": 0,
-              },
-            });
-
-            // Zoom to fit the data
-            map.fitBounds(
-              [85.2788, 28.1108, 85.4226, 28.3178],
-              { padding: 40, maxZoom: 13 }
-            );
+          .then((r) => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json() as Promise<RawPoint[]>;
           })
-          .catch((e) => console.error("sediment load error", e));
+          .then((pts) => {
+            console.log("[sediment] loaded", pts.length, "points");
+            const layer = createSedimentLayer(LLib, pts);
+            layer.addTo(map);
+            map.fitBounds(DATA_BOUNDS, { padding: [40, 40], maxZoom: 13 });
+            console.log("[sediment] canvas layer added, bounds fitted");
+          })
+          .catch((e) => {
+            console.error("[sediment] failed to load stereo_dh.json:", e);
+            setLoadError(`Failed to load sediment data: ${e.message}`);
+          });
       }
     });
 
-    map.on("click", (e) => {
-      placeMarker(e.lngLat.lat, e.lngLat.lng);
-    });
-
-    mapRef.current = map;
     return () => {
-      map.remove();
+      mapRef.current?.remove();
       mapRef.current = null;
     };
   }, [placeMarker]);
@@ -163,30 +217,21 @@ export function SedimentMap() {
     e.preventDefault();
     setCoordError(null);
     const parts = coordInput.split(/[\s,]+/).filter(Boolean);
-    if (parts.length !== 2) {
-      setCoordError("Enter as: lat, lon");
-      return;
-    }
+    if (parts.length !== 2) { setCoordError("Enter as: lat, lon"); return; }
     const lat = parseFloat(parts[0]);
     const lon = parseFloat(parts[1]);
-    if (isNaN(lat) || isNaN(lon)) {
-      setCoordError("Invalid numbers");
-      return;
-    }
-    mapRef.current?.flyTo({ center: [lon, lat], zoom: 14 });
+    if (isNaN(lat) || isNaN(lon)) { setCoordError("Invalid numbers"); return; }
+    mapRef.current?.flyTo([lat, lon], 14);
     placeMarker(lat, lon);
   }
 
   function handleGPS() {
     setGpsError(null);
-    if (!navigator.geolocation) {
-      setGpsError("Geolocation not available in this browser.");
-      return;
-    }
+    if (!navigator.geolocation) { setGpsError("Geolocation not available."); return; }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
-        mapRef.current?.flyTo({ center: [longitude, latitude], zoom: 15 });
+        mapRef.current?.flyTo([latitude, longitude], 15);
         placeMarker(latitude, longitude);
       },
       () => setGpsError("Could not get your location. Check browser permissions.")
@@ -197,8 +242,14 @@ export function SedimentMap() {
     <div className="relative w-full h-full">
       <div ref={containerRef} className="w-full h-full" />
 
+      {loadError && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-red-50 border border-red-300 text-red-700 text-sm rounded-xl px-5 py-3 max-w-xs text-center">
+          {loadError}
+        </div>
+      )}
+
       {/* Controls panel */}
-      <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 items-end">
+      <div className="absolute top-4 right-4 z-[1000] flex flex-col gap-2 items-end">
         <form
           onSubmit={handleCoordSubmit}
           className="flex gap-1 bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden"
@@ -227,7 +278,6 @@ export function SedimentMap() {
         <button
           onClick={handleGPS}
           className="bg-white border border-gray-200 shadow-md rounded-lg px-3 py-2 text-sm font-medium hover:bg-gray-50 transition-colors"
-          aria-label="Use my location"
         >
           My location
         </button>
@@ -239,61 +289,53 @@ export function SedimentMap() {
         )}
       </div>
 
-      {/* Depth readout */}
-      {depth.status !== "idle" && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 bg-white border border-gray-200 shadow-lg rounded-xl px-6 py-4 text-center min-w-52">
-          {depth.status === "loading" && (
-            <p className="text-sm text-gray-500">Reading elevation data…</p>
-          )}
-          {depth.status === "nodata" && (
-            <p className="text-sm text-gray-500">
-              No data within 150 m of this point.
+      {/* Depth readout — top left */}
+      <div className="absolute top-4 left-4 z-[1000] bg-white border border-gray-200 shadow-lg rounded-xl px-4 py-3 min-w-44">
+        {depth.status === "idle" && (
+          <p className="text-xs text-gray-400">Tap map to read depth</p>
+        )}
+        {depth.status === "loading" && (
+          <p className="text-xs text-gray-500">Reading…</p>
+        )}
+        {depth.status === "nodata" && (
+          <p className="text-xs text-gray-500">No data within 150 m.</p>
+        )}
+        {depth.status === "done" && (
+          <>
+            <p className="text-[10px] text-gray-400 font-mono mb-1">
+              {depth.lat.toFixed(4)}, {depth.lon.toFixed(4)}
             </p>
-          )}
-          {depth.status === "done" && (
-            <>
-              <p className="text-xs text-gray-400 mb-2 font-mono">
-                {depth.lat.toFixed(5)}, {depth.lon.toFixed(5)}
+            <p className={`text-2xl font-bold tabular-nums leading-none ${depth.reading.dh_m < 0 ? "text-blue-600" : "text-orange-600"}`}>
+              {depth.reading.dh_m > 0 ? "+" : ""}{depth.reading.dh_m.toFixed(1)}{" "}
+              <span className="text-sm font-normal text-gray-500">m</span>
+            </p>
+            {depth.reading.uncertainty_m !== null && (
+              <p className="text-[10px] text-gray-400">
+                ± {depth.reading.uncertainty_m.toFixed(1)} m
               </p>
-              <p className="text-3xl font-bold tabular-nums">
-                {Math.abs(depth.reading.dh_m).toFixed(1)}{" "}
-                <span className="text-lg font-normal text-gray-500">m</span>
-              </p>
-              {depth.reading.uncertainty_m !== null && (
-                <p className="text-xs text-gray-400 tabular-nums">
-                  ± {depth.reading.uncertainty_m.toFixed(1)} m uncertainty
-                </p>
-              )}
-              <p className="text-sm mt-1 font-medium">
-                {depth.reading.dh_m < 0 ? (
-                  <span className="text-blue-600">riverbed scour</span>
-                ) : (
-                  <span className="text-orange-600">sediment deposition</span>
-                )}
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                Source: GeoPera / WorldView-3
-              </p>
-            </>
-          )}
-        </div>
-      )}
+            )}
+            <p className="text-xs font-medium mt-1 text-gray-500">
+              {depth.reading.dh_m < 0 ? "scour (erosion)" : "deposition"}
+            </p>
+          </>
+        )}
+      </div>
 
       {/* Legend */}
-      <div className="absolute bottom-6 right-4 z-10 bg-white border border-gray-200 shadow rounded-lg px-3 py-2 text-xs">
-        <p className="font-medium mb-1.5 text-gray-600">Elevation change</p>
+      <div className="absolute bottom-6 right-4 z-[1000] bg-white border border-gray-200 shadow rounded-lg px-3 py-2 text-xs">
+        <p className="font-medium mb-1.5 text-gray-600">Terrain change</p>
         <div className="flex items-stretch gap-2">
           <div
             className="w-3 rounded-sm"
             style={{
-              background: "linear-gradient(to bottom, #ff0000, #ff8080, #ffffff, #8080ff, #0000ff)",
+              background: "linear-gradient(to bottom, #cc0000, #ff8800, #ffdd00, #55aaff, #0044dd)",
               minHeight: 80,
             }}
           />
           <div className="flex flex-col justify-between text-gray-500" style={{ minHeight: 80 }}>
-            <span>+50 m</span>
+            <span>+10 m</span>
             <span>0</span>
-            <span>−50 m</span>
+            <span>−10 m</span>
           </div>
         </div>
         <p className="mt-1.5 text-gray-400">deposition ↑ / scour ↓</p>
