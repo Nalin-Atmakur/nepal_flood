@@ -67,7 +67,7 @@ export function SedimentMap() {
             attribution: "© OpenTopoMap contributors, © OpenStreetMap contributors",
           },
         },
-        layers: [{ id: "topo", type: "raster", source: "topo" }],
+        layers: [{ id: "topo", type: "raster", source: "topo", paint: { "raster-saturation": -1 } }],
       },
       center: INITIAL_CENTER,
       zoom: INITIAL_ZOOM,
@@ -90,33 +90,61 @@ export function SedimentMap() {
           tileSize: 256,
           attribution: "GeoPera / WorldView-3, CC BY-NC",
         });
-        map.addLayer({ id: "sediment-layer", type: "raster", source: "sediment", paint: { "raster-opacity": 0.8 } });
+        map.addLayer({
+          id: "sediment-layer",
+          type: "raster",
+          source: "sediment",
+          paint: { "raster-opacity": 0.85 },
+        });
       } else {
-        // Local dev: two static image overlays, one per reach
-        const reaches = [
-          {
-            id: "rasuwagadhi-timure",
-            url: "/overlay_rasuwagadhi-timure.png",
-            // corners: NW, NE, SE, SW  [lon, lat]
-            coordinates: [
-              [85.3409, 28.3168], [85.4213, 28.3178],
-              [85.4226, 28.2287], [85.3423, 28.2277],
-            ] as [[number,number],[number,number],[number,number],[number,number]],
-          },
-          {
-            id: "syabrubesi",
-            url: "/overlay_syabrubesi.png",
-            coordinates: [
-              [85.2788, 28.2037], [85.3634, 28.2047],
-              [85.3648, 28.1129], [85.2802, 28.1119],
-            ] as [[number,number],[number,number],[number,number],[number,number]],
-          },
-        ];
+        // Local dev: load stereo_dh.json as GeoJSON circles coloured by dh_m
+        fetch("/stereo_dh.json")
+          .then((r) => r.json())
+          .then((pts: [number, number, number, number | null][]) => {
+            map.addSource("sediment-pts", {
+              type: "geojson",
+              data: {
+                type: "FeatureCollection",
+                features: pts.map(([lon, lat, dh]) => ({
+                  type: "Feature",
+                  geometry: { type: "Point", coordinates: [lon, lat] },
+                  properties: { dh },
+                })),
+              },
+            });
 
-        for (const r of reaches) {
-          map.addSource(r.id, { type: "image", url: r.url, coordinates: r.coordinates });
-          map.addLayer({ id: `${r.id}-layer`, type: "raster", source: r.id, paint: { "raster-opacity": 0.8 } });
-        }
+            map.addLayer({
+              id: "sediment-layer",
+              type: "circle",
+              source: "sediment-pts",
+              paint: {
+                "circle-radius": [
+                  "interpolate", ["linear"], ["zoom"],
+                  10, 3,
+                  13, 6,
+                  15, 10,
+                ] as maplibregl.ExpressionSpecification,
+                "circle-color": [
+                  "interpolate", ["linear"], ["get", "dh"],
+                  -25, "#0000ff",
+                  -10, "#6699ff",
+                  -2,  "#cce0ff",
+                   2,  "#ffddcc",
+                  10,  "#ff6600",
+                  25,  "#cc0000",
+                ] as maplibregl.ExpressionSpecification,
+                "circle-opacity": 0.85,
+                "circle-stroke-width": 0,
+              },
+            });
+
+            // Zoom to fit the data
+            map.fitBounds(
+              [85.2788, 28.1108, 85.4226, 28.3178],
+              { padding: 40, maxZoom: 13 }
+            );
+          })
+          .catch((e) => console.error("sediment load error", e));
       }
     });
 
