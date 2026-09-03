@@ -248,8 +248,8 @@ export function SedimentMap({ refs, statuses }: { refs: PlaceRef[]; statuses: Pl
         </div>
       )}
 
-      {/* Controls panel */}
-      <div className="absolute top-4 right-4 z-[1000] flex flex-col gap-2 items-end">
+      {/* Controls panel — hidden on mobile to avoid crowding */}
+      <div className="absolute top-4 right-4 z-[1000] hidden md:flex flex-col gap-2 items-end">
         <form
           onSubmit={handleCoordSubmit}
           className="flex gap-1 bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden"
@@ -289,8 +289,23 @@ export function SedimentMap({ refs, statuses }: { refs: PlaceRef[]; statuses: Pl
         )}
       </div>
 
-      {/* Depth readout — top left */}
-      <div className="absolute top-4 left-4 z-[1000] bg-white border border-gray-200 shadow-lg rounded-xl px-4 py-3 min-w-44">
+      {/* GPS button on mobile — bottom left, above tab bar */}
+      <div className="absolute bottom-4 left-4 z-[1000] flex flex-col gap-2 items-start md:hidden">
+        <button
+          onClick={handleGPS}
+          className="bg-white border border-gray-200 shadow-md rounded-lg px-3 py-2 text-sm font-medium"
+        >
+          📍 My location
+        </button>
+        {gpsError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg px-3 py-1.5 max-w-48">
+            {gpsError}
+          </div>
+        )}
+      </div>
+
+      {/* Depth readout — top left on desktop, bottom centre on mobile */}
+      <div className="absolute top-4 left-4 md:top-4 md:left-4 z-[1000] bg-white border border-gray-200 shadow-lg rounded-xl px-4 py-3 min-w-44">
         {depth.status === "idle" && (
           <p className="text-xs text-gray-400">Tap map to read depth</p>
         )}
@@ -322,7 +337,7 @@ export function SedimentMap({ refs, statuses }: { refs: PlaceRef[]; statuses: Pl
       </div>
 
       {/* Legend */}
-      <div className="absolute bottom-6 right-4 z-[1000] bg-white border border-gray-200 shadow rounded-lg px-3 py-2 text-xs">
+      <div className="absolute bottom-4 right-4 z-[1000] bg-white border border-gray-200 shadow rounded-lg px-3 py-2 text-xs">
         <p className="font-medium mb-1.5 text-gray-600">Terrain change</p>
         <div className="flex items-stretch gap-2">
           <div

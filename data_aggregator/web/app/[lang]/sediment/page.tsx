@@ -22,7 +22,8 @@ export default async function SedimentPage() {
           ⚠ Depth readings are derived from satellite stereo imagery and may contain inaccuracies. Do not use for engineering or safety decisions.
         </p>
       </div>
-      <div className="h-[calc(100svh-180px)] min-h-[400px]">
+      {/* On mobile the bottom tab bar is 72px; on desktop there's no tab bar */}
+      <div className="h-[calc(100svh-180px-72px)] md:h-[calc(100svh-180px)] min-h-[360px]">
         <SedimentMapLoader refs={refs ?? []} statuses={statuses ?? []} />
       </div>
     </main>
