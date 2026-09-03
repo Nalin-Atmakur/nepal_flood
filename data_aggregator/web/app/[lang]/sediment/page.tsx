@@ -18,6 +18,9 @@ export default async function SedimentPage() {
         <p className="text-xs text-gray-500 mt-0.5">
           Elevation change (post − pre flood). Negative = scour/erosion, positive = sediment deposition. Click anywhere to measure. Data: GeoPera / WorldView-3, CC&nbsp;BY-NC.
         </p>
+        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 mt-1.5">
+          ⚠ Depth readings are derived from satellite stereo imagery and may contain inaccuracies. Do not use for engineering or safety decisions.
+        </p>
       </div>
       <div className="h-[calc(100svh-180px)] min-h-[400px]">
         <SedimentMapLoader refs={refs ?? []} statuses={statuses ?? []} />
